@@ -4,4 +4,5 @@ export const MainContainer = styled.div`
     margin: 24px 8px;
     display:flex;
     flex-direction:column;
+    align-items:center;
 `

@@ -1,0 +1,32 @@
+import {CarouselContainer, SlidesContainer, Slide,Content,Image,Dot,Dots, ContentTitle,ContentDescription} from "./MainCarousel.Styles"
+
+
+export default function MainCarouselUI(props){
+        
+    return (
+        <>
+        <CarouselContainer {...props.handlers}>
+          <SlidesContainer currentSlide={props.currentSlide}>
+            {props.slides.map((slide, index) => (
+              <Slide key={index}>
+                <Content>
+                  <ContentTitle>{slide.title}</ContentTitle>
+                  <ContentDescription>{slide.description}</ContentDescription>
+                </Content>
+                <Image src={slide.image} alt={slide.title} />
+              </Slide>
+            ))}
+          </SlidesContainer>
+        </CarouselContainer>
+        <Dots>
+            {props.slides.map((_, index) => (
+              <Dot 
+                key={index}
+                active={props.currentSlide === index}
+                onClick={() => setCurrentSlide(index)}
+              />
+            ))}
+          </Dots>
+        </>
+      );
+}
