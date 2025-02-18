@@ -33,7 +33,12 @@ export const Slide = styled.div`
 `;
 
 export const Content = styled.div`
-  flex: 1;
+    height:100%;
+    margin-top:56px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
 `;
 
 export const ContentTitle = styled.div`
