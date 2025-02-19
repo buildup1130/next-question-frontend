@@ -11,6 +11,7 @@ export const Home__IconBar = styled.div`
 
 export const Home__CalBar = styled.div`
     width:100%;
+    max-width: 500px;
     margin-top:20px;
     padding: 0 16px;
 
