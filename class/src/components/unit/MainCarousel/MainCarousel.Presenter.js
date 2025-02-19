@@ -8,7 +8,7 @@ export default function MainCarouselUI(props){
         <CarouselContainer {...props.handlers}>
           <SlidesContainer currentSlide={props.currentSlide}>
             {props.slides.map((slide, index) => (
-              <Slide key={index}>
+              <Slide key={index} onClick={(e) => {props.onClickSlide(slide.url,e)}}>
                 <Content>
                   <ContentTitle>{slide.title}</ContentTitle>
                   <ContentDescription>{slide.description}</ContentDescription>
