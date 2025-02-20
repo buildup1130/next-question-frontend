@@ -1,8 +1,17 @@
 import MainCalendarUI from "./MainCalendar.Presenter";
 import { useState } from "react";
 
-export default function MainCalendarLogic({ studiedDays = [] }){
+
+
+export default function MainCalendarLogic(){
     const [currentDate, setCurrentDate] = useState(new Date());
+
+    const studiedDays = [ //API 서버 통신
+        '2025-01-01',
+        '2025-01-15',
+        '2025-01-20'
+      ];
+    
   
     // 이전 달로 이동
     const prevMonth = () => {

@@ -4,7 +4,7 @@ export const CarouselContainer = styled.div`
   width: 100%;
   max-width: 500px;
   border-radius: 20px;
-  margin-top:72px;
+  margin-top:20px;
   border: 1px solid #d9d9d9;
 
   background: white;
@@ -34,7 +34,7 @@ export const Slide = styled.div`
 
 export const Content = styled.div`
     height:100%;
-    margin-top:56px;
+    margin-top:28px;
 
     display:flex;
     flex-direction:column;
@@ -57,8 +57,8 @@ export const ContentDescription = styled.div`
 `
 
 export const Image = styled.img`
-  width: 135px;
-  height: 135px;
+  width: 110px;
+  height: 110px;
 
  /* 이미지 드래그 방지 속성들 */
  -webkit-user-drag: none;  // Chrome, Safari
