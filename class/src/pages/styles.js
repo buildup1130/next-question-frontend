@@ -2,6 +2,7 @@ import styled from "@emotion/styled"
 
 export const Home__IconBar = styled.div`
     width:100%;
+    max-width:500px;
     padding-right:16px;
 
     display:flex;

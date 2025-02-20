@@ -57,8 +57,8 @@ export const ContentDescription = styled.div`
 `
 
 export const Image = styled.img`
-  width: 150px;
-  height: 150px;
+  width: 135px;
+  height: 135px;
 
  /* 이미지 드래그 방지 속성들 */
  -webkit-user-drag: none;  // Chrome, Safari
