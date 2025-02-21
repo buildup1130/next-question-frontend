@@ -15,6 +15,8 @@ export const CarouselContainer = styled.div`
 
   user-select: none;
   -webkit-user-drag: none;
+
+  cursor:pointer;
 `;
 
 export const SlidesContainer = styled.div`

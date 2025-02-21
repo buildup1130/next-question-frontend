@@ -23,7 +23,7 @@ export default function MainCarouselUI(props){
               <Dot 
                 key={index}
                 active={props.currentSlide === index}
-                onClick={() => setCurrentSlide(index)}
+                onClick={() => props.setCurrentSlide(index)}
               />
             ))}
           </Dots>

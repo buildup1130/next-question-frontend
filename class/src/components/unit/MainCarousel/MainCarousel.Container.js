@@ -70,6 +70,7 @@ const router = useRouter();
     return(
         <MainCarouselUI
             currentSlide = {currentSlide}
+            setCurrentSlide = {setCurrentSlide}
             slides = {slides}
             nextSlide = {nextSlide}
             prevSlide = {prevSlide}
