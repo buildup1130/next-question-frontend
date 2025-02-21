@@ -4,12 +4,7 @@ import MainCarouselLogic from "@/components/unit/MainCarousel/MainCarousel.Conta
 import MainCalendarLogic from "@/components/unit/MainCalendar/MainCalendar.Container";
 
 export default function Home() {
-  const studiedDays = [
-    '2025-01-01',
-    '2025-01-15',
-    '2025-01-20'
-  ];
-
+  
   return (
     <MainContainerLogic>
       <Home__IconBar>
@@ -21,7 +16,7 @@ export default function Home() {
         <Home__CalTitle>캘린더</Home__CalTitle>
         <Home__CalMore><>더보기</><Home_CalMore_Image src = '/image/Vector_next.png'></Home_CalMore_Image></Home__CalMore>
       </Home__CalBar>
-      <MainCalendarLogic studiedDays={studiedDays}></MainCalendarLogic>
+      <MainCalendarLogic></MainCalendarLogic>
     </MainContainerLogic>
   );
 }
