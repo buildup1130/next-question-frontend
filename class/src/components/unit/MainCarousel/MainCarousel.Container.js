@@ -17,16 +17,15 @@ const router = useRouter();
             url:'/daily'
           },
           {
-            title: '슬라이드 2',
+            title: '문제 생성',
             description: '두 번째 슬라이드입니다.',
             image: '/image/cat.png',
-            url:''
           },
           {
             title: '슬라이드 3',
             description: '세 번째 슬라이드입니다.',
             image: '/image/cat.png',
-            url:''
+            url:''   
           },
         ];
       
@@ -62,9 +61,15 @@ const router = useRouter();
         
           // 터치 지속 시간이 100ms 미만일 때만 클릭으로 간주
           if (touchDuration < 100) {
-            router.push(url);
+            if(url){
+              router.push(url);
+            }
+            else{
+              console.log(1);
+            }
           }
         }
+
 
 
     return(
