@@ -10,5 +10,4 @@ export const MainContainer = styled.div`
     align-items:center;
 
     background-color:#ffffff;
-
 `
