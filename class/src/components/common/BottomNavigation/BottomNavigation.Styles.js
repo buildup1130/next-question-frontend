@@ -13,6 +13,7 @@ export const NavContainer = styled.nav`
   justify-content: space-around;
   align-items: center;
   border-top: 1px solid #e0e0e0;
+  box-shadow: 0px 16px 24px rgba(0,0,0,0.1);
 `;
 
 export const NavItem = styled.div`
