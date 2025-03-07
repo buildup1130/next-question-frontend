@@ -3,8 +3,9 @@ import MainCarouselUI from "./MainCarousel.Presenter";
 import { useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/router";
+import { onChangeFile } from "@/utils/uploadFile";
 
-export default function MainCarouselLogic(){
+export default function MainCarouselLogic(props){
 const [currentSlide, setCurrentSlide] = useState(0);
 const [touchStartTime, setTouchStartTime] = useState(0);
 const router = useRouter();
@@ -20,6 +21,7 @@ const router = useRouter();
             title: '문제 생성',
             description: '두 번째 슬라이드입니다.',
             image: '/image/cat.png',
+            url:'/generate'
           },
           {
             title: '슬라이드 3',
@@ -61,16 +63,9 @@ const router = useRouter();
         
           // 터치 지속 시간이 100ms 미만일 때만 클릭으로 간주
           if (touchDuration < 100) {
-            if(url){
               router.push(url);
-            }
-            else{
-              console.log(1);
-            }
           }
         }
-
-
 
     return(
         <MainCarouselUI
