@@ -3,8 +3,7 @@ import { Home__CalBar, Home__CalMore, Home__CalTitle, Home__IconBar, Home_CalMor
 import MainCarouselLogic from "@/components/unit/MainCarousel/MainCarousel.Container";
 import MainCalendarLogic from "@/components/unit/MainCalendar/MainCalendar.Container";
 
-export default function Home() {
-  
+export default function Home() {  
   return (
     <MainContainerLogic>
       <Home__IconBar>
