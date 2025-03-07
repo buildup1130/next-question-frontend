@@ -1,13 +1,17 @@
 import UploadBoxUI from "./UploadBox.Presenter";
-import { useState } from "react";
 
-export default function UploadBoxLogic(){
-    const [file, setFile] = useState(undefined)
+export default function UploadBoxLogic(props){
+
+    const onChangeFile = (e) => {
+        const selectedFile = e.target.files[0];
+        props.setFile(selectedFile);
+        console.log(props.file);
+    }
 
     return(
         <UploadBoxUI
-        file = {file}
-        setFile = {setFile}
+        file = {props.file}
+        onChangeFile = {onChangeFile}
         ></UploadBoxUI>
     )
 }

@@ -18,6 +18,18 @@ export const UploadContainer = styled.div`
   -webkit-user-drag: none;
 
   cursor:pointer;
+
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content:center;
+`
+
+export const UploadContainer__text = styled.div`
+    font-size:24px;
+    color:#111111;
+    line-height:24px;
+    font-weight:700;
 `
 
 export const CurrentFilename = styled.div`
@@ -26,6 +38,8 @@ export const CurrentFilename = styled.div`
   padding-left:8px;
   color:#767676;
 
+  overflow:hidden;
+  text-overflow:ellipsis;
 `
 
 export const HiddenForm = styled.input`
