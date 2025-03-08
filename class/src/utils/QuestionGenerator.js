@@ -2,21 +2,45 @@ import { useAuth } from "./AuthContext"
 import axios from "axios"
 
 
-export const createQuestion = (file,numOfQuestions,token) =>{
+export const createQuestion = (file,numOfQuestions,token,setIsCreated,setQuestionArr) =>{
     const formData = new FormData();
+    //QuestionArr 초기화
+    setQuestionArr(undefined);
+    
+    setIsCreated(true);
     
     //isAuth 함수로 대체해야함    
     if(token){
         formData.append("file",file);
         formData.append("numOfQuestions", numOfQuestions);
-        generateQuestion_member(formData,token)
+        generateQuestion_member(formData,token).then(
+            (res) => {
+                const tmpArr = [];
+                res?.forEach((element) =>{
+                    tmpArr.push(element);
+                })
+                console.log(tmpArr);
+                setQuestionArr(tmpArr);
+                setIsCreated(true);
+            }
+        )
     }else{
         formData.append("file",file);
-        generateQuestion_nonMember(formData)
+        generateQuestion_nonMember(formData).then(
+            (res) =>{
+                const tmpArr = [];
+                res?.forEach((element) =>{
+                    tmpArr.push(element);
+                })
+                console.log(tmpArr);
+                setQuestionArr(tmpArr);
+                setIsCreated(true);
+            }
+        )
     }
 }
 
-export const generateQuestion_member = async(formData,token) =>{
+const generateQuestion_member = async(formData,token) =>{
     try {
         const response = await axios.post(
           "http://localhost:8080/member/question/upload",
@@ -30,13 +54,15 @@ export const generateQuestion_member = async(formData,token) =>{
         );
         console.log("회원 문제 생성");
         console.dir(response.data)
+        return response.data;
     }catch(error)
         {
+            
             console.error(error);
         }
 }
 
-export const generateQuestion_nonMember = async(formData) =>{
+const generateQuestion_nonMember = async(formData) =>{
     try {
         const response = await axios.post(
           "http://localhost:8080/public/question/upload",
@@ -49,8 +75,10 @@ export const generateQuestion_nonMember = async(formData) =>{
         );
         console.log("비회원 문제 생성");
         console.dir(response.data);
+        return response.data;
     }catch(error)
         {
+            
             console.error(error);
         }
 }
