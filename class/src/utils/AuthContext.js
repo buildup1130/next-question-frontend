@@ -41,7 +41,7 @@ export function AuthProvider({ children }) {
     setToken(null);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    router.push('/login');
+    router.push('/Login');
   };
 
   // 인증 상태 확인

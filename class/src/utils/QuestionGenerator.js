@@ -1,4 +1,3 @@
-import { useAuth } from "./AuthContext"
 import axios from "axios"
 
 
@@ -29,7 +28,7 @@ export const createQuestion = (file,numOfQuestions,token,setIsCreated,setQuestio
         generateQuestion_nonMember(formData).then(
             (res) =>{
                 const tmpArr = [];
-                res?.forEach((element) =>{
+                res?.questions.forEach((element) =>{
                     tmpArr.push(element);
                 })
                 console.log(tmpArr);
@@ -43,7 +42,7 @@ export const createQuestion = (file,numOfQuestions,token,setIsCreated,setQuestio
 const generateQuestion_member = async(formData,token) =>{
     try {
         const response = await axios.post(
-          "http://localhost:8080/member/question/upload",
+          "http://localhost:8080/member/questions/upload",
             formData,
             {
                 headers: {
@@ -57,7 +56,6 @@ const generateQuestion_member = async(formData,token) =>{
         return response.data;
     }catch(error)
         {
-            
             console.error(error);
         }
 }
@@ -65,7 +63,7 @@ const generateQuestion_member = async(formData,token) =>{
 const generateQuestion_nonMember = async(formData) =>{
     try {
         const response = await axios.post(
-          "http://localhost:8080/public/question/upload",
+          "http://localhost:8080/public/questions/upload",
         formData,
         {
             headers: {

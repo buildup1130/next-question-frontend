@@ -26,3 +26,13 @@ export const GenerateShelf__Container = styled.div`
   align-items:center;
 `
 
+export const GenerateShelf__Shelf = styled.div`
+  width:100%;
+  padding: 0px 8px;
+
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+
+  background-color:#ffffff;
+`

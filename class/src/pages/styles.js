@@ -10,6 +10,14 @@ export const Home__IconBar = styled.div`
     gap:16px;
 `
 
+export const Home__IconBar__Login = styled.div`
+    width:100%;
+    padding:0px 12px;
+
+    font-size:16px;
+    font-weight:700;
+`
+
 export const Home__CalBar = styled.div`
     width:100%;
     max-width: 500px;
