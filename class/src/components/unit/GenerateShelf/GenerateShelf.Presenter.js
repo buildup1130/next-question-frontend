@@ -1,4 +1,5 @@
-import { GenerateShelf__Container, GenerateShelf__Shelf, GenerateShelf__Shelf__Container, GenerateShelf__Shelf__Input, GenerateShelf__Shelf__Input__Button, GenerateShelf__Shelf__Input__Container, GenerateShelf__Shelf__Select, GenerateShelf__Shelf__Select__Button, GenerateShelf__Shelf__Title, GenerateShelf__Shelf__Title__Button, GenerateShelf__Wrapper } from "./GenerateShelf.Styles";
+import { RefreshIcon } from "@/utils/SvgProvider";
+import { GenerateShelf__Container, GenerateShelf__Shelf, GenerateShelf__Shelf__Container, GenerateShelf__Shelf__Input, GenerateShelf__Shelf__Input__Button, GenerateShelf__Shelf__Input__Container, GenerateShelf__Shelf__Select, GenerateShelf__Shelf__Select__Button, GenerateShelf__Shelf__submitButton, GenerateShelf__Shelf__Title, GenerateShelf__Shelf__Title__Button, GenerateShelf__Wrapper } from "./GenerateShelf.Styles";
 
 export default function GenerateShelfUI(props){
 
@@ -16,12 +17,29 @@ export default function GenerateShelfUI(props){
                     >X</GenerateShelf__Shelf__Title__Button>
                 </GenerateShelf__Shelf__Title>
                 <GenerateShelf__Shelf__Container>
-                    <GenerateShelf__Shelf__Select>
+                    <GenerateShelf__Shelf__Select__Button
+                        onClick={props.fetchWorkBooks}
+                    >
+                        <RefreshIcon></RefreshIcon>
+                    </GenerateShelf__Shelf__Select__Button>
+                    <GenerateShelf__Shelf__Select
+                        value = {props.savingWorkBook}
+                        onChange={(e) => {
+                            props.setSavingWorkBook(e.target.value);
+                        }}
+                    >
                       <option value="">-- 문제집을 선택하세요 --</option>
-                      
+                      {props.workBooks.map((info,index) => (<option value = {info.encryptedWorkBookId}>
+                        {info.name}
+                      </option>))}
                     </GenerateShelf__Shelf__Select>
                     <GenerateShelf__Shelf__Select__Button
-                        onClick={() => {props.setIsCreating(true)}}
+                        onClick={() => {
+                            if(props.isCreating){
+                                props.setIsCreating(false)
+                            }else{
+                            props.setIsCreating(true)}
+                        }}
                     >+</GenerateShelf__Shelf__Select__Button>
                 </GenerateShelf__Shelf__Container>
                 {props.isCreating?
@@ -36,6 +54,13 @@ export default function GenerateShelfUI(props){
                     </GenerateShelf__Shelf__Input__Container>
                     :
                     <></>}
+                <GenerateShelf__Shelf__submitButton
+                    onClick={() => {
+                        props.onSaveQuestion();
+                    }}
+                >
+                    저장하기
+                </GenerateShelf__Shelf__submitButton>
             </GenerateShelf__Shelf>
             :
             <div>로딩 중</div>

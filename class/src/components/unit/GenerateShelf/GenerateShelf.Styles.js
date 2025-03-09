@@ -116,3 +116,22 @@ export const GenerateShelf__Shelf__Input__Button = styled.button`
 
   white-space:nowrap;
 `
+
+export const GenerateShelf__Shelf__submitButton = styled.div`
+width:100%;
+max-width:500px;
+min-height:52px;
+
+border-radius: 20px;
+margin-top:40px;
+border: 1px solid #d9d9d9;
+
+background-color: #3b82f6;
+color: white;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+cursor: pointer;
+`

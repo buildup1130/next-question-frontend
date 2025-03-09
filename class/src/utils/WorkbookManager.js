@@ -20,7 +20,7 @@ import axios from "axios"
         try{
         const response = await axios.post(
             "http://localhost:8080/member/workBook/create",
-            JSON.stringify({ name: name }),
+            { workBookName: name },
             {
                 headers: {
                     'Authorization': `Bearer ${token}`, // 토큰 추가
@@ -31,4 +31,24 @@ import axios from "axios"
         }catch(error){
             console.error(error);
         }
+    }
+
+    export const saveAtWorkBook = async(token, Questions, workbookId) => {
+        try{
+            const response = await axios.post(
+                "http://localhost:8080/member/questions/save",
+                { encryptedQuestionIds: Questions,
+                  encryptedWorkBookInfoId: workbookId
+                 },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`, // 토큰 추가
+                        'Content-Type': 'application/json'
+                    }
+                });
+                return response.data;
+        }catch(error){
+            console.error(error);
+        }
+        
     }

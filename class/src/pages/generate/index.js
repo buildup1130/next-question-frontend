@@ -33,6 +33,7 @@ export default function generatePage(){
           <GenerateShelfLogic
             setIsCreated = {setIsCreated}
             isQuestionArr = {questionArr !== undefined && questionArr.length > 0}
+            questionArr = {questionArr}
           ></GenerateShelfLogic>
         }
         <UploadBoxLogic
@@ -62,7 +63,8 @@ export default function generatePage(){
         ))}
         </Generate__countContainer>
         <Generate__submitButton
-            onClick={() => {createQuestion(file,QuestionCount,token,setIsCreated,setQuestionArr)}}
+            onClick={() => {
+                const response = createQuestion(file,QuestionCount,token,setIsCreated,setQuestionArr)}}
         >
             생성하기
         </Generate__submitButton>
