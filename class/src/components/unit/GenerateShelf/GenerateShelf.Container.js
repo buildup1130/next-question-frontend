@@ -68,6 +68,7 @@ export default function GenerateShelfLogic(props){
             savingWorkBook = {savingWorkBook}
             setSavingWorkBook = {setSavingWorkBook}
             onSaveQuestion = {onSaveQuestion}
+            questionInfoArr = {props.questionInfoArr}
         >
             
         </GenerateShelfUI>

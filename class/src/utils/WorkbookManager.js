@@ -37,8 +37,8 @@ import axios from "axios"
         try{
             const response = await axios.post(
                 "http://localhost:8080/member/questions/save",
-                { encryptedQuestionIds: Questions,
-                  encryptedWorkBookInfoId: workbookId
+                { encryptedQuestionInfoIds: Questions,
+                    encryptedWorkBookId: workbookId
                  },
                 {
                     headers: {

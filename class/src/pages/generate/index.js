@@ -12,6 +12,8 @@ export default function generatePage(){
     const [QuestionCount,setQuestionCount] = useState(5);
     const [isCreated,setIsCreated] = useState(false);
     const [questionArr, setQuestionArr] = useState(undefined);
+    const [questionInfoArr,setQuestionInfoArr] = useState(undefined);
+
     const {token,isAuthenticated} = useAuth();
     const router = useRouter();
     const numArr = token?[5,10,15,20,25,30]:[5];
@@ -34,6 +36,7 @@ export default function generatePage(){
             setIsCreated = {setIsCreated}
             isQuestionArr = {questionArr !== undefined && questionArr.length > 0}
             questionArr = {questionArr}
+            questionInfoArr = {questionInfoArr}
           ></GenerateShelfLogic>
         }
         <UploadBoxLogic
@@ -64,7 +67,7 @@ export default function generatePage(){
         </Generate__countContainer>
         <Generate__submitButton
             onClick={() => {
-                const response = createQuestion(file,QuestionCount,token,setIsCreated,setQuestionArr)}}
+                const response = createQuestion(file,QuestionCount,token,setIsCreated,setQuestionArr,setQuestionInfoArr)}}
         >
             생성하기
         </Generate__submitButton>

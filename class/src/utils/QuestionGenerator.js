@@ -1,7 +1,7 @@
 import axios from "axios"
 
 
-export const createQuestion = (file,numOfQuestions,token,setIsCreated,setQuestionArr) =>{
+export const createQuestion = (file,numOfQuestions,token,setIsCreated,setQuestionArr,setQuestionInfoArr) =>{
     const formData = new FormData();
     //QuestionArr 초기화
     setQuestionArr(undefined);
@@ -15,11 +15,22 @@ export const createQuestion = (file,numOfQuestions,token,setIsCreated,setQuestio
         generateQuestion_member(formData,token).then(
             (res) => {
                 const tmpArr = [];
+                const infoArr = [];
                 res?.forEach((element) =>{
-                    tmpArr.push(element);
+                    tmpArr.push(element.encryptedQuestionInfoId);
+
+                    const tmpObj = {
+                        name: element.name,
+                        type: element.type,
+                        answer: element.answer,
+                        opt: element.opt,
+                    }
+                    infoArr.push(tmpObj);
                 })
                 console.log(tmpArr);
+                console.log(infoArr);
                 setQuestionArr(tmpArr);
+                setQuestionInfoArr(infoArr);
                 setIsCreated(true);
             }
         )
