@@ -20,7 +20,7 @@ import axios from "axios"
         try{
         const response = await axios.post(
             "http://localhost:8080/member/workBook/create",
-            {name:name},
+            JSON.stringify({ name: name }),
             {
                 headers: {
                     'Authorization': `Bearer ${token}`, // 토큰 추가
