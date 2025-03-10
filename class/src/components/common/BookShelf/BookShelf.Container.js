@@ -1,15 +1,15 @@
 import { useState,useEffect } from "react";
 import BookShelfUI from "./BookShelf.Presenter";
 import BottomNavigationLogic from "../BottomNavigation/BottomNavigation.Container";
+
+import BottomSheet from "../../unit/BottomSheet/BottomSheet.Container"; // 바텀 시트 추가
 import { loadNormalQuestion, searchAllWorkBooks } from "@/utils/WorkbookManager";
 import { useAuth } from "@/utils/AuthContext";
 import { useRouter } from "next/router";
 
 export default function BookShelfContainer() {
-  // 검색어 상태 관리 (사용자가 입력한 검색어 저장)
   const [searchQuery, setSearchQuery] = useState("");
   const {token,isAuthenticated} = useAuth();
-
   // 책 목록 상태 관리 (기본 데이터 설정)  --> 배열 이렇게 하는게 맞는지 모르겠..
   const [books, setBooks] = useState([]);
   // 현재 시퀀스 (0: 기본 , 1: 문제 옵션 모달)
@@ -56,27 +56,30 @@ export default function BookShelfContainer() {
         setCount(curBook?.items);
     }, [curBook,setCount]);
 
+  const [isSheetOpen, setSheetOpen] = useState(false); // 바텀 시트 상태
+  const [selectedBook, setSelectedBook] = useState(null); // 선택한 책 정보
 
-  // 검색 입력 값 변경 시 호출되는 함수
   const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value); // 입력 값 업데이트
+    setSearchQuery(event.target.value);
   };
 
-  // 검색 버튼 클릭 시 실행되는 함수
   const handleSearch = () => {
     console.log("검색어:", searchQuery);
-    // 실제 검색 기능이 필요하면 여기에 구현
   };
 
-  // 뒤로 가기 버튼 클릭 시 실행되는 함수
   const handleBack = () => {
-    // 뒤로 가기 동작을 구현 (예: 이전 페이지 이동)
+    console.log("뒤로 가기");
   };
 
-  // 각 책의 '...' 버튼 클릭 시 실행되는 함수
-  const handleMoreClick = (id) => {
-    console.log(`책 ID ${id}의 ... 버튼 클릭!`);
-    // 추가 메뉴를 열거나 상세 정보를 표시하는 기능을 구현 가능
+  // 점 3개 버튼 클릭 시 실행
+  const handleMoreClick = (book) => {
+    setSelectedBook(book);
+    setSheetOpen(true);
+  };
+
+  // 바텀 시트 닫기
+  const closeBottomSheet = () => {
+    setSheetOpen(false);
   };
 
   //책 선택 시 실행되는 함수
@@ -120,6 +123,13 @@ export default function BookShelfContainer() {
         onClickLearning = {onClickLearning}
       />
       <BottomNavigationLogic />
+
+      {/* 바텀 시트 추가 */}
+      <BottomSheet
+        isOpen={isSheetOpen}
+        onClose={closeBottomSheet}
+        book={selectedBook}
+      />
     </>
   );
 }
