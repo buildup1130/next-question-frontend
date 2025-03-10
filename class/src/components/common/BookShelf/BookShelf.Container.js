@@ -1,56 +1,51 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import BookShelfUI from "./BookShelf.Presenter";
 import BottomNavigationLogic from "../BottomNavigation/BottomNavigation.Container";
+import { searchAllWorkBooks } from "@/utils/WorkbookManager";
+import { useAuth } from "@/utils/AuthContext";
 
 export default function BookShelfContainer() {
   // 검색어 상태 관리 (사용자가 입력한 검색어 저장)
   const [searchQuery, setSearchQuery] = useState("");
+  const {token} = useAuth();
+  // 마우스가 올라간 book
+
 
   // 책 목록 상태 관리 (기본 데이터 설정)  --> 배열 이렇게 하는게 맞는지 모르겠..
   const [books, setBooks] = useState([
-    {
-      id: 1,
-      title: "컴퓨터 구조 3장",
-      items: "N개 항목",
-      date: "2025. 1. 29.",
-      icon: "📺",
-    },
-    {
-      id: 2,
-      title: "컴퓨터 구조 2장",
-      items: "N개 항목",
-      date: "2025. 1. 28.",
-      icon: "📺",
-    },
-    {
-      id: 3,
-      title: "컴퓨터 구조 1장",
-      items: "N개 항목",
-      date: "2025. 1. 27.",
-      icon: "📺",
-    },
-    {
-      id: 4,
-      title: "논리 회로 2장",
-      items: "N개 항목",
-      date: "2025. 1. 27.",
-      icon: "🔲",
-    },
-    {
-      id: 5,
-      title: "논리 회로 1장",
-      items: "N개 항목",
-      date: "2025. 1. 27.",
-      icon: "🔲",
-    },
-    {
-      id: 6,
-      title: "논리 회로 종합과사",
-      items: "N개 항목",
-      date: "2025. 1. 27.",
-      icon: "🔲",
-    },
+    
   ]);
+
+  const fetchWorkBooks = async () => {
+    const response = await searchAllWorkBooks(token);
+    const bookArr = [];
+    //response 가 undefined 가 아니라면 setBooks 함수 실행
+    if(response){
+      response?.map(
+      (data,index) => {
+        {
+          console.dir(data);
+          const tmpObj = {
+            id:index,
+            title: data.name,
+            items: `${data.totalQuestion}문제`,
+            date: data.recentSolvedDate.substring(0,10),
+          }
+          bookArr.push(tmpObj)
+          console.log(tmpObj.id);
+        }
+      }
+    )
+    setBooks(bookArr);
+    }
+    
+  }
+
+      useEffect(() => {
+          // 함수 실행
+          fetchWorkBooks();
+      }, [token]); // 의존성 배열에 isAuthenticated와 token 포함
+
 
   // 검색 입력 값 변경 시 호출되는 함수
   const handleSearchChange = (event) => {
