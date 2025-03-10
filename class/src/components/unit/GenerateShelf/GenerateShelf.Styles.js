@@ -27,12 +27,13 @@ export const GenerateShelf__Container = styled.div`
 
   z-index:100;
 
-  padding: 20px 0;
+  padding: 20px 8px;
 `
 
 export const GenerateShelf__Shelf = styled.div`
   width:100%;
-  height:100%;
+  /* height:100%; */
+  max-height:100%;
   padding: 16px 8px;
   border: 1px solid #d9d9d9;
   border-radius: 20px;
@@ -174,4 +175,13 @@ export const GenerateShelf__Shelf__QuestionTitle = styled.div`
 `
 export const GenerateShelf__Shelf__QuestionText = styled.div`
   font-size:16px;
+`
+
+export const GenerateShelf__Shelf__ButtonContainer = styled.div`
+  width:100%;
+  padding: 0 8px;
+
+  display:flex;
+  flex-direction:row;
+  gap:12px;
 `

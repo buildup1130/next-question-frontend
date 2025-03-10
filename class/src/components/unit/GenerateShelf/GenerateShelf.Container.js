@@ -16,6 +16,8 @@ export default function GenerateShelfLogic(props){
     const [creatingName, setCreatingName] = useState("");
     //문제를 저장한 문제집 ID
     const [savingWorkBook, setSavingWorkBook] = useState("");
+    //모달 시퀀스
+    const [sequence,setSequence] = useState(0);
 
     // 비동기 작업을 처리하는 함수
     // DB에서 문제집 배열을 가져오는 함수
@@ -69,6 +71,8 @@ export default function GenerateShelfLogic(props){
             setSavingWorkBook = {setSavingWorkBook}
             onSaveQuestion = {onSaveQuestion}
             questionInfoArr = {props.questionInfoArr}
+            sequence = {sequence}
+            setSequence = {setSequence}
         >
             
         </GenerateShelfUI>
