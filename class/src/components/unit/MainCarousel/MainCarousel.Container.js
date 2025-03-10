@@ -3,7 +3,6 @@ import MainCarouselUI from "./MainCarousel.Presenter";
 import { useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/router";
-import { onChangeFile } from "@/utils/uploadFile";
 
 export default function MainCarouselLogic(props){
 const [currentSlide, setCurrentSlide] = useState(0);
@@ -61,8 +60,8 @@ const router = useRouter();
           const touchEndTime = new Date().getTime();
           const touchDuration = touchEndTime - touchStartTime;
         
-          // 터치 지속 시간이 100ms 미만일 때만 클릭으로 간주
-          if (touchDuration < 100) {
+          // 터치 지속 시간이 120ms 미만일 때만 클릭으로 간주
+          if (touchDuration < 120) {
               router.push(url);
           }
         }

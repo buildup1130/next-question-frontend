@@ -1,16 +1,44 @@
 import MainContainerLogic from "@/components/common/MainContainer/MainContainer.Container";
 import UploadBoxLogic from "@/components/unit/UploadBox/UploadBox.Container";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Generate__countbutton, Generate__countContainer, Generate__Optname, Generate__submitButton, Generate__subtitle } from "./styles";
+import { createQuestion } from "@/utils/QuestionGenerator";
+import { useAuth } from "@/utils/AuthContext";
+import GenerateShelfLogic from "@/components/unit/GenerateShelf/GenerateShelf.Container";
+import { useRouter } from "next/router";
 
 export default function generatePage(){
-    const [file, setFile] = useState(undefined)
+    const [file, setFile] = useState(undefined);
     const [QuestionCount,setQuestionCount] = useState(5);
+    const [isCreated,setIsCreated] = useState(false);
+    const [questionArr, setQuestionArr] = useState(undefined);
+    const [questionInfoArr,setQuestionInfoArr] = useState(undefined);
 
-    const numArr = [5,10,15,20,25,30].map
+    const {token,isAuthenticated} = useAuth();
+    const router = useRouter();
+    const numArr = token?[5,10,15,20,25,30]:[5];
+
+    //비회원일 경우 문제 생성 후 페이지 이동
+    useEffect(() => {
+        if (isCreated && !isAuthenticated && questionArr?.length > 0) {
+          // 로컬 스토리지에 데이터 저장
+          localStorage.setItem('tempQuestionData', JSON.stringify(questionArr));
+          
+          // Question 페이지로 이동
+          router.push("/Question");
+        }
+      }, [isCreated, isAuthenticated, questionArr, router]);
 
     return(
     <MainContainerLogic>
+        {isCreated && 
+          <GenerateShelfLogic
+            setIsCreated = {setIsCreated}
+            isQuestionArr = {questionArr !== undefined && questionArr.length > 0}
+            questionArr = {questionArr}
+            questionInfoArr = {questionInfoArr}
+          ></GenerateShelfLogic>
+        }
         <UploadBoxLogic
             setFile = {setFile}
             file = {file}
@@ -22,7 +50,7 @@ export default function generatePage(){
             <div>문제 수</div>
         </Generate__Optname>
         <Generate__countContainer>
-        {[5,10,15,20,25,30].map((num,index) => (<Generate__countbutton
+        {numArr.map((num,index) => (<Generate__countbutton
             key={index}
             style={QuestionCount === num?{
                 backgroundColor: '#3b82f6', color: 'white'
@@ -37,9 +65,13 @@ export default function generatePage(){
             </Generate__countbutton>
         ))}
         </Generate__countContainer>
-        <Generate__submitButton>
+        <Generate__submitButton
+            onClick={() => {
+                const response = createQuestion(file,QuestionCount,token,setIsCreated,setQuestionArr,setQuestionInfoArr)}}
+        >
             생성하기
         </Generate__submitButton>
+        
 
     </MainContainerLogic>)
 }

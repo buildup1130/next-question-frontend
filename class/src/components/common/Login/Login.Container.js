@@ -2,9 +2,11 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import LoginUI from "./Login.Presenter";
+import { useAuth } from "@/utils/AuthContext";
 
-export default function Login() {
+export default function LoginLogic() {
   const router = useRouter();
+  const {login} = useAuth();
 
   // 아이디 & 비밀번호 입력값 상태 관리
   const [userId, setUsername] = useState("");
@@ -29,6 +31,12 @@ export default function Login() {
         "http://localhost:8080/public/member/login/local",
         { userId, password }
       );
+      
+      login({
+        nickname:response.data.nickname,
+        role:response.data.role
+      },
+      response.data.accessToken)
 
       console.log("로그인 성공:", response.data);
       router.push("/"); // 로그인 성공 후 이동
