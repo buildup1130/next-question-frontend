@@ -1,12 +1,11 @@
 import { useState } from "react";
 import BookShelfUI from "./BookShelf.Presenter";
 import BottomNavigationLogic from "../BottomNavigation/BottomNavigation.Container";
+import BottomSheet from "../../unit/BottomSheet/BottomSheet.Container"; // 바텀 시트 추가
 
 export default function BookShelfContainer() {
-  // 검색어 상태 관리 (사용자가 입력한 검색어 저장)
   const [searchQuery, setSearchQuery] = useState("");
 
-  // 책 목록 상태 관리 (기본 데이터 설정)  --> 배열 이렇게 하는게 맞는지 모르겠..
   const [books, setBooks] = useState([
     {
       id: 1,
@@ -52,39 +51,50 @@ export default function BookShelfContainer() {
     },
   ]);
 
-  // 검색 입력 값 변경 시 호출되는 함수
+  const [isSheetOpen, setSheetOpen] = useState(false); // 바텀 시트 상태
+  const [selectedBook, setSelectedBook] = useState(null); // 선택한 책 정보
+
   const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value); // 입력 값 업데이트
+    setSearchQuery(event.target.value);
   };
 
-  // 검색 버튼 클릭 시 실행되는 함수
   const handleSearch = () => {
     console.log("검색어:", searchQuery);
-    // 실제 검색 기능이 필요하면 여기에 구현
   };
 
-  // 뒤로 가기 버튼 클릭 시 실행되는 함수
   const handleBack = () => {
-    // 뒤로 가기 동작을 구현 (예: 이전 페이지 이동)
+    console.log("뒤로 가기");
   };
 
-  // 각 책의 '...' 버튼 클릭 시 실행되는 함수
-  const handleMoreClick = (id) => {
-    console.log(`책 ID ${id}의 ... 버튼 클릭!`);
-    // 추가 메뉴를 열거나 상세 정보를 표시하는 기능을 구현 가능
+  // 점 3개 버튼 클릭 시 실행
+  const handleMoreClick = (book) => {
+    setSelectedBook(book);
+    setSheetOpen(true);
+  };
+
+  // 바텀 시트 닫기
+  const closeBottomSheet = () => {
+    setSheetOpen(false);
   };
 
   return (
     <>
       <BookShelfUI
-        books={books} // 책 목록 데이터 전달
-        searchQuery={searchQuery} // 검색어 상태 전달
-        onSearchChange={handleSearchChange} // 검색어 변경 핸들러 전달
-        onSearch={handleSearch} // 검색 버튼 클릭 핸들러 전달
-        onBack={handleBack} // 뒤로 가기 버튼 핸들러 전달
-        onMoreClick={handleMoreClick} // 책 아이템의 ... 버튼 핸들러 전달
+        books={books}
+        searchQuery={searchQuery}
+        onSearchChange={handleSearchChange}
+        onSearch={handleSearch}
+        onBack={handleBack}
+        onMoreClick={handleMoreClick} // 바텀 시트 열기
       />
       <BottomNavigationLogic />
+
+      {/* 바텀 시트 추가 */}
+      <BottomSheet
+        isOpen={isSheetOpen}
+        onClose={closeBottomSheet}
+        book={selectedBook}
+      />
     </>
   );
 }
