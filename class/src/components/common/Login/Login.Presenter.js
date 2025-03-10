@@ -6,15 +6,18 @@ import {
   LoginButton,
   ButtonWrapper,
   InputField,
+  ErrorMessageWrapper,
+  ErrorMessage,
 } from "./Login.Styles";
 
 export default function LoginUI({
-  userID,
+  userId,
   password,
   onUsernameChange,
   onPasswordChange,
   onLogin,
-  onSignUp, // 회원가입 버튼 클릭 시 실행될 함수
+  onSignUp,
+  error,
 }) {
   return (
     <LoginContainer>
@@ -22,7 +25,7 @@ export default function LoginUI({
         <InputField
           type="text"
           placeholder="아이디"
-          value={userID}
+          value={userId}
           onChange={onUsernameChange}
         />
       </UserID>
@@ -34,9 +37,14 @@ export default function LoginUI({
           onChange={onPasswordChange}
         />
       </Password>
+
+      <ErrorMessageWrapper>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+      </ErrorMessageWrapper>
+
       <ButtonWrapper>
         <LoginButton onClick={onLogin}>로그인</LoginButton>
-        <SignUpButton onClick={onSignUp}>회원가입</SignUpButton>{" "}
+        <SignUpButton onClick={onSignUp}>회원가입</SignUpButton>
       </ButtonWrapper>
     </LoginContainer>
   );
