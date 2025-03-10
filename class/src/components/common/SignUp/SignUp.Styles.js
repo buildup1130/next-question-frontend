@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 
 export const SignUpContainer = styled.div`
-  //회원가입 틀
   width: 100%;
   max-width: 500px;
   display: flex;
@@ -12,17 +11,15 @@ export const SignUpContainer = styled.div`
 `;
 
 export const FillForm = styled.form`
-  //회원가입 폼
   width: 500px;
 `;
+
 export const InputWrapper = styled.div`
-  //입력 필드 테두리
   width: 100%;
   margin-bottom: 15px;
 `;
 
 export const Label = styled.label`
-  //입력 필드 라벨
   font-size: 20px;
   font-weight: bold;
   display: block;
@@ -30,7 +27,6 @@ export const Label = styled.label`
 `;
 
 export const InputField = styled.input`
-  //입력 필드
   width: 100%;
   height: 35px;
   border: none;
@@ -62,4 +58,20 @@ export const SignUpButton = styled.button`
   border-radius: 5px;
   cursor: pointer;
   margin-top: 20px;
+`;
+
+// 에러 메시지를 항상 일정한 높이로 유지
+export const ErrorMessageWrapper = styled.div`
+  width: 100%;
+  min-height: 20px; /* 에러 메시지가 없어도 높이를 유지 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px; /* 버튼과 간격 유지 */
+`;
+
+export const ErrorMessage = styled.p`
+  color: red;
+  font-size: 14px;
+  text-align: center;
 `;

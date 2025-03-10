@@ -12,7 +12,6 @@ export const LoginContainer = styled.div`
 `;
 
 export const InputField = styled.input`
-  //입력 하는 필드
   width: 100%;
   height: 45px;
   padding: 10px;
@@ -29,26 +28,38 @@ export const InputField = styled.input`
 `;
 
 export const UserID = styled.div`
-  //아이디 입력 필드 테두리
   width: 100%;
   margin-bottom: 30px;
 `;
 
 export const Password = styled.div`
-  //비번 입력 필드 테두리
   width: 100%;
   margin-bottom: 30px;
 `;
 
+// 에러 메시지를 항상 일정한 높이로 유지
+export const ErrorMessageWrapper = styled.div`
+  width: 100%;
+  min-height: 20px; /* 에러 메시지가 없어도 높이를 유지 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px; /* 버튼과 간격 유지 */
+`;
+
+export const ErrorMessage = styled.p`
+  color: red;
+  font-size: 14px;
+  text-align: center;
+`;
+
 export const ButtonWrapper = styled.div`
-  //버튼 입력 필드 테두리리
   display: flex;
   width: 100%;
   gap: 10px;
 `;
 
 export const LoginButton = styled.button`
-  //로그인 버튼튼
   flex: 1;
   height: 45px;
   background-color: #000;
@@ -60,7 +71,6 @@ export const LoginButton = styled.button`
 `;
 
 export const SignUpButton = styled.button`
-  //회원가입 버튼튼
   flex: 1;
   height: 45px;
   background-color: #000;

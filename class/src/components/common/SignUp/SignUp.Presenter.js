@@ -7,16 +7,19 @@ import {
   IdInputWrapper,
   SignUpButton,
   FillForm,
+  ErrorMessageWrapper, // 추가된 스타일
+  ErrorMessage,
 } from "./SignUp.Styles";
 
 export default function SignUpUI({
   form,
   onChange,
   onSubmit,
-  onSignUpClick, // 회원가입 버튼 클릭 이벤트
+  onSignUpClick,
+  error,
 }) {
   return (
-    <SignUpContainer style={{ maxWidth: "500px" }}>
+    <SignUpContainer>
       <FillForm onSubmit={onSubmit}>
         <InputWrapper>
           <Label>아이디</Label>
@@ -76,6 +79,11 @@ export default function SignUpUI({
             required
           />
         </InputWrapper>
+
+        {/* 에러 메시지를 항상 같은 위치에 유지 */}
+        <ErrorMessageWrapper>
+          {error && <ErrorMessage>{error}</ErrorMessage>}
+        </ErrorMessageWrapper>
 
         <SignUpButton type="submit">회원가입</SignUpButton>
         <SignUpButton type="button" onClick={onSignUpClick}>
