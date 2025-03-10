@@ -3,6 +3,7 @@ import BookShelfUI from "./BookShelf.Presenter";
 import BottomNavigationLogic from "../BottomNavigation/BottomNavigation.Container";
 import { loadNormalQuestion, searchAllWorkBooks } from "@/utils/WorkbookManager";
 import { useAuth } from "@/utils/AuthContext";
+import { useRouter } from "next/router";
 
 export default function BookShelfContainer() {
   // 검색어 상태 관리 (사용자가 입력한 검색어 저장)
@@ -17,9 +18,9 @@ export default function BookShelfContainer() {
   const [curBook, setCurBook] = useState(null);
   //생성할 문제 수
   const [count,setCount] = useState(1);
-  //만들어진 문제 배열
-  const [Questions,setQuestions] = [];
 
+  //라우터 객체
+  const router = useRouter();
 
   const fetchWorkBooks = async () => {
     // console.log(token);
@@ -53,7 +54,7 @@ export default function BookShelfContainer() {
       useEffect(() => {
         // 함수 실행
         setCount(curBook?.items);
-    }, [curBook, count, setCount]);
+    }, [curBook,setCount]);
 
 
   // 검색 입력 값 변경 시 호출되는 함수
@@ -86,15 +87,20 @@ export default function BookShelfContainer() {
     setSequence(1);
   }
 
+  //학습하기 버튼 클릭 시 실행되는 함수수
   const onClickLearning = async () => {
-    const result = await loadNormalQuestion(token, curBook.encryptedWorkBookId, {
+    const result = await loadNormalQuestion(token, curBook.id, {
       count:count,
       random: true,
       ox:true,
       multiple:true,
       blank:true
     })
-    
+    // 로컬 스토리지에 데이터 저장
+    localStorage.setItem('tempQuestionData', JSON.stringify(result));
+          
+    // Question 페이지로 이동
+    router.push("/Question");
   }
 
   return (

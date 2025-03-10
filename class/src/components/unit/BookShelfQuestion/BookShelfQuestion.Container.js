@@ -13,6 +13,8 @@ export default function BookShelfQuestionLogic(props){
             props.setCount('');
             return;
           }
+
+          
         const newValue = parseInt(inputValue);
         if (newValue <= 0) {
             // 0 이하인 경우

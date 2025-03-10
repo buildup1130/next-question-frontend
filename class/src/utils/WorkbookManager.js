@@ -55,10 +55,12 @@ import axios from "axios"
 
     export const loadNormalQuestion = async(token, id, options) => {
         try{
+            console.log(`id >> ${id}`);
             const response = await axios.post(
                 "http://localhost:8080/solving/normal/search",
-                { encryptedWorkBookId: id,
-                    options:options
+                { 
+                    encryptedWorkBookId: id,
+                    options:options,
                  },
                 {
                     headers: {
