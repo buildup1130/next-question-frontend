@@ -1,3 +1,4 @@
+import BookShelfQuestionLogic from "@/components/unit/BookShelfQuestion/BookShelfQuestion.Container";
 import {
   Container,
   Header,
@@ -21,12 +22,26 @@ export default function BookShelfUI({
   onSearch,
   onBack,
   onMoreClick,
+  onClickBook,
+  sequence,
+  curBook,
+  count,
+  setCount,
+  onClickLearning
 }) {
   const [hoveredId, setHoveredId] = useState(null);
 
 
   return (
     <Container>
+      {sequence === 1?(
+        <BookShelfQuestionLogic
+          curBook = {curBook}
+          count = {count}
+          setCount = {setCount}
+          onClickLearning = {onClickLearning}
+        ></BookShelfQuestionLogic>):
+        <></>}
       {/* 상단 헤더 (뒤로 가기 버튼 + 제목) */}
       <Header>
         <BackButton onClick={onBack}>←</BackButton>
@@ -50,24 +65,27 @@ export default function BookShelfUI({
       <BookList>
         {books.map(
           // map쓰긴 했는데
-          (book) => (
+          (book,index) => (
             <BookItem 
-            key={book.id}
+            key={index}
             onMouseOver={() => setHoveredId(book.id)}
             onMouseOut={() => setHoveredId(null)}
             style={{
               backgroundColor:hoveredId === book.id?"#f0f0f0":'transparent'
             }}
+            onClick={() => {
+              onClickBook(book)}}
             >
               <BookInfo>
                 <span>
                    {book.title}
                 </span>
                 <span>
-                  {book.items}, 최근 학습일: {book.date}
+                  {book.items}문제, 최근 학습일: {book.date}
                 </span>
               </BookInfo>
-              <MoreButton onClick={() => onMoreClick(book.id)}>⋮</MoreButton>
+              <MoreButton onClick={() => {
+                onMoreClick(book.id)}}>⋮</MoreButton>
             </BookItem>
           )
         )}

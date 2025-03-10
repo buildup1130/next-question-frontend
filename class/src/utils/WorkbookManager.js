@@ -52,3 +52,23 @@ import axios from "axios"
         }
         
     }
+
+    export const loadNormalQuestion = async(token, id, options) => {
+        try{
+            const response = await axios.post(
+                "http://localhost:8080/solving/normal/search",
+                { encryptedWorkBookId: id,
+                    options:options
+                 },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`, // 토큰 추가
+                        'Content-Type': 'application/json'
+                    }
+                });
+                return response.data;
+        }catch(error){
+            console.error(error);
+        }
+
+    }
