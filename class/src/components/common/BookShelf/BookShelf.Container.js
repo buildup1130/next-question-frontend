@@ -98,12 +98,15 @@ export default function BookShelfContainer() {
       ox:true,
       multiple:true,
       blank:true
-    })
-    // 로컬 스토리지에 데이터 저장
-    localStorage.setItem('tempQuestionData', JSON.stringify(result));
-          
-    // Question 페이지로 이동
-    router.push("/Question");
+    }).then(
+      result => {
+        if(result){
+      // 로컬 스토리지에 데이터 저장
+      localStorage.setItem('tempQuestionData', JSON.stringify(result));
+      // Question 페이지로 이동
+      router.push("/Question");
+        }
+      })  
   }
 
   return (
