@@ -31,7 +31,7 @@ const QuestionModal = (props) => {
     return(
         <>
         <GenerateShelf__Shelf__Title>
-                    <div>문제집 선택</div>
+                    <div>문제 미리보기</div>
                     <GenerateShelf__Shelf__Title__Button
                         onClick={() => {
                             props.setIsCreated(false);
@@ -44,7 +44,8 @@ const QuestionModal = (props) => {
                                 const optArr = info.opt?info.opt.split("/"):[];
 
                                 return(
-                                <GenerateShelf__Shelf__QuestionContainer>
+                                <GenerateShelf__Shelf__QuestionContainer
+                                key = {index}>
                                   <GenerateShelf__Shelf__QuestionTitle>{index+1}. {info.name}</GenerateShelf__Shelf__QuestionTitle>
                                   <GenerateShelf__Shelf__QuestionText>문제 유형: {info.type}</GenerateShelf__Shelf__QuestionText>
                                   {
