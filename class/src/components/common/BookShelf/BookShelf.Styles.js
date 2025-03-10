@@ -30,6 +30,17 @@ export const Title = styled.h1`
   white-space: nowrap;
 `;
 
+export const Plus = styled.button`
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  
+  transform:translateY(2px);
+`
+
 export const SearchBar = styled.div`
   display: flex;
   align-items: center;
@@ -77,6 +88,8 @@ export const BookItem = styled.li`
   justify-content: space-between;
   padding: 10px;
   border-bottom: 1px solid #ddd;
+
+  cursor:pointer;
 `;
 
 export const BookInfo = styled.div`
