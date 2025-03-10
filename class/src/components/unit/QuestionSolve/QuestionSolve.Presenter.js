@@ -6,6 +6,8 @@ import { useRouter } from "next/router";
 export default function QuestionSolveUI(props){
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
+    const [correctAnswer,setCorrectAnswer] = useState(0);
+    const [isCompleted, setIsCompleted] = useState(false);
     
     const router = useRouter();
 
@@ -18,15 +20,22 @@ export default function QuestionSolveUI(props){
     
     // 다음 문제로 이동
     const handleNextQuestion = () => {
-      if (currentQuestion < props.questions.length - 1) {
-        console.log(`${question.answer} === ${selectedAnswer}`);
+
+        if (question.answer == selectedAnswer) {
+            setCorrectAnswer(correctAnswer + 1);
+        }
+
+      if (currentQuestion < props.questions.length -1) {
+        console.log(`${question.answer} = ${selectedAnswer}`)
+        console.log(`${question.answer == selectedAnswer}`);
 
 
         setCurrentQuestion(currentQuestion + 1);
         setSelectedAnswer(null);
-      }else if(currentQuestion === props.questions.length -1) {
-            router.push("/");
-        }
+      }
+      else{
+        setIsCompleted(true);
+      }
     };
     
     // 옵션 선택 처리
@@ -39,6 +48,41 @@ export default function QuestionSolveUI(props){
       ? question.opt.split("/") 
       : [];
     
+    if(isCompleted){
+        return(
+            <MainContainerLogic>
+                <Header>
+                <BackButton>←</BackButton>
+                <Title>책장</Title>
+                </Header>
+                <div
+                style={{width:"100%",
+                    marginTop:"40%",
+                    padding: "0 16px",
+                    maxWidth:"500px"
+                }}>
+                <Title
+                    style={{marginBottom:"20px"}}
+                >풀이 결과</Title>
+                <ProgressBar
+                    style={{height:"28px", borderRadius:"16px"}}
+                >
+                    <Progress current={correctAnswer} total={props.questions.length} />
+                </ProgressBar>
+            
+                <ProgressText
+                    style={{fontSize:"20px"}}
+                >
+                    {correctAnswer}/{props.questions.length}
+                </ProgressText>
+                </div>
+                <NextButton onClick={() => {router.push("/")}}>
+                  홈으로
+                </NextButton>
+            </MainContainerLogic>);
+    }
+
+
     return (
       <MainContainerLogic>
         <Header>
@@ -70,8 +114,8 @@ export default function QuestionSolveUI(props){
               {question.type === "MULTIPLE_CHOICE" && options.map((option, index) => (
                 <OptionItem 
                   key={index} 
-                  selected={selectedAnswer === index}
-                  onClick={() => handleSelectOption(index)}
+                  selected={selectedAnswer === index + 1}
+                  onClick={() => handleSelectOption(index +1)}
                 >
                   {index + 1}. {option.split(". ")[1] || option}
                 </OptionItem>
@@ -81,15 +125,15 @@ export default function QuestionSolveUI(props){
                 <>
                   <OptionItem 
                     selected={selectedAnswer === 0}
-                    onClick={() => handleSelectOption(0)}
+                    onClick={() => handleSelectOption('O')}
                   >
                     1. O
                   </OptionItem>
                   <OptionItem 
                     selected={selectedAnswer === 1}
-                    onClick={() => handleSelectOption(1)}
+                    onClick={() => handleSelectOption('X')}
                   >
-                    1. X
+                    2. X
                   </OptionItem>
                 </>
               )}
@@ -103,6 +147,9 @@ export default function QuestionSolveUI(props){
                     borderRadius: '5px',
                     border: '1px solid #ddd',
                     fontSize: '16px'
+                  }}
+                  onChange={(e) => {
+                    setSelectedAnswer(e.target.value)
                   }}
                 />
               )}
@@ -119,3 +166,4 @@ export default function QuestionSolveUI(props){
       </MainContainerLogic>
     );
 }
+
