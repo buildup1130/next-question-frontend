@@ -14,7 +14,7 @@ const router = useRouter();
             title: '데일리 문제',
             description: '오늘의 문제를 풀어보아요.문제는 오답 문제, 내가 보유한 문제, 추천 문제 중 무작위로 제공됩니다.',
             image: '/image/cat.png',
-            url:'/daily'
+            url:'/BookShelf'
           },
           {
             title: '문제 생성',
