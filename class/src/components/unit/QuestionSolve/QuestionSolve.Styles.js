@@ -1,8 +1,8 @@
-import styled from "@emotion/styled"
+import styled from "@emotion/styled";
 
 // 스타일 컴포넌트 정의
 export const QuestionContainer = styled.div`
-  width:100%;
+  width: 100%;
 
   padding: 20px;
   max-width: 500px;
@@ -11,7 +11,7 @@ export const QuestionContainer = styled.div`
 
 export const Header = styled.div`
   width: 100%;
-  max-width:500px;
+  max-width: 500px;
 
   display: flex;
   justify-content: center; /* 가운데 정렬 */
@@ -19,7 +19,6 @@ export const Header = styled.div`
   position: relative;
   padding-bottom: 20px;
 
-  
   border-bottom: 1px solid #d9d9d9;
 `;
 
@@ -48,7 +47,7 @@ export const ProgressBar = styled.div`
 
 export const Progress = styled.div`
   height: 100%;
-  width: ${props => (props.current / props.total) * 100}%;
+  width: ${(props) => (props.current / props.total) * 100}%;
   background-color: #0099ff;
   border-radius: 5px;
 `;
@@ -77,7 +76,6 @@ export const QuestionBox = styled.div`
 export const QuestionTitle = styled.div`
   font-size: 18px;
   font-weight: 500;
-  margin-bottom: 20px;
 `;
 
 export const OptionContainer = styled.div`
@@ -89,12 +87,12 @@ export const OptionContainer = styled.div`
 export const OptionItem = styled.div`
   padding: 15px;
   border-radius: 5px;
-  background-color: ${props => props.selected ? '#e6f4ff' : 'white'};
-  border: 1px solid ${props => props.selected ? '#0099ff' : '#ddd'};
+  background-color: ${(props) => (props.selected ? "#e6f4ff" : "white")};
+  border: 1px solid ${(props) => (props.selected ? "#0099ff" : "#ddd")};
   cursor: pointer;
-  
+
   &:hover {
-    background-color: ${props => props.selected ? '#e6f4ff' : '#f5f5f5'};
+    background-color: ${(props) => (props.selected ? "#e6f4ff" : "#f5f5f5")};
   }
 `;
 
@@ -111,21 +109,27 @@ export const NextButton = styled.button`
   border-radius: 20px;
   font-size: 16px;
   cursor: pointer;
-  
+
   &:hover {
     background-color: #f5f5f5;
   }
 `;
 
 export const QuestionIcon = styled.div`
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   background-color: #ddd;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 10px;
   font-size: 18px;
   color: white;
+`;
+
+export const QuestionBox__Header = styled.div`
+  display: flex;
+  margin-bottom: 20px;
+
+  gap: 10px;
 `;
