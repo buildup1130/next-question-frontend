@@ -18,9 +18,11 @@ export const createQuestion = (file,numOfQuestions,token,setIsCreated,setQuestio
                 const infoArr = [];
                 res?.forEach((element) =>{
                     tmpArr.push(element.encryptedQuestionInfoId);
+                    //{Blank} OOO로 변경
+                    const tmpName = element.type === 'FILL_IN_THE_BLANK'?element.name.replace('{BLANK}','OOO'):element.name;
 
                     const tmpObj = {
-                        name: element.name,
+                        name: tmpName,
                         type: element.type,
                         answer: element.answer,
                         opt: element.opt,

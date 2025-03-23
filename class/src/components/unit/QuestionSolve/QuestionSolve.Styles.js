@@ -3,10 +3,14 @@ import styled from "@emotion/styled";
 // 스타일 컴포넌트 정의
 export const QuestionContainer = styled.div`
   width: 100%;
-
+  height: 100%;
   padding: 20px;
   max-width: 500px;
   margin: 0 auto;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
 `;
 
 export const Header = styled.div`
@@ -37,6 +41,13 @@ export const Title = styled.h1`
   white-space: nowrap;
 `;
 
+export const QuestionSolve__ProgressBarContainer = styled.div`
+  width: 100%;
+  max-width: 500px;
+  height: 20px;
+  margin-top: 20px;
+`
+
 export const ProgressBar = styled.div`
   height: 10px;
   background-color: #f0f0f0;
@@ -55,7 +66,7 @@ export const Progress = styled.div`
 export const ProgressText = styled.div`
   text-align: center;
   margin-bottom: 20px;
-  font-size: 14px;
+  font-size: 16px;
 `;
 
 export const QuestionHeader = styled.div`
@@ -115,16 +126,10 @@ export const NextButton = styled.button`
   }
 `;
 
-export const QuestionIcon = styled.div`
+export const QuestionIcon = styled.img`
   width: 25px;
   height: 25px;
-  border-radius: 50%;
-  background-color: #ddd;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  color: white;
+  
 `;
 
 export const QuestionBox__Header = styled.div`

@@ -1,5 +1,5 @@
 import MainContainerLogic from "@/components/common/MainContainer/MainContainer.Container";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   ButtonContainer,
   NextButton,
@@ -18,6 +18,7 @@ import {
   Title,
   Plus,
   QuestionBox__Header,
+  QuestionSolve__ProgressBarContainer,
 } from "./QuestionSolve.Styles";
 import { useRouter } from "next/router";
 
@@ -26,8 +27,18 @@ export default function QuestionSolveUI(props) {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [correctAnswer, setCorrectAnswer] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [inputValue, setInputValue] = useState(""); // 빈 칸형 문제용 입력값 상태 추가
+  const [wrongArr, setWrongArr] = useState([]);
 
+  const inputRef = useRef(null); // 입력 필드 참조 추가
   const router = useRouter();
+
+  // 문제가 변경될 때마다 입력값 초기화
+  useEffect(() => {
+    setInputValue("");
+    // selectedAnswer 초기화도 여기서 처리
+    setSelectedAnswer(null);
+  }, [currentQuestion]);
 
   // 문제 데이터가 없으면 로딩 또는 빈 상태 표시
   if (!props.questions || props.questions.length === 0) {
@@ -41,13 +52,17 @@ export default function QuestionSolveUI(props) {
     if (question.answer == selectedAnswer) {
       setCorrectAnswer(correctAnswer + 1);
     }
+    else{
+      setWrongArr([...wrongArr, currentQuestion]);
+      console.log(wrongArr)
+    }
 
     if (currentQuestion < props.questions.length - 1) {
       console.log(`${question.answer} = ${selectedAnswer}`);
       console.log(`${question.answer == selectedAnswer}`);
 
       setCurrentQuestion(currentQuestion + 1);
-      setSelectedAnswer(null);
+      // setSelectedAnswer(null)은 useEffect에서 처리됨
     } else {
       setIsCompleted(true);
     }
@@ -58,7 +73,15 @@ export default function QuestionSolveUI(props) {
     setSelectedAnswer(index);
   };
 
+  // 빈 칸형 문제 입력 처리
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setInputValue(value);
+    setSelectedAnswer(value);
+  };
+
   // 선택지 배열로 변환 (MULTIPLE_CHOICE 타입)
+  // 현재는 "/" 기준 파싱
   const options =
     question.type === "MULTIPLE_CHOICE" && question.opt
       ? question.opt.split("/")
@@ -75,11 +98,16 @@ export default function QuestionSolveUI(props) {
         <div
           style={{
             width: "100%",
-            marginTop: "40%",
+            height:"100%",
             padding: "0 16px",
             maxWidth: "500px",
+
+            display:"flex",
+            flexDirection:"column",
+            justifyContent:"center"
           }}
         >
+          <div>
           <Title style={{ marginBottom: "20px" }}>풀이 결과</Title>
           <ProgressBar style={{ height: "28px", borderRadius: "16px" }}>
             <Progress current={correctAnswer} total={props.questions.length} />
@@ -96,6 +124,7 @@ export default function QuestionSolveUI(props) {
         >
           홈으로
         </NextButton>
+        </div>
       </MainContainerLogic>
     );
   }
@@ -107,9 +136,8 @@ export default function QuestionSolveUI(props) {
         <BackButton>←</BackButton>
         <Title>책장</Title>
       </Header>
-      <QuestionContainer>
-        {/* 진행 상태 바 */}
-        <ProgressBar>
+      <QuestionSolve__ProgressBarContainer>
+      <ProgressBar>
           <Progress
             current={currentQuestion + 1}
             total={props.questions.length}
@@ -119,6 +147,9 @@ export default function QuestionSolveUI(props) {
         <ProgressText>
           {currentQuestion + 1}/{props.questions.length}
         </ProgressText>
+      </QuestionSolve__ProgressBarContainer>
+      <QuestionContainer>
+        {/* 진행 상태 바 */}
 
         {/* 문제 헤더 */}
         <QuestionHeader>
@@ -128,7 +159,7 @@ export default function QuestionSolveUI(props) {
         {/* 문제 카드 */}
         <QuestionBox>
           <QuestionBox__Header>
-            <QuestionIcon>?</QuestionIcon>
+            <QuestionIcon src="/image/Vector_Questionmark.png"></QuestionIcon>
             {/*문제 제목 */}
             <QuestionTitle>{question.name}</QuestionTitle>
           </QuestionBox__Header>
@@ -150,13 +181,13 @@ export default function QuestionSolveUI(props) {
               <>
                 <OptionItem
                   selected={selectedAnswer === 0}
-                  onClick={() => handleSelectOption("O")}
+                  onClick={() => handleSelectOption(0)}
                 >
                   1. O
                 </OptionItem>
                 <OptionItem
                   selected={selectedAnswer === 1}
-                  onClick={() => handleSelectOption("X")}
+                  onClick={() => handleSelectOption(1)}
                 >
                   2. X
                 </OptionItem>
@@ -166,17 +197,17 @@ export default function QuestionSolveUI(props) {
             {/* 빈 칸형 문제 */}
             {question.type === "FILL_IN_THE_BLANK" && (
               <input
+                ref={inputRef}
                 type="text"
                 placeholder="답을 입력하세요"
+                value={inputValue}
                 style={{
                   padding: "15px",
                   borderRadius: "5px",
                   border: "1px solid #ddd",
                   fontSize: "16px",
                 }}
-                onChange={(e) => {
-                  setSelectedAnswer(e.target.value);
-                }}
+                onChange={handleInputChange}
               />
             )}
           </OptionContainer>
