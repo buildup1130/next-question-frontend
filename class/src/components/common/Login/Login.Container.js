@@ -46,6 +46,22 @@ export default function LoginLogic() {
     }
   };
 
+  // 소셜 로그인 요청 함수
+  const handleSocialLogin = async () => {
+    setError(""); // 기존 에러 초기화
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/public/oauth2/google",
+      );
+      window.location.href = response.data;
+      console.log("로그인 성공:", response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+
   // 회원가입 페이지로 이동하는 함수
   const goToSignUp = () => {
     router.push("/SignUp");
@@ -59,6 +75,7 @@ export default function LoginLogic() {
       onPasswordChange={handlePasswordChange}
       onLogin={handleLogin}
       onSignUp={goToSignUp}
+      handleSocialLogin = {handleSocialLogin}
       error={error} // 에러 메시지를 UI에 전달
     />
   );
