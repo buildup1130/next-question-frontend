@@ -8,10 +8,15 @@ export const SignUpContainer = styled.div`
   align-items: center;
   margin: 0 auto;
   padding: 50px 20px;
+
+  @media (max-width: 480px) {
+    padding: 30px 16px;
+  }
 `;
 
 export const FillForm = styled.form`
-  width: 500px;
+  width: 100%;
+  max-width: 500px;
 `;
 
 export const InputWrapper = styled.div`
@@ -24,6 +29,10 @@ export const Label = styled.label`
   font-weight: bold;
   display: block;
   margin-bottom: 5px;
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+  }
 `;
 
 export const InputField = styled.input`
@@ -34,18 +43,35 @@ export const InputField = styled.input`
   font-size: 20px;
   outline: none;
   padding: 5px;
+
+  @media (max-width: 480px) {
+    height: 30px;
+    font-size: 16px;
+    padding: 4px;
+  }
 `;
 
 export const EmailWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 export const IdInputWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 export const SignUpButton = styled.button`
@@ -58,16 +84,20 @@ export const SignUpButton = styled.button`
   border-radius: 5px;
   cursor: pointer;
   margin-top: 20px;
+
+  @media (max-width: 480px) {
+    height: 36px;
+    font-size: 14px;
+  }
 `;
 
-// 에러 메시지를 항상 일정한 높이로 유지
 export const ErrorMessageWrapper = styled.div`
   width: 100%;
-  min-height: 20px; /* 에러 메시지가 없어도 높이를 유지 */
+  min-height: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10px; /* 버튼과 간격 유지 */
+  margin-bottom: 10px;
 `;
 
 export const ErrorMessage = styled.p`
