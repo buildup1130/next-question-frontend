@@ -8,6 +8,7 @@ import {
   InputField,
   ErrorMessageWrapper,
   ErrorMessage,
+  SocialLoginButton,
 } from "./Login.Styles";
 
 export default function LoginUI({
@@ -18,7 +19,7 @@ export default function LoginUI({
   onLogin,
   onSignUp,
   error,
-  handleSocialLogin
+  handleSocialLogin,
 }) {
   return (
     <LoginContainer>
@@ -47,7 +48,10 @@ export default function LoginUI({
         <LoginButton onClick={onLogin}>로그인</LoginButton>
         <SignUpButton onClick={onSignUp}>회원가입</SignUpButton>
       </ButtonWrapper>
-      <button onClick = {handleSocialLogin}>소셜 로그인</button>
+
+      <SocialLoginButton onClick={handleSocialLogin}>
+        소셜 로그인
+      </SocialLoginButton>
     </LoginContainer>
   );
 }

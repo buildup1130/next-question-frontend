@@ -7,8 +7,13 @@ export const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  padding-top: 80px;
+  justify-content: center;
+  padding: 0 20px;
+
+  @media (max-width: 768px) {
+    height: auto;
+    padding: 60px 20px;
+  }
 `;
 
 export const InputField = styled.input`
@@ -25,6 +30,11 @@ export const InputField = styled.input`
   &::placeholder {
     color: #ccc;
   }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+    height: 40px;
+  }
 `;
 
 export const UserID = styled.div`
@@ -37,14 +47,13 @@ export const Password = styled.div`
   margin-bottom: 30px;
 `;
 
-// 에러 메시지를 항상 일정한 높이로 유지
 export const ErrorMessageWrapper = styled.div`
   width: 100%;
-  min-height: 20px; /* 에러 메시지가 없어도 높이를 유지 */
+  min-height: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10px; /* 버튼과 간격 유지 */
+  margin-bottom: 10px;
 `;
 
 export const ErrorMessage = styled.p`
@@ -57,6 +66,11 @@ export const ButtonWrapper = styled.div`
   display: flex;
   width: 100%;
   gap: 10px;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 export const LoginButton = styled.button`
@@ -68,6 +82,14 @@ export const LoginButton = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
+
+  @media (max-width: 480px) {
+    flex: none;
+    width: 80%;
+    max-width: 300px;
+    font-size: 14px;
+    height: 40px;
+  }
 `;
 
 export const SignUpButton = styled.button`
@@ -79,4 +101,31 @@ export const SignUpButton = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
+
+  @media (max-width: 480px) {
+    flex: none;
+    width: 80%;
+    max-width: 300px;
+    font-size: 14px;
+    height: 40px;
+  }
+`;
+
+export const SocialLoginButton = styled.button`
+  margin-top: 20px;
+  height: 45px;
+  background-color: #db4437;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0 20px;
+  font-size: 16px;
+  cursor: pointer;
+
+  @media (max-width: 480px) {
+    width: 50%;
+    max-width: 300px;
+    font-size: 14px;
+    height: 40px;
+  }
 `;
