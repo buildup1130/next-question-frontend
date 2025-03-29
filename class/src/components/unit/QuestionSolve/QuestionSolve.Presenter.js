@@ -67,6 +67,7 @@ export default function QuestionSolveUI(props) {
       setIsCompleted(true);
     }
   };
+  
 
   // 옵션 선택 처리
   const handleSelectOption = (index) => {
