@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const savingStat = async(questions, wrongArr, isTest,token) => {
+export const savingStat = async(questions, wrongArr, isTest,workBookId,token) => {
     console.log(`wrongArr = ${wrongArr}`)
     const infoArr = [];
     questions.map((data, index) => {
@@ -15,6 +15,7 @@ export const savingStat = async(questions, wrongArr, isTest,token) => {
         const response = await axios.post(
             "http://localhost:8080/solving/save",
             { type: isTest?"MOCK":"NORMAL",
+              encryptedWorkBookId: workBookId,
               info:infoArr
              },
             {

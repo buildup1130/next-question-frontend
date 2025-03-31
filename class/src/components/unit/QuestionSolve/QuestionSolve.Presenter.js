@@ -181,7 +181,7 @@ export default function QuestionSolveUI(props) {
         </NextButton>
         <NextButton
           onClick={() => {
-            savingStat(props.questions, wrongArr, props.isTest, token);
+            savingStat(props.questions, wrongArr, props.isTest,props.workBookId, token);
             router.push("/");
           }}
           style={{

@@ -126,6 +126,7 @@ export default function BookShelfContainer() {
       // 로컬 스토리지에 데이터 저장
       localStorage.setItem('tempQuestionData', JSON.stringify(result));
       localStorage.setItem('isTest', isTest);
+      localStorage.setItem('workBookId', curBook.id);
       // Question 페이지로 이동
       router.push("/Question");
         }

@@ -27,11 +27,13 @@ export default function QuestionSolveLogic(props){
         }
       }, []);
 
+       const workBookId = localStorage.getItem('workBookId');
       
     return(
         <QuestionSolveUI
             questions = {questions}
             isTest = {isTest}
+            workBookId = {workBookId}
         ></QuestionSolveUI>
     );
 }
