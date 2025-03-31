@@ -30,6 +30,8 @@ import {
   QuestionSolve__submitButton,
 } from "./QuestionSolve.Styles";
 import { useRouter } from "next/router";
+import { savingStat } from "@/utils/StatisticManager";
+import { useAuth } from "@/utils/AuthContext";
 
 export default function QuestionSolveUI(props) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -44,6 +46,8 @@ export default function QuestionSolveUI(props) {
 
   const inputRef = useRef(null); // 입력 필드 참조 추가
   const router = useRouter();
+
+  const {token} = useAuth();
 
   // 문제가 변경될 때마다 입력값 초기화
   useEffect(() => {
@@ -177,6 +181,7 @@ export default function QuestionSolveUI(props) {
         </NextButton>
         <NextButton
           onClick={() => {
+            savingStat(props.questions, wrongArr, props.isTest, token);
             router.push("/");
           }}
           style={{
@@ -301,11 +306,14 @@ const ResultModal = (props) => {
   props.wrongArr.map((data) =>{
     const tmpobj = {
       name: props.questions[data].name,
-      
+      type: props.questions[data].type,
+      answer: props.questions[data].answer,
+      opt: props.questions[data].opt,
+      number: data+1,
     }
-    wrongQuestions.push(props.questions[data]);
+    wrongQuestions.push(tmpobj);
   })
-
+  console.log(wrongQuestions);
   return(
     <QuestionSolve__ResultWrapper>
       <QuestionSolve__ResultContainer>
@@ -322,11 +330,11 @@ const ResultModal = (props) => {
                 return(
                   <QuestionSolve__QuestionContainer
                     key = {index}>
-                  <QuestionSolve__QuestionTitle>{index+1}. {info.name}</QuestionSolve__QuestionTitle>
+                  <QuestionSolve__QuestionTitle>{info.number}. {info.name}</QuestionSolve__QuestionTitle>
                   <QuestionSolve__QuestionText>문제 유형: {info.type}</QuestionSolve__QuestionText>
                   
                   <QuestionSolve__QuestionTitle>정답: 
-                    {info.type === "MULTIPLE_CHOICE"&& optArr[info.answer]}
+                    {info.type === "MULTIPLE_CHOICE"&& optArr[info.answer -1]}
                     {info.type === "FILL_IN_THE_BLANK"&& info.answer}
                     {info.type === "OX" ? info.answer === "0"? "O":"X":""}
                   </QuestionSolve__QuestionTitle>
