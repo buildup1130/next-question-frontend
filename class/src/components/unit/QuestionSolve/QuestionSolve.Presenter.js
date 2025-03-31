@@ -279,10 +279,11 @@ export default function QuestionSolveUI(props) {
                   padding: "15px",
                   borderRadius: "5px",
                   // border: "1px solid #ddd",
-                  border: 
-                  isCorrect === true ? "1px solid green" : 
-                  isCorrect === false ? "1px solid red" : 
-                  "1px solid #ddd",
+                  border:  selectedAnswer 
+                  ? (selectedAnswer === question.answer 
+                      ? "1px solid green" 
+                      : "1px solid red") 
+                  : "1px solid #ddd",
                   fontSize: "16px",
                 }}
                 onChange={handleInputChange}
