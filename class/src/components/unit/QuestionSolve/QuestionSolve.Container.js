@@ -7,6 +7,7 @@ export default function QuestionSolveLogic(props){
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [wrongCount, setWrongCount] = useState(0);
+    const [isTest,setIsTest] = useState(false);
 
     useEffect(() => {
         const storedData = localStorage.getItem('tempQuestionData');
@@ -18,12 +19,18 @@ export default function QuestionSolveLogic(props){
           console.dir(questionData);
            // 사용 후 삭제
         //   localStorage.removeItem('tempQuestionData');
+
+        const tmpTest = localStorage.getItem('isTest');
+        if(tmpTest && tmpTest !== undefined){
+            setIsTest(JSON.parse(tmpTest));
+        }
         }
       }, []);
 
     return(
         <QuestionSolveUI
             questions = {questions}
+            isTest = {isTest}
         ></QuestionSolveUI>
     );
 }

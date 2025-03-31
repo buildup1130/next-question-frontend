@@ -19,6 +19,15 @@ import {
   Plus,
   QuestionBox__Header,
   QuestionSolve__ProgressBarContainer,
+  QuestionSolve__ResultWrapper,
+  QuestionSolve__ResultContainer,
+  QuestionSolve__ResultBox,
+  QuestionSolve__QuestionWrapper,
+  QuestionSolve__QuestionContainer,
+  QuestionSolve__QuestionTitle,
+  QuestionSolve__QuestionText,
+  QuestionSolve__ButtonContainer,
+  QuestionSolve__submitButton,
 } from "./QuestionSolve.Styles";
 import { useRouter } from "next/router";
 
@@ -27,8 +36,11 @@ export default function QuestionSolveUI(props) {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [correctAnswer, setCorrectAnswer] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
+  const [curAns,setCurAns] = useState(null);
   const [inputValue, setInputValue] = useState(""); // 빈 칸형 문제용 입력값 상태 추가
   const [wrongArr, setWrongArr] = useState([]);
+  const [isResult,setIsResult] = useState(false);
 
   const inputRef = useRef(null); // 입력 필드 참조 추가
   const router = useRouter();
@@ -38,6 +50,11 @@ export default function QuestionSolveUI(props) {
     setInputValue("");
     // selectedAnswer 초기화도 여기서 처리
     setSelectedAnswer(null);
+    // isCorrect 초기화
+    setIsCorrect(null);
+    // curAns 초기화
+    setCurAns(null);
+
   }, [currentQuestion]);
 
   // 문제 데이터가 없으면 로딩 또는 빈 상태 표시
@@ -48,24 +65,51 @@ export default function QuestionSolveUI(props) {
   const question = props.questions[currentQuestion];
 
   // 다음 문제로 이동
+  // selectedAnswer 와 question.answer가 동일할 때 다음 문제로 이동
+  // 1. selectedAnswer와 question.answer를 비교한 후 동일하다면 색을 변경
+  // 2. 변수를 사용하여 한 번 더 누르면 다음 문제로 이동
+  // props.isTest 모달을 이용
   const handleNextQuestion = () => {
-    if (question.answer == selectedAnswer) {
-      setCorrectAnswer(correctAnswer + 1);
-    }
-    else{
-      setWrongArr([...wrongArr, currentQuestion]);
-      console.log(wrongArr)
-    }
-
+    // 아직 정답 여부가 확인되지 않은 상태라면
+    if (!isCorrect) {
+      // 처음 문제를 맞췄을 때만 correctAnswer 증가
+      if (question.answer == selectedAnswer) {
+        // 이 문제를 이전에 틀린 적이 없는 경우만 correctAnswer 증가
+        if (!wrongArr.includes(currentQuestion)) {
+          setCorrectAnswer(correctAnswer + 1);
+        }
+        setIsCorrect(true);
+      } else {
+        // 틀린 경우 wrongArr에 추가 (중복 방지)
+        if (!wrongArr.includes(currentQuestion)) {
+          setWrongArr([...wrongArr, currentQuestion]);
+        }
+        // 모의고사가 아닌 경우 오답이면 isCorrect false 유지
+        if (!props.isTest) {
+          // console.log("setFalse")
+          setIsCorrect(false);
+        } else {
+          // console.log("setTrue");
+          setIsCorrect(true);
+        }
+      }
+      //가장 최근에 선택한 답변 저장
+      setCurAns(selectedAnswer);
+    } 
+  // 이미 정답 확인이 완료된 상태라면 다음 문제로 이동
+  else {
     if (currentQuestion < props.questions.length - 1) {
       console.log(`${question.answer} = ${selectedAnswer}`);
       console.log(`${question.answer == selectedAnswer}`);
 
       setCurrentQuestion(currentQuestion + 1);
-      // setSelectedAnswer(null)은 useEffect에서 처리됨
+  // 문제가 끝났다면 결과 화면으로 이동
     } else {
       setIsCompleted(true);
+      console.log(`wrongArr = ${wrongArr} ${wrongArr.map((value) => {console.log(props.questions[value])})}`);
     }
+  }
+  console.log(`isAnswer = ${question.answer == selectedAnswer} isCorrect = ${isCorrect} isTest = ${typeof(props.isTest)}`);
   };
   
   
@@ -78,7 +122,7 @@ export default function QuestionSolveUI(props) {
   const handleInputChange = (e) => {
     const value = e.target.value;
     setInputValue(value);
-    setSelectedAnswer(value);
+    setSelectedAnswer(value.trim());
   };
 
   // 선택지 배열로 변환 (MULTIPLE_CHOICE 타입)
@@ -92,6 +136,11 @@ export default function QuestionSolveUI(props) {
   if (isCompleted) {
     return (
       <MainContainerLogic>
+        {isResult?<ResultModal
+          wrongArr = {wrongArr}
+          questions = {props.questions}
+          setIsResult = {setIsResult}
+        ></ResultModal>:null}
         <Header>
           <BackButton>←</BackButton>
           <Title>책장</Title>
@@ -120,7 +169,20 @@ export default function QuestionSolveUI(props) {
         </div>
         <NextButton
           onClick={() => {
+            // 결과 모달 열기 로직
+            setIsResult(true);
+          }}
+        >
+          틀린 문제 보기
+        </NextButton>
+        <NextButton
+          onClick={() => {
             router.push("/");
+          }}
+          style={{
+            marginTop:"12px",
+            backgroundColor: "#3b82f6",
+            color:"white"
           }}
         >
           홈으로
@@ -173,6 +235,8 @@ export default function QuestionSolveUI(props) {
                   key={index}
                   selected={selectedAnswer === index + 1}
                   onClick={() => handleSelectOption(index + 1)}
+                  curAns={curAns === index + 1}
+                  isRightAnswer = {question.answer == index + 1}
                 >
                   {index + 1}. {option.split(". ")[1] || option}
                 </OptionItem>
@@ -182,12 +246,16 @@ export default function QuestionSolveUI(props) {
               <>
                 <OptionItem
                   selected={selectedAnswer === 0}
+                  curAns={curAns === 0}
+                  isRightAnswer = {question.answer == 0}
                   onClick={() => handleSelectOption(0)}
                 >
                   1. O
                 </OptionItem>
                 <OptionItem
                   selected={selectedAnswer === 1}
+                  curAns={curAns === 1}
+                  isRightAnswer = {question.answer == 1}
                   onClick={() => handleSelectOption(1)}
                 >
                   2. X
@@ -205,7 +273,11 @@ export default function QuestionSolveUI(props) {
                 style={{
                   padding: "15px",
                   borderRadius: "5px",
-                  border: "1px solid #ddd",
+                  // border: "1px solid #ddd",
+                  border: 
+                  isCorrect === true ? "1px solid green" : 
+                  isCorrect === false ? "1px solid red" : 
+                  "1px solid #ddd",
                   fontSize: "16px",
                 }}
                 onChange={handleInputChange}
@@ -223,4 +295,57 @@ export default function QuestionSolveUI(props) {
   );
 }
 
-const MultipleChoiceContainer = () => {};
+//틀린 문제 결과
+const ResultModal = (props) => {
+  const wrongQuestions = []
+  props.wrongArr.map((data) =>{
+    const tmpobj = {
+      name: props.questions[data].name,
+      
+    }
+    wrongQuestions.push(props.questions[data]);
+  })
+
+  return(
+    <QuestionSolve__ResultWrapper>
+      <QuestionSolve__ResultContainer>
+        <QuestionSolve__ResultBox>
+          {wrongQuestions.length === 0?
+            <QuestionSolve__QuestionTitle>
+              "대단해요! 모두 정답이에요!"
+            </QuestionSolve__QuestionTitle>
+          :
+          <QuestionSolve__QuestionWrapper>
+            {wrongQuestions.map(
+              (info,index) => {
+                const optArr = info.opt?info.opt.split("/"):[];
+                return(
+                  <QuestionSolve__QuestionContainer
+                    key = {index}>
+                  <QuestionSolve__QuestionTitle>{index+1}. {info.name}</QuestionSolve__QuestionTitle>
+                  <QuestionSolve__QuestionText>문제 유형: {info.type}</QuestionSolve__QuestionText>
+                  
+                  <QuestionSolve__QuestionTitle>정답: 
+                    {info.type === "MULTIPLE_CHOICE"&& optArr[info.answer]}
+                    {info.type === "FILL_IN_THE_BLANK"&& info.answer}
+                    {info.type === "OX" ? info.answer === "0"? "O":"X":""}
+                  </QuestionSolve__QuestionTitle>
+                  </QuestionSolve__QuestionContainer>);
+                }
+              )}
+        </QuestionSolve__QuestionWrapper>
+          }
+        <QuestionSolve__ButtonContainer>
+          <QuestionSolve__submitButton
+            onClick={() => {
+            props.setIsResult(false);
+            }}
+          >
+            확인
+          </QuestionSolve__submitButton>
+          
+        </QuestionSolve__ButtonContainer>
+      </QuestionSolve__ResultBox>
+    </QuestionSolve__ResultContainer>
+  </QuestionSolve__ResultWrapper>
+)};
