@@ -6,66 +6,54 @@ import { useAuth } from "@/utils/AuthContext";
 
 export default function LoginLogic() {
   const router = useRouter();
-  const {login} = useAuth();
+  const { login } = useAuth();
 
-  // 아이디 & 비밀번호 입력값 상태 관리
   const [userId, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // 에러 메시지 상태 추가
+  const [error, setError] = useState("");
 
-  // 입력값 변경 핸들러
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
+  const handleUsernameChange = (event) => setUsername(event.target.value);
+  const handlePasswordChange = (event) => setPassword(event.target.value);
 
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
-  // 로그인 요청 함수
   const handleLogin = async () => {
-    setError(""); // 기존 에러 초기화
+    setError("");
 
     try {
       const response = await axios.post(
         "http://localhost:8080/public/member/login/local",
         { userId, password }
       );
-      
-      login({
-        nickname:response.data.nickname,
-        role:response.data.role
-      },
-      response.data.accessToken)
 
-      console.log("로그인 성공:", response.data);
-      router.push("/"); // 로그인 성공 후 이동
+      login(
+        {
+          nickname: response.data.nickname,
+          role: response.data.role,
+        },
+        response.data.accessToken
+      );
+
+      router.push("/");
     } catch (error) {
       console.error("로그인 실패:", error.response?.data || error.message);
-      setError("로그인 실패! 아이디와 비밀번호를 확인하세요."); // UI에 표시할 에러 메시지 설정
+      setError("로그인 실패! 아이디와 비밀번호를 확인하세요.");
     }
   };
 
-  // 소셜 로그인 요청 함수
   const handleSocialLogin = async () => {
-    setError(""); // 기존 에러 초기화
+    setError("");
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/public/oauth2/google",
+        "http://localhost:8080/public/oauth2/google"
       );
-      window.location.href = response.data;
-      console.log("로그인 성공:", response.data);
+      window.location.href = response.data; // 리턴된 구글 로그인 URL로 이동
     } catch (error) {
-      console.error(error);
+      console.error("소셜 로그인 실패:", error);
+      setError("소셜 로그인 중 문제가 발생했습니다.");
     }
   };
-  
 
-  // 회원가입 페이지로 이동하는 함수
-  const goToSignUp = () => {
-    router.push("/SignUp");
-  };
+  const goToSignUp = () => router.push("/SignUp");
 
   return (
     <LoginUI
@@ -75,8 +63,8 @@ export default function LoginLogic() {
       onPasswordChange={handlePasswordChange}
       onLogin={handleLogin}
       onSignUp={goToSignUp}
-      handleSocialLogin = {handleSocialLogin}
-      error={error} // 에러 메시지를 UI에 전달
+      handleSocialLogin={handleSocialLogin}
+      error={error}
     />
   );
 }
