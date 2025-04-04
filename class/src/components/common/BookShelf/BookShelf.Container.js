@@ -1,63 +1,65 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import BookShelfUI from "./BookShelf.Presenter";
 import BottomNavigationLogic from "../BottomNavigation/BottomNavigation.Container";
-
-import BottomSheet from "../../unit/BottomSheet/BottomSheet.Container"; // 바텀 시트 추가
-import { loadNormalQuestion, searchAllWorkBooks } from "@/utils/WorkbookManager";
+import BottomSheet from "../../unit/BottomSheet/BottomSheet.Container";
+import {
+  loadNormalQuestion,
+  searchAllWorkBooks,
+} from "@/utils/WorkbookManager";
 import { useAuth } from "@/utils/AuthContext";
 import { useRouter } from "next/router";
 
 export default function BookShelfContainer() {
   const [searchQuery, setSearchQuery] = useState("");
-  const {token,isAuthenticated} = useAuth();
-  // 책 목록 상태 관리 (기본 데이터 설정)  --> 배열 이렇게 하는게 맞는지 모르겠..
+  const { token } = useAuth();
   const [books, setBooks] = useState([]);
-  // 현재 시퀀스 (0: 기본 , 1: 문제 옵션 모달)
-  const [sequence, setSequence] = useState(0);
-  // 현재 선택중인 책
-  const [curBook, setCurBook] = useState(null);
-  //생성할 문제 수
-  const [count,setCount] = useState(1);
 
-  //라우터 객체
+  const [sequence, setSequence] = useState(0); // 학습 모달 컨트롤
+  const [curBook, setCurBook] = useState(null); // 학습 대상 문제집
+  const [count, setCount] = useState(1); // 문제 수 설정
+
+  const [isSheetOpen, setSheetOpen] = useState(false); // 바텀시트 열림 여부
+  const [selectedBook, setSelectedBook] = useState(null); // 바텀시트 대상 문제집
+  const [isPendingMoreClick, setIsPendingMoreClick] = useState(false); // 안전한 바텀시트 실행 예약
+
   const router = useRouter();
 
   const fetchWorkBooks = async () => {
-    // console.log(token);
     const response = await searchAllWorkBooks(token);
     const bookArr = [];
-    //response 가 undefined 가 아니라면 setBooks 함수 실행
-    if(response){
-      response?.map(
-      (data) => {
-        {
-          const tmpObj = {
-            id:data.encryptedWorkBookId,
-            title: data.name,
-            items: data.totalQuestion,
-            date: data.recentSolvedDate.substring(0,10),
-          }
-          bookArr.push(tmpObj)
-        }
-      }
-    )
-    setBooks(bookArr);
+
+    if (response) {
+      response.map((data) => {
+        const tmpObj = {
+          id: data.encryptedWorkBookId,
+          title: data.name,
+          items: data.totalQuestion,
+          date: data.recentSolvedDate.substring(0, 10),
+        };
+        bookArr.push(tmpObj);
+      });
+      setBooks(bookArr);
     }
-  }
+  };
 
-      useEffect(() => {
-          // 함수 실행
-          fetchWorkBooks();
-      }, [token]); // 의존성 배열에 isAuthenticated와 token 포함
+  useEffect(() => {
+    fetchWorkBooks();
+  }, [token]);
 
-      // 선택된 책의 문제 수로 count 설정
-      useEffect(() => {
-        // 함수 실행
-        setCount(curBook?.items);
-    }, [curBook,setCount]);
+  useEffect(() => {
+    if (curBook) {
+      setCount(curBook.items);
+    }
+  }, [curBook]);
 
-  const [isSheetOpen, setSheetOpen] = useState(false); // 바텀 시트 상태
-  const [selectedBook, setSelectedBook] = useState(null); // 선택한 책 정보
+  // 학습 모달 닫고 난 다음에 바텀시트를 열기 위한 안전한 흐름
+  useEffect(() => {
+    if (sequence === 0 && curBook === null && isPendingMoreClick) {
+      setSelectedBook(isPendingMoreClick);
+      setSheetOpen(true);
+      setIsPendingMoreClick(false);
+    }
+  }, [sequence, curBook, isPendingMoreClick]);
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -71,87 +73,85 @@ export default function BookShelfContainer() {
     console.log("뒤로 가기");
   };
 
-  // 점 3개 버튼 클릭 시 실행
   const handleMoreClick = (book) => {
-    setSelectedBook(book);
-    setSheetOpen(true);
+    // 학습 모달 상태가 남아있으면 초기화 후 바텀시트 열기 예약
+    if (sequence !== 0 || curBook !== null) {
+      setSequence(0);
+      setCurBook(null);
+      setIsPendingMoreClick(book);
+    } else {
+      setSelectedBook(book);
+      setSheetOpen(true);
+    }
   };
 
-  // 바텀 시트 닫기
   const closeBottomSheet = () => {
     setSheetOpen(false);
   };
 
-  //책 선택 시 실행되는 함수
-  const onClickBook = (id) => {
-    console.log(`current book = ${id}`);
-    setCurBook(id);
-    console.log(`curBook = ${curBook}`)
-    setSequence(1);
-  }
+  const onClickBook = (book) => {
+    setCurBook(book); // 학습할 책 선택
+    setSequence(1); // 학습 옵션 모달 열기
+  };
 
-  //학습하기 버튼 클릭 시 실행되는 함수수
   const onClickLearning = async () => {
     const result = await loadNormalQuestion(token, curBook.id, {
-      count:count,
+      count: count,
       random: true,
-      ox:true,
-      multiple:true,
-      blank:true
-    }).then(
-      result => {
-        if(result){
-      //추가적인 작업 필요
-      //1. OX를 0,1 로 변경
+      ox: true,
+      multiple: true,
+      blank: true,
+    });
 
-      //result 의 탑은 object
-      console.log(typeof(result));
+    if (result) {
+      result.map((data) => {
+        if (data.answer === "O") data.answer = "0";
+        else if (data.answer === "X") data.answer = "1";
 
-      result.map((data, index) =>{
-        //정답이 O면 0 X면 1으로 치환
-        if(data.answer === 'O'){
-          data.answer = '0';
-        }else if(data.answer === 'X'){
-          data.answer = '1';
+        if (data.type === "FILL_IN_THE_BLANK") {
+          data.name = data.name.replace("{BLANK}", "OOO");
         }
+      });
 
-        if(data.type === 'FILL_IN_THE_BLANK'){
-          const tmp = data.name.replace('{BLANK}', 'OOO');
-          data.name = tmp;
-        }
-      })
-
-      // 로컬 스토리지에 데이터 저장
-      localStorage.setItem('tempQuestionData', JSON.stringify(result));
-      // Question 페이지로 이동
+      localStorage.setItem("tempQuestionData", JSON.stringify(result));
       router.push("/Question");
-        }
-      })  
-  }
+    }
+  };
+
+  const onCloseLearningModal = () => {
+    setSequence(0);
+    setCurBook(null);
+  };
 
   return (
     <>
       <BookShelfUI
-        books={books} // 책 목록 데이터 전달
-        searchQuery={searchQuery} // 검색어 상태 전달
-        onSearchChange={handleSearchChange} // 검색어 변경 핸들러 전달
-        onSearch={handleSearch} // 검색 버튼 클릭 핸들러 전달
-        onBack={handleBack} // 뒤로 가기 버튼 핸들러 전달
-        onMoreClick={handleMoreClick} // 책 아이템의 ... 버튼 핸들러 전달
-        sequence = {sequence}
-        onClickBook = {onClickBook}
-        curBook = {curBook}
-        count = {count}
-        setCount = {setCount}
-        onClickLearning = {onClickLearning}
+        books={books}
+        searchQuery={searchQuery}
+        onSearchChange={handleSearchChange}
+        onSearch={handleSearch}
+        onBack={handleBack}
+        onMoreClick={handleMoreClick}
+        sequence={sequence}
+        onClickBook={onClickBook}
+        curBook={curBook}
+        count={count}
+        setCount={setCount}
+        onClickLearning={onClickLearning}
+        isSheetOpen={isSheetOpen}
+        onCloseLearningModal={onCloseLearningModal}
       />
+
       <BottomNavigationLogic />
 
-      {/* 바텀 시트 추가 */}
       <BottomSheet
         isOpen={isSheetOpen}
         onClose={closeBottomSheet}
         book={selectedBook}
+        setCurBook={setCurBook}
+        setSequence={setSequence}
+        setSheetOpen={setSheetOpen}
+        fetchWorkBooks={fetchWorkBooks}
       />
     </>
   );

@@ -37,9 +37,9 @@ export const Plus = styled.button`
   cursor: pointer;
   position: absolute;
   right: 0;
-  
-  transform:translateY(2px);
-`
+
+  transform: translateY(2px);
+`;
 
 export const SearchBar = styled.div`
   display: flex;
@@ -89,12 +89,21 @@ export const BookItem = styled.li`
   padding: 10px;
   border-bottom: 1px solid #ddd;
 
-  cursor:pointer;
+  cursor: pointer;
 `;
 
 export const BookInfo = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+export const MoreButtonWrapper = styled.div`
+  padding: 10px;
+  margin-right: -10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 `;
 
 export const MoreButton = styled.button`

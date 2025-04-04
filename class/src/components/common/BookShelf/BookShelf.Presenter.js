@@ -12,6 +12,7 @@ import {
   BookInfo,
   MoreButton,
   Plus,
+  MoreButtonWrapper,
 } from "./BookShelf.Styles";
 import { useState } from "react";
 
@@ -27,28 +28,31 @@ export default function BookShelfUI({
   curBook,
   count,
   setCount,
-  onClickLearning
+  onClickLearning,
+  isSheetOpen,
+  onCloseLearningModal,
 }) {
   const [hoveredId, setHoveredId] = useState(null);
 
-
   return (
     <Container>
-      {sequence === 1?(
+      {sequence === 1 && curBook !== null && !isSheetOpen ? (
         <BookShelfQuestionLogic
-          curBook = {curBook}
-          count = {count}
-          setCount = {setCount}
-          onClickLearning = {onClickLearning}
-        ></BookShelfQuestionLogic>):
-        <></>}
+          curBook={curBook}
+          count={count}
+          setCount={setCount}
+          onClickLearning={onClickLearning}
+          onClose={onCloseLearningModal}
+        />
+      ) : null}
+
+      <></>
       {/* 상단 헤더 (뒤로 가기 버튼 + 제목) */}
       <Header>
         <BackButton onClick={onBack}>←</BackButton>
         <Title>책장</Title>
         <Plus>+</Plus>
       </Header>
-
       <hr />
       {/* 검색창 */}
       <SearchBar>
@@ -60,35 +64,37 @@ export default function BookShelfUI({
         />
         <SearchButton onClick={onSearch}>🔍</SearchButton>
       </SearchBar>
-
       {/* 책 목록 */}
       <BookList>
-        {books.map(
-          // map쓰긴 했는데
-          (book,index) => (
-            <BookItem 
+        {books.map((book, index) => (
+          <BookItem
             key={index}
             onMouseOver={() => setHoveredId(book.id)}
             onMouseOut={() => setHoveredId(null)}
             style={{
-              backgroundColor:hoveredId === book.id?"#f0f0f0":'transparent'
+              backgroundColor:
+                hoveredId === book.id ? "#f0f0f0" : "transparent",
             }}
             onClick={() => {
-              onClickBook(book)}}
+              onClickBook(book);
+            }}
+          >
+            <BookInfo>
+              <span>{book.title}</span>
+              <span>
+                {book.items}문제, 최근 학습일: {book.date}
+              </span>
+            </BookInfo>
+            <MoreButtonWrapper
+              onClick={(e) => {
+                e.stopPropagation();
+                onMoreClick(book);
+              }}
             >
-              <BookInfo>
-                <span>
-                   {book.title}
-                </span>
-                <span>
-                  {book.items}문제, 최근 학습일: {book.date}
-                </span>
-              </BookInfo>
-              <MoreButton onClick={() => {
-                onMoreClick(book.id)}}>⋮</MoreButton>
-            </BookItem>
-          )
-        )}
+              <MoreButton>⋮</MoreButton>
+            </MoreButtonWrapper>
+          </BookItem>
+        ))}
       </BookList>
     </Container>
   );

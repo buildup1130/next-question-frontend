@@ -1,4 +1,4 @@
-import styled from "@emotion/styled"
+import styled from "@emotion/styled";
 
 export const BookShelfQuestion__Wrapper = styled.div`
   position: fixed;
@@ -6,67 +6,66 @@ export const BookShelfQuestion__Wrapper = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color:rgba(0, 0, 0, 0.5);
-  z-Index: 10;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10;
 
   overflow: hidden;
 
-  display:flex;
-  justify-content:center;
+  display: flex;
+  justify-content: center;
 `;
 
 export const BookShelfQuestion__Container = styled.div`
-  width:100%;
-  height:100%;
+  width: 100%;
+  height: 100%;
 
-  max-width:500px;
+  max-width: 500px;
 
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  z-index:100;
+  z-index: 100;
 
   padding: 20px 8px;
-`
+`;
 
 export const BookShelfQuestion__Modal = styled.div`
-  width:100%;
-  max-height:100%;
+  width: 100%;
+  max-height: 100%;
   padding: 16px 8px;
   border: 1px solid #d9d9d9;
   border-radius: 20px;
 
-  box-shadow: 0 16px 24px rgba(0,0,0,0.1);
+  box-shadow: 0 16px 24px rgba(0, 0, 0, 0.1);
 
-  display:flex;
-  flex-direction:column;
-  align-items:center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-  background-color:#ffffff;
-`
+  background-color: #ffffff;
+`;
 
 export const BookShelfQuestion__Title = styled.div`
-  width:100%;
-  padding-bottom:8px;
-  
-  text-align:center;
+  width: 100%;
+  padding-bottom: 8px;
+
+  text-align: center;
   border-bottom: 1px solid #d9d9d9;
 
-  font-size:20px;
-  font-weight:700;
-`
+  font-size: 20px;
+  font-weight: 700;
+`;
 
 export const BookShelfQuestion__SubTitle = styled.div`
-  width:100%;
-  margin-top:24px;
-  
-  text-align:center;
+  width: 100%;
+  margin-top: 24px;
 
-  font-size:16px;
-  font-weight:700;
-`
+  text-align: center;
 
+  font-size: 16px;
+  font-weight: 700;
+`;
 
 // 전체 컨테이너 - 포지셔닝 컨텍스트 설정
 export const ProgressWrapper = styled.div`
@@ -117,39 +116,52 @@ export const CurrentValue = styled.div`
 `;
 
 export const BookShelfQuestion__CountContainer = styled.div`
-  width:100%;
+  width: 100%;
 
-  display:flex;
-  justify-content:center;
+  display: flex;
+  justify-content: center;
   gap: 10px;
-`
+`;
 
 export const BookShelfQuestion__Input = styled.input`
-  width:48px;
-  height:24px;
+  width: 48px;
+  height: 24px;
 
-  border-radius:5px;
-  border:0;
-  background-color:#d9d9d9;
+  border-radius: 5px;
+  border: 0;
+  background-color: #d9d9d9;
 
-  text-align:center;
-`
+  text-align: center;
+`;
 
 export const BookShelfQuestion__submitButton = styled.div`
-width:100%;
-max-width:500px;
-min-height:40px;
+  width: 100%;
+  max-width: 500px;
+  min-height: 40px;
 
-border-radius: 20px;
-margin-top:20px;
-border: 1px solid #d9d9d9;
+  border-radius: 20px;
+  margin-top: 20px;
+  border: 1px solid #d9d9d9;
 
-background-color: #3b82f6;
-color: white;
+  background-color: #3b82f6;
+  color: white;
 
-display:flex;
-justify-content:center;
-align-items:center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-cursor: pointer;
-`
+  cursor: pointer;
+`;
+
+export const BookShelfQuestion__CloseButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+`;
+
+export const BookShelfQuestion__CloseButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+`;
