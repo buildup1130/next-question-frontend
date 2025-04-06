@@ -15,9 +15,11 @@ export default function BookShelfContainer() {
   // 현재 시퀀스 (0: 기본 , 1: 문제 옵션 모달)
   const [sequence, setSequence] = useState(0);
   // 현재 선택중인 책
-  const [curBook, setCurBook] = useState(null);
+  const [curBook, setCurBook] = useState({});
   //생성할 문제 수
   const [count,setCount] = useState(1);
+  //모의고사 여부
+  const [isTest,setIsTest] = useState(false);
 
   //라우터 객체
   const router = useRouter();
@@ -123,6 +125,8 @@ export default function BookShelfContainer() {
 
       // 로컬 스토리지에 데이터 저장
       localStorage.setItem('tempQuestionData', JSON.stringify(result));
+      localStorage.setItem('isTest', isTest);
+      localStorage.setItem('workBookId', curBook.id);
       // Question 페이지로 이동
       router.push("/Question");
         }
@@ -144,6 +148,8 @@ export default function BookShelfContainer() {
         count = {count}
         setCount = {setCount}
         onClickLearning = {onClickLearning}
+        setIsTest = {setIsTest}
+        isTest = {isTest}
       />
       <BottomNavigationLogic />
 

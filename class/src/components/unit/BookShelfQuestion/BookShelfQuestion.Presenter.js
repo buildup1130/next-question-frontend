@@ -1,4 +1,4 @@
-import { BookShelfQuestion__Container, BookShelfQuestion__CountContainer, BookShelfQuestion__Input, BookShelfQuestion__Modal, BookShelfQuestion__submitButton, BookShelfQuestion__SubTitle, BookShelfQuestion__Title, BookShelfQuestion__Wrapper, CurrentValue, Marker, Progress, ProgressBarContainer, ProgressWrapper, ValuesContainer } from "./BookShelfQuestion.Styles";
+import { BookShelfQuestion__Container, BookShelfQuestion__CountContainer, BookShelfQuestion__Input, BookShelfQuestion__isTestButton, BookShelfQuestion__Modal, BookShelfQuestion__submitButton, BookShelfQuestion__SubTitle, BookShelfQuestion__Title, BookShelfQuestion__Wrapper, CurrentValue, Marker, Progress, ProgressBarContainer, ProgressWrapper, ValuesContainer } from "./BookShelfQuestion.Styles";
 
 export default function BookShelfQuestionUI(props){
 
@@ -22,6 +22,17 @@ export default function BookShelfQuestionUI(props){
                 onChange={props.handleChange}
               ></BookShelfQuestion__Input>
               문제
+            </BookShelfQuestion__CountContainer>
+            <BookShelfQuestion__CountContainer>
+            <div>모의고사 모드</div>
+              <BookShelfQuestion__isTestButton
+                type = "checkbox"
+                onClick={() => {
+                  props.isTest?props.setIsTest(false):props.setIsTest(true);
+                }}
+                isTest = {props.isTest}
+              >
+              </BookShelfQuestion__isTestButton>
             </BookShelfQuestion__CountContainer>
             <BookShelfQuestion__submitButton
               onClick={() => {props.onClickLearning()}}

@@ -35,6 +35,8 @@ export default function BookShelfQuestionLogic(props){
         setCount = {props.setCount}
         handleChange = {handleChange}
         onClickLearning = {props.onClickLearning}
+        setIsTest = {props.setIsTest}
+        isTest = {props.isTest}
         >
         </BookShelfQuestionUI>
     )

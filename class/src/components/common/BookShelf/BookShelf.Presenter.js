@@ -27,7 +27,9 @@ export default function BookShelfUI({
   curBook,
   count,
   setCount,
-  onClickLearning
+  onClickLearning,
+  setIsTest,
+  isTest
 }) {
   const [hoveredId, setHoveredId] = useState(null);
 
@@ -40,6 +42,8 @@ export default function BookShelfUI({
           count = {count}
           setCount = {setCount}
           onClickLearning = {onClickLearning}
+          setIsTest = {setIsTest}
+          isTest = {isTest}
         ></BookShelfQuestionLogic>):
         <></>}
       {/* 상단 헤더 (뒤로 가기 버튼 + 제목) */}

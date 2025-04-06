@@ -121,7 +121,10 @@ export const BookShelfQuestion__CountContainer = styled.div`
 
   display:flex;
   justify-content:center;
+  align-items:center;
   gap: 10px;
+
+  margin-top: 10px;
 `
 
 export const BookShelfQuestion__Input = styled.input`
@@ -152,4 +155,13 @@ justify-content:center;
 align-items:center;
 
 cursor: pointer;
+`
+
+export const BookShelfQuestion__isTestButton = styled.button`
+  width: 20px;
+  height: 20px;
+
+  background-color: ${(props) => props.isTest?"yellow":null};
+  border-radius: 5px;
+  border: 1px solid #d9d9d9;
 `
