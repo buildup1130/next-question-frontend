@@ -13,7 +13,7 @@ export const savingStat = async(questions, wrongArr, isTest,workBookId,token) =>
     console.log(infoArr);
     try{
         const response = await axios.post(
-            "http://localhost:8080/solving/save",
+            "http://localhost:8080/member/solving/save",
             { type: isTest?"MOCK":"NORMAL",
               encryptedWorkBookId: workBookId,
               info:infoArr

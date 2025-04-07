@@ -57,7 +57,7 @@ import axios from "axios"
         try{
             console.log(`id >> ${id}`);
             const response = await axios.post(
-                "http://localhost:8080/solving/normal/search",
+                "http://localhost:8080/member/solving/normal/search",
                 { 
                     encryptedWorkBookId: id,
                     options:options,
