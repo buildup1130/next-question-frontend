@@ -33,15 +33,29 @@ export default function QuestionSolveLogic(props){
               setQuestions(processedQuestions);
             //   setIsTest(type === 1?true:0);
             }
+            else{
+              alert("잘못된 워크북 아이디입니다.");
+              router.push("/");
+            }
           });
         }
-        else{
+        else if(type === "2"){
             loadDailyQuestion(token)
             .then((result) =>{
+                if(result){
                 const processedQuestions = handleQuestions(result);
                 setQuestions(processedQuestions);
+                }
+                else{
+                  alert("워크북이 없습니다.");
+                  router.push("/");
+                }
                 // setIsTest(1);
             })
+        }
+        else{
+          alert("잘못된 접근입니다.");
+          router.push("/");
         }
     }  
         else{
@@ -81,7 +95,6 @@ export default function QuestionSolveLogic(props){
           });
           return processedQuestions;
         }
-
 
 
     // //LocalStorage사용 방식
