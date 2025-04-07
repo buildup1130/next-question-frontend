@@ -55,13 +55,30 @@ import axios from "axios"
 
     export const loadNormalQuestion = async(token, id, options) => {
         try{
-            console.log(`id >> ${id}`);
+            // console.log(`id >> ${id}`);
             const response = await axios.post(
                 "http://localhost:8080/member/solving/normal/search",
                 { 
                     encryptedWorkBookId: id,
                     options:options,
                  },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`, // 토큰 추가
+                        'Content-Type': 'application/json'
+                    }
+                });
+                return response.data;
+        }catch(error){
+            console.error(error);
+        }
+
+    }
+
+    export const loadDailyQuestion = async(token) => {
+        try{
+            const response = await axios.get(
+                "http://localhost:8080/member/solving/daily/search",             
                 {
                     headers: {
                         'Authorization': `Bearer ${token}`, // 토큰 추가
