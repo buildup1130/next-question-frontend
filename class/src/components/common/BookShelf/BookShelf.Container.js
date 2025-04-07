@@ -92,45 +92,62 @@ export default function BookShelfContainer() {
     setSequence(1);
   }
 
-  //학습하기 버튼 클릭 시 실행되는 함수수
-  const onClickLearning = async () => {
-    const result = await loadNormalQuestion(token, curBook.id, {
-      count:count,
-      random: true,
-      ox:true,
-      multiple:true,
-      blank:true
-    }).then(
-      result => {
-        if(result){
-      //추가적인 작업 필요
-      //1. OX를 0,1 로 변경
+  // //학습하기 버튼 클릭 시 실행되는 함수수
+  // const onClickLearning = async () => {
+  //   const result = await loadNormalQuestion(token, curBook.id, {
+  //     count:count,
+  //     random: true,
+  //     ox:true,
+  //     multiple:true,
+  //     blank:true
+  //   }).then(
+  //     result => {
+  //       if(result){
+  //     //추가적인 작업 필요
+  //     //1. OX를 0,1 로 변경
 
-      //result 의 탑은 object
-      console.log(typeof(result));
+  //     //result 의 탑은 object
+  //     console.log(typeof(result));
 
-      result.map((data, index) =>{
-        //정답이 O면 0 X면 1으로 치환
-        if(data.answer === 'O'){
-          data.answer = '0';
-        }else if(data.answer === 'X'){
-          data.answer = '1';
-        }
+  //     result.map((data, index) =>{
+  //       //정답이 O면 0 X면 1으로 치환
+  //       if(data.answer === 'O'){
+  //         data.answer = '0';
+  //       }else if(data.answer === 'X'){
+  //         data.answer = '1';
+  //       }
 
-        if(data.type === 'FILL_IN_THE_BLANK'){
-          const tmp = data.name.replace('{BLANK}', 'OOO');
-          data.name = tmp;
-        }
+  //       if(data.type === 'FILL_IN_THE_BLANK'){
+  //         const tmp = data.name.replace('{BLANK}', 'OOO');
+  //         data.name = tmp;
+  //       }
+  //     })
+
+  //     // 로컬 스토리지에 데이터 저장
+  //     localStorage.setItem('tempQuestionData', JSON.stringify(result));
+  //     localStorage.setItem('isTest', isTest);
+  //     localStorage.setItem('workBookId', curBook.id);
+  //     // Question 페이지로 이동
+  //     router.push("/Question");
+  //       }
+  //     })  
+  // }
+
+  //URL 파라미터 사용 방법
+  const onClickLearning = () => {
+    router.push({
+      pathname: "/Question",
+      query:{
+        Id: curBook.id,
+        count: count,
+        type:(isTest?1:0),
+        random:1,
+        ox:1,
+        multiple:1,
+        blank:1,
+      }
+
       })
-
-      // 로컬 스토리지에 데이터 저장
-      localStorage.setItem('tempQuestionData', JSON.stringify(result));
-      localStorage.setItem('isTest', isTest);
-      localStorage.setItem('workBookId', curBook.id);
-      // Question 페이지로 이동
-      router.push("/Question");
-        }
-      })  
   }
 
   return (

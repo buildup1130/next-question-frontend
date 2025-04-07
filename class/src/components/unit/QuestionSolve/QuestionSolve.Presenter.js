@@ -30,7 +30,7 @@ import {
   QuestionSolve__submitButton,
 } from "./QuestionSolve.Styles";
 import { useRouter } from "next/router";
-import { savingStat } from "@/utils/StatisticManager";
+import { savingCheck, savingStat } from "@/utils/StatisticManager";
 import { useAuth } from "@/utils/AuthContext";
 
 export default function QuestionSolveUI(props) {
@@ -88,12 +88,13 @@ export default function QuestionSolveUI(props) {
         if (!wrongArr.includes(currentQuestion)) {
           setWrongArr([...wrongArr, currentQuestion]);
         }
-        // 모의고사가 아닌 경우 오답이면 isCorrect false 유지
-        if (!props.isTest) {
-          // console.log("setFalse")
+        // 일반문제 풀이인 경우 오답이면 isCorrect false 유지
+        if (props.type === 0) {
+          console.log(`type은 0입니다 setFalse`)
           setIsCorrect(false);
         } else {
           // console.log("setTrue");
+          console.log(`type은 1입니다 setCorrect`)
           setIsCorrect(true);
         }
       }
@@ -110,10 +111,20 @@ export default function QuestionSolveUI(props) {
   // 문제가 끝났다면 결과 화면으로 이동
     } else {
       setIsCompleted(true);
+      if(props.type === 2)
+      //일일 문제풀이가 끝난 경우 출석체크
+      {
+        savingCheck(props.questions, wrongArr, token)
+      }
+      //일반 문제풀이, 모의고사 문제풀이 인 경우 결과 저장
+      else
+      {
+        savingStat(props.questions, wrongArr, props.type,props.workBookId, token);
+      }
       console.log(`wrongArr = ${wrongArr} ${wrongArr.map((value) => {console.log(props.questions[value])})}`);
     }
   }
-  console.log(`isAnswer = ${question.answer == selectedAnswer} isCorrect = ${isCorrect} isTest = ${typeof(props.isTest)}`);
+  console.log(`props.type = ${typeof(props.type)} isAnswer = ${question.answer == selectedAnswer} isCorrect = ${isCorrect}`);
   };
   
   
@@ -131,10 +142,12 @@ export default function QuestionSolveUI(props) {
 
   // 선택지 배열로 변환 (MULTIPLE_CHOICE 타입)
   // 현재는 "/" 기준 파싱
-  const options =
+  if(question){
+    const options =
     question.type === "MULTIPLE_CHOICE" && question.opt
       ? question.opt.split("/")
       : [];
+  }
 
   // 문제 풀이 완료시 표현되는 화면
   if (isCompleted) {
@@ -181,7 +194,6 @@ export default function QuestionSolveUI(props) {
         </NextButton>
         <NextButton
           onClick={() => {
-            savingStat(props.questions, wrongArr, props.isTest,props.workBookId, token);
             router.push("/");
           }}
           style={{
@@ -198,11 +210,12 @@ export default function QuestionSolveUI(props) {
   }
 
   //문제 화면
+  if(question){
   return (
     <MainContainerLogic>
       <Header>
         <BackButton>←</BackButton>
-        <Title>책장</Title>
+        <Title>문제 풀이</Title>
       </Header>
       <QuestionSolve__ProgressBarContainer>
       <ProgressBar>
@@ -299,7 +312,7 @@ export default function QuestionSolveUI(props) {
       </QuestionContainer>
     </MainContainerLogic>
   );
-}
+}}
 
 //틀린 문제 결과
 const ResultModal = (props) => {
