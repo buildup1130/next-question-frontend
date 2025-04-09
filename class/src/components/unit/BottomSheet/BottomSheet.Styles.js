@@ -71,3 +71,31 @@ export const OptionItem = styled.div`
     background: #f5f5f5;
   }
 `;
+
+export const RenameModalWrapper = styled.div`
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  input {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  button {
+    padding: 8px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    background: #000;
+    color: #fff;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+`;
