@@ -124,7 +124,8 @@ export default function QuestionSolveUI(props) {
       console.log(`wrongArr = ${wrongArr} ${wrongArr.map((value) => {console.log(props.questions[value])})}`);
     }
   }
-  console.log(`props.type = ${typeof(props.type)} isAnswer = ${question.answer == selectedAnswer} isCorrect = ${isCorrect}`);
+  //테스트 콘솔솔
+  console.log(`props.type = ${typeof(props.type)} isAnswer = ${question.answer == selectedAnswer} isCorrect = ${isCorrect} questions = ${question}`);
   };
   
   
@@ -140,14 +141,11 @@ export default function QuestionSolveUI(props) {
     setSelectedAnswer(value.trim());
   };
 
-  // 선택지 배열로 변환 (MULTIPLE_CHOICE 타입)
-  // 현재는 "/" 기준 파싱
-  if(question){
-    const options =
-    question.type === "MULTIPLE_CHOICE" && question.opt
-      ? question.opt.split("/")
-      : [];
-  }
+
+    // 올바른 방법:
+  const options = question && question.type === "MULTIPLE_CHOICE" && question.opt
+  ? question.opt.split("/")
+  : [];
 
   // 문제 풀이 완료시 표현되는 화면
   if (isCompleted) {

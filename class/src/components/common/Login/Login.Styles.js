@@ -17,13 +17,13 @@ export const InputField = styled.input`
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  background-color: #f5f5f5;
+  background-color: #f0f0f0;
   font-size: 16px;
   outline: none;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 
   &::placeholder {
-    color: #ccc;
+    color: #000;
   }
 `;
 
@@ -79,4 +79,34 @@ export const SignUpButton = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
+`;
+
+export const GoogleLoginButtonWrapper = styled.div`
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
+export const GoogleLoginButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: white;
+  color: #444;
+  border: 1px solid #ccc;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
+`;
+
+export const GoogleIcon = styled.img`
+  width: 20px;
+  height: 20px;
 `;

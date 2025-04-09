@@ -1,9 +1,29 @@
-import { BookShelfQuestion__Container, BookShelfQuestion__CountContainer, BookShelfQuestion__Input, BookShelfQuestion__isTestButton, BookShelfQuestion__Modal, BookShelfQuestion__submitButton, BookShelfQuestion__SubTitle, BookShelfQuestion__Title, BookShelfQuestion__Wrapper, CurrentValue, Marker, Progress, ProgressBarContainer, ProgressWrapper, ValuesContainer } from "./BookShelfQuestion.Styles";
 
-export default function BookShelfQuestionUI(props){
+import {
+  BookShelfQuestion__Container,
+  BookShelfQuestion__CountContainer,
+  BookShelfQuestion__Input,
+  BookShelfQuestion__isTestButton,
+  BookShelfQuestion__Modal,
+  BookShelfQuestion__submitButton,
+  BookShelfQuestion__SubTitle,
+  BookShelfQuestion__Title,
+  BookShelfQuestion__Wrapper,
+  CurrentValue,
+  Marker,
+  Progress,
+  ProgressBarContainer,
+  ProgressWrapper,
+  ValuesContainer,
+  BookShelfQuestion__CloseButtonContainer,
+  BookShelfQuestion__CloseButton,
+} from "./BookShelfQuestion.Styles";
 
 
-    return(<BookShelfQuestion__Wrapper>
+export default function BookShelfQuestionUI(props) {
+  
+    return(
+    <BookShelfQuestion__Wrapper>
         <BookShelfQuestion__Container>
             <BookShelfQuestion__Modal>
                 <BookShelfQuestion__Title>
@@ -44,23 +64,21 @@ export default function BookShelfQuestionUI(props){
     </BookShelfQuestion__Wrapper>);
 }
 
-const ProgressBar = ({value,max}) => {
-    return (
-      <div
-        style = {{width : "100%"}}
-      >
-        <ProgressWrapper>
-      <CurrentValue value={value} max={max}>
-        {value}
-      </CurrentValue>
-      <ProgressBarContainer>
-        <Progress value={value} max={max} />
-      </ProgressBarContainer>
-      <ValuesContainer>
-        <span>0</span>
-        <span>{max}</span>
-      </ValuesContainer>
-    </ProgressWrapper>
-      </div>
-    );
-  };
+const ProgressBar = ({ value, max }) => {
+  return (
+    <div style={{ width: "100%" }}>
+      <ProgressWrapper>
+        <CurrentValue value={value} max={max}>
+          {value}
+        </CurrentValue>
+        <ProgressBarContainer>
+          <Progress value={value} max={max} />
+        </ProgressBarContainer>
+        <ValuesContainer>
+          <span>0</span>
+          <span>{max}</span>
+        </ValuesContainer>
+      </ProgressWrapper>
+    </div>
+  );
+};
