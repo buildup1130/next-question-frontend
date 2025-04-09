@@ -5,11 +5,14 @@ export const Container = styled.div`
   max-width: 500px;
   height: 100vh;
   padding: 20px;
+  padding-bottom: 80px;
+  margin: 0 auto;
+  position: relative; // ✅ LearnButtonWrapper 고정 기준점
 `;
 
 export const Header = styled.div`
   display: flex;
-  justify-content: center; /* 가운데 정렬 */
+  justify-content: center;
   align-items: center;
   position: relative;
   margin-bottom: 20px;
@@ -37,7 +40,6 @@ export const Plus = styled.button`
   cursor: pointer;
   position: absolute;
   right: 0;
-
   transform: translateY(2px);
 `;
 
@@ -59,7 +61,6 @@ export const SearchInput = styled.input`
   font-size: 16px;
   outline: none;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-
   &::placeholder {
     color: #ccc;
   }
@@ -88,7 +89,6 @@ export const BookItem = styled.li`
   justify-content: space-between;
   padding: 10px;
   border-bottom: 1px solid #ddd;
-
   cursor: pointer;
 `;
 
@@ -110,5 +110,22 @@ export const MoreButton = styled.button`
   background: none;
   border: none;
   font-size: 20px;
+  cursor: pointer;
+`;
+
+export const LearnButtonWrapper = styled.div`
+  position: fixed;
+  bottom: 80px; // ✅ 네비게이션 위
+  right: 20px;
+  z-index: 1000; // ✅ 다른 요소보다 위에 있도록
+`;
+
+export const LearnButton = styled.button`
+  background-color: black;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
   cursor: pointer;
 `;

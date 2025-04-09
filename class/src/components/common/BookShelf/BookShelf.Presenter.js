@@ -13,6 +13,8 @@ import {
   MoreButton,
   Plus,
   MoreButtonWrapper,
+  LearnButtonWrapper, // ✅ 추가
+  LearnButton, // ✅ 추가
 } from "./BookShelf.Styles";
 import { useState } from "react";
 
@@ -31,12 +33,13 @@ export default function BookShelfUI({
   onClickLearning,
   isSheetOpen,
   onCloseLearningModal,
+  onOpenLearningModal, // ✅ 상위에서 props 내려준다면 필요
 }) {
   const [hoveredId, setHoveredId] = useState(null);
 
   return (
     <Container>
-      {sequence === 1 && curBook !== null && !isSheetOpen ? (
+      {sequence === 1 && curBook !== null && !isSheetOpen && (
         <BookShelfQuestionLogic
           curBook={curBook}
           count={count}
@@ -44,17 +47,16 @@ export default function BookShelfUI({
           onClickLearning={onClickLearning}
           onClose={onCloseLearningModal}
         />
-      ) : null}
+      )}
 
-      <></>
-      {/* 상단 헤더 (뒤로 가기 버튼 + 제목) */}
       <Header>
         <BackButton onClick={onBack}>←</BackButton>
         <Title>책장</Title>
         <Plus>+</Plus>
       </Header>
+
       <hr />
-      {/* 검색창 */}
+
       <SearchBar>
         <SearchInput
           type="text"
@@ -64,7 +66,7 @@ export default function BookShelfUI({
         />
         <SearchButton onClick={onSearch}>🔍</SearchButton>
       </SearchBar>
-      {/* 책 목록 */}
+
       <BookList>
         {books.map((book, index) => (
           <BookItem
@@ -96,6 +98,11 @@ export default function BookShelfUI({
           </BookItem>
         ))}
       </BookList>
+
+      {/* ✅ 버튼 위치 */}
+      <LearnButtonWrapper>
+        <LearnButton onClick={onOpenLearningModal}>학습하기</LearnButton>
+      </LearnButtonWrapper>
     </Container>
   );
 }

@@ -26,6 +26,7 @@ export default function LoginLogic() {
 
       login(
         {
+          userId,
           nickname: response.data.nickname,
           role: response.data.role,
         },

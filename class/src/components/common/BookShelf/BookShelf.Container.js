@@ -11,7 +11,8 @@ import { useRouter } from "next/router";
 
 export default function BookShelfContainer() {
   const [searchQuery, setSearchQuery] = useState("");
-  const { token } = useAuth();
+  const { token, user } = useAuth();
+  const userId = user?.userId;
   const [books, setBooks] = useState([]);
 
   const [sequence, setSequence] = useState(0); // 학습 모달 컨트롤
@@ -21,6 +22,8 @@ export default function BookShelfContainer() {
   const [isSheetOpen, setSheetOpen] = useState(false); // 바텀시트 열림 여부
   const [selectedBook, setSelectedBook] = useState(null); // 바텀시트 대상 문제집
   const [isPendingMoreClick, setIsPendingMoreClick] = useState(false); // 안전한 바텀시트 실행 예약
+
+  const [isMultiModalOpen, setIsMultiModalOpen] = useState(false); // 다중 문제집 학습 모달
 
   const router = useRouter();
 
@@ -52,7 +55,6 @@ export default function BookShelfContainer() {
     }
   }, [curBook]);
 
-  // 학습 모달 닫고 난 다음에 바텀시트를 열기 위한 안전한 흐름
   useEffect(() => {
     if (sequence === 0 && curBook === null && isPendingMoreClick) {
       setSelectedBook(isPendingMoreClick);
@@ -74,7 +76,6 @@ export default function BookShelfContainer() {
   };
 
   const handleMoreClick = (book) => {
-    // 학습 모달 상태가 남아있으면 초기화 후 바텀시트 열기 예약
     if (sequence !== 0 || curBook !== null) {
       setSequence(0);
       setCurBook(null);
@@ -90,8 +91,19 @@ export default function BookShelfContainer() {
   };
 
   const onClickBook = (book) => {
-    setCurBook(book); // 학습할 책 선택
-    setSequence(1); // 학습 옵션 모달 열기
+    if (!userId) {
+      alert("로그인이 필요합니다");
+      return;
+    }
+
+    router.push({
+      pathname: "/Workbook",
+      query: {
+        workBookId: book.id,
+        memberId: user.userId,
+        title: book.title,
+      },
+    });
   };
 
   const onClickLearning = async () => {
@@ -123,6 +135,10 @@ export default function BookShelfContainer() {
     setCurBook(null);
   };
 
+  const onOpenMultiLearningModal = () => {
+    setIsMultiModalOpen(true);
+  };
+
   return (
     <>
       <BookShelfUI
@@ -140,6 +156,7 @@ export default function BookShelfContainer() {
         onClickLearning={onClickLearning}
         isSheetOpen={isSheetOpen}
         onCloseLearningModal={onCloseLearningModal}
+        onOpenMultiLearningModal={onOpenMultiLearningModal}
       />
 
       <BottomNavigationLogic />
