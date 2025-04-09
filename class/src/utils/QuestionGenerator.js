@@ -1,95 +1,80 @@
-import axios from "axios"
+// QuestionGenerator.js - 개선된 버전
+import axios from "axios";
 
+// 상태 업데이트 함수를 파라미터로 받지 않고 데이터만 반환하는 방식
+export const createQuestion = async (file, numOfQuestions, token) => {
+  const formData = new FormData();
+  formData.append("file", file);
 
-export const createQuestion = (file,numOfQuestions,token,setIsCreated,setQuestionArr,setQuestionInfoArr) =>{
-    const formData = new FormData();
-    //QuestionArr 초기화
-    setQuestionArr(undefined);
-    
-    setIsCreated(true);
-    
-    //isAuth 함수로 대체해야함    
-    if(token){
-        formData.append("file",file);
-        formData.append("numOfQuestions", numOfQuestions);
-        generateQuestion_member(formData,token).then(
-            (res) => {
-                const tmpArr = [];
-                const infoArr = [];
-                res?.forEach((element) =>{
-                    tmpArr.push(element.encryptedQuestionInfoId);
-                    //{Blank} OOO로 변경
-                    const tmpName = element.type === 'FILL_IN_THE_BLANK'?element.name.replace('{BLANK}','OOO'):element.name;
-
-                    const tmpObj = {
-                        name: tmpName,
-                        type: element.type,
-                        answer: element.answer,
-                        opt: element.opt,
-                    }
-                    infoArr.push(tmpObj);
-                })
-                console.log(tmpArr);
-                console.log(infoArr);
-                setQuestionArr(tmpArr);
-                setQuestionInfoArr(infoArr);
-                setIsCreated(true);
-            }
-        )
-    }else{
-        formData.append("file",file);
-        generateQuestion_nonMember(formData).then(
-            (res) =>{
-                const tmpArr = [];
-                res?.questions.forEach((element) =>{
-                    tmpArr.push(element);
-                })
-                console.log(tmpArr);
-                setQuestionArr(tmpArr);
-                setIsCreated(true);
-            }
-        )
+  if (token) {
+    formData.append("numOfQuestions", numOfQuestions);
+    try {
+      const result = await generateQuestion_member(formData, token);
+      return {
+        questionArr: result.map((item) => item.encryptedQuestionInfoId),
+        questionInfoArr: result.map((item) => ({
+          name:
+            item.type === "FILL_IN_THE_BLANK"
+              ? item.name.replace("{BLANK}", "OOO")
+              : item.name,
+          type: item.type,
+          answer: item.answer,
+          opt: item.opt,
+        })),
+      };
+    } catch (error) {
+      console.error(error);
+      return { error };
     }
-}
-
-const generateQuestion_member = async(formData,token) =>{
+  } else {
     try {
-        const response = await axios.post(
-          "http://localhost:8080/member/questions/upload",
-            formData,
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${token}` // 토큰 추가
-                }
-            }
-        );
-        console.log("회원 문제 생성");
-        console.dir(response.data)
-        return response.data;
-    }catch(error)
-        {
-            console.error(error);
-        }
-}
+      const result = await generateQuestion_nonMember(formData);
+      return {
+        questionArr: null,
+        questionInfoArr: result.map((item) => ({
+          name:
+            item.type === "FILL_IN_THE_BLANK"
+              ? item.name.replace("{BLANK}", "OOO")
+              : item.name,
+          type: item.type,
+          answer: item.answer,
+          opt: item.opt,
+        })),
+      };
+    } catch (error) {
+      console.error(error);
+      return { error };
+    }
+  }
+};
 
-const generateQuestion_nonMember = async(formData) =>{
-    try {
-        const response = await axios.post(
-          "http://localhost:8080/public/questions/upload",
-        formData,
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            } 
-        }
-        );
-        console.log("비회원 문제 생성");
-        console.dir(response.data);
-        return response.data;
-    }catch(error)
-        {
-            
-            console.error(error);
-        }
-}
+const generateQuestion_member = async (formData, token) => {
+  const response = await axios.post(
+    "http://localhost:8080/member/questions/upload",
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  console.log("회원 문제 생성");
+  console.dir(response.data);
+  return response.data;
+};
+
+const generateQuestion_nonMember = async (formData) => {
+  const response = await axios.post(
+    "http://localhost:8080/public/questions/upload",
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  console.log("비회원 문제 생성");
+  console.dir(response.data);
+  return response.data;
+};

@@ -7,17 +7,29 @@ import {
   Home__CalTitle,
   Home__CalMore,
 } from "@/pages/styles";
+import MainCalendarLogic from "../MainCalendar/MainCalendar.Container";
+import UploadBoxLogic from "../UploadBox/UploadBox.Container";
 
-export default function IndexPageUI(onClickLogin, user) {
+export default function IndexPageUI({
+  onClickLogin,
+  user,
+  isAuthenticated,
+  isCreated,
+  setFile,
+  file,
+}) {
   return (
     <MainContainerLogic>
+      {isCreated && (
+        <GenerateShelfLogic
+          setIsCreated={setIsCreated}
+          isQuestionArr={questionArr !== undefined && questionArr.length > 0}
+          questionArr={questionArr}
+          questionInfoArr={questionInfoArr}
+        ></GenerateShelfLogic>
+      )}
       <Home__IconBar>
-        <img
-          src="/image/Vector_user.png"
-          onClick={() => {
-            router.push("Login");
-          }}
-        />
+        <img src="/image/Vector_user.png" onClick={onClickLogin} />
         <img src="/image/material-symbols_settings.png" />
         <Home__IconBar__Login>
           {!isAuthenticated
@@ -25,7 +37,7 @@ export default function IndexPageUI(onClickLogin, user) {
             : user.nickname + " 님 환영합니다."}
         </Home__IconBar__Login>
       </Home__IconBar>
-      <MainCarouselLogic></MainCarouselLogic>
+      <UploadBoxLogic setFile={setFile} file={file}></UploadBoxLogic>
       <Home__CalBar>
         <Home__CalTitle>캘린더</Home__CalTitle>
         <Home__CalMore>
