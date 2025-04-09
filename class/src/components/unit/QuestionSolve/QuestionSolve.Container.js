@@ -48,6 +48,7 @@ export default function QuestionSolveLogic(props){
             //토큰이 없음을 명시
             console.log("토큰이 없음");
         }
+      console.log(`작동함 ${questions}`)
       }, [Id, token, count, random, ox, multiple, blank]);
 
     const handleQuestions = (questions) => {    

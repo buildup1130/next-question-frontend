@@ -21,23 +21,9 @@ import {
 
 
 export default function BookShelfQuestionUI(props) {
-  return (
+  
+    return(
     <BookShelfQuestion__Wrapper>
-      <BookShelfQuestion__Container>
-        <BookShelfQuestion__Modal>
-          <BookShelfQuestion__CloseButtonContainer>
-            <BookShelfQuestion__CloseButton onClick={props.onClose}>
-              ❌
-            </BookShelfQuestion__CloseButton>
-          </BookShelfQuestion__CloseButtonContainer>
-
-          <BookShelfQuestion__Title>
-            문제 풀이 옵션 선택
-          </BookShelfQuestion__Title>
-          <BookShelfQuestion__SubTitle>문제 수(개)</BookShelfQuestion__SubTitle>
-
-
-    return(<BookShelfQuestion__Wrapper>
         <BookShelfQuestion__Container>
             <BookShelfQuestion__Modal>
                 <BookShelfQuestion__Title>

@@ -120,7 +120,6 @@ export default function BookShelfContainer() {
   const onOpenMultiLearningModal = () => {
     setIsMultiModalOpen(true);
   };
-=======
   // //학습하기 버튼 클릭 시 실행되는 함수수
   // const onClickLearning = async () => {
   //   const result = await loadNormalQuestion(token, curBook.id, {
