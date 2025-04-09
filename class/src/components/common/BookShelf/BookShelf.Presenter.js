@@ -34,6 +34,8 @@ export default function BookShelfUI({
   isSheetOpen,
   onCloseLearningModal,
   onOpenLearningModal, // ✅ 상위에서 props 내려준다면 필요
+  setIsTest,
+  isTest
 }) {
   const [hoveredId, setHoveredId] = useState(null);
 
@@ -46,6 +48,8 @@ export default function BookShelfUI({
           setCount={setCount}
           onClickLearning={onClickLearning}
           onClose={onCloseLearningModal}
+          setIsTest = {setIsTest}
+          isTest = {isTest}
         />
       )}
 

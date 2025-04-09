@@ -26,6 +26,10 @@ export default function BookShelfQuestionLogic(props) {
     }
   };
 
+
+  
+
+  
   return (
     <BookShelfQuestionUI
       curBook={props.curBook}
@@ -34,6 +38,8 @@ export default function BookShelfQuestionLogic(props) {
       handleChange={handleChange}
       onClickLearning={props.onClickLearning}
       onClose={props.onClose}
+      setIsTest = {props.setIsTest}
+      isTest = {props.isTest}
     ></BookShelfQuestionUI>
   );
 }

@@ -14,7 +14,7 @@ const router = useRouter();
             title: '데일리 문제',
             description: '오늘의 문제를 풀어보아요.문제는 오답 문제, 내가 보유한 문제, 추천 문제 중 무작위로 제공됩니다.',
             image: '/image/cat.png',
-            url:'/BookShelf'
+            url:'/Question?type=2'
           },
           {
             title: '문제 생성',
@@ -23,10 +23,10 @@ const router = useRouter();
             url:'/generate'
           },
           {
-            title: '슬라이드 3',
+            title: '문제 풀기',
             description: '세 번째 슬라이드입니다.',
             image: '/image/cat.png',
-            url:''   
+            url:'/BookShelf'   
           },
         ];
       
