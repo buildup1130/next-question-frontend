@@ -15,16 +15,16 @@ export default function BookShelfContainer() {
   const userId = user?.userId;
   const [books, setBooks] = useState([]);
 
-  const [sequence, setSequence] = useState(0); // 학습 모달 컨트롤
-  const [curBook, setCurBook] = useState(null); // 학습 대상 문제집
-  const [count, setCount] = useState(1); // 문제 수 설정
+  // 현재 시퀀스 (0: 기본 , 1: 문제 옵션 모달)
+  const [sequence, setSequence] = useState(0);
+  // 현재 선택중인 책
+  const [curBook, setCurBook] = useState({});
+  //생성할 문제 수
+  const [count,setCount] = useState(1);
+  //모의고사 여부
+  const [isTest,setIsTest] = useState(false);
 
-  const [isSheetOpen, setSheetOpen] = useState(false); // 바텀시트 열림 여부
-  const [selectedBook, setSelectedBook] = useState(null); // 바텀시트 대상 문제집
-  const [isPendingMoreClick, setIsPendingMoreClick] = useState(false); // 안전한 바텀시트 실행 예약
-
-  const [isMultiModalOpen, setIsMultiModalOpen] = useState(false); // 다중 문제집 학습 모달
-
+  //라우터 객체
   const router = useRouter();
 
   const fetchWorkBooks = async () => {
@@ -106,30 +106,6 @@ export default function BookShelfContainer() {
     });
   };
 
-  const onClickLearning = async () => {
-    const result = await loadNormalQuestion(token, curBook.id, {
-      count: count,
-      random: true,
-      ox: true,
-      multiple: true,
-      blank: true,
-    });
-
-    if (result) {
-      result.map((data) => {
-        if (data.answer === "O") data.answer = "0";
-        else if (data.answer === "X") data.answer = "1";
-
-        if (data.type === "FILL_IN_THE_BLANK") {
-          data.name = data.name.replace("{BLANK}", "OOO");
-        }
-      });
-
-      localStorage.setItem("tempQuestionData", JSON.stringify(result));
-      router.push("/Question");
-    }
-  };
-
   const onCloseLearningModal = () => {
     setSequence(0);
     setCurBook(null);
@@ -139,24 +115,84 @@ export default function BookShelfContainer() {
     setIsMultiModalOpen(true);
   };
 
+  // //학습하기 버튼 클릭 시 실행되는 함수수
+  // const onClickLearning = async () => {
+  //   const result = await loadNormalQuestion(token, curBook.id, {
+  //     count:count,
+  //     random: true,
+  //     ox:true,
+  //     multiple:true,
+  //     blank:true
+  //   }).then(
+  //     result => {
+  //       if(result){
+  //     //추가적인 작업 필요
+  //     //1. OX를 0,1 로 변경
+
+  //     //result 의 탑은 object
+  //     console.log(typeof(result));
+
+  //     result.map((data, index) =>{
+  //       //정답이 O면 0 X면 1으로 치환
+  //       if(data.answer === 'O'){
+  //         data.answer = '0';
+  //       }else if(data.answer === 'X'){
+  //         data.answer = '1';
+  //       }
+
+  //       if(data.type === 'FILL_IN_THE_BLANK'){
+  //         const tmp = data.name.replace('{BLANK}', 'OOO');
+  //         data.name = tmp;
+  //       }
+  //     })
+
+  //     // 로컬 스토리지에 데이터 저장
+  //     localStorage.setItem('tempQuestionData', JSON.stringify(result));
+  //     localStorage.setItem('isTest', isTest);
+  //     localStorage.setItem('workBookId', curBook.id);
+  //     // Question 페이지로 이동
+  //     router.push("/Question");
+  //       }
+  //     })  
+  // }
+
+  //URL 파라미터 사용 방법
+  const onClickLearning = () => {
+    router.push({
+      pathname: "/Question",
+      query:{
+        Id: curBook.id,
+        count: count,
+        type:(isTest?1:0),
+        random:1,
+        ox:1,
+        multiple:1,
+        blank:1,
+      }
+
+      })
+  }
+
   return (
     <>
       <BookShelfUI
-        books={books}
-        searchQuery={searchQuery}
-        onSearchChange={handleSearchChange}
-        onSearch={handleSearch}
-        onBack={handleBack}
-        onMoreClick={handleMoreClick}
-        sequence={sequence}
-        onClickBook={onClickBook}
-        curBook={curBook}
-        count={count}
-        setCount={setCount}
-        onClickLearning={onClickLearning}
         isSheetOpen={isSheetOpen}
         onCloseLearningModal={onCloseLearningModal}
         onOpenMultiLearningModal={onOpenMultiLearningModal}
+        books={books} // 책 목록 데이터 전달
+        searchQuery={searchQuery} // 검색어 상태 전달
+        onSearchChange={handleSearchChange} // 검색어 변경 핸들러 전달
+        onSearch={handleSearch} // 검색 버튼 클릭 핸들러 전달
+        onBack={handleBack} // 뒤로 가기 버튼 핸들러 전달
+        onMoreClick={handleMoreClick} // 책 아이템의 ... 버튼 핸들러 전달
+        sequence = {sequence}
+        onClickBook = {onClickBook}
+        curBook = {curBook}
+        count = {count}
+        setCount = {setCount}
+        onClickLearning = {onClickLearning}
+        setIsTest = {setIsTest}
+        isTest = {isTest}
       />
 
       <BottomNavigationLogic />

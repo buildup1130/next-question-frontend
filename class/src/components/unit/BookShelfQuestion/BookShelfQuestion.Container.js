@@ -25,6 +25,21 @@ export default function BookShelfQuestionLogic(props) {
       props.setCount(newValue);
     }
   };
+  
+            
+        const newValue = parseInt(inputValue);
+        if (newValue <= 0) {
+            // 0 이하인 경우
+            props.setCount(1); // 최소값을 1로 설정
+          } else if (newValue > props.curBook.items) {
+            // 최대값을 초과하는 경우
+            props.setCount(props.curBook.items);
+          } else {
+            // 유효한 범위인 경우
+            props.setCount(newValue);
+          }
+      };
+
 
   return (
     <BookShelfQuestionUI
@@ -37,3 +52,4 @@ export default function BookShelfQuestionLogic(props) {
     ></BookShelfQuestionUI>
   );
 }
+

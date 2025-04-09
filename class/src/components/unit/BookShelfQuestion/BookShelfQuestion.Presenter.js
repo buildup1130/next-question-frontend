@@ -52,6 +52,7 @@ export default function BookShelfQuestionUI(props) {
       </BookShelfQuestion__Container>
     </BookShelfQuestion__Wrapper>
   );
+
 }
 
 const ProgressBar = ({ value, max }) => {

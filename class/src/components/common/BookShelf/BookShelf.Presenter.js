@@ -34,6 +34,8 @@ export default function BookShelfUI({
   isSheetOpen,
   onCloseLearningModal,
   onOpenLearningModal, // ✅ 상위에서 props 내려준다면 필요
+  setIsTest,
+  isTest
 }) {
   const [hoveredId, setHoveredId] = useState(null);
 
@@ -48,7 +50,6 @@ export default function BookShelfUI({
           onClose={onCloseLearningModal}
         />
       )}
-
       <Header>
         <BackButton onClick={onBack}>←</BackButton>
         <Title>책장</Title>

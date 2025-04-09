@@ -118,10 +118,14 @@ export const CurrentValue = styled.div`
 export const BookShelfQuestion__CountContainer = styled.div`
   width: 100%;
 
-  display: flex;
-  justify-content: center;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
   gap: 10px;
-`;
+
+  margin-top: 10px;
+`
 
 export const BookShelfQuestion__Input = styled.input`
   width: 48px;
@@ -165,3 +169,4 @@ export const BookShelfQuestion__CloseButton = styled.button`
   font-size: 20px;
   cursor: pointer;
 `;
+

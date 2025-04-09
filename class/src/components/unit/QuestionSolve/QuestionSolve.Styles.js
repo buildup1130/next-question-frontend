@@ -99,8 +99,28 @@ export const OptionItem = styled.div`
   padding: 15px;
   border-radius: 5px;
   background-color: ${(props) => (props.selected ? "#e6f4ff" : "white")};
-  border: 1px solid ${(props) => (props.selected ? "#0099ff" : "#ddd")};
+  border: 1px solid ${(props) => {
+    // 최근 제출한 선택지의 답에 따른 색 조정
+    if(props.curAns){
+     const tmpColor = props.isRightAnswer? "#155724": "#721c24";
+     return tmpColor;
+    }
+    // 최근 선택한 선택지 색 조정 
+    else{
+      return props.selected ? "#0099ff" : "#ddd";
+    }
+    }};
   cursor: pointer;
+
+  color: ${(props) =>{
+    if(props.curAns){
+     const tmpColor = props.isRightAnswer? "#155724": "#721c24";
+     return tmpColor;
+    }
+    else{
+      return "#111111";
+    }
+  }};
 
   &:hover {
     background-color: ${(props) => (props.selected ? "#e6f4ff" : "#f5f5f5")};
@@ -138,3 +158,102 @@ export const QuestionBox__Header = styled.div`
 
   gap: 10px;
 `;
+
+export const QuestionSolve__ResultWrapper = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color:rgba(0, 0, 0, 0.5);
+  z-Index: 10;
+
+  overflow: hidden;
+
+  display:flex;
+  justify-content:center;
+`
+
+export const QuestionSolve__ResultContainer = styled.div`
+  width:100%;
+  height:100%;
+
+  max-width:500px;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  z-index:100;
+
+  padding: 20px 8px;
+`
+
+export const QuestionSolve__ResultBox = styled.div`
+  width:100%;
+  /* height:100%; */
+  max-height:100%;
+  padding: 16px 8px;
+  border: 1px solid #d9d9d9;
+  border-radius: 20px;
+
+  box-shadow: 0 16px 24px rgba(0,0,0,0.1);
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+
+  background-color:#ffffff;
+`
+
+export const QuestionSolve__QuestionWrapper = styled.div`
+  width:100%;
+  height:100%;
+  padding: 0 8px;
+
+  border: 1px solid #d9d9d9;
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+`
+export const QuestionSolve__QuestionContainer = styled.div`
+  margin-top:8px;
+`
+
+export const QuestionSolve__QuestionTitle = styled.div`
+  font-size:20px;
+  font-weight:700;
+`
+export const QuestionSolve__QuestionText = styled.div`
+  font-size:16px;
+`
+
+export const QuestionSolve__ButtonContainer = styled.div`
+  width:100%;
+  padding: 0 8px;
+
+  display:flex;
+  flex-direction:row;
+  gap:12px;
+`
+export const QuestionSolve__submitButton = styled.div`
+width:100%;
+max-width:500px;
+min-height:52px;
+
+border-radius: 20px;
+margin-top:40px;
+border: 1px solid #d9d9d9;
+
+background-color: #3b82f6;
+color: white;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+cursor: pointer;
+`
