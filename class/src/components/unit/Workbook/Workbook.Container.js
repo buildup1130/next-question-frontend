@@ -16,11 +16,14 @@ export default function WorkbookContainer() {
   useEffect(() => {
     if (token && workBookId && userId) {
       getWorkbookQuestions(token, workBookId, userId).then((data) => {
-        if (data) setQuestions(data);
+        if (data && data.length > 0) {
+          setQuestions(data);
+        } else {
+          setQuestions([]);
+        }
       });
     }
   }, [token, workBookId, userId]);
-
   const handleBack = () => {
     router.back();
   };

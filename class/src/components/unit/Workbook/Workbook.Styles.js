@@ -1,10 +1,11 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  max-width: 500px;
+  width: 100%;
+  max-width: 500px; /* 화면 크기에 따라 조정 */
   margin: 0 auto;
   padding: 16px;
-  padding-bottom: 80px; // ✅ 하단 네비게이션 높이만큼 공간 확보
+  padding-bottom: 80px; // 하단 네비게이션 높이만큼 공간 확보
 `;
 
 export const Header = styled.div`
@@ -13,6 +14,7 @@ export const Header = styled.div`
   justify-content: center;
   position: relative;
   height: 48px;
+  margin-bottom: 16px;
 `;
 
 export const BackButton = styled.button`
