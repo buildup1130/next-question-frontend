@@ -1,4 +1,4 @@
-import IndexPageUI from "./indexPage.Presenter";
+import IndexPageUI from "./IndexPage.Presenter";
 import { useRouter } from "next/router";
 import { useAuth } from "@/utils/AuthContext";
 import { useState, useEffect } from "react";
@@ -19,7 +19,7 @@ export default function IndexPageLogic() {
   const [questionInfoArr, setQuestionInfoArr] = useState(undefined);
 
   const onClickLogin = () => {
-    router.push("/login");
+    router.push("/Login");
   };
 
   const onClickGenerate = () => {

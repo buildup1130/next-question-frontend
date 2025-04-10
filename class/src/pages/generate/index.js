@@ -83,10 +83,14 @@ export default function generatePage() {
           const response = createQuestion(
             file,
             QuestionCount,
-            token,
-            setIsCreated,
-            setQuestionArr,
-            setQuestionInfoArr
+            token
+          ).then(
+            (result) =>{
+              setQuestionArr(result.questionArr);
+              setQuestionInfoArr(result.questionInfoArr);
+              setIsCreated(true);
+              console.log(`${result.questionArr} ${result.questionInfoArr}`)
+            }
           );
         }}
       >
