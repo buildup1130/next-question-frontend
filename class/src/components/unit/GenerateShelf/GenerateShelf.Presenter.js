@@ -6,9 +6,10 @@ export default function GenerateShelfUI(props){
     return(
     <GenerateShelf__Wrapper>
         <GenerateShelf__Container>
+            <GenerateShelf__Shelf>
             {(!props.questionInfoArr && props.sequence === 1) ?
              <div>로딩 중</div>:
-                <GenerateShelf__Shelf>
+                <>
                 {props.sequence === 0 ? (
                 <OptionModal {...props} />
             ) : props.sequence === 1 ? (
@@ -16,8 +17,9 @@ export default function GenerateShelfUI(props){
             ) : props.sequence === 2 ? (
                 <SavingModal {...props} />
             ) : <div>문제가 저장되었습니다.</div>}                                  
-            </GenerateShelf__Shelf>
+            </>
             }
+            </GenerateShelf__Shelf>
         </GenerateShelf__Container>
     </GenerateShelf__Wrapper>);
 }
