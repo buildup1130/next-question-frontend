@@ -8,6 +8,6 @@ export default function UploadBoxLogic(props) {
   };
 
   return (
-    <UploadBoxUI file={props.file} onChangeFile={onChangeFile}></UploadBoxUI>
+    <UploadBoxUI file={props.file} onChangeFile={onChangeFile} setIsCreated = {props.setIsCreated}></UploadBoxUI>
   );
 }

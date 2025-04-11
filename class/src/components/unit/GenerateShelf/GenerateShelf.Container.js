@@ -18,6 +18,8 @@ export default function GenerateShelfLogic(props){
     const [savingWorkBook, setSavingWorkBook] = useState("");
     //모달 시퀀스
     const [sequence,setSequence] = useState(0);
+    //생성할 문제 수
+    const [questionCount, setQuestionCount] = useState(5);
 
     // 비동기 작업을 처리하는 함수
     // DB에서 문제집 배열을 가져오는 함수
@@ -73,6 +75,9 @@ export default function GenerateShelfLogic(props){
             questionInfoArr = {props.questionInfoArr}
             sequence = {sequence}
             setSequence = {setSequence}
+            numArr = {props.numArr}
+            QuestionCount = {questionCount}
+            setQuestionCount = {setQuestionCount}
         >
             
         </GenerateShelfUI>
