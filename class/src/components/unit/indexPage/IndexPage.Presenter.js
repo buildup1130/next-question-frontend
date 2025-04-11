@@ -28,10 +28,12 @@ export default function IndexPageUI({
       {(isCreated && file) &&(
         <GenerateShelfLogic
           setIsCreated={setIsCreated}
-          isQuestionArr={questionArr !== undefined && questionArr.length > 0}
+          // isQuestionArr={questionArr !== undefined && questionArr.length > 0}
           questionArr={questionArr}
           questionInfoArr={questionInfoArr}
           numArr = {numArr}
+          file = {file}
+          setFile = {setFile}
         ></GenerateShelfLogic>
       )}
       <Home__IconBar>

@@ -209,3 +209,11 @@ export const GenerateShelf__countbutton = styled.div`
   justify-content:center;
   align-items:center;
 `
+
+export const GenerateShelf__countbuttonContainer = styled.div`
+  width: 100%;
+
+  display:flex;
+  justify-content:space-between;
+  flex-wrap: wrap;
+`

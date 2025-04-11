@@ -3,6 +3,7 @@ import GenerateShelfUI from "./GenerateShelf.Presenter";
 import { useAuth } from "@/utils/AuthContext";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { createQuestion } from "@/utils/QuestionGenerator";
 
 export default function GenerateShelfLogic(props){
     const {isAuthenticated,token} = useAuth();
@@ -20,6 +21,10 @@ export default function GenerateShelfLogic(props){
     const [sequence,setSequence] = useState(0);
     //생성할 문제 수
     const [questionCount, setQuestionCount] = useState(5);
+    //생성된 문제 Id
+    const [questionArr, setQuestionArr] = useState(undefined);
+    //생성된 문제 정보
+    const [questionInfoArr, setQuestionInfoArr] = useState(undefined);
 
     // 비동기 작업을 처리하는 함수
     // DB에서 문제집 배열을 가져오는 함수
@@ -55,14 +60,30 @@ export default function GenerateShelfLogic(props){
     }
 
     const onSaveQuestion = ()=> {
-        const result = saveAtWorkBook(token,props.questionArr,savingWorkBook);
+        const result = saveAtWorkBook(token,questionArr,savingWorkBook);
+        props.setFile(null);
         router.push("/");
+    }
+
+    const onCreateQuestion = () => {
+        setSequence(1);
+        const response = createQuestion(
+                    props.file,
+                    questionCount,
+                    token
+                  ).then(
+                    (result) =>{
+                      setQuestionArr(result.questionArr);
+                      setQuestionInfoArr(result.questionInfoArr);
+                      console.log(`${result.questionArr} ${result.questionInfoArr}`)
+                    }
+                  );
     }
 
     return(
         <GenerateShelfUI
             setIsCreated = {props.setIsCreated}
-            isQuestionArr = {props.isQuestionArr}
+            // isQuestionArr = {props.isQuestionArr}
             workBooks={workBooks}
             isCreating = {isCreating}
             setIsCreating = {setIsCreating}
@@ -72,12 +93,14 @@ export default function GenerateShelfLogic(props){
             savingWorkBook = {savingWorkBook}
             setSavingWorkBook = {setSavingWorkBook}
             onSaveQuestion = {onSaveQuestion}
-            questionInfoArr = {props.questionInfoArr}
+            questionInfoArr = {questionInfoArr}
             sequence = {sequence}
             setSequence = {setSequence}
             numArr = {props.numArr}
-            QuestionCount = {questionCount}
+            questionCount = {questionCount}
             setQuestionCount = {setQuestionCount}
+            onCreateQuestion = {onCreateQuestion}
+            questionArr = {questionArr}
         >
             
         </GenerateShelfUI>
