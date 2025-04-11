@@ -11,12 +11,12 @@ export default function QuestionSolveLogic(props) {
   // const [workBookId, setWorkBookId] = useState(undefined);
 
   const router = useRouter();
-  const { token } = useAuth();
+  const { token,isAuthenticated } = useAuth();
   //type {0: 일반, 1: 모의고사, 2: 데일리 문제, 3:비회원}
   const { Id, count, random, ox, multiple, blank, type } = router.query;
 
   useEffect(() => {
-    if (token) {
+    if (isAuthenticated) {
       // workBookId가 있을 때만 API 호출
       console.log(Id);
       if (Id) {
@@ -48,11 +48,24 @@ export default function QuestionSolveLogic(props) {
           }
           // setIsTest(1);
         });
-      } else {
+      }
+      else {
         alert("잘못된 접근입니다.");
         router.push("/");
       }
-    } else {
+    } else if(type === "3"){
+      // localStorage를 이용해 문제 접근
+      const storedData = localStorage.getItem('tempQuestionData');
+      if (storedData && storedData!== undefined) {
+        const questionData = JSON.parse(storedData);
+        setQuestions(questionData); // 질문 데이터 설정
+
+        console.dir(questionData);
+        // 사용 후 삭제
+      //   localStorage.removeItem('tempQuestionData');
+
+    }}
+    else{
       //토큰이 없음을 명시
       console.log("토큰이 없음");
     }

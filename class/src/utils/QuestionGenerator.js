@@ -2,14 +2,16 @@
 import axios from "axios";
 
 // 상태 업데이트 함수를 파라미터로 받지 않고 데이터만 반환하는 방식
-export const createQuestion = async (file, numOfQuestions, token) => {
+export const createQuestion = async (file, numOfQuestions, token, isAuthenticated) => {
   const formData = new FormData();
   formData.append("file", file);
 
-  if (token) {
+  if (isAuthenticated) {
     formData.append("numOfQuestions", numOfQuestions);
+    console.log("회원")
     try {
       const result = await generateQuestion_member(formData, token);
+      console.log(result);
       return {
         questionArr: result.map((item) => item.encryptedQuestionInfoId),
         questionInfoArr: result.map((item) => ({
@@ -29,9 +31,10 @@ export const createQuestion = async (file, numOfQuestions, token) => {
   } else {
     try {
       const result = await generateQuestion_nonMember(formData);
+      console.log(result);
       return {
         questionArr: null,
-        questionInfoArr: result.map((item) => ({
+        questionInfoArr: result.questions.map((item) => ({
           name:
             item.type === "FILL_IN_THE_BLANK"
               ? item.name.replace("{BLANK}", "OOO")

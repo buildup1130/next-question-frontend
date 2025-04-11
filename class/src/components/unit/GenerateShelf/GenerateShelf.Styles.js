@@ -185,3 +185,41 @@ export const GenerateShelf__Shelf__ButtonContainer = styled.div`
   flex-direction:row;
   gap:12px;
 `
+
+export const GenerateShelf__countbutton = styled.div`
+  width: 30%;
+  max-width: 500px;
+  min-height:52px;
+  border-radius: 20px;
+  margin-top:20px;
+  border: 1px solid #d9d9d9;
+
+  background: white;
+  box-shadow: 0 16px 24px rgba(0,0,0,0.1);
+
+  position: relative;
+  overflow: hidden;
+
+  user-select: none;
+  -webkit-user-drag: none;
+
+  cursor:pointer;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+`
+
+export const GenerateShelf__countbuttonContainer = styled.div`
+  width: 100%;
+
+  display:flex;
+  justify-content:space-between;
+  flex-wrap: wrap;
+
+  //버튼 하나일 경우 가운데 정렬
+  ${props => props.isSingle && `
+    justify-content:center;
+  `
+  }
+`

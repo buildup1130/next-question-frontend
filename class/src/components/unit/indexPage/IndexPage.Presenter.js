@@ -9,6 +9,7 @@ import {
 } from "@/pages/styles";
 import MainCalendarLogic from "../MainCalendar/MainCalendar.Container";
 import UploadBoxLogic from "../UploadBox/UploadBox.Container";
+import GenerateShelfLogic from "../GenerateShelf/GenerateShelf.Container";
 
 export default function IndexPageUI({
   onClickLogin,
@@ -17,15 +18,22 @@ export default function IndexPageUI({
   isCreated,
   setFile,
   file,
+  setIsCreated,
+  questionArr,
+  questionInfoArr,
+  numArr
 }) {
   return (
     <MainContainerLogic>
-      {isCreated && (
+      {(isCreated && file) &&(
         <GenerateShelfLogic
           setIsCreated={setIsCreated}
-          isQuestionArr={questionArr !== undefined && questionArr.length > 0}
+          // isQuestionArr={questionArr !== undefined && questionArr.length > 0}
           questionArr={questionArr}
           questionInfoArr={questionInfoArr}
+          numArr = {numArr}
+          file = {file}
+          setFile = {setFile}
         ></GenerateShelfLogic>
       )}
       <Home__IconBar>
@@ -37,7 +45,7 @@ export default function IndexPageUI({
             : user.nickname + " 님 환영합니다."}
         </Home__IconBar__Login>
       </Home__IconBar>
-      <UploadBoxLogic setFile={setFile} file={file}></UploadBoxLogic>
+      <UploadBoxLogic setFile={setFile} file={file} setIsCreated = {setIsCreated}></UploadBoxLogic>
       <Home__CalBar>
         <Home__CalTitle>캘린더</Home__CalTitle>
         <Home__CalMore>
