@@ -117,9 +117,11 @@ export default function QuestionSolveUI(props) {
         savingCheck(props.questions, wrongArr, token)
       }
       //일반 문제풀이, 모의고사 문제풀이 인 경우 결과 저장
-      else
+      else if(props.type === 0 || props.type === 1)
       {
         savingStat(props.questions, wrongArr, props.type,props.workBookId, token);
+      }else{
+        console.log("비회원 문제풀이")
       }
       console.log(`wrongArr = ${wrongArr} ${wrongArr.map((value) => {console.log(props.questions[value])})}`);
     }

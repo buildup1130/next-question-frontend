@@ -61,8 +61,6 @@ export default function GenerateShelfLogic(props){
 
     const onSaveQuestion = ()=> {
         const result = saveAtWorkBook(token,questionArr,savingWorkBook);
-        props.setFile(null);
-        router.push("/");
     }
 
     const onCreateQuestion = () => {
@@ -70,20 +68,34 @@ export default function GenerateShelfLogic(props){
         const response = createQuestion(
                     props.file,
                     questionCount,
-                    token
+                    token,
+                    isAuthenticated
                   ).then(
                     (result) =>{
+                      if(isAuthenticated){
                       setQuestionArr(result.questionArr);
                       setQuestionInfoArr(result.questionInfoArr);
+                      }else{
+                        console.log(result.questionInfoArr)
+                        localStorage.setItem("tempQuestionData",JSON.stringify(result.questionInfoArr));
+                        router.push({
+                            pathname:"/Question",
+                            query:{
+                                type:3
+                            }
+                        })
+                      }
                       console.log(`${result.questionArr} ${result.questionInfoArr}`)
                     }
                   );
     }
 
+    const handleNonMember = () =>{
+
+    }
     return(
         <GenerateShelfUI
             setIsCreated = {props.setIsCreated}
-            // isQuestionArr = {props.isQuestionArr}
             workBooks={workBooks}
             isCreating = {isCreating}
             setIsCreating = {setIsCreating}
@@ -101,6 +113,7 @@ export default function GenerateShelfLogic(props){
             setQuestionCount = {setQuestionCount}
             onCreateQuestion = {onCreateQuestion}
             questionArr = {questionArr}
+            setFile = {props.setFile}
         >
             
         </GenerateShelfUI>

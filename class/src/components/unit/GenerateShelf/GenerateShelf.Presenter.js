@@ -6,19 +6,6 @@ export default function GenerateShelfUI(props){
     return(
     <GenerateShelf__Wrapper>
         <GenerateShelf__Container>
-            {/* {props.isQuestionArr?
-            <GenerateShelf__Shelf>
-                {props.sequence === 0 ? (
-                <OptionModal {...props} />
-            ) : props.sequence === 1 ? (
-                <QuestionModal {...props} />
-            ) : (
-                <SavingModal {...props} />
-            )}                                  
-            </GenerateShelf__Shelf>
-            :
-            <div>로딩 중</div>
-            } */}
             {(!props.questionInfoArr && props.sequence === 1) ?
              <div>로딩 중</div>:
                 <GenerateShelf__Shelf>
@@ -26,9 +13,9 @@ export default function GenerateShelfUI(props){
                 <OptionModal {...props} />
             ) : props.sequence === 1 ? (
                 <QuestionModal {...props} />
-            ) : (
+            ) : props.sequence === 2 ? (
                 <SavingModal {...props} />
-            )}                                  
+            ) : <div>문제가 저장되었습니다.</div>}                                  
             </GenerateShelf__Shelf>
             }
         </GenerateShelf__Container>
@@ -212,7 +199,12 @@ const SavingModal = (props) => {
                 <GenerateShelf__Shelf__submitButton
                     onClick={() => {
                         props.onSaveQuestion();
-                        props.setIsCreated(false);
+                        // props.setIsCreated(false);
+                        props.setSequence(3);
+                        setTimeout(() => {
+                            props.setIsCreated(false);
+                            props.setFile(null);
+                        },1000);
                     }}
                 >
                     저장하기
