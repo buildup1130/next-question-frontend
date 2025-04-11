@@ -37,7 +37,9 @@ const OptionModal = (props) =>{
                 <GenerateShelf__Shelf__Title>
                     문제 수
                 </GenerateShelf__Shelf__Title>
-                <GenerateShelf__countbuttonContainer>
+                <GenerateShelf__countbuttonContainer
+                    isSingle = {props.numArr.length === 1}
+                >
                 {props.numArr.map((num, index) => (
                         <GenerateShelf__countbutton
                         key={index}

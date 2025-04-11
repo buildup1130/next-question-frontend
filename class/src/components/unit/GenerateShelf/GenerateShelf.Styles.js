@@ -216,4 +216,10 @@ export const GenerateShelf__countbuttonContainer = styled.div`
   display:flex;
   justify-content:space-between;
   flex-wrap: wrap;
+
+  //버튼 하나일 경우 가운데 정렬
+  ${props => props.isSingle && `
+    justify-content:center;
+  `
+  }
 `
