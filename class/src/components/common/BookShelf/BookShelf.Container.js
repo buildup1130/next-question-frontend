@@ -1,4 +1,3 @@
-// BookShelf.Container.js
 import { useState, useEffect } from "react";
 import BookShelfUI from "./BookShelf.Presenter";
 import BottomNavigationLogic from "../BottomNavigation/BottomNavigation.Container";
@@ -84,7 +83,8 @@ export default function BookShelfContainer() {
   };
 
   const onClickBook = (book) => {
-    router.push(`/Workbook?id=${book.id}`);
+    console.log("🔗 클릭한 문제집:", book);
+    router.push(`/Workbook?workBookId=${book.id}&title=${book.title}`);
   };
 
   const onClickLearning = async () => {

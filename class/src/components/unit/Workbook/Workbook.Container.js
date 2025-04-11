@@ -14,6 +14,9 @@ export default function WorkbookContainer() {
   const [questions, setQuestions] = useState([]);
 
   useEffect(() => {
+    console.log("✅ token:", token);
+    console.log("✅ workBookId:", workBookId);
+    console.log("✅ userId:", userId);
     if (token && workBookId && userId) {
       getWorkbookQuestions(token, workBookId, userId).then((data) => {
         if (data && data.length > 0) {
