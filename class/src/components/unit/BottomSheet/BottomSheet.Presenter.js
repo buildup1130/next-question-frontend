@@ -14,11 +14,6 @@ export default function BottomSheetPresenter({
   onClickLearn,
   onClickRename,
   onClickDelete,
-  isRenaming, // ✅ 추가
-  newName, // ✅ 추가
-  onChangeNewName, // ✅ 추가
-  onConfirmRename, // ✅ 추가
-  onCancelRename, // ✅ 추가
 }) {
   return (
     <Overlay onClick={onClose}>
@@ -32,14 +27,6 @@ export default function BottomSheetPresenter({
           <OptionItem onClick={onClickDelete} style={{ color: "red" }}>
             🗑 삭제하기
           </OptionItem>
-
-          {isRenaming && (
-            <RenameModalWrapper>
-              <input value={newName} onChange={onChangeNewName} />
-              <button onClick={onConfirmRename}>확인</button>
-              <button onClick={onCancelRename}>취소</button>
-            </RenameModalWrapper>
-          )}
         </SheetContent>
       </SheetContainer>
     </Overlay>

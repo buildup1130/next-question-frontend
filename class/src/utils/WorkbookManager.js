@@ -1,18 +1,18 @@
 import axios from "axios";
 
 export const searchAllWorkBooks = async (token) => {
+  console.log("Sending request with token:", token);
   try {
     const response = await axios.get(
       "http://localhost:8080/member/workBooks/search",
       {
-        headers: {
-          Authorization: `Bearer ${token}`, // 토큰 추가
-        },
+        headers: { Authorization: `Bearer ${token}` },
       }
     );
     return response.data;
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching books:", error);
+    throw error;
   }
 };
 
@@ -52,7 +52,6 @@ export const saveAtWorkBook = async (token, Questions, workbookId) => {
   }
 };
 
-
 export const getWorkbookQuestions = async (token, workBookId, memberId) => {
   try {
     const response = await axios.get(
@@ -75,41 +74,45 @@ export const getWorkbookQuestions = async (token, workBookId, memberId) => {
   }
 };
 
-    export const loadNormalQuestion = async(token, id, options) => {
-        try{
-            // console.log(`id >> ${id}`);
-            const response = await axios.post(
-                "http://localhost:8080/member/solving/normal/search",
-                { 
-                    encryptedWorkBookId: id,
-                    options:options,
-                 },
-                {
-                    headers: {
-                        'Authorization': `Bearer ${token}`, // 토큰 추가
-                        'Content-Type': 'application/json'
-                    }
-                });
-                return response.data;
-        }catch(error){
-            console.error(error);
-        }
+export const loadNormalQuestion = async (token, id, options) => {
+  try {
+    const payload = {
+      encryptedWorkBookIds: [id],
+      options: options,
+    };
 
-    }
+    console.log("🔥 API 요청 payload:", payload);
 
-    export const loadDailyQuestion = async(token) => {
-        try{
-            const response = await axios.get(
-                "http://localhost:8080/member/solving/daily/search",             
-                {
-                    headers: {
-                        'Authorization': `Bearer ${token}`, // 토큰 추가
-                        'Content-Type': 'application/json'
-                    }
-                });
-                return response.data;
-        }catch(error){
-            console.error(error);
-        }
+    const response = await axios.post(
+      "http://localhost:8080/member/solving/normal/search",
+      payload, // 또는 JSON.stringify(payload) 로도 테스트
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("📛 API 호출 에러:", error);
+    throw error;
+  }
+};
 
-    }
+export const loadDailyQuestion = async (token) => {
+  try {
+    const response = await axios.get(
+      "http://localhost:8080/member/solving/daily/search",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // 토큰 추가
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
