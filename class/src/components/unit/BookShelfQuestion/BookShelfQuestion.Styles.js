@@ -31,6 +31,7 @@ export const BookShelfQuestion__Container = styled.div`
 `;
 
 export const BookShelfQuestion__Modal = styled.div`
+  position: relative;
   width: 100%;
   max-height: 100%;
   padding: 16px 8px;
@@ -117,14 +118,13 @@ export const CurrentValue = styled.div`
 
 export const BookShelfQuestion__CountContainer = styled.div`
   width: 100%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 10px;
 
   margin-top: 10px;
-`
-
+`;
 
 export const BookShelfQuestion__Input = styled.input`
   width: 48px;
@@ -156,11 +156,10 @@ export const BookShelfQuestion__submitButton = styled.div`
   cursor: pointer;
 `;
 
-
 export const BookShelfQuestion__CloseButtonContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
+  position: absolute;
+  top: 12px;
+  right: 12px;
 `;
 
 export const BookShelfQuestion__CloseButton = styled.button`
@@ -168,15 +167,14 @@ export const BookShelfQuestion__CloseButton = styled.button`
   border: none;
   font-size: 20px;
   cursor: pointer;
+  line-height: 1;
 `;
-
 
 export const BookShelfQuestion__isTestButton = styled.button`
   width: 20px;
   height: 20px;
 
-  background-color: ${(props) => props.isTest?"yellow":null};
+  background-color: ${(props) => (props.isTest ? "yellow" : null)};
   border-radius: 5px;
   border: 1px solid #d9d9d9;
-`
-
+`;

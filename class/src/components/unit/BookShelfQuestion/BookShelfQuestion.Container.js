@@ -1,35 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BookShelfQuestionUI from "./BookShelfQuestion.Presenter";
 import axios from "axios";
 import { loadNormalQuestion } from "@/utils/WorkbookManager";
 
 export default function BookShelfQuestionLogic(props) {
+  // ✅ 문제 수를 모달 열 때 최대값으로 초기화
+  useEffect(() => {
+    if (props.curBook?.items) {
+      props.setCount(props.curBook.items);
+    }
+  }, [props.curBook]);
+
   const handleChange = (e) => {
     const inputValue = e.target.value;
 
     if (inputValue === "") {
-      // 입력값이 숫자가 아닌 경우
       props.setCount("");
       return;
     }
 
     const newValue = parseInt(inputValue);
     if (newValue <= 0) {
-      // 0 이하인 경우
-      props.setCount(1); // 최소값을 1로 설정
+      props.setCount(1);
     } else if (newValue > props.curBook.items) {
-      // 최대값을 초과하는 경우
       props.setCount(props.curBook.items);
     } else {
-      // 유효한 범위인 경우
       props.setCount(newValue);
     }
   };
 
-
-  
-
-  
   return (
     <BookShelfQuestionUI
       curBook={props.curBook}
@@ -38,8 +37,8 @@ export default function BookShelfQuestionLogic(props) {
       handleChange={handleChange}
       onClickLearning={props.onClickLearning}
       onClose={props.onClose}
-      setIsTest = {props.setIsTest}
-      isTest = {props.isTest}
-    ></BookShelfQuestionUI>
+      setIsTest={props.setIsTest}
+      isTest={props.isTest}
+    />
   );
 }

@@ -6,32 +6,41 @@ import { loadDailyQuestion, loadNormalQuestion } from "@/utils/WorkbookManager";
 
 export default function QuestionSolveLogic(props) {
   const [questions, setQuestions] = useState([]);
-  // const [count,setCount] = useState(0);
-  // const [isTest,setIsTest] = useState(true);
-  // const [workBookId, setWorkBookId] = useState(undefined);
-
   const router = useRouter();
-  const { token,isAuthenticated } = useAuth();
-  //type {0: 일반, 1: 모의고사, 2: 데일리 문제, 3:비회원}
+  const { token, isAuthenticated } = useAuth();
+
   const { Id, count, random, ox, multiple, blank, type } = router.query;
 
   useEffect(() => {
+    console.log("✅ router.query:", router.query);
+
+    // 1. 비회원 학습 (localStorage 기반)
+    if (type === "3") {
+      const storedData = localStorage.getItem("tempQuestionData");
+      if (storedData) {
+        const questionData = JSON.parse(storedData);
+        setQuestions(questionData);
+        console.dir(questionData);
+      } else {
+        alert("저장된 문제 데이터가 없습니다.");
+        router.push("/");
+      }
+      return;
+    }
+
+    // 2. 로그인 사용자
     if (isAuthenticated) {
-      // workBookId가 있을 때만 API 호출
-      console.log(Id);
       if (Id) {
         loadNormalQuestion(token, Id, {
           count: count || 5,
-          random: random ? true : false,
-          ox: ox ? true : false,
-          multiple: multiple ? true : false,
-          blank: blank ? true : false,
+          random: !!random,
+          ox: !!ox,
+          multiple: !!multiple,
+          blank: !!blank,
         }).then((result) => {
           if (result) {
-            // 필요한 데이터 변환 처리
-            const processedQuestions = handleQuestions(result);
-            setQuestions(processedQuestions);
-            //   setIsTest(type === 1?true:0);
+            const processed = handleQuestions(result);
+            setQuestions(processed);
           } else {
             alert("잘못된 워크북 아이디입니다.");
             router.push("/");
@@ -40,67 +49,19 @@ export default function QuestionSolveLogic(props) {
       } else if (type === "2") {
         loadDailyQuestion(token).then((result) => {
           if (result) {
-            const processedQuestions = handleQuestions(result);
-            setQuestions(processedQuestions);
+            const processed = handleQuestions(result);
+            setQuestions(processed);
           } else {
             alert("워크북이 없습니다.");
             router.push("/");
           }
-          // setIsTest(1);
         });
-      }
-      else {
+      } else {
         alert("잘못된 접근입니다.");
         router.push("/");
       }
-    } else if(type === "3"){
-      // localStorage를 이용해 문제 접근
-      const storedData = localStorage.getItem('tempQuestionData');
-      if (storedData && storedData!== undefined) {
-        const questionData = JSON.parse(storedData);
-        setQuestions(questionData); // 질문 데이터 설정
-
-        console.dir(questionData);
-        // 사용 후 삭제
-      //   localStorage.removeItem('tempQuestionData');
-
-    }}
-    else{
-      //토큰이 없음을 명시
-      console.log("토큰이 없음");
     }
-  }, [Id, token, count, random, ox, multiple, blank]);
-
-  const handleQuestions = (questions) => {
-    // questions가 undefined나 null인 경우 빈 배열 반환
-    if (!questions) {
-      console.error("Questions data is undefined or null");
-      return [];
-    }
-
-    // questions가 배열이 아닌 경우 처리
-    if (!Array.isArray(questions)) {
-      console.error("Questions data is not an array:", questions);
-      return [];
-    }
-
-    const processedQuestions = questions.map((data) => {
-      const newData = { ...data };
-      // OX 정답 처리
-      if (newData.answer === "O") {
-        newData.answer = "0";
-      } else if (newData.answer === "X") {
-        newData.answer = "1";
-      }
-
-      // 빈칸 처리
-      if (newData.type === "FILL_IN_THE_BLANK") {
-        newData.name = newData.name.replace("{BLANK}", "OOO");
-      }
-      return newData;
-    });
-    return processedQuestions;
-  };
+  }, [Id, token, count, random, ox, multiple, blank, type]);
 
   // //LocalStorage사용 방식
   // useEffect(() => {
@@ -126,12 +87,33 @@ export default function QuestionSolveLogic(props) {
 
   //   }, []);
 
+  // ❗ 여기서 리턴! 함수 안에서 JSX 반환
   return (
     <QuestionSolveUI
       questions={questions}
-      // isTest = {isTest}
       type={Number(type)}
       workBookId={Id}
-    ></QuestionSolveUI>
+    />
   );
+}
+
+// 질문 데이터 후처리 함수
+function handleQuestions(questions) {
+  if (!questions || !Array.isArray(questions)) {
+    console.error("Questions data is not valid:", questions);
+    return [];
+  }
+
+  return questions.map((data) => {
+    const newData = { ...data };
+
+    if (newData.answer === "O") newData.answer = "0";
+    else if (newData.answer === "X") newData.answer = "1";
+
+    if (newData.type === "FILL_IN_THE_BLANK") {
+      newData.name = newData.name.replace("{BLANK}", "OOO");
+    }
+
+    return newData;
+  });
 }

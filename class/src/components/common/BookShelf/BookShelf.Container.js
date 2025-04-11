@@ -88,11 +88,12 @@ export default function BookShelfContainer() {
   };
 
   const onClickLearning = async () => {
-    alert("토큰 또는 워크북 정보가 없습니다.");
     console.log("token:", token);
     console.log("curBook:", curBook);
     console.log("count:", count);
+
     if (!token || !curBook?.id) {
+      alert("토큰 또는 워크북 정보가 없습니다.");
       return;
     }
 
@@ -109,6 +110,7 @@ export default function BookShelfContainer() {
           blank: true,
         },
       });
+
       const result = await loadNormalQuestion(token, curBook.id, {
         count: count,
         random: true,
@@ -121,7 +123,10 @@ export default function BookShelfContainer() {
         localStorage.setItem("tempQuestionData", JSON.stringify(result));
         localStorage.setItem("isTest", isTest);
         localStorage.setItem("workBookId", curBook.id);
-        router.push("/Question");
+        router.push({
+          pathname: "/Question",
+          query: { type: 3 }, // ✅ 이걸 꼭 넘겨야 함
+        });
       }
       console.log("📦 결과:", result);
     } catch (err) {
