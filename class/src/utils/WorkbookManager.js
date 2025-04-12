@@ -3,8 +3,9 @@ import axios from "axios";
 export const searchAllWorkBooks = async (token) => {
   console.log("Sending request with token:", token);
   try {
-    const response = await axios.get(
+    const response = await axios.post(
       "http://localhost:8080/member/workBooks/search",
+      {},
       {
         headers: { Authorization: `Bearer ${token}` },
       }

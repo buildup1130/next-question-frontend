@@ -1,5 +1,5 @@
 import { RefreshIcon } from "@/utils/SvgProvider";
-import { GenerateShelf__Container, GenerateShelf__Shelf, GenerateShelf__Shelf__Container, GenerateShelf__Shelf__Input, GenerateShelf__Shelf__Input__Button, GenerateShelf__Shelf__Input__Container, GenerateShelf__Shelf__QuestionContainer, GenerateShelf__Shelf__QuestionText, GenerateShelf__Shelf__QuestionTitle, GenerateShelf__Shelf__Select, GenerateShelf__Shelf__Select__Button, GenerateShelf__Shelf__submitButton, GenerateShelf__Shelf__Title, GenerateShelf__Shelf__Title__Button, GenerateShelf__Wrapper,GenerateShelf__Shelf__QuestionWrapper, GenerateShelf__Shelf__ButtonContainer,GenerateShelf__countbutton, GenerateShelf__countbuttonContainer } from "./GenerateShelf.Styles";
+import { GenerateShelf__Container, GenerateShelf__Shelf, GenerateShelf__Shelf__Container, GenerateShelf__Shelf__Input, GenerateShelf__Shelf__Input__Button, GenerateShelf__Shelf__Input__Container, GenerateShelf__Shelf__QuestionContainer, GenerateShelf__Shelf__QuestionText, GenerateShelf__Shelf__QuestionTitle, GenerateShelf__Shelf__Select, GenerateShelf__Shelf__Select__Button, GenerateShelf__Shelf__submitButton, GenerateShelf__Shelf__Title, GenerateShelf__Shelf__Title__Button, GenerateShelf__Wrapper,GenerateShelf__Shelf__QuestionWrapper, GenerateShelf__Shelf__ButtonContainer,GenerateShelf__countbutton, GenerateShelf__countbuttonContainer, GenerateShelf__Shelf__Title__Text } from "./GenerateShelf.Styles";
 
 export default function GenerateShelfUI(props){
 
@@ -8,7 +8,7 @@ export default function GenerateShelfUI(props){
         <GenerateShelf__Container>
             <GenerateShelf__Shelf>
             {(!props.questionInfoArr && props.sequence === 1) ?
-             <div>로딩 중</div>:
+             <LoadingModal></LoadingModal>:
                 <>
                 {props.sequence === 0 ? (
                 <OptionModal {...props} />
@@ -93,7 +93,7 @@ const QuestionModal = (props) => {
     return(
         <>
         <GenerateShelf__Shelf__Title>
-                    <div>문제 확인하기</div>
+                    <GenerateShelf__Shelf__Title__Text>문제 확인</GenerateShelf__Shelf__Title__Text>
                     <GenerateShelf__Shelf__Title__Button
                         onClick={() => {
                             props.setIsCreated(false);
@@ -108,8 +108,9 @@ const QuestionModal = (props) => {
                                 return(
                                 <GenerateShelf__Shelf__QuestionContainer
                                 key = {index}>
-                                  <GenerateShelf__Shelf__QuestionTitle>{index+1}. {info.name}</GenerateShelf__Shelf__QuestionTitle>
-                                  <GenerateShelf__Shelf__QuestionText>문제 유형: {info.type}</GenerateShelf__Shelf__QuestionText>
+                                  <GenerateShelf__Shelf__QuestionTitle>Q{index+1}</GenerateShelf__Shelf__QuestionTitle>
+                                  <GenerateShelf__Shelf__QuestionTitle>{info.name}</GenerateShelf__Shelf__QuestionTitle>
+                                  <GenerateShelf__Shelf__QuestionText>문제 유형: {info.type === "MULTIPLE_CHOICE"? "객관식": info.type === "FILL_IN_THE_BLANK"? "빈칸" : "O/X"}</GenerateShelf__Shelf__QuestionText>
                                   {
                                     info.type==="MULTIPLE_CHOICE"&&
                                     optArr.map((info,index) =>(
@@ -217,4 +218,42 @@ const SavingModal = (props) => {
                 
         </>
     );
+}
+
+const LoadingModal = () => {
+    return(
+    <>
+    <div>로딩 중</div>
+      <svg 
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+        width="50px"
+        height="50px"
+        style={{
+          animation: "spin 1.5s ease-in-out infinite",
+          transformOrigin: "center"
+        }}
+      >
+        <style>
+          {`
+            @keyframes spin {
+              from { transform: rotate(0deg); }
+              to { transform: rotate(360deg); }
+            }
+          `}
+        </style>
+        <circle 
+          cx="50" 
+          cy="50" 
+          r="40" 
+          fill="none" 
+          stroke="black" 
+          strokeWidth="5"
+          strokeLinecap="round"
+          strokeDasharray="251.2"
+          strokeDashoffset="62.8"
+        />
+      </svg>
+    </>
+    )
 }
