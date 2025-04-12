@@ -1,4 +1,5 @@
 import styled from "@emotion/styled"
+import { keyframes } from "styled-components";
 
 export const GenerateShelf__Wrapper = styled.div`
   position: fixed;
@@ -110,6 +111,7 @@ export const GenerateShelf__Shelf__Input__Container = styled.div`
 export const GenerateShelf__Shelf__Input = styled.input`
   width:100%;
 
+  padding: 0 5px;
 `
 
 export const GenerateShelf__Shelf__Input__Button = styled.button`
@@ -157,7 +159,7 @@ export const GenerateShelf__Shelf__QuestionWrapper = styled.div`
   height:100%;
   padding: 0 8px;
 
-  border: 1px solid #d9d9d9;
+  /* border: 1px solid #d9d9d9; */
   overflow-y: scroll;
   overflow-x: hidden;
 
@@ -167,6 +169,10 @@ export const GenerateShelf__Shelf__QuestionWrapper = styled.div`
 `
 export const GenerateShelf__Shelf__QuestionContainer = styled.div`
   margin-top:8px;
+  padding: 10px;
+
+  border: 1px solid #d9d9d9;
+  border-radius:20px;
 `
 
 export const GenerateShelf__Shelf__QuestionTitle = styled.div`
@@ -222,4 +228,37 @@ export const GenerateShelf__countbuttonContainer = styled.div`
     justify-content:center;
   `
   }
+`
+
+const spinner = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+export const LoadingSvg = styled.svg`
+  width:50px;
+  height:50px;
+
+  animation: ${spinner} 2s linear infinite;
+  transform-origin: center;
+`
+
+export const LoadingCircle = styled.circle`
+  fill: none;
+  stroke: black;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 251.2;
+  stroke-dashoffset: 62.8;
+  transform-origin: center;
+  animation: ${spinner} 2s linear infinite;
+`;
+
+export const GenerateShelf__Shelf__Title__Text = styled.div`
+  width:100%;
+  text-align:center;
 `

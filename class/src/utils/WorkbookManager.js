@@ -3,8 +3,9 @@ import axios from "axios";
 export const searchAllWorkBooks = async (token) => {
   console.log("Sending request with token:", token);
   try {
-    const response = await axios.get(
+    const response = await axios.post(
       "http://localhost:8080/member/workBooks/search",
+      {},
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -17,7 +18,7 @@ export const searchAllWorkBooks = async (token) => {
 };
 
 export const createWorkbook = async (token, name) => {
-  try {
+  
     const response = await axios.post(
       "http://localhost:8080/member/workBook/create",
       { workBookName: name },
@@ -29,9 +30,7 @@ export const createWorkbook = async (token, name) => {
       }
     );
     return response.data;
-  } catch (error) {
-    console.error(error);
-  }
+  
 };
 
 export const saveAtWorkBook = async (token, Questions, workbookId) => {
@@ -54,8 +53,9 @@ export const saveAtWorkBook = async (token, Questions, workbookId) => {
 
 export const getWorkbookQuestions = async (token, workBookId, memberId) => {
   try {
-    const response = await axios.get(
+    const response = await axios.post(
       "http://localhost:8080/member/workBook/search/questions",
+      {},
       {
         headers: {
           Authorization: `Bearer ${token}`,

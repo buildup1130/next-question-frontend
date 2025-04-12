@@ -34,8 +34,10 @@ export default function UploadBoxUI(props) {
       </UploadContainer>
       <UploadBox__UploadButton
         onClick={() =>{
+          if(props.file){
           props.setIsCreated(true);
           console.log(props.file)
+          }
         }}
       >문제 생성하기</UploadBox__UploadButton>
       

@@ -1,6 +1,7 @@
 // @/utils/AuthContext.js
 import { createContext, useState, useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 
 const AuthContext = createContext(null);
 
@@ -9,6 +10,25 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+
+  useEffect(() => {
+    // 응답 인터셉터 설정
+    const responseInterceptor = axios.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        // 401 Unauthorized 에러인 경우
+        if (error.response && error.response.status === 401) {
+          logout();
+        }
+        return Promise.reject(error);
+      }
+    );
+    
+    // 컴포넌트 언마운트 시 인터셉터 제거
+    return () => {
+      axios.interceptors.response.eject(responseInterceptor);
+    };
+  }, []);
 
   useEffect(() => {
     // 클라이언트 사이드에서만 실행
@@ -41,7 +61,7 @@ export function AuthProvider({ children }) {
     setToken(null);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    router.push('/Login');
+    router.push('/');
   };
 
   // 인증 상태 확인
