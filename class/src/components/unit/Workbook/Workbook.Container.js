@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/utils/AuthContext";
+import { toast } from "react-toastify";
 import {
   searchAllWorkBooks,
   moveQuestions,
@@ -72,30 +73,32 @@ export default function WorkbookContainer() {
   };
 
   const handleMoveSubmit = async () => {
+    // 1️⃣ 예외 처리: 필수 정보 누락
     if (!token || !workBookId || !targetBookId || selectedIds.length === 0) {
       alert("이동에 필요한 정보가 부족합니다.");
       return;
     }
 
-    console.log("✅ 선택된 문제 ID들 (selectedIds):", selectedIds);
-    console.log("✅ 전체 문제 객체:", questions);
+    // 2️⃣ 동일 문제집 이동 차단
+    if (workBookId === targetBookId) {
+      alert("같은 문제집으로는 이동할 수 없습니다.");
+      return;
+    }
+
+    // 3️⃣ 이동 대상 문제 ID 추출 (encryptedQuestionInfoId 기준)
     const encryptedQuestionInfoIds = questions
       .filter((q) => selectedIds.includes(q.encryptedQuestionId))
-      .map((q) => q.encryptedQuestionInfoId);
+      .map((q) => q.encryptedQuestionInfoId)
+      .filter((id) => typeof id === "string" && !!id.trim());
+    console.log("🧾 보낼 encryptedQuestionInfoIds:", encryptedQuestionInfoIds);
 
     if (encryptedQuestionInfoIds.length === 0) {
       alert("유효한 문제 ID가 없습니다.");
       return;
     }
 
+    // 4️⃣ 서버로 이동 요청
     try {
-      console.log("🚀 최종 전송 데이터:", {
-        token,
-        workBookId,
-        targetBookId,
-        encryptedQuestionInfoIds,
-      });
-
       const response = await moveQuestions(
         token,
         workBookId,
@@ -104,17 +107,19 @@ export default function WorkbookContainer() {
       );
 
       if (response.success) {
-        alert("문제 이동 성공!");
+        toast.success(response.message);
         setMoveModalOpen(false);
         setMoveMode(false);
         setSelectedIds([]);
+
+        // 이동 후 문제집 갱신
         const updated = await getWorkbookQuestions(token, workBookId, userId);
         setQuestions(updated);
       } else {
         alert("문제 이동 실패");
       }
     } catch (error) {
-      console.error("문제 이동 중 오류:", error);
+      console.error("❌ 문제 이동 중 오류:", error);
       alert("문제 이동 중 오류 발생");
     }
   };

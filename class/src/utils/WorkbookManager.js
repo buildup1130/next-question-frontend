@@ -73,33 +73,23 @@ export const getWorkbookQuestions = async (token, encryptedWorkBookId) => {
   }
 };
 
-const handleDelete = async () => {
-  if (selectedIds.length === 0) return;
-  console.log("🗑 삭제 요청할 문제 ID 목록:", selectedIds);
-
+export const deleteWorkBooks = async (token, encryptedWorkBookIds) => {
   try {
-    const res = await fetch("http://localhost:8080/member/questions/delete", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(selectedIds),
-    });
-
-    if (!res.ok) throw new Error("요청 실패");
-
-    const text = await res.text();
-    console.log("🟢 서버 응답 메시지:", text);
-
-    setQuestions((prev) =>
-      prev.filter((q) => !selectedIds.includes(q.encryptedQuestionId))
+    const response = await axios.delete(
+      "http://localhost:8080/member/workBooks/delete",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        data: encryptedWorkBookIds, // 배열 형태로 보냄
+      }
     );
-    setSelectedIds([]);
-    setDeleteMode(false);
-  } catch (err) {
-    console.error("❌ 삭제 중 에러 발생:", err);
-    alert("삭제 요청 중 오류 발생");
+
+    return response.data;
+  } catch (error) {
+    console.error("문제집 삭제 실패:", error.response?.data || error.message);
+    throw error;
   }
 };
 
@@ -146,15 +136,20 @@ export const loadDailyQuestion = async (token) => {
   }
 };
 
-export const moveQuestions = async (token, sourceId, targetId, questionIds) => {
+export const moveQuestions = async (
+  token,
+  sourceId,
+  targetId,
+  encryptedQuestionInfoIds
+) => {
   const body = {
-    encryptedSourceWorkBookId: sourceId,
-    encryptedTargetWorkBookId: targetId,
-    encryptedQuestionInfoIds: questionIds,
+    encryptedSourceWorkbookId: sourceId,
+    encryptedTargetWorkbookId: targetId,
+    encryptedQuestionInfoIds,
   };
 
   const res = await fetch("http://localhost:8080/member/questions/move", {
-    method: "POST", // ✅ POST로 유지
+    method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
@@ -163,10 +158,9 @@ export const moveQuestions = async (token, sourceId, targetId, questionIds) => {
   });
 
   if (!res.ok) {
-    const text = await res.text();
-    console.error("🚨 서버 응답:", text);
-    throw new Error("문제 이동 실패");
+    const errorMessage = await res.text();
+    throw new Error(`문제 이동 실패: ${errorMessage}`);
   }
 
-  return await res.json();
+  return res.json();
 };

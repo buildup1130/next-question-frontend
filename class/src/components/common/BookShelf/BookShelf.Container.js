@@ -126,7 +126,6 @@ export default function BookShelfContainer() {
   };
 
   const handleDelete = async () => {
-    alert("📌 handleDelete 실행됨"); // << 콘솔이 안 찍히면 alert 사용해봐!
     console.log("📌 handleDelete 함수 실행됨");
 
     try {
