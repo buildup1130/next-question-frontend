@@ -29,7 +29,7 @@ const OptionModal = (props) =>{
     return(
         <>
         <GenerateShelf__Shelf__Title>
-                    <div>옵션</div>
+                    <GenerateShelf__Shelf__Title__Text>옵션</GenerateShelf__Shelf__Title__Text>
                     <GenerateShelf__Shelf__Title__Button
                         onClick={() => {
                             props.setIsCreated(false);
@@ -153,6 +153,9 @@ const QuestionModal = (props) => {
 const SavingModal = (props) => {
     return(
         <>
+            <GenerateShelf__Shelf__Title>
+                <GenerateShelf__Shelf__Title__Text>문제 저장</GenerateShelf__Shelf__Title__Text>
+            </GenerateShelf__Shelf__Title>
             <GenerateShelf__Shelf__Container>
                     <GenerateShelf__Shelf__Select__Button
                         onClick={props.fetchWorkBooks}
