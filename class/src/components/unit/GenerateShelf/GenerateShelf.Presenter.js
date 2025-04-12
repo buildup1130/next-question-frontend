@@ -157,11 +157,6 @@ const SavingModal = (props) => {
                 <GenerateShelf__Shelf__Title__Text>문제 저장</GenerateShelf__Shelf__Title__Text>
             </GenerateShelf__Shelf__Title>
             <GenerateShelf__Shelf__Container>
-                    <GenerateShelf__Shelf__Select__Button
-                        onClick={props.fetchWorkBooks}
-                    >
-                        <RefreshIcon></RefreshIcon>
-                    </GenerateShelf__Shelf__Select__Button>
                     <GenerateShelf__Shelf__Select
                         value = {props.savingWorkBook}
                         onChange={(e) => {
@@ -187,6 +182,7 @@ const SavingModal = (props) => {
                         <GenerateShelf__Shelf__Input
                             onChange={(e) => {props.HandleWorkBookName(e);
                             }}
+                            placeholder="문제집명을 입력해주세요."
                         ></GenerateShelf__Shelf__Input>
                         <GenerateShelf__Shelf__Input__Button
                             onClick={() => {props.onCreateWorkBook()}}
@@ -206,13 +202,7 @@ const SavingModal = (props) => {
                 </GenerateShelf__Shelf__submitButton>
                 <GenerateShelf__Shelf__submitButton
                     onClick={() => {
-                        props.onSaveQuestion();
-                        // props.setIsCreated(false);
-                        props.setSequence(3);
-                        setTimeout(() => {
-                            props.setIsCreated(false);
-                            props.setFile(null);
-                        },1000);
+                        props.onClickSubmit();
                     }}
                 >
                     저장하기

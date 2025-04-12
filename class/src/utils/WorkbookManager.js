@@ -18,7 +18,7 @@ export const searchAllWorkBooks = async (token) => {
 };
 
 export const createWorkbook = async (token, name) => {
-  try {
+  
     const response = await axios.post(
       "http://localhost:8080/member/workBook/create",
       { workBookName: name },
@@ -30,9 +30,7 @@ export const createWorkbook = async (token, name) => {
       }
     );
     return response.data;
-  } catch (error) {
-    console.error(error);
-  }
+  
 };
 
 export const saveAtWorkBook = async (token, Questions, workbookId) => {

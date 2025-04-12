@@ -111,6 +111,7 @@ export const GenerateShelf__Shelf__Input__Container = styled.div`
 export const GenerateShelf__Shelf__Input = styled.input`
   width:100%;
 
+  padding: 0 5px;
 `
 
 export const GenerateShelf__Shelf__Input__Button = styled.button`

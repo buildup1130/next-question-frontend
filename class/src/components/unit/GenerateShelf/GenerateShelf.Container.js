@@ -55,12 +55,33 @@ export default function GenerateShelfLogic(props){
 
     const onCreateWorkBook = () => {
         console.log(creatingName);
-        createWorkbook(token, creatingName);
+        if(creatingName !== ""){
+        createWorkbook(token, creatingName).then(
+            () => {
+                fetchWorkBooks();
+            }
+        ).catch(
+            error =>{
+                console.log(error);
+                if (error.response && error.response.status === 500) {
+                    alert("이미 존재하는 문제집 이름입니다.");
+                } else {
+                    alert("문제집 생성 중 오류가 발생했습니다: " + error.message);
+                }
+            }
+        )
         setIsCreating(false);
+    }else{
+        alert("생성할 문제집의 이름을 입력해주세요.");
+    }
     }
 
     const onSaveQuestion = ()=> {
+        if(savingWorkBook !== ""){
         const result = saveAtWorkBook(token,questionArr,savingWorkBook);
+        }else{
+            alert("문제집을 선택해주세요.");
+        }
     }
 
     const onCreateQuestion = () => {
@@ -90,9 +111,20 @@ export default function GenerateShelfLogic(props){
                   );
     }
 
-    const handleNonMember = () =>{
-
+    const onClickSubmit = () => {
+        if(savingWorkBook !== ""){
+        onSaveQuestion();
+        //setIsCreated(false);
+        setSequence(3);
+        setTimeout(() => {
+            props.setIsCreated(false);
+            props.setFile(null);
+        },1000);
+    }else{
+        alert("문제집을 선택해주세요.")
     }
+    }
+
     return(
         <GenerateShelfUI
             setIsCreated = {props.setIsCreated}
@@ -114,6 +146,7 @@ export default function GenerateShelfLogic(props){
             onCreateQuestion = {onCreateQuestion}
             questionArr = {questionArr}
             setFile = {props.setFile}
+            onClickSubmit = {onClickSubmit}
         >
             
         </GenerateShelfUI>
