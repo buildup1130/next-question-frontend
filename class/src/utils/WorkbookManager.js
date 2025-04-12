@@ -55,8 +55,9 @@ export const saveAtWorkBook = async (token, Questions, workbookId) => {
 
 export const getWorkbookQuestions = async (token, workBookId, memberId) => {
   try {
-    const response = await axios.get(
+    const response = await axios.post(
       "http://localhost:8080/member/workBook/search/questions",
+      {},
       {
         headers: {
           Authorization: `Bearer ${token}`,
