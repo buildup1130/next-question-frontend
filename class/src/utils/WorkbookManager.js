@@ -6,6 +6,7 @@ export const searchAllWorkBooks = async (token) => {
     const response = await axios.post(
       "http://localhost:8080/member/workBooks/search",
       {}, // POST 방식이므로 body는 비어 있어도 {} 넘겨야 함
+
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -18,7 +19,7 @@ export const searchAllWorkBooks = async (token) => {
 };
 
 export const createWorkbook = async (token, name) => {
-  try {
+  
     const response = await axios.post(
       "http://localhost:8080/member/workBook/create",
       { workBookName: name },
@@ -30,9 +31,7 @@ export const createWorkbook = async (token, name) => {
       }
     );
     return response.data;
-  } catch (error) {
-    console.error(error);
-  }
+  
 };
 
 export const saveAtWorkBook = async (token, Questions, workbookId) => {
@@ -57,6 +56,7 @@ export const getWorkbookQuestions = async (token, encryptedWorkBookId) => {
   try {
     const response = await axios.post(
       "http://localhost:8080/member/workBook/search/questions",
+      {},
       {
         encryptedWorkBookId: encryptedWorkBookId, // ✅ 정확한 key 사용
       },

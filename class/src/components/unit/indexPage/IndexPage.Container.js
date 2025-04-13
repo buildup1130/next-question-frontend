@@ -3,10 +3,11 @@ import { useRouter } from "next/router";
 import { useAuth } from "@/utils/AuthContext";
 import { useState, useEffect } from "react";
 import { createQuestion } from "@/utils/QuestionGenerator";
+import { fetchCheck } from "@/utils/StatisticManager";
 
 export default function IndexPageLogic() {
   const router = useRouter();
-  const { user, token, isAuthenticated } = useAuth();
+  const { user, token, isAuthenticated,logout } = useAuth();
 
   //회원일 경우 30문제, 비회원일 경우 5문제 출제
   const numArr = token ? [5, 10, 15, 20, 25, 30] : [5];
@@ -15,11 +16,26 @@ export default function IndexPageLogic() {
   const [file, setFile] = useState(undefined);
   const [isCreated, setIsCreated] = useState(false);
  
+  //출석체크 관련 State
+  const [checkArr,setCheckArr] = useState([]);
 
   const onClickLogin = () => {
-    router.push("/Login");
+    if(isAuthenticated){
+      logout();
+    }else{
+      router.push("/Login");
+    }
   };
 
+  useEffect(
+    () => {
+      if(isAuthenticated){
+        const response = fetchCheck(token).then(response => {  
+          setCheckArr(response);
+        });
+      }
+    },[token]
+  );
 
   // //비회원일 경우 문제 생성 후 페이지 이동
   // useEffect(() => {
@@ -47,6 +63,7 @@ export default function IndexPageLogic() {
       file={file}
       setFile={setFile}
       numArr={numArr}
+      checkArr = {checkArr}
     ></IndexPageUI>
   );
 }
