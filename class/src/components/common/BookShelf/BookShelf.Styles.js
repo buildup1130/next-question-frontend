@@ -4,7 +4,7 @@ export const Container = styled.div`
   width: 100%;
   max-width: 500px;
   height: 100vh;
-  padding: 20px;
+  padding-top: 20px;
   padding-bottom: 80px;
   margin: 0 auto;
   position: relative; // ✅ LearnButtonWrapper 고정 기준점

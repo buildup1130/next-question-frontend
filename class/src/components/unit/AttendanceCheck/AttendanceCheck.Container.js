@@ -40,7 +40,7 @@ export default function AttendanceCheckLogic(
     // 요일이 출석체크된 날짜인지 확인하는 함수
     const isAttended = (date) => {
         // console.log(checkArr);
-        return checkArr.includes(date);
+        return checkArr?.includes(date);
     };
 
     return <AttendanceCheckUI

@@ -10,6 +10,7 @@ import {
 import MainCalendarLogic from "../MainCalendar/MainCalendar.Container";
 import UploadBoxLogic from "../UploadBox/UploadBox.Container";
 import GenerateShelfLogic from "../GenerateShelf/GenerateShelf.Container";
+import AttendanceCheckLogic from "../AttendanceCheck/AttendanceCheck.Container";
 
 export default function IndexPageUI({
   onClickLogin,
@@ -46,6 +47,7 @@ export default function IndexPageUI({
         </Home__IconBar__Login>
       </Home__IconBar>
       <UploadBoxLogic setFile={setFile} file={file} setIsCreated = {setIsCreated}></UploadBoxLogic>
+      <AttendanceCheckLogic></AttendanceCheckLogic>
       <Home__CalBar>
         <Home__CalTitle>캘린더</Home__CalTitle>
         <Home__CalMore>
