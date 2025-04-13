@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 export default function BottomSheet({
   isOpen,
   onClose,
+  onDelete,
   book,
   setCurBook,
   setSequence,
@@ -39,18 +40,20 @@ export default function BottomSheet({
 
   const handleDelete = async () => {
     try {
-      const response = await axios.post(
+      const response = await axios.delete(
         `${process.env.NEXT_PUBLIC_API_URL}/member/workBooks/delete`,
-        { encryptedWorkBookInfoIds: [book.id] },
         {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
+          data: [book.id], // ✅ 삭제할 암호화된 문제집 ID 배열
         }
       );
 
-      if (response.data?.success) {
+      alert("📦 응답:", JSON.stringify(response.data));
+
+      if (response.data.includes("성공적으로")) {
         alert("문제집 삭제 완료!");
         fetchWorkBooks();
         onClose();
@@ -76,7 +79,7 @@ export default function BottomSheet({
       onClose={onClose}
       onClickLearn={handleLearn}
       onClickRename={handleRename}
-      onClickDelete={handleDelete}
+      onClickDelete={onDelete}
     />
   );
 }

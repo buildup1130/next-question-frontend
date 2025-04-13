@@ -1,12 +1,11 @@
-// BookShelf.Container.js
 import { useState, useEffect } from "react";
 import BookShelfUI from "./BookShelf.Presenter";
 import BottomNavigationLogic from "../BottomNavigation/BottomNavigation.Container";
 import BottomSheet from "../../unit/BottomSheet/BottomSheet.Container";
 import RenameModalContainer from "../../unit/RenameModal/RenameModal.Container";
 import BookShelfQuestionLogic from "../../unit/BookShelfQuestion/BookShelfQuestion.Container";
-
 import {
+  deleteWorkBooks,
   loadNormalQuestion,
   searchAllWorkBooks,
 } from "@/utils/WorkbookManager";
@@ -84,7 +83,7 @@ export default function BookShelfContainer() {
   };
 
   const onClickBook = (book) => {
-    router.push(`/Workbook?id=${book.id}`);
+    router.push(`/Workbook?workBookId=${book.id}&title=${book.title}`);
   };
 
   const onClickLearning = async () => {
@@ -97,20 +96,7 @@ export default function BookShelfContainer() {
       return;
     }
 
-    console.log("보낼 workbookId:", curBook.id);
-
     try {
-      console.log("🔥 요청 바디:", {
-        encryptedWorkBookId: curBook.id,
-        options: {
-          count: count,
-          random: true,
-          ox: true,
-          multiple: true,
-          blank: true,
-        },
-      });
-
       const result = await loadNormalQuestion(token, curBook.id, {
         count: count,
         random: true,
@@ -128,7 +114,6 @@ export default function BookShelfContainer() {
           query: { type: isTest?1:0 }, // ✅ 이걸 꼭 넘겨야 함
         });
       }
-      console.log("📦 결과:", result);
     } catch (err) {
       alert("문제 데이터를 불러오는 중 오류 발생");
       console.error(err);
@@ -138,6 +123,27 @@ export default function BookShelfContainer() {
   const onCloseLearningModal = () => {
     setSequence(0);
     setCurBook(null);
+  };
+
+  const handleDelete = async () => {
+    console.log("📌 handleDelete 함수 실행됨");
+
+    try {
+      if (!token || !selectedBook) {
+        alert("삭제할 문제집이 선택되지 않았습니다.");
+        return;
+      }
+
+      await deleteWorkBooks(token, [selectedBook.id]);
+
+      // 상태 초기화 및 목록 새로고침
+      fetchWorkBooks();
+      setSelectedBook(null);
+      setSheetOpen(false);
+    } catch (err) {
+      alert("문제집 삭제 중 오류 발생");
+      console.error(err);
+    }
   };
 
   return (
@@ -163,6 +169,7 @@ export default function BookShelfContainer() {
         onBack={handleBack}
         onMoreClick={handleMoreClick}
         onClickBook={onClickBook}
+        onClickDelete={handleDelete} // ✅ 수정된 부분
         isSheetOpen={isSheetOpen}
         onCloseBottomSheet={closeBottomSheet}
       />
@@ -177,7 +184,9 @@ export default function BookShelfContainer() {
         fetchWorkBooks={fetchWorkBooks}
         setRenameModalOpen={setRenameModalOpen}
         setRenameTargetBook={setRenameTargetBook}
+        onDelete={handleDelete} // ✅ 꼭 추가해야 함!
       />
+
       {isRenameModalOpen && (
         <RenameModalContainer
           book={renameTargetBook}
