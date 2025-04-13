@@ -56,7 +56,6 @@ export const getWorkbookQuestions = async (token, encryptedWorkBookId) => {
   try {
     const response = await axios.post(
       "http://localhost:8080/member/workBook/search/questions",
-      {},
       {
         encryptedWorkBookId: encryptedWorkBookId, // ✅ 정확한 key 사용
       },

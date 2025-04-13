@@ -96,28 +96,50 @@ export default function BookShelfContainer() {
       return;
     }
 
-    try {
-      const result = await loadNormalQuestion(token, curBook.id, {
-        count: count,
-        random: true,
-        ox: true,
-        multiple: true,
-        blank: true,
-      });
+    // try {
+    //   const result = await loadNormalQuestion(token, curBook.id, {
+    //     count: count,
+    //     random: true,
+    //     ox: true,
+    //     multiple: true,
+    //     blank: true,
+    //   });
 
-      if (result) {
-        localStorage.setItem("tempQuestionData", JSON.stringify(result));
-        localStorage.setItem("isTest", isTest);
-        localStorage.setItem("workBookId", curBook.id);
-        router.push({
-          pathname: "/Question",
-          query: { type: isTest?1:0 }, // ✅ 이걸 꼭 넘겨야 함
-        });
-      }
-    } catch (err) {
-      alert("문제 데이터를 불러오는 중 오류 발생");
-      console.error(err);
-    }
+    //   if (result) {
+    //     localStorage.setItem("tempQuestionData", JSON.stringify(result));
+    //     localStorage.setItem("isTest", isTest);
+    //     localStorage.setItem("workBookId", curBook.id);
+    //     router.push({
+    //       pathname: "/Question",
+    //       query: { 
+    //         Id:curBook.id,
+    //         count:count,
+    //         type: isTest?1:0,
+    //         random: true,
+    //         ox:true,
+    //         multiple: true,
+    //         blank:true
+    //        }, // ✅ 이걸 꼭 넘겨야 함
+    //     });
+    //   }
+    // } catch (err) {
+    //   alert("문제 데이터를 불러오는 중 오류 발생");
+    //   console.error(err);
+    // }
+
+           
+      router.push({
+        pathname: "/Question",
+        query: { 
+          Id:curBook.id,
+          count:count,
+          type: isTest?1:0,
+          random: true,
+          ox:true,
+          multiple: true,
+          blank:true,
+      }})
+    
   };
 
   const onCloseLearningModal = () => {
