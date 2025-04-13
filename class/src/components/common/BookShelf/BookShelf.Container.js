@@ -125,7 +125,7 @@ export default function BookShelfContainer() {
         localStorage.setItem("workBookId", curBook.id);
         router.push({
           pathname: "/Question",
-          query: { type: 3 }, // ✅ 이걸 꼭 넘겨야 함
+          query: { type: isTest?1:0 }, // ✅ 이걸 꼭 넘겨야 함
         });
       }
       console.log("📦 결과:", result);

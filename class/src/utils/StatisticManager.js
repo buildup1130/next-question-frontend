@@ -30,6 +30,22 @@ export const savingStat = async(questions, wrongArr, type,workBookId,token) => {
         }
 }
 
+export const fetchHistories = async(token) => {
+    try{
+        const response = await axios.get(
+            "http://localhost:8080/member/solving/histories/search",
+            {
+                headers:{
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+    }catch(error){
+        console.error(error);
+    }
+}
+
 export const savingCheck = async(questions, wrongArr,token) => {
     console.log(`wrongArr = ${wrongArr}`)
     const infoArr = [];
