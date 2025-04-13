@@ -5,7 +5,8 @@ export const searchAllWorkBooks = async (token) => {
   try {
     const response = await axios.post(
       "http://localhost:8080/member/workBooks/search",
-      {},
+      {}, // POST 방식이므로 body는 비어 있어도 {} 넘겨야 함
+
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -51,26 +52,44 @@ export const saveAtWorkBook = async (token, Questions, workbookId) => {
   }
 };
 
-export const getWorkbookQuestions = async (token, workBookId, memberId) => {
+export const getWorkbookQuestions = async (token, encryptedWorkBookId) => {
   try {
     const response = await axios.post(
       "http://localhost:8080/member/workBook/search/questions",
       {},
       {
+        encryptedWorkBookId: encryptedWorkBookId, // ✅ 정확한 key 사용
+      },
+      {
         headers: {
           Authorization: `Bearer ${token}`,
-          // Content-Type은 GET에서는 제거
+          "Content-Type": "application/json",
         },
-        params: {
-          workBookId: workBookId,
-          memberId: memberId,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("문제 조회 실패:", error.response?.data || error.message);
+  }
+};
+
+export const deleteWorkBooks = async (token, encryptedWorkBookIds) => {
+  try {
+    const response = await axios.delete(
+      "http://localhost:8080/member/workBooks/delete",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
+        data: encryptedWorkBookIds, // 배열 형태로 보냄
       }
     );
 
     return response.data;
   } catch (error) {
-    console.error("문제 조회 실패:", error.response?.data || error.message);
+    console.error("문제집 삭제 실패:", error.response?.data || error.message);
+    throw error;
   }
 };
 
@@ -115,4 +134,33 @@ export const loadDailyQuestion = async (token) => {
   } catch (error) {
     console.error(error);
   }
+};
+
+export const moveQuestions = async (
+  token,
+  sourceId,
+  targetId,
+  encryptedQuestionInfoIds
+) => {
+  const body = {
+    encryptedSourceWorkbookId: sourceId,
+    encryptedTargetWorkbookId: targetId,
+    encryptedQuestionInfoIds,
+  };
+
+  const res = await fetch("http://localhost:8080/member/questions/move", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!res.ok) {
+    const errorMessage = await res.text();
+    throw new Error(`문제 이동 실패: ${errorMessage}`);
+  }
+
+  return res.json();
 };
