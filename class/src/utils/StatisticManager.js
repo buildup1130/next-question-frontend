@@ -57,3 +57,18 @@ export const savingCheck = async(questions, wrongArr,token) => {
         }
 }
 
+export const fetchCheck = async(token) => {
+    try{
+        const response = await axios.get(
+            "http://localhost:8080/member/attendences/find",
+            {
+                headers:{
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+    }catch(error){
+        console.error(error);
+    }
+}

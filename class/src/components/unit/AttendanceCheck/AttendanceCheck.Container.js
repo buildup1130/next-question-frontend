@@ -11,6 +11,7 @@ export default function AttendanceCheckLogic(
     const router = useRouter();
 
     const onClickAttend = () => {
+        
         router.push({
             pathname:"/Question",
             query:{
@@ -37,6 +38,10 @@ export default function AttendanceCheckLogic(
         return dates;
     }, []);
 
+    const todayObj = new Date();
+    const today = todayObj.toISOString().split('T')[0];
+    
+
     // 요일이 출석체크된 날짜인지 확인하는 함수
     const isAttended = (date) => {
         // console.log(checkArr);
@@ -48,5 +53,6 @@ export default function AttendanceCheckLogic(
         checkArr = {checkArr}
         weekDates = {weekDates}
         isAttended = {isAttended}
+        today = {today}
     ></AttendanceCheckUI>
 }

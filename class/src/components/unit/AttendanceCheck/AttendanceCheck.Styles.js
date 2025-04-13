@@ -32,3 +32,4 @@ export const Attendance__Component = styled.div`
     justify-content:center;
     align-items:center
 `
+
