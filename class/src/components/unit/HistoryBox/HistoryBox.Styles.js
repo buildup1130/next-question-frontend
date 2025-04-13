@@ -12,7 +12,7 @@ export const HistoryBox__TitleContainer = styled.div`
     width:100%;
     max-width:500px;
     height:80px;
-    padding: 0 10px;
+    padding-left:10px;
 
     border:1px solid #ddd;
     border-radius:10px;
@@ -20,7 +20,24 @@ export const HistoryBox__TitleContainer = styled.div`
     display:flex;
     flex-direction:row;
     align-items:center;
+
+    overflow:hidden;
 `
+export const HistoryBox__TitleLeft = styled.div`
+  flex:1;
+`
+export const HistoryBox__downButton = styled.div`
+  height:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+
+  padding:0 8px;
+  background-color:#e7e7e7;
+  cursor: pointer;
+`
+
 
 export const HistoryBox__InfoContainer = styled.div`
     width:100%;
