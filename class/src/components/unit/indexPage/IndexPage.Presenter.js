@@ -22,7 +22,8 @@ export default function IndexPageUI({
   setIsCreated,
   questionArr,
   questionInfoArr,
-  numArr
+  numArr,
+  checkArr
 }) {
   return (
     <MainContainerLogic>
@@ -47,7 +48,9 @@ export default function IndexPageUI({
         </Home__IconBar__Login>
       </Home__IconBar>
       <UploadBoxLogic setFile={setFile} file={file} setIsCreated = {setIsCreated}></UploadBoxLogic>
-      <AttendanceCheckLogic></AttendanceCheckLogic>
+      <AttendanceCheckLogic
+        checkArr={checkArr}
+      ></AttendanceCheckLogic>
       <Home__CalBar>
         <Home__CalTitle>캘린더</Home__CalTitle>
         <Home__CalMore>
