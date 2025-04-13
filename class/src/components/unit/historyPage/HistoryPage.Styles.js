@@ -36,3 +36,13 @@ export const History__Plus = styled.button`
   right: 0;
   transform: translateY(2px);
 `;
+
+export const History__Container = styled.div`
+  width:100%;
+  max-width:500px;
+  padding-top:20px;
+
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+`

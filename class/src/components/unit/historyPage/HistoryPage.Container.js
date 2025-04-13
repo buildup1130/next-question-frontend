@@ -24,6 +24,7 @@ export default function HistoryPageLogic(){
         }
         },[token]
     );
+
     return <HistoryPageUI
        onClickBack={onClickBack}
        histories={histories}
