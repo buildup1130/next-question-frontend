@@ -6,7 +6,7 @@ import { createQuestion } from "@/utils/QuestionGenerator";
 
 export default function IndexPageLogic() {
   const router = useRouter();
-  const { user, token, isAuthenticated } = useAuth();
+  const { user, token, isAuthenticated,logout } = useAuth();
 
   //회원일 경우 30문제, 비회원일 경우 5문제 출제
   const numArr = token ? [5, 10, 15, 20, 25, 30] : [5];
@@ -17,7 +17,11 @@ export default function IndexPageLogic() {
  
 
   const onClickLogin = () => {
-    router.push("/Login");
+    if(isAuthenticated){
+      logout();
+    }else{
+      router.push("/Login");
+    }
   };
 
 
