@@ -83,7 +83,13 @@ export default function BookShelfContainer() {
   };
 
   const onClickBook = (book) => {
-    router.push(`/Workbook?workBookId=${book.id}&title=${book.title}`);
+    router.push({
+      pathname: "Workbook",
+      query: {
+        workBookId: book.id,
+        title: book.title,
+      },
+    });
   };
 
   const onClickLearning = async () => {
@@ -111,7 +117,7 @@ export default function BookShelfContainer() {
     //     localStorage.setItem("workBookId", curBook.id);
     //     router.push({
     //       pathname: "/Question",
-    //       query: { 
+    //       query: {
     //         Id:curBook.id,
     //         count:count,
     //         type: isTest?1:0,
@@ -127,19 +133,18 @@ export default function BookShelfContainer() {
     //   console.error(err);
     // }
 
-           
-      router.push({
-        pathname: "/Question",
-        query: { 
-          Id:curBook.id,
-          count:count,
-          type: isTest?1:0,
-          random: true,
-          ox:true,
-          multiple: true,
-          blank:true,
-      }})
-    
+    router.push({
+      pathname: "/Question",
+      query: {
+        Id: curBook.id,
+        count: count,
+        type: isTest ? 1 : 0,
+        random: true,
+        ox: true,
+        multiple: true,
+        blank: true,
+      },
+    });
   };
 
   const onCloseLearningModal = () => {
