@@ -19,6 +19,9 @@ export const getWrongNote = async (
     });
 
     if (!response.ok) {
+      if (response.status === 403) {
+        return { questions: [] };
+      }
       const errorText = await response.text();
       throw new Error("서버 오류: " + errorText);
     }

@@ -8,8 +8,8 @@ import {
   getWorkbookQuestions,
 } from "@/utils/WorkbookManager";
 import WorkbookPresenter from "./Workbook.Presenter";
-import BottomNavigationLogic from "../../common/BottomNavigation/BottomNavigation.Container";
 import MoveModal from "@/components/unit/MoveModal/MoveModal.Container";
+import MainContainerLogic from "@/components/common/MainContainer/MainContainer.Container";
 
 export default function WorkbookContainer() {
   const router = useRouter();
@@ -29,7 +29,7 @@ export default function WorkbookContainer() {
   useEffect(() => {
     if (token && workBookId && userId) {
       getWorkbookQuestions(token, workBookId, userId).then((data) => {
-        console.log("📦 내려온 문제 데이터:", data); // ✅ 여기에 찍기
+        console.log("📦 내려온 문제 데이터:", data);
         setQuestions(data || []);
       });
     }
@@ -57,7 +57,6 @@ export default function WorkbookContainer() {
   };
 
   const handleSelect = (id) => {
-    console.log("🟢 선택된 문제 ID:", id);
     setSelectedIds((prev) =>
       prev.includes(id) ? prev.filter((v) => v !== id) : [...prev, id]
     );
@@ -73,31 +72,26 @@ export default function WorkbookContainer() {
   };
 
   const handleMoveSubmit = async () => {
-    // 1️⃣ 예외 처리: 필수 정보 누락
     if (!token || !workBookId || !targetBookId || selectedIds.length === 0) {
       alert("이동에 필요한 정보가 부족합니다.");
       return;
     }
 
-    // 2️⃣ 동일 문제집 이동 차단
     if (workBookId === targetBookId) {
       alert("같은 문제집으로는 이동할 수 없습니다.");
       return;
     }
 
-    // 3️⃣ 이동 대상 문제 ID 추출 (encryptedQuestionInfoId 기준)
     const encryptedQuestionInfoIds = questions
       .filter((q) => selectedIds.includes(q.encryptedQuestionId))
       .map((q) => q.encryptedQuestionInfoId)
       .filter((id) => typeof id === "string" && !!id.trim());
-    console.log("🧾 보낼 encryptedQuestionInfoIds:", encryptedQuestionInfoIds);
 
     if (encryptedQuestionInfoIds.length === 0) {
       alert("유효한 문제 ID가 없습니다.");
       return;
     }
 
-    // 4️⃣ 서버로 이동 요청
     try {
       const response = await moveQuestions(
         token,
@@ -112,23 +106,19 @@ export default function WorkbookContainer() {
         setMoveMode(false);
         setSelectedIds([]);
 
-        // 이동 후 문제집 갱신
         const updated = await getWorkbookQuestions(token, workBookId, userId);
         setQuestions(updated);
       } else {
         alert("문제 이동 실패");
       }
     } catch (error) {
-      console.error("❌ 문제 이동 중 오류:", error);
+      console.error(" 문제 이동 중 오류:", error);
       alert("문제 이동 중 오류 발생");
     }
   };
 
   const handleDelete = async () => {
     if (selectedIds.length === 0) return;
-
-    console.log("🟡 현재 토큰:", token);
-    console.log("🟡 삭제 요청할 문제 ID 목록:", selectedIds);
 
     try {
       const res = await fetch("http://localhost:8080/member/questions/delete", {
@@ -142,17 +132,16 @@ export default function WorkbookContainer() {
 
       if (!res.ok) throw new Error("요청 실패");
 
-      const text = await res.text(); // JSON 아닌 응답도 처리
-      console.log("🟢 서버 응답 메시지:", text);
+      const text = await res.text();
+      console.log(" 서버 응답 메시지:", text);
 
-      // 삭제 후 화면 갱신
       setQuestions((prev) =>
         prev.filter((q) => !selectedIds.includes(q.encryptedQuestionId))
       );
       setSelectedIds([]);
       setDeleteMode(false);
     } catch (err) {
-      console.error("❌ 삭제 중 에러 발생:", err);
+      console.error(" 삭제 중 에러 발생:", err);
       alert("삭제 요청 중 오류 발생");
     }
   };
@@ -172,7 +161,6 @@ export default function WorkbookContainer() {
         onToggleMoveMode={toggleMoveMode}
         onOpenMoveModal={openMoveModal}
       />
-      <BottomNavigationLogic />
 
       {isMoveModalOpen && (
         <MoveModal

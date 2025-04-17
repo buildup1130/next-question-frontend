@@ -1,17 +1,83 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import WrongNotePresenter from "./WrongNote.Presenter";
+import { getWrongNote } from "@/utils/WrongNoteManager";
+import { useAuth } from "@/utils/AuthContext";
 
 export default function WrongNoteContainer() {
+  // 오늘 날짜 기준으로 초기 날짜 설정
+  const today = new Date();
+  today.setHours(today.getHours() + 9);
+  const todayStr = today.toISOString().split("T")[0];
+
   const [selectedDateRange, setSelectedDateRange] = useState({
-    start: "2025-04-22",
-    end: "2025-04-25",
+    start: todayStr,
+    end: todayStr,
   });
 
+  const { token } = useAuth();
+  const [wrongNoteData, setWrongNoteData] = useState([]);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
-
   const [openSections, setOpenSections] = useState({});
+  const [isDateModalOpen, setDateModalOpen] = useState(false);
+  const [tempStart, setTempStart] = useState(selectedDateRange.start);
+  const [tempEnd, setTempEnd] = useState(selectedDateRange.end);
+
+  useEffect(() => {
+    if (!token) return;
+    fetchWrongNotes();
+  }, [token, selectedDateRange]);
+
+  const fetchWrongNotes = async () => {
+    if (!token) return;
+
+    try {
+      const result = await getWrongNote(
+        token,
+        selectedDateRange.start,
+        selectedDateRange.end
+      );
+
+      if (!result || !result.questions) return;
+
+      const grouped = {};
+
+      result.questions.forEach((q, index) => {
+        const solvedDateKST = new Date(q.solvedDate);
+        solvedDateKST.setHours(solvedDateKST.getHours() + 9);
+        const dateOnly = solvedDateKST.toISOString().split("T")[0];
+
+        if (!grouped[dateOnly]) {
+          grouped[dateOnly] = [];
+        }
+
+        grouped[dateOnly].push({
+          id: index,
+          type:
+            q.type === "MULTIPLE_CHOICE"
+              ? "객관식"
+              : ["TRUE_FALSE", "OX", "TRUEFALSE"].includes(q.type)
+              ? "O/X"
+              : "빈칸",
+
+          title: q.name,
+          fullText: q.name,
+          options: q.opt ? q.opt.split("/") : [],
+          answer: q.answer,
+        });
+      });
+
+      const formatted = Object.entries(grouped).map(([date, questions]) => ({
+        date: date.split("T")[0],
+        questions,
+      }));
+
+      setWrongNoteData(formatted);
+    } catch (error) {
+      console.error(" fetchWrongNotes 에러:", error);
+    }
+  };
 
   const toggleSection = (date) => {
     setOpenSections((prev) => ({
@@ -20,58 +86,48 @@ export default function WrongNoteContainer() {
     }));
   };
 
-  const dummyData = [
-    {
-      date: "2025-04-25",
-      questions: [
-        {
-          id: 1,
-          type: "객관식",
-          title: "컴퓨터 성능 향상과 관련 없는 기술은?",
-          fullText:
-            "다음 중 컴퓨터 성능을 향상시키기 위해 설계된 기술이 아닌 것은 무엇인가요?",
-          options: [
-            "1 캐시 메모리",
-            "2 멀티코어 CPU",
-            "3 저해상도 디스플레이",
-            "4 SSD 저장장치",
-            "5 파이프라이닝",
-          ],
-          answer: "3 저해상도 디스플레이",
-        },
-        {
-          id: 2,
-          type: "O/X",
-          title: "RAM은 휘발성 메모리이다.",
-          fullText:
-            "RAM은 전원이 꺼지면 저장된 내용이 사라지는 휘발성 메모리이다.",
-          options: ["O", "X"],
-          answer: "O",
-        },
-        {
-          id: 3,
-          type: "빈칸",
-          title: "운영체제는 컴퓨터의 ___를 관리한다.",
-          fullText:
-            "운영체제는 컴퓨터의 하드웨어와 소프트웨어 자원을 관리하고, 사용자와 컴퓨터 간의 인터페이스 역할을 한다. 빈칸에 들어갈 말은?",
-          options: [],
-          answer: "자원",
-        },
-      ],
-    },
-  ];
-
   const handleQuestionClick = (question) => {
     setSelectedQuestion(question);
     setModalOpen(true);
     setShowAnswer(false);
   };
 
+  const handleOpenDateModal = () => {
+    setTempStart(selectedDateRange.start);
+    setTempEnd(selectedDateRange.end);
+    setDateModalOpen(true);
+  };
+
+  const handleApplyDateFilter = () => {
+    setSelectedDateRange({ start: tempStart, end: tempEnd });
+    setDateModalOpen(false);
+  };
+
+  const handleQuickRange = (type) => {
+    const now = new Date();
+    now.setHours(now.getHours() + 9);
+    let start = new Date(now);
+    let end = new Date(now);
+
+    if (type === "yesterday") {
+      start.setDate(start.getDate() - 1);
+      end.setDate(end.getDate() - 1);
+    } else if (type === "3days") {
+      start.setDate(start.getDate() - 2);
+    } else if (type === "7days") {
+      start.setDate(start.getDate() - 6);
+    }
+
+    const format = (d) => d.toISOString().split("T")[0];
+    setTempStart(format(start));
+    setTempEnd(format(end));
+  };
+
   return (
     <WrongNotePresenter
       selectedDateRange={selectedDateRange}
       setSelectedDateRange={setSelectedDateRange}
-      data={dummyData}
+      data={wrongNoteData}
       onQuestionClick={handleQuestionClick}
       isModalOpen={isModalOpen}
       selectedQuestion={selectedQuestion}
@@ -80,6 +136,15 @@ export default function WrongNoteContainer() {
       setShowAnswer={setShowAnswer}
       openSections={openSections}
       toggleSection={toggleSection}
+      isDateModalOpen={isDateModalOpen}
+      setIsDateModalOpen={setDateModalOpen}
+      handleOpenDateModal={handleOpenDateModal}
+      tempStart={tempStart}
+      tempEnd={tempEnd}
+      setTempStart={setTempStart}
+      setTempEnd={setTempEnd}
+      handleApplyDateFilter={handleApplyDateFilter}
+      handleQuickRange={handleQuickRange}
     />
   );
 }

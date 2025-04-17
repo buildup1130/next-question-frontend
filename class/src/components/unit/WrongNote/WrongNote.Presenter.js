@@ -12,10 +12,23 @@ import {
   OptionList,
   OptionItem,
   AnswerBox,
+  CalendarButton,
+  DateModalBackdrop,
+  DateModalContent,
+  DateInput,
+  DateModalButtons,
+  QuickRangeButtons,
+  QuickRangeButton,
+  QuickRangeButtonContainer,
+  BackButton,
+  Divider,
 } from "./WrongNote.Styles";
 
 export default function WrongNotePresenter({
   selectedDateRange,
+  setSelectedDateRange,
+  isDateModalOpen,
+  setIsDateModalOpen,
   data,
   onQuestionClick,
   isModalOpen,
@@ -25,29 +38,57 @@ export default function WrongNotePresenter({
   setShowAnswer,
   openSections,
   toggleSection,
+  tempStart,
+  tempEnd,
+  setTempStart,
+  setTempEnd,
+  handleApplyDateFilter,
+  handleQuickRange,
 }) {
+  const handleDateChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "start") setTempStart(value);
+    else if (name === "end") setTempEnd(value);
+  };
+
   return (
     <Wrapper>
       <DateHeader>
+        <BackButton onClick={() => router.push("/")}>←</BackButton>
         {selectedDateRange.start} ~ {selectedDateRange.end}
+        <CalendarButton onClick={() => setIsDateModalOpen(true)}>
+          📅
+        </CalendarButton>
       </DateHeader>
 
-      {data.map((day) => (
-        <Section key={day.date}>
-          <DateTitle onClick={() => toggleSection(day.date)}>
-            {day.date} {openSections[day.date] ? "▲" : "▼"} 전체{" "}
-            {day.questions.length}개
-          </DateTitle>
+      <hr />
 
-          {openSections[day.date] &&
-            day.questions.map((q) => (
-              <QuestionItem key={q.id} onClick={() => onQuestionClick(q)}>
-                <span className="title">{q.title}</span>
-                <span className="type">{q.type}</span>
-              </QuestionItem>
-            ))}
-        </Section>
-      ))}
+      {data.length === 0 || data.every((day) => day.questions.length === 0) ? (
+        <p style={{ textAlign: "center", marginTop: "24px" }}>
+          해당 기간에 오답 문제가 없습니다.
+        </p>
+      ) : (
+        data.map((day) => (
+          <Section key={day.date}>
+            <DateTitle onClick={() => toggleSection(day.date)}>
+              {day.date} {openSections[day.date] ? "▲" : "▼"} 전체{" "}
+              {day.questions.length}개
+            </DateTitle>
+
+            {openSections[day.date] &&
+              day.questions.map((q) => (
+                <QuestionItem key={q.id} onClick={() => onQuestionClick(q)}>
+                  <span className="title">
+                    {q.type === "빈칸"
+                      ? q.title.replace("{BLANK}", "OOO")
+                      : q.title}
+                  </span>
+                  <span className="type">{q.type}</span>
+                </QuestionItem>
+              ))}
+          </Section>
+        ))
+      )}
 
       <AgainButton>다시 학습하기</AgainButton>
 
@@ -59,7 +100,6 @@ export default function WrongNotePresenter({
           }}
         >
           <ModalContent onClick={(e) => e.stopPropagation()}>
-            {/* 문제 유형 + 문제 내용 */}
             <div>
               <strong>
                 {selectedQuestion.type === "객관식"
@@ -70,25 +110,25 @@ export default function WrongNotePresenter({
               </strong>
               <p>
                 {selectedQuestion.type === "빈칸"
-                  ? selectedQuestion.title
+                  ? selectedQuestion.title.replace("{BLANK}", "OOO")
                   : selectedQuestion.fullText}
               </p>
             </div>
 
-            {/* 보기 (조건 분기) */}
             {selectedQuestion.type === "객관식" &&
               selectedQuestion.options.length > 0 && (
                 <div>
                   <strong>보기</strong>
                   <OptionList>
                     {selectedQuestion.options.map((option, idx) => (
-                      <OptionItem key={idx}>{option}</OptionItem>
+                      <OptionItem key={idx}>{`${idx + 1}. ${
+                        option.split(". ")[1] || option
+                      }`}</OptionItem>
                     ))}
                   </OptionList>
                 </div>
               )}
 
-            {/* 버튼 */}
             <ModalButtons>
               <ModalButton
                 onClick={() => {
@@ -103,12 +143,74 @@ export default function WrongNotePresenter({
               </ModalButton>
             </ModalButtons>
 
-            {/* 정답 표시 */}
             {showAnswer && (
-              <AnswerBox>정답: {selectedQuestion.answer}</AnswerBox>
+              <AnswerBox>
+                정답:{" "}
+                {selectedQuestion.type === "객관식" &&
+                  `${selectedQuestion.answer}. ${
+                    selectedQuestion.options[
+                      selectedQuestion.answer - 1
+                    ]?.split(". ")[1]
+                  }`}
+                {selectedQuestion.type === "O/X" &&
+                selectedQuestion.answer?.toString().trim() === "0"
+                  ? "O"
+                  : "X"}
+                {selectedQuestion.type === "빈칸" &&
+                  selectedQuestion.answer.replace(/\.$/, "")}
+              </AnswerBox>
             )}
           </ModalContent>
         </ModalBackdrop>
+      )}
+
+      {isDateModalOpen && (
+        <DateModalBackdrop onClick={() => setIsDateModalOpen(false)}>
+          <DateModalContent onClick={(e) => e.stopPropagation()}>
+            <label>
+              시작일:
+              <DateInput
+                type="date"
+                name="start"
+                value={tempStart}
+                onChange={handleDateChange}
+              />
+            </label>
+            <label>
+              종료일:
+              <DateInput
+                type="date"
+                name="end"
+                value={tempEnd}
+                onChange={handleDateChange}
+              />
+            </label>
+
+            <QuickRangeButtonContainer>
+              <QuickRangeButton onClick={() => handleQuickRange("today")}>
+                오늘
+              </QuickRangeButton>
+              <QuickRangeButton onClick={() => handleQuickRange("yesterday")}>
+                어제
+              </QuickRangeButton>
+              <QuickRangeButton onClick={() => handleQuickRange("3days")}>
+                최근 3일
+              </QuickRangeButton>
+              <QuickRangeButton onClick={() => handleQuickRange("7days")}>
+                최근 7일
+              </QuickRangeButton>
+            </QuickRangeButtonContainer>
+
+            <DateModalButtons>
+              <ModalButton onClick={() => setIsDateModalOpen(false)}>
+                취소
+              </ModalButton>
+              <ModalButton onClick={handleApplyDateFilter}>
+                적용하기
+              </ModalButton>
+            </DateModalButtons>
+          </DateModalContent>
+        </DateModalBackdrop>
       )}
     </Wrapper>
   );

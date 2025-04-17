@@ -38,7 +38,8 @@ export default function WorkbookPresenter({
           <TopRightButton onClick={onToggleDeleteMode}>🗑</TopRightButton>
         </TopRightButtonGroup>
       </Header>
-      <Divider />
+
+      <hr />
 
       {questions && questions.length > 0 ? (
         questions.map((q) => (

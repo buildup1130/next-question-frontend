@@ -1,4 +1,3 @@
-import BookShelfQuestionLogic from "@/components/unit/BookShelfQuestion/BookShelfQuestion.Container";
 import {
   Container,
   Header,
@@ -11,10 +10,16 @@ import {
   BookItem,
   BookInfo,
   MoreButton,
-  Plus,
   MoreButtonWrapper,
-  LearnButtonWrapper, // ✅ 추가
-  LearnButton, // ✅ 추가
+  Plus,
+  LearnButtonWrapper,
+  LearnButton,
+  ModalOverlay,
+  ModalContainer,
+  ModalTitle,
+  ModalInput,
+  ModalButtons,
+  ModalButton,
 } from "./BookShelf.Styles";
 import { useState } from "react";
 
@@ -26,63 +31,44 @@ export default function BookShelfUI({
   onBack,
   onMoreClick,
   onClickBook,
-  sequence,
-  curBook,
-  count,
-  setCount,
-  onClickLearning,
-  isSheetOpen,
-  onCloseLearningModal,
-  onOpenLearningModal, // ✅ 상위에서 props 내려준다면 필요
-  setIsTest,
-  isTest
+  onOpenCreateModal,
+  isCreateModalOpen,
+  newWorkbookTitle,
+  setNewWorkbookTitle,
+  onCreateWorkbook,
+  onCloseCreateModal,
 }) {
   const [hoveredId, setHoveredId] = useState(null);
 
   return (
     <Container>
-      {sequence === 1 && curBook !== null && !isSheetOpen && (
-        <BookShelfQuestionLogic
-          curBook={curBook}
-          count={count}
-          setCount={setCount}
-          onClickLearning={onClickLearning}
-          onClose={onCloseLearningModal}
-          setIsTest = {setIsTest}
-          isTest = {isTest}
-        />
-      )}
-
       <Header>
         <BackButton onClick={onBack}>←</BackButton>
         <Title>책장</Title>
-        <Plus>+</Plus>
+        <Plus onClick={onOpenCreateModal}>+</Plus>
       </Header>
 
       <hr />
 
       <SearchBar>
         <SearchInput
-          type="text"
-          placeholder="책장 검색"
           value={searchQuery}
           onChange={onSearchChange}
+          placeholder="책장 검색"
         />
         <SearchButton onClick={onSearch}>🔍</SearchButton>
       </SearchBar>
 
       <BookList>
-        {books.map((book, index) => (
+        {books.map((book) => (
           <BookItem
-            key={index}
+            key={book.id}
             onMouseOver={() => setHoveredId(book.id)}
             onMouseOut={() => setHoveredId(null)}
+            onClick={() => onClickBook(book)}
             style={{
               backgroundColor:
                 hoveredId === book.id ? "#f0f0f0" : "transparent",
-            }}
-            onClick={() => {
-              onClickBook(book);
             }}
           >
             <BookInfo>
@@ -103,10 +89,28 @@ export default function BookShelfUI({
         ))}
       </BookList>
 
-      {/* ✅ 버튼 위치 */}
       <LearnButtonWrapper>
-        <LearnButton onClick={onOpenLearningModal}>학습하기</LearnButton>
+        <LearnButton onClick={onOpenCreateModal}>학습하기</LearnButton>
       </LearnButtonWrapper>
+
+      {isCreateModalOpen && (
+        <ModalOverlay>
+          <ModalContainer>
+            <ModalTitle>빈 문제집 생성</ModalTitle>
+            <ModalInput
+              value={newWorkbookTitle}
+              onChange={(e) => setNewWorkbookTitle(e.target.value)}
+              placeholder="문제집 이름을 입력하세요"
+            />
+            <ModalButtons>
+              <ModalButton onClick={onCloseCreateModal}>취소</ModalButton>
+              <ModalButton primary onClick={onCreateWorkbook}>
+                생성하기
+              </ModalButton>
+            </ModalButtons>
+          </ModalContainer>
+        </ModalOverlay>
+      )}
     </Container>
   );
 }

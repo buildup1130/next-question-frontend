@@ -3,29 +3,28 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
   width: 100%;
   max-width: 500px;
-  margin: 0 auto;
-  padding: 16px;
+  height: 100vh;
+  padding-top: 20px;
   padding-bottom: 80px;
+  margin: 0 auto;
+  position: relative;
 `;
 
 export const Header = styled.div`
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   position: relative;
-  height: 48px;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 `;
 
 export const BackButton = styled.button`
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 18px;
   background: none;
   border: none;
+  font-size: 24px;
   cursor: pointer;
+  position: absolute;
+  left: 0;
 `;
 export const TopRightButtonGroup = styled.div`
   position: absolute;
@@ -33,7 +32,7 @@ export const TopRightButtonGroup = styled.div`
   top: 50%;
   transform: translateY(-50%);
   display: flex;
-  gap: 8px; // ✅ 버튼 간격
+  gap: 8px;
 `;
 
 export const TopRightButton = styled.button`
@@ -41,18 +40,13 @@ export const TopRightButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px; // 클릭 영역 확보
+  padding: 4px;
 `;
 
-export const Title = styled.h2`
-  margin: 0;
-  font-size: 18px;
-`;
-
-export const Divider = styled.hr`
-  border: none;
-  border-bottom: 1px solid #ddd;
-  margin: 0 0 16px 0;
+export const Title = styled.h1`
+  font-size: 20px;
+  font-weight: bold;
+  white-space: nowrap;
 `;
 
 export const QuestionCard = styled.div`
