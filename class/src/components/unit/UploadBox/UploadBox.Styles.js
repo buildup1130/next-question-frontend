@@ -58,6 +58,7 @@ export const UploadBox__UploadButton = styled.div`
   display:flex;
   align-items:center;
   justify-content:center;
+  gap:10px;
 
   transform:translateY(-45px);
   cursor: pointer;

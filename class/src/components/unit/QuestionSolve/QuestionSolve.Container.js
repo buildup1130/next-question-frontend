@@ -61,6 +61,12 @@ export default function QuestionSolveLogic(props) {
         router.push("/");
       }
     }
+
+    // 3. 예외처리
+    else{
+        alert("잘못된 접근입니다.");
+        router.push("/");
+    }
   }, [Id, token, count, random, ox, multiple, blank, type]);
 
   // //LocalStorage사용 방식

@@ -19,6 +19,7 @@ export default function AttendanceCheckUI({
             {["월","화","수","목","금","토","일"].map((dayName,index) =>{
                 const date = weekDates[index];
                 const attended = isAttended(date);
+                //오늘 날짜
                 if(date === today){
                     //출석 완료
                     if(attended){
@@ -35,16 +36,17 @@ export default function AttendanceCheckUI({
                     else{
                         return(
                         <Attendance__Component
-                            style={{width:"12%", backgroundColor:"#21C12C", cursor:"pointer"}}
+                            style={{width:"12%", backgroundColor:"#00B2FF", cursor:"pointer", color:"white"}}
                             $attended = {attended}
                             onClick={onClickAttend}
                             key = {index}
                         >
-                            출석<br></br>하기
+                            오늘<br></br>출석
                         </Attendance__Component>
                         )
                     }
                 }
+                //다른 날짜
                 else{
                     return(
                     <Attendance__Component
