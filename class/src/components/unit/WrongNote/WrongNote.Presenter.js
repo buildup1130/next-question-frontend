@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import {
   Wrapper,
   DateHeader,
@@ -5,6 +6,12 @@ import {
   QuestionItem,
   DateTitle,
   AgainButton,
+  LearnConfirmButton,
+  CalendarButton,
+  BackButton,
+  Divider,
+  WorkbookTitle,
+  CheckBox,
   ModalBackdrop,
   ModalContent,
   ModalButtons,
@@ -12,44 +19,54 @@ import {
   OptionList,
   OptionItem,
   AnswerBox,
-  CalendarButton,
   DateModalBackdrop,
   DateModalContent,
   DateInput,
   DateModalButtons,
-  QuickRangeButtons,
-  QuickRangeButton,
   QuickRangeButtonContainer,
-  BackButton,
-  Divider,
+  QuickRangeButton,
 } from "./WrongNote.Styles";
+
+import BookShelfQuestionLogic from "@/components/unit/BookShelfQuestion/BookShelfQuestion.Container";
 
 export default function WrongNotePresenter({
   selectedDateRange,
   setSelectedDateRange,
-  isDateModalOpen,
-  setIsDateModalOpen,
   data,
-  onQuestionClick,
+  selectedBooks,
+  setSelectedBooks,
+  isSelectMode,
+  setIsSelectMode,
+  toggleSection,
+  openSections,
+  onToggleBookSelect,
   isModalOpen,
-  selectedQuestion,
   setModalOpen,
+  selectedQuestion,
+  setSelectedQuestion,
   showAnswer,
   setShowAnswer,
-  openSections,
-  toggleSection,
+  isDateModalOpen,
+  setIsDateModalOpen,
   tempStart,
   tempEnd,
   setTempStart,
   setTempEnd,
   handleApplyDateFilter,
   handleQuickRange,
+  onClickStartLearning,
+  onQuestionClick,
+  curBook,
+  sequence,
+  setSequence,
+  setCurBook,
+  count,
+  setCount,
+  isTest,
+  setIsTest,
+  onConfirmLearning,
 }) {
-  const handleDateChange = (e) => {
-    const { name, value } = e.target;
-    if (name === "start") setTempStart(value);
-    else if (name === "end") setTempEnd(value);
-  };
+  const router = useRouter();
 
   return (
     <Wrapper>
@@ -61,36 +78,80 @@ export default function WrongNotePresenter({
         </CalendarButton>
       </DateHeader>
 
-      <hr />
+      <Divider />
 
-      {data.length === 0 || data.every((day) => day.questions.length === 0) ? (
+      {data.length === 0 ? (
         <p style={{ textAlign: "center", marginTop: "24px" }}>
           해당 기간에 오답 문제가 없습니다.
         </p>
       ) : (
-        data.map((day) => (
-          <Section key={day.date}>
-            <DateTitle onClick={() => toggleSection(day.date)}>
-              {day.date} {openSections[day.date] ? "▲" : "▼"} 전체{" "}
-              {day.questions.length}개
-            </DateTitle>
-
-            {openSections[day.date] &&
-              day.questions.map((q) => (
-                <QuestionItem key={q.id} onClick={() => onQuestionClick(q)}>
-                  <span className="title">
-                    {q.type === "빈칸"
-                      ? q.title.replace("{BLANK}", "OOO")
-                      : q.title}
-                  </span>
-                  <span className="type">{q.type}</span>
-                </QuestionItem>
-              ))}
+        data.map((book) => (
+          <Section key={book.workbook}>
+            <WorkbookTitle>
+              {isSelectMode && (
+                <CheckBox
+                  type="checkbox"
+                  checked={selectedBooks.includes(book.workbook)}
+                  onChange={() => onToggleBookSelect(book.workbook)}
+                />
+              )}
+              {book.workbook}
+            </WorkbookTitle>
+            {book.dates.map((d) => {
+              const key = `${book.workbook}_${d.date}`;
+              return (
+                <div key={key}>
+                  <DateTitle
+                    onClick={() => toggleSection(book.workbook, d.date)}
+                  >
+                    {d.date} {openSections[key] ? "▲" : "▼"} 전체{" "}
+                    {d.questions.length}개
+                  </DateTitle>
+                  {openSections[key] &&
+                    d.questions.map((q) => (
+                      <QuestionItem
+                        key={q.id}
+                        onClick={() => onQuestionClick(q)}
+                      >
+                        <span className="title">
+                          {q.type === "빈칸"
+                            ? q.title.replace("{BLANK}", "OOO")
+                            : q.title}
+                        </span>
+                        <span className="type">{q.type}</span>
+                      </QuestionItem>
+                    ))}
+                </div>
+              );
+            })}
           </Section>
         ))
       )}
 
-      <AgainButton>다시 학습하기</AgainButton>
+      <AgainButton onClick={() => setIsSelectMode(!isSelectMode)}>
+        다시 학습하기
+      </AgainButton>
+
+      {isSelectMode && selectedBooks.length > 0 && (
+        <LearnConfirmButton onClick={onClickStartLearning}>
+          학습하기
+        </LearnConfirmButton>
+      )}
+
+      {sequence === 1 && curBook && (
+        <BookShelfQuestionLogic
+          curBook={curBook}
+          count={count}
+          setCount={setCount}
+          onClickLearning={onConfirmLearning}
+          onClose={() => {
+            setSequence(0);
+            setCurBook(null);
+          }}
+          isTest={isTest}
+          setIsTest={setIsTest}
+        />
+      )}
 
       {isModalOpen && selectedQuestion && (
         <ModalBackdrop
@@ -146,45 +207,37 @@ export default function WrongNotePresenter({
             {showAnswer && (
               <AnswerBox>
                 정답:{" "}
-                {selectedQuestion.type === "객관식" &&
-                  `${selectedQuestion.answer}. ${
-                    selectedQuestion.options[
-                      selectedQuestion.answer - 1
-                    ]?.split(". ")[1]
-                  }`}
-                {selectedQuestion.type === "O/X" &&
-                selectedQuestion.answer?.toString().trim() === "0"
-                  ? "O"
-                  : "X"}
-                {selectedQuestion.type === "빈칸" &&
-                  selectedQuestion.answer.replace(/\.$/, "")}
+                {selectedQuestion.type === "객관식"
+                  ? `${selectedQuestion.answer}. ${
+                      selectedQuestion.options[
+                        selectedQuestion.answer - 1
+                      ]?.split(". ")[1]
+                    }`
+                  : selectedQuestion.answer}
               </AnswerBox>
             )}
           </ModalContent>
         </ModalBackdrop>
       )}
-
       {isDateModalOpen && (
         <DateModalBackdrop onClick={() => setIsDateModalOpen(false)}>
           <DateModalContent onClick={(e) => e.stopPropagation()}>
-            <label>
-              시작일:
+            <div>
+              <label>시작일:</label>
               <DateInput
                 type="date"
-                name="start"
                 value={tempStart}
-                onChange={handleDateChange}
+                onChange={(e) => setTempStart(e.target.value)}
               />
-            </label>
-            <label>
-              종료일:
+            </div>
+            <div>
+              <label>종료일:</label>
               <DateInput
                 type="date"
-                name="end"
                 value={tempEnd}
-                onChange={handleDateChange}
+                onChange={(e) => setTempEnd(e.target.value)}
               />
-            </label>
+            </div>
 
             <QuickRangeButtonContainer>
               <QuickRangeButton onClick={() => handleQuickRange("today")}>

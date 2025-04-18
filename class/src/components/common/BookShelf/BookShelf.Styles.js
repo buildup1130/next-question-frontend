@@ -95,6 +95,7 @@ export const BookItem = styled.li`
 export const BookInfo = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 2px;
 `;
 
 export const MoreButtonWrapper = styled.div`
@@ -181,4 +182,19 @@ export const ModalButton = styled.button`
   cursor: pointer;
   background-color: ${(props) => (props.primary ? "#007bff" : "#f0f0f0")};
   color: ${(props) => (props.primary ? "#fff" : "#000")};
+`;
+
+export const BookCheckbox = styled.input`
+  margin-right: 4px;
+  transform: scale(1.2);
+`;
+
+export const TopButtonBar = styled.div`
+  position: fixed;
+  bottom: 80px; /* 하단 네비게이션 위 */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 1000;
 `;

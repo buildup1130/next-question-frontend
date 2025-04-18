@@ -4,7 +4,7 @@ import WrongNoteContainer from "@/components/unit/WrongNote/WrongNote.Container"
 export default function WrongNotePage() {
   return (
     <MainContainerLogic>
-      <WrongNoteContainer />;
+      <WrongNoteContainer />
     </MainContainerLogic>
   );
 }

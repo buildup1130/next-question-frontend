@@ -19,19 +19,17 @@ export const searchAllWorkBooks = async (token) => {
 };
 
 export const createWorkbook = async (token, name) => {
-  
-    const response = await axios.post(
-      "http://localhost:8080/member/workBook/create",
-      { workBookName: name },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`, // 토큰 추가
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    return response.data;
-  
+  const response = await axios.post(
+    "http://localhost:8080/member/workBook/create",
+    { workBookName: name },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`, // 토큰 추가
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return response.data;
 };
 
 export const saveAtWorkBook = async (token, Questions, workbookId) => {
@@ -95,11 +93,9 @@ export const deleteWorkBooks = async (token, encryptedWorkBookIds) => {
 export const loadNormalQuestion = async (token, id, options) => {
   try {
     const payload = {
-      encryptedWorkBookIds: [id],
-      options: options,
+      encryptedWorkBookIds: Array.isArray(id) ? id : [id],
+      options,
     };
-
-    console.log("🔥 API 요청 payload:", payload);
 
     const response = await axios.post(
       "http://localhost:8080/member/solving/normal/search",

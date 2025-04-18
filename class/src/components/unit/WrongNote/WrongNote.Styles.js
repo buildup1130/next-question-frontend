@@ -96,6 +96,21 @@ export const AgainButton = styled.button`
   z-index: 999;
 `;
 
+export const LearnConfirmButton = styled.button`
+  position: fixed;
+  bottom: 140px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #00c18c;
+  color: white;
+  padding: 12px 24px;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  z-index: 999;
+`;
+
 export const ModalBackdrop = styled.div`
   position: fixed;
   top: 0;
@@ -148,6 +163,38 @@ export const AnswerBox = styled.div`
   color: #333;
 `;
 
+export const BackButton = styled.button`
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+`;
+
+export const Divider = styled.hr`
+  width: 100%;
+  height: 1px;
+  background-color: #ccc;
+  border: none;
+  margin-top: 8px;
+  margin-bottom: 12px;
+`;
+
+export const WorkbookTitle = styled.h3`
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 20px;
+  margin-bottom: 8px;
+`;
+
+export const CheckBox = styled.input`
+  margin-right: 8px;
+  transform: scale(1.2);
+`;
+
 export const DateModalBackdrop = styled.div`
   position: fixed;
   top: 0;
@@ -168,7 +215,7 @@ export const DateModalContent = styled.div`
   width: 90%;
   max-width: 400px;
   border-radius: 10px;
-  z-index: 30;
+  z-index: 1000;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -177,16 +224,11 @@ export const DateModalContent = styled.div`
 export const DateInput = styled.input`
   width: 100%;
   padding: 8px;
-  margin-top: 4px;
   font-size: 16px;
-  line-height: 1.5;
-  box-sizing: border-box;
-
   border: 1px solid #ccc;
   border-radius: 6px;
-
-  appearance: none;
   background-color: white;
+  box-sizing: border-box;
 `;
 
 export const DateModalButtons = styled.div`
@@ -222,23 +264,4 @@ export const QuickRangeButton = styled.button`
   &:last-child {
     margin-right: 0;
   }
-`;
-
-export const BackButton = styled.button`
-  position: absolute;
-  left: 12px;
-  top: 12px;
-  background: transparent;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-`;
-
-export const Divider = styled.hr`
-  width: 100%;
-  height: 1px;
-  background-color: #ccc;
-  border: none;
-  margin-top: 8px;
-  margin-bottom: 12px;
 `;

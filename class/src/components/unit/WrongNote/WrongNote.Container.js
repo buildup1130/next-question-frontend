@@ -1,126 +1,129 @@
+// WrongNote.Container.js
 import { useState, useEffect } from "react";
-import WrongNotePresenter from "./WrongNote.Presenter";
 import { getWrongNote } from "@/utils/WrongNoteManager";
 import { useAuth } from "@/utils/AuthContext";
+import { useRouter } from "next/router";
+import WrongNotePresenter from "./WrongNote.Presenter";
 
 export default function WrongNoteContainer() {
-  // 오늘 날짜 기준으로 초기 날짜 설정
   const today = new Date();
   today.setHours(today.getHours() + 9);
   const todayStr = today.toISOString().split("T")[0];
+
+  const { token } = useAuth();
+  const router = useRouter();
 
   const [selectedDateRange, setSelectedDateRange] = useState({
     start: todayStr,
     end: todayStr,
   });
-
-  const { token } = useAuth();
   const [wrongNoteData, setWrongNoteData] = useState([]);
+  const [workbookMap, setWorkbookMap] = useState({});
+  const [selectedBooks, setSelectedBooks] = useState([]);
+  const [isSelectMode, setIsSelectMode] = useState(false);
+  const [openSections, setOpenSections] = useState({});
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
-  const [openSections, setOpenSections] = useState({});
   const [isDateModalOpen, setDateModalOpen] = useState(false);
-  const [tempStart, setTempStart] = useState(selectedDateRange.start);
-  const [tempEnd, setTempEnd] = useState(selectedDateRange.end);
+  const [tempStart, setTempStart] = useState(todayStr);
+  const [tempEnd, setTempEnd] = useState(todayStr);
+  const [curBook, setCurBook] = useState(null);
+  const [sequence, setSequence] = useState(0);
+  const [count, setCount] = useState(1);
+  const [isTest, setIsTest] = useState(false);
 
   useEffect(() => {
-    if (!token) return;
-    fetchWrongNotes();
+    if (token) fetchWrongNotes();
   }, [token, selectedDateRange]);
 
   const fetchWrongNotes = async () => {
-    if (!token) return;
-
     try {
       const result = await getWrongNote(
         token,
         selectedDateRange.start,
         selectedDateRange.end
       );
-
       if (!result || !result.questions) return;
 
       const grouped = {};
+      result.questions.forEach((q, idx) => {
+        const date = new Date(q.solvedDate);
+        date.setHours(date.getHours() + 9);
+        const dateStr = date.toISOString().split("T")[0];
 
-      result.questions.forEach((q, index) => {
-        const solvedDateKST = new Date(q.solvedDate);
-        solvedDateKST.setHours(solvedDateKST.getHours() + 9);
-        const dateOnly = solvedDateKST.toISOString().split("T")[0];
+        const title = q.workBookName?.trim() || "미지정 문제집";
+        const id = q.encryptedWorkBookId;
 
-        if (!grouped[dateOnly]) {
-          grouped[dateOnly] = [];
-        }
+        if (!grouped[title]) grouped[title] = { id, dates: {} };
+        if (!grouped[title].dates[dateStr]) grouped[title].dates[dateStr] = [];
 
-        grouped[dateOnly].push({
-          id: index,
+        grouped[title].dates[dateStr].push({
+          id: idx,
           type:
             q.type === "MULTIPLE_CHOICE"
               ? "객관식"
-              : ["TRUE_FALSE", "OX", "TRUEFALSE"].includes(q.type)
+              : ["OX", "TRUE_FALSE"].includes(q.type)
               ? "O/X"
               : "빈칸",
-
           title: q.name,
           fullText: q.name,
           options: q.opt ? q.opt.split("/") : [],
-          answer: q.answer,
+          answer: ["OX", "TRUE_FALSE"].includes(q.type)
+            ? q.answer === "O"
+              ? "O"
+              : "X"
+            : q.answer,
         });
       });
 
-      const formatted = Object.entries(grouped).map(([date, questions]) => ({
-        date: date.split("T")[0],
-        questions,
-      }));
+      const map = {};
+      const formatted = Object.entries(grouped).map(
+        ([workbook, { id, dates }]) => {
+          map[workbook] = id;
+          return {
+            workbook,
+            workbookId: id,
+            dates: Object.entries(dates).map(([date, questions]) => ({
+              date,
+              questions,
+            })),
+          };
+        }
+      );
 
+      setWorkbookMap(map);
       setWrongNoteData(formatted);
-    } catch (error) {
-      console.error(" fetchWrongNotes 에러:", error);
+    } catch (err) {
+      console.error("오답노트 에러:", err);
     }
   };
 
-  const toggleSection = (date) => {
-    setOpenSections((prev) => ({
-      ...prev,
-      [date]: !prev[date],
-    }));
+  const toggleSection = (workbook, date) => {
+    const key = `${workbook}_${date}`;
+    setOpenSections((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const handleQuestionClick = (question) => {
-    setSelectedQuestion(question);
-    setModalOpen(true);
-    setShowAnswer(false);
-  };
+  const handleClickStartLearning = () => {
+    if (selectedBooks.length === 0) return alert("문제집을 선택해주세요");
 
-  const handleOpenDateModal = () => {
-    setTempStart(selectedDateRange.start);
-    setTempEnd(selectedDateRange.end);
-    setDateModalOpen(true);
-  };
+    let totalItems = 0;
+    selectedBooks.forEach((bookName) => {
+      const matchedBook = wrongNoteData.find((b) => b.workbook === bookName);
+      if (matchedBook) {
+        matchedBook.dates.forEach((d) => {
+          totalItems += d.questions.length;
+        });
+      }
+    });
 
-  const handleApplyDateFilter = () => {
-    setSelectedDateRange({ start: tempStart, end: tempEnd });
-    setDateModalOpen(false);
-  };
+    const firstBook = wrongNoteData.find(
+      (b) => b.workbook === selectedBooks[0]
+    );
+    if (!firstBook) return alert("문제집 정보를 찾을 수 없습니다");
 
-  const handleQuickRange = (type) => {
-    const now = new Date();
-    now.setHours(now.getHours() + 9);
-    let start = new Date(now);
-    let end = new Date(now);
-
-    if (type === "yesterday") {
-      start.setDate(start.getDate() - 1);
-      end.setDate(end.getDate() - 1);
-    } else if (type === "3days") {
-      start.setDate(start.getDate() - 2);
-    } else if (type === "7days") {
-      start.setDate(start.getDate() - 6);
-    }
-
-    const format = (d) => d.toISOString().split("T")[0];
-    setTempStart(format(start));
-    setTempEnd(format(end));
+    setCurBook({ id: firstBook.workbookId, items: totalItems });
+    setSequence(1);
   };
 
   return (
@@ -128,23 +131,75 @@ export default function WrongNoteContainer() {
       selectedDateRange={selectedDateRange}
       setSelectedDateRange={setSelectedDateRange}
       data={wrongNoteData}
-      onQuestionClick={handleQuestionClick}
+      selectedBooks={selectedBooks}
+      setSelectedBooks={setSelectedBooks}
+      isSelectMode={isSelectMode}
+      setIsSelectMode={setIsSelectMode}
+      toggleSection={toggleSection}
+      openSections={openSections}
+      onToggleBookSelect={(id) => {
+        setSelectedBooks((prev) =>
+          prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+        );
+      }}
       isModalOpen={isModalOpen}
-      selectedQuestion={selectedQuestion}
       setModalOpen={setModalOpen}
+      selectedQuestion={selectedQuestion}
+      setSelectedQuestion={setSelectedQuestion}
       showAnswer={showAnswer}
       setShowAnswer={setShowAnswer}
-      openSections={openSections}
-      toggleSection={toggleSection}
       isDateModalOpen={isDateModalOpen}
       setIsDateModalOpen={setDateModalOpen}
-      handleOpenDateModal={handleOpenDateModal}
       tempStart={tempStart}
       tempEnd={tempEnd}
       setTempStart={setTempStart}
       setTempEnd={setTempEnd}
-      handleApplyDateFilter={handleApplyDateFilter}
-      handleQuickRange={handleQuickRange}
+      handleApplyDateFilter={() => {
+        setSelectedDateRange({ start: tempStart, end: tempEnd });
+        setDateModalOpen(false);
+      }}
+      handleQuickRange={(type) => {
+        const now = new Date();
+        now.setHours(now.getHours() + 9);
+        const start = new Date(now);
+        const end = new Date(now);
+
+        if (type === "yesterday") {
+          start.setDate(start.getDate() - 1);
+          end.setDate(end.getDate() - 1);
+        } else if (type === "3days") start.setDate(start.getDate() - 2);
+        else if (type === "7days") start.setDate(start.getDate() - 6);
+
+        const format = (d) => d.toISOString().split("T")[0];
+        setTempStart(format(start));
+        setTempEnd(format(end));
+      }}
+      onClickStartLearning={handleClickStartLearning}
+      onQuestionClick={(q) => {
+        setSelectedQuestion(q);
+        setModalOpen(true);
+        setShowAnswer(false);
+      }}
+      curBook={curBook}
+      sequence={sequence}
+      setSequence={setSequence}
+      setCurBook={setCurBook}
+      count={count}
+      setCount={setCount}
+      isTest={isTest}
+      setIsTest={setIsTest}
+      onConfirmLearning={async () => {
+        if (!token || !curBook?.id) return alert("정보 부족");
+        try {
+          await loadNormalQuestion(token, curBook.id, count, isTest);
+          router.push({
+            pathname: "/Question",
+            query: { Id: curBook.id, count, type: isTest ? 1 : 0 },
+          });
+        } catch {
+          alert("문제 불러오기 실패");
+        }
+      }}
     />
   );
 }

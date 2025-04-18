@@ -20,6 +20,8 @@ import {
   ModalInput,
   ModalButtons,
   ModalButton,
+  BookCheckbox, // ✅ 추가
+  TopButtonBar, // ✅ 추가
 } from "./BookShelf.Styles";
 import { useState } from "react";
 
@@ -31,6 +33,10 @@ export default function BookShelfUI({
   onBack,
   onMoreClick,
   onClickBook,
+  onClickLearningMode,
+  onClickLearningStart,
+  isSelectMode,
+  selectedBookIds,
   onOpenCreateModal,
   isCreateModalOpen,
   newWorkbookTitle,
@@ -59,39 +65,60 @@ export default function BookShelfUI({
         <SearchButton onClick={onSearch}>🔍</SearchButton>
       </SearchBar>
 
-      <BookList>
-        {books.map((book) => (
-          <BookItem
-            key={book.id}
-            onMouseOver={() => setHoveredId(book.id)}
-            onMouseOut={() => setHoveredId(null)}
-            onClick={() => onClickBook(book)}
-            style={{
-              backgroundColor:
-                hoveredId === book.id ? "#f0f0f0" : "transparent",
-            }}
-          >
-            <BookInfo>
-              <span>{book.title}</span>
-              <span>
-                {book.items}문제, 최근 학습일: {book.date}
-              </span>
-            </BookInfo>
-            <MoreButtonWrapper
-              onClick={(e) => {
-                e.stopPropagation();
-                onMoreClick(book);
-              }}
-            >
-              <MoreButton>⋮</MoreButton>
-            </MoreButtonWrapper>
-          </BookItem>
-        ))}
-      </BookList>
+      <TopButtonBar>
+        <LearnButton onClick={onClickLearningMode}>
+          {isSelectMode ? "선택 취소" : "학습하기"}
+        </LearnButton>
+        {isSelectMode && (
+          <LearnButton onClick={onClickLearningStart}>학습 시작</LearnButton>
+        )}
+      </TopButtonBar>
 
-      <LearnButtonWrapper>
-        <LearnButton onClick={onOpenCreateModal}>학습하기</LearnButton>
-      </LearnButtonWrapper>
+      <BookList>
+        {books.map((book) => {
+          const isSelected = selectedBookIds.includes(book.id);
+          return (
+            <BookItem
+              key={book.id}
+              onMouseOver={() => setHoveredId(book.id)}
+              onMouseOut={() => setHoveredId(null)}
+              onClick={() => onClickBook(book)}
+            >
+              <BookInfo
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: "8px",
+                }}
+              >
+                {isSelectMode && (
+                  <BookCheckbox
+                    type="checkbox"
+                    checked={isSelected}
+                    onChange={() => onClickBook(book)}
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                )}
+                <div>
+                  <div>{book.title}</div>
+                  <div style={{ fontSize: "14px", color: "#666" }}>
+                    {book.items}문제, 최근 학습일: {book.date}
+                  </div>
+                </div>
+              </BookInfo>
+
+              <MoreButtonWrapper
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onMoreClick(book);
+                }}
+              >
+                <MoreButton>⋮</MoreButton>
+              </MoreButtonWrapper>
+            </BookItem>
+          );
+        })}
+      </BookList>
 
       {isCreateModalOpen && (
         <ModalOverlay>

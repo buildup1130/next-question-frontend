@@ -1,3 +1,4 @@
+// ✅ BookShelf.Container.js 수정본 (학습 옵션 모달 연동)
 import { useState, useEffect } from "react";
 import BookShelfUI from "./BookShelf.Presenter";
 import BottomSheet from "../../unit/BottomSheet/BottomSheet.Container";
@@ -27,6 +28,9 @@ export default function BookShelfContainer() {
   const [isTest, setIsTest] = useState(false);
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
   const [newWorkbookTitle, setNewWorkbookTitle] = useState("");
+
+  const [isSelectMode, setIsSelectMode] = useState(false);
+  const [selectedBookIds, setSelectedBookIds] = useState([]);
 
   const { token } = useAuth();
   const router = useRouter();
@@ -71,14 +75,49 @@ export default function BookShelfContainer() {
   const closeBottomSheet = () => setSheetOpen(false);
 
   const onClickBook = (book) => {
-    router.push({
-      pathname: "Workbook",
-      query: { workBookId: book.id, title: book.title },
+    if (isSelectMode) {
+      const isSelected = selectedBookIds.includes(book.id);
+      setSelectedBookIds((prev) =>
+        isSelected ? prev.filter((id) => id !== book.id) : [...prev, book.id]
+      );
+    } else {
+      router.push({
+        pathname: "Workbook",
+        query: { workBookId: book.id, title: book.title },
+      });
+    }
+  };
+
+  const onClickLearningMode = () => {
+    setIsSelectMode((prev) => !prev);
+    setSelectedBookIds([]);
+  };
+
+  const onClickLearningStart = () => {
+    if (selectedBookIds.length === 0) return alert("문제집을 선택해주세요.");
+
+    const totalQuestions = books
+      .filter((book) => selectedBookIds.includes(book.id))
+      .reduce((acc, cur) => acc + cur.items, 0);
+
+    setCurBook({
+      id: selectedBookIds,
+      items: totalQuestions,
     });
+    setSequence(1);
   };
 
   const onClickLearning = () => {
     if (!token || !curBook?.id) return alert("정보가 없습니다.");
+    console.log("🟠 API 요청 payload:", {
+      Id: curBook.id,
+      count,
+      type: isTest ? 1 : 0,
+      random: true,
+      ox: true,
+      multiple: true,
+      blank: true,
+    });
     router.push({
       pathname: "/Question",
       query: {
@@ -128,6 +167,8 @@ export default function BookShelfContainer() {
           onClose={() => {
             setSequence(0);
             setCurBook(null);
+            setIsSelectMode(false);
+            setSelectedBookIds([]);
           }}
           isTest={isTest}
           setIsTest={setIsTest}
@@ -143,7 +184,10 @@ export default function BookShelfContainer() {
         onBack={handleBack}
         onMoreClick={handleMoreClick}
         onClickBook={onClickBook}
-        onClickDelete={handleDelete}
+        onClickLearningMode={onClickLearningMode}
+        onClickLearningStart={onClickLearningStart}
+        isSelectMode={isSelectMode}
+        selectedBookIds={selectedBookIds}
         onOpenCreateModal={() => setCreateModalOpen(true)}
         isCreateModalOpen={isCreateModalOpen}
         newWorkbookTitle={newWorkbookTitle}
