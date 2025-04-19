@@ -7,10 +7,10 @@ import {
   moveQuestions,
   getWorkbookQuestions,
 } from "@/utils/WorkbookManager";
-import WorkbookPresenter from "./Workbook.Presenter";
+import WorkbookUI from "./Workbook.Presenter";
 import MoveModal from "@/components/unit/MoveModal/MoveModal.Container";
 
-export default function WorkbookContainer() {
+export default function WorkbookLogic() {
   const router = useRouter();
   const { user, token } = useAuth();
   const userId = user?.userId;
@@ -141,7 +141,7 @@ export default function WorkbookContainer() {
 
   return (
     <>
-      <WorkbookPresenter
+      <WorkbookUI
         title={title}
         questions={questions}
         onBack={handleBack}

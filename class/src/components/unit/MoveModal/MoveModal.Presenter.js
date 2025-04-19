@@ -18,7 +18,6 @@ export default function MoveModalUI({
   workBooks,
   onClose,
   onSubmit,
-  selectedIds,
   targetBookId,
   setTargetBookId,
   isCreating,

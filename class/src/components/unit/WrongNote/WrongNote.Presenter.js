@@ -29,7 +29,7 @@ import {
 } from "./WrongNote.Styles";
 import BookShelfQuestionLogic from "@/components/unit/BookShelfQuestion/BookShelfQuestion.Container";
 
-export default function WrongNotePresenter(props) {
+export default function WrongNoteUI(props) {
   const router = useRouter();
   const {
     selectedDateRange,
