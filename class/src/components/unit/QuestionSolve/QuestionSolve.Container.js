@@ -14,13 +14,24 @@ export default function QuestionSolveLogic(props) {
   useEffect(() => {
     console.log("✅ router.query:", router.query);
 
-    // 1. 비회원 학습 (localStorage 기반)
+    // 비회원 학습: localStorage 기반
     if (type === "3") {
       const storedData = localStorage.getItem("tempQuestionData");
       if (storedData) {
-        const questionData = JSON.parse(storedData);
-        setQuestions(questionData);
-        console.dir(questionData);
+        try {
+          const parsed = JSON.parse(storedData);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setQuestions(parsed);
+            console.log("✅ 로컬 문제 데이터 로딩 완료:", parsed);
+          } else {
+            alert("문제 데이터가 비어있습니다.");
+            router.push("/");
+          }
+        } catch (err) {
+          console.error("로컬 문제 데이터 파싱 실패:", err);
+          alert("문제 데이터를 불러오지 못했습니다.");
+          router.push("/");
+        }
       } else {
         alert("저장된 문제 데이터가 없습니다.");
         router.push("/");
@@ -28,7 +39,7 @@ export default function QuestionSolveLogic(props) {
       return;
     }
 
-    // 2. 로그인 사용자
+    // 로그인 사용자
     if (isAuthenticated) {
       if (Id) {
         loadNormalQuestion(token, Id, {
@@ -61,13 +72,13 @@ export default function QuestionSolveLogic(props) {
         router.push("/");
       }
     }
-
     // 3. 예외처리
     else{
         alert("잘못된 접근입니다.");
         router.push("/");
     }
   }, [Id, token, count, random, ox, multiple, blank, type]);
+
 
   // //LocalStorage사용 방식
   // useEffect(() => {
@@ -103,7 +114,7 @@ export default function QuestionSolveLogic(props) {
   );
 }
 
-// 질문 데이터 후처리 함수
+// 후처리: OX형 정답 문자열 → 숫자로, 빈칸 치환
 function handleQuestions(questions) {
   if (!questions || !Array.isArray(questions)) {
     console.error("Questions data is not valid:", questions);

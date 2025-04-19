@@ -1,11 +1,10 @@
 import MainContainerLogic from "@/components/common/MainContainer/MainContainer.Container";
+import WrongNoteLogic from "@/components/unit/WrongNote/WrongNote.Container";
 
-import WorkbookLogic from "@/components/unit/Workbook/Workbook.Container";
-
-export default function WorkbookPage() {
+export default function WrongNotePage() {
   return (
     <MainContainerLogic>
-      <WorkbookLogic />
+      <WrongNoteLogic />
     </MainContainerLogic>
   );
 }

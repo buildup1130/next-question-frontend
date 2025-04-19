@@ -7,7 +7,7 @@ export const Container = styled.div`
   padding-top: 20px;
   padding-bottom: 80px;
   margin: 0 auto;
-  position: relative; // ✅ LearnButtonWrapper 고정 기준점
+  position: relative;
 `;
 
 export const Header = styled.div`
@@ -77,6 +77,26 @@ export const SearchButton = styled.button`
   cursor: pointer;
 `;
 
+export const TopButtonBar = styled.div`
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 1000;
+`;
+
+export const LearnButton = styled.button`
+  background-color: black;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+`;
+
 export const BookList = styled.ul`
   margin-top: 20px;
   list-style: none;
@@ -95,6 +115,12 @@ export const BookItem = styled.li`
 export const BookInfo = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 2px;
+`;
+
+export const BookCheckbox = styled.input`
+  margin-right: 4px;
+  transform: scale(1.2);
 `;
 
 export const MoreButtonWrapper = styled.div`
@@ -113,19 +139,54 @@ export const MoreButton = styled.button`
   cursor: pointer;
 `;
 
-export const LearnButtonWrapper = styled.div`
+export const ModalOverlay = styled.div`
   position: fixed;
-  bottom: 80px; // ✅ 네비게이션 위
-  right: 20px;
-  z-index: 1000; // ✅ 다른 요소보다 위에 있도록
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 2000;
 `;
 
-export const LearnButton = styled.button`
-  background-color: black;
-  color: white;
-  padding: 8px 16px;
+export const ModalContainer = styled.div`
+  width: 90%;
+  max-width: 400px;
+  margin: 200px auto;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+`;
+
+export const ModalTitle = styled.h2`
+  margin-bottom: 20px;
+`;
+
+export const ModalInput = styled.input`
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 24px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+`;
+
+export const ModalButtons = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+`;
+
+export const ModalButton = styled.button`
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
   border: none;
-  border-radius: 6px;
-  font-size: 14px;
+  font-weight: bold;
+  font-size: 16px;
   cursor: pointer;
+  background-color: ${(props) => (props.primary ? "#007bff" : "#f0f0f0")};
+  color: ${(props) => (props.primary ? "#fff" : "#000")};
 `;

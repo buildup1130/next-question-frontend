@@ -1,4 +1,3 @@
-// src/components/common/SocialSignUp/SocialSignUp.Styles.js
 import styled from "@emotion/styled";
 
 export const SignUpContainer = styled.div`

@@ -1,21 +1,19 @@
-// ✅ SocialSignUp.Container.js
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import SocialSignUpUI from "./SocialSignUp.Presenter";
 
-export default function SocialSignUpContainer() {
+export default function SocialSignUpLogic() {
   const router = useRouter();
   const [email, setEmail] = useState(null);
+  const [nickname, setNickname] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (router.isReady && router.query.email) {
       setEmail(router.query.email);
     }
   }, [router.isReady, router.query]);
-
-  const [nickname, setNickname] = useState("");
-  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setNickname(e.target.value);
@@ -30,7 +28,7 @@ export default function SocialSignUpContainer() {
         "http://localhost:8080/public/member/regist/social/google",
         {
           userId: email,
-          nickname: nickname,
+          nickname,
         }
       );
 

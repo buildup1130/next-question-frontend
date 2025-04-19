@@ -1,4 +1,3 @@
-// RenameModal.Styles.js
 import styled from "@emotion/styled";
 
 export const ModalOverlay = styled.div`
@@ -13,13 +12,13 @@ export const ModalContainer = styled.div`
   max-width: 400px;
   background: white;
   border-radius: 10px;
-  margin: 250px auto; /* ✅ 더 아래로 */
+  margin: 250px auto;
   padding: 24px;
   text-align: center;
 
   input {
     width: 100%;
-    padding: 12px 10px; /* ✅ 더 크고 넉넉하게 */
+    padding: 12px 10px;
     margin-top: 12px;
     font-size: 16px;
     border: 1px solid #ccc;
