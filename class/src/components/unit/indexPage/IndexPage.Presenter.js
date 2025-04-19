@@ -6,11 +6,13 @@ import {
   Home__CalBar,
   Home__CalTitle,
   Home__CalMore,
-} from "@/pages/styles";
-import MainCalendarLogic from "../MainCalendar/MainCalendar.Container";
+  Home__IconBar__LoginBtn,
+  Home__IconBar__Logo,
+} from "./IndexPage.Styles"
 import UploadBoxLogic from "../UploadBox/UploadBox.Container";
 import GenerateShelfLogic from "../GenerateShelf/GenerateShelf.Container";
 import AttendanceCheckLogic from "../AttendanceCheck/AttendanceCheck.Container";
+import MainCalendarLogic from "../MainCalendar/MainCalendar.Container";
 
 export default function IndexPageUI({
   onClickLogin,
@@ -39,13 +41,15 @@ export default function IndexPageUI({
         ></GenerateShelfLogic>
       )}
       <Home__IconBar>
-        <img src="/image/Vector_user.png" onClick={onClickLogin} />
-        <img src="/image/material-symbols_settings.png" />
         <Home__IconBar__Login>
           {!isAuthenticated
             ? "로그인이 필요합니다."
             : user.nickname + " 님 환영합니다."}
+            <Home__IconBar__LoginBtn
+              onClick={onClickLogin}
+            >{!isAuthenticated?"로그인":"로그아웃"}</Home__IconBar__LoginBtn>
         </Home__IconBar__Login>
+        <Home__IconBar__Logo>LOGO</Home__IconBar__Logo>
       </Home__IconBar>
       <UploadBoxLogic setFile={setFile} file={file} setIsCreated = {setIsCreated}></UploadBoxLogic>
       <AttendanceCheckLogic

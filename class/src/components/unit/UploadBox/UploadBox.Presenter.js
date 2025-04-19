@@ -39,7 +39,10 @@ export default function UploadBoxUI(props) {
           console.log(props.file)
           }
         }}
-      >문제 생성하기</UploadBox__UploadButton>
+      >
+        <img src = "image/LightIcon.png"></img>
+        문제 생성하기
+      </UploadBox__UploadButton>
       
       <HiddenForm
         type="file"
