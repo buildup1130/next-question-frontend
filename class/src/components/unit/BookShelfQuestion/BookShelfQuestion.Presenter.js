@@ -9,7 +9,6 @@ import {
   BookShelfQuestion__Title,
   BookShelfQuestion__Wrapper,
   CurrentValue,
-  Marker,
   Progress,
   ProgressBarContainer,
   ProgressWrapper,
@@ -23,7 +22,7 @@ export default function BookShelfQuestionUI(props) {
     <BookShelfQuestion__Wrapper>
       <BookShelfQuestion__Container>
         <BookShelfQuestion__Modal>
-          {/* ✅ 닫기 버튼 추가 */}
+          {/* 닫기 버튼 추가 */}
           <BookShelfQuestion__CloseButtonContainer>
             <BookShelfQuestion__CloseButton onClick={props.onClose}>
               ✖

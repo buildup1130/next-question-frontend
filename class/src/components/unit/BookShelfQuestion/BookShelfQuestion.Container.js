@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import BookShelfQuestionUI from "./BookShelfQuestion.Presenter";
-import axios from "axios";
-import { loadNormalQuestion } from "@/utils/WorkbookManager";
 
 export default function BookShelfQuestionLogic(props) {
-  // ✅ 문제 수를 모달 열 때 최대값으로 초기화
+  // 문제 수를 모달 열 때 최대값으로 초기화
   useEffect(() => {
     if (props.curBook?.items) {
       props.setCount(props.curBook.items);

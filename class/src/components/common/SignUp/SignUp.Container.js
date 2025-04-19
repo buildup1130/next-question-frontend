@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import SignUpUI from "./SignUp.Presenter";
 import axios from "axios";
 
-export default function SignUp() {
+export default function SignUpLogic() {
   const router = useRouter();
 
   const [form, setForm] = useState({

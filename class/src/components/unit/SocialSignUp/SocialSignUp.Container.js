@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import SocialSignUpUI from "./SocialSignUp.Presenter";
 
-export default function SocialSignUpContainer() {
+export default function SocialSignUpLogic() {
   const router = useRouter();
   const [email, setEmail] = useState(null);
   const [nickname, setNickname] = useState("");

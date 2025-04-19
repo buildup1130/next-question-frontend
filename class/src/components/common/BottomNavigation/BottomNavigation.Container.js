@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import BottomNavigationUI from "./BottomNavigation.Presenter";
-import { useState } from "react";
 
 export default function BottomNavigationLogic() {
   const router = useRouter();

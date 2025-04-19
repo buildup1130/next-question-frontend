@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { searchAllWorkBooks, createWorkbook } from "@/utils/WorkbookManager";
 import { useAuth } from "@/utils/AuthContext";
 
-export default function MoveModalContainer({
+export default function MoveModalLogic({
   onClose,
   onSubmit,
   selectedIds,

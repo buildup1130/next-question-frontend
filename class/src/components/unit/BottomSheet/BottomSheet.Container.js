@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import BottomSheetPresenter from "./BottomSheet.Presenter";
+import BottomSheetUI from "./BottomSheet.Presenter";
 import axios from "axios";
 import { useAuth } from "@/utils/AuthContext";
 
-export default function BottomSheet({
+export default function BottomSheetLogic({
   isOpen,
   onClose,
   onDelete,
@@ -62,7 +62,7 @@ export default function BottomSheet({
   };
 
   return (
-    <BottomSheetPresenter
+    <BottomSheetUI
       book={book}
       onClose={onClose}
       onClickLearn={handleLearn}

@@ -1,18 +1,17 @@
 import { useState, useEffect } from "react";
 import BookShelfUI from "./BookShelf.Presenter";
 import BottomSheet from "../../unit/BottomSheet/BottomSheet.Container";
-import RenameModalContainer from "../../unit/RenameModal/RenameModal.Container";
+import RenameModalLogic from "../../unit/RenameModal/RenameModal.Container";
 import BookShelfQuestionLogic from "../../unit/BookShelfQuestion/BookShelfQuestion.Container";
 import {
   deleteWorkBooks,
-  loadNormalQuestion,
   searchAllWorkBooks,
   createWorkbook,
 } from "@/utils/WorkbookManager";
 import { useAuth } from "@/utils/AuthContext";
 import { useRouter } from "next/router";
 
-export default function BookShelfContainer() {
+export default function BookShelfLogic() {
   const [searchQuery, setSearchQuery] = useState("");
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
@@ -199,7 +198,7 @@ export default function BookShelfContainer() {
       />
 
       {isRenameModalOpen && (
-        <RenameModalContainer
+        <RenameModalLogic
           book={renameTargetBook}
           onClose={() => setRenameModalOpen(false)}
           fetchWorkBooks={fetchWorkBooks}

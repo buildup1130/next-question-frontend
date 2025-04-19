@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { getWrongNote } from "@/utils/WrongNoteManager";
-import { loadNormalQuestion } from "@/utils/WorkbookManager";
 import { useAuth } from "@/utils/AuthContext";
 import { useRouter } from "next/router";
-import WrongNotePresenter from "./WrongNote.Presenter";
+import WrongNoteUI from "./WrongNote.Presenter";
 
-export default function WrongNoteContainer() {
+export default function WrongNoteLogic() {
   const today = new Date();
   today.setHours(today.getHours() + 9);
   const todayStr = today.toISOString().split("T")[0];
@@ -127,20 +126,54 @@ export default function WrongNoteContainer() {
   };
 
   const handleConfirmLearning = async () => {
-    if (!token || !curBook?.id) return alert("정보 부족");
-    try {
-      await loadNormalQuestion(token, curBook.id, count, isTest);
-      router.push({
-        pathname: "/Question",
-        query: { Id: curBook.id, count, type: isTest ? 1 : 0 },
-      });
-    } catch {
-      alert("문제 불러오기 실패");
+    if (!selectedBooks.length || !wrongNoteData.length) {
+      return alert("문제집 선택 또는 데이터가 없습니다");
     }
+
+    let collectedQuestions = [];
+
+    selectedBooks.forEach((bookName) => {
+      const book = wrongNoteData.find((b) => b.workbook === bookName);
+      if (book) {
+        book.dates.forEach((d) => {
+          d.questions.forEach((q) => {
+            collectedQuestions.push({
+              name: q.title,
+              answer: q.answer,
+              type:
+                q.type === "객관식"
+                  ? "MULTIPLE_CHOICE"
+                  : q.type === "O/X"
+                  ? "OX"
+                  : "FILL_IN_THE_BLANK",
+              ...(q.options?.length > 0 && {
+                opt: q.options.join("/"),
+              }),
+            });
+          });
+        });
+      }
+    });
+
+    if (!collectedQuestions.length) {
+      return alert("학습할 문제가 없습니다");
+    }
+
+    // localStorage에 저장
+    localStorage.setItem(
+      "tempQuestionData",
+      JSON.stringify(collectedQuestions)
+    );
+
+    // Question 페이지로 이동
+    router.push({
+      pathname: "/Question",
+      query: { type: 3 },
+    });
   };
 
   return (
-    <WrongNotePresenter
+    <WrongNoteUI
       selectedDateRange={selectedDateRange}
       setSelectedDateRange={setSelectedDateRange}
       data={wrongNoteData}

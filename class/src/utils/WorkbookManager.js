@@ -1,4 +1,3 @@
-// utils/WorkbookManager.js
 import axios from "axios";
 
 export const searchAllWorkBooks = async (token) => {

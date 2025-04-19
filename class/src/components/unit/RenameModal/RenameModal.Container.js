@@ -1,14 +1,10 @@
 import { useState } from "react";
-import RenameModalPresenter from "./RenameModal.Presenter";
+import RenameModalUI from "./RenameModal.Presenter";
 import axios from "axios";
 import { useAuth } from "@/utils/AuthContext";
 import { toast } from "react-toastify";
 
-export default function RenameModalContainer({
-  book,
-  onClose,
-  fetchWorkBooks,
-}) {
+export default function RenameModalLogic({ book, onClose, fetchWorkBooks }) {
   const [newName, setNewName] = useState(book?.title || "");
   const { token } = useAuth();
 
@@ -47,7 +43,7 @@ export default function RenameModalContainer({
   };
 
   return (
-    <RenameModalPresenter
+    <RenameModalUI
       newName={newName}
       setNewName={setNewName}
       onClose={onClose}

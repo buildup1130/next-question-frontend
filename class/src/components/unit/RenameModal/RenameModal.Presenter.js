@@ -1,6 +1,6 @@
 import { ModalOverlay, ModalContainer, ButtonRow } from "./RenameModal.Styles";
 
-export default function RenameModalPresenter({
+export default function RenameModalUI({
   newName,
   setNewName,
   onClose,

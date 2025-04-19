@@ -14,7 +14,7 @@ import {
   DeleteButton,
 } from "./Workbook.Styles";
 
-export default function WorkbookPresenter({
+export default function WorkbookUI({
   title,
   questions,
   onBack,
