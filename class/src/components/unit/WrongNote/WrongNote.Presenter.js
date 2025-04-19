@@ -1,3 +1,4 @@
+// WrongNote.Presenter.js
 import { useRouter } from "next/router";
 import {
   Wrapper,
@@ -30,7 +31,6 @@ import BookShelfQuestionLogic from "@/components/unit/BookShelfQuestion/BookShel
 
 export default function WrongNotePresenter(props) {
   const router = useRouter();
-
   const {
     selectedDateRange,
     data,
@@ -42,7 +42,6 @@ export default function WrongNotePresenter(props) {
     isModalOpen,
     setModalOpen,
     selectedQuestion,
-    setSelectedQuestion,
     showAnswer,
     setShowAnswer,
     isDateModalOpen,
@@ -63,8 +62,8 @@ export default function WrongNotePresenter(props) {
     setCount,
     isTest,
     setIsTest,
-    onConfirmLearning,
     setIsSelectMode,
+    setSelectedQuestion,
   } = props;
 
   return (
@@ -142,7 +141,7 @@ export default function WrongNotePresenter(props) {
           curBook={curBook}
           count={count}
           setCount={setCount}
-          onClickLearning={onConfirmLearning}
+          onClickLearning={props.onConfirmLearning}
           onClose={() => {
             setSequence(0);
             setCurBook(null);

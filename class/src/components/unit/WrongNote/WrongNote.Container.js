@@ -1,3 +1,4 @@
+// WrongNoteContainer.js
 import { useState, useEffect } from "react";
 import { getWrongNote } from "@/utils/WrongNoteManager";
 import { loadNormalQuestion } from "@/utils/WorkbookManager";
@@ -104,6 +105,34 @@ export default function WrongNoteContainer() {
     setOpenSections((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
+  const handleToggleBookSelect = (id) => {
+    setSelectedBooks((prev) =>
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+    );
+  };
+
+  const handleApplyDateFilter = () => {
+    setSelectedDateRange({ start: tempStart, end: tempEnd });
+    setDateModalOpen(false);
+  };
+
+  const handleQuickRange = (type) => {
+    const now = new Date();
+    now.setHours(now.getHours() + 9);
+    const start = new Date(now);
+    const end = new Date(now);
+
+    if (type === "yesterday") {
+      start.setDate(start.getDate() - 1);
+      end.setDate(end.getDate() - 1);
+    } else if (type === "3days") start.setDate(start.getDate() - 2);
+    else if (type === "7days") start.setDate(start.getDate() - 6);
+
+    const format = (d) => d.toISOString().split("T")[0];
+    setTempStart(format(start));
+    setTempEnd(format(end));
+  };
+
   const handleClickStartLearning = () => {
     if (selectedBooks.length === 0) return alert("문제집을 선택해주세요");
 
@@ -139,6 +168,12 @@ export default function WrongNoteContainer() {
     }
   };
 
+  const handleQuestionClick = (q) => {
+    setSelectedQuestion(q);
+    setModalOpen(true);
+    setShowAnswer(false);
+  };
+
   return (
     <WrongNotePresenter
       selectedDateRange={selectedDateRange}
@@ -150,11 +185,7 @@ export default function WrongNoteContainer() {
       setIsSelectMode={setIsSelectMode}
       toggleSection={toggleSection}
       openSections={openSections}
-      onToggleBookSelect={(id) => {
-        setSelectedBooks((prev) =>
-          prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
-        );
-      }}
+      onToggleBookSelect={handleToggleBookSelect}
       isModalOpen={isModalOpen}
       setModalOpen={setModalOpen}
       selectedQuestion={selectedQuestion}
@@ -167,32 +198,10 @@ export default function WrongNoteContainer() {
       tempEnd={tempEnd}
       setTempStart={setTempStart}
       setTempEnd={setTempEnd}
-      handleApplyDateFilter={() => {
-        setSelectedDateRange({ start: tempStart, end: tempEnd });
-        setDateModalOpen(false);
-      }}
-      handleQuickRange={(type) => {
-        const now = new Date();
-        now.setHours(now.getHours() + 9);
-        const start = new Date(now);
-        const end = new Date(now);
-
-        if (type === "yesterday") {
-          start.setDate(start.getDate() - 1);
-          end.setDate(end.getDate() - 1);
-        } else if (type === "3days") start.setDate(start.getDate() - 2);
-        else if (type === "7days") start.setDate(start.getDate() - 6);
-
-        const format = (d) => d.toISOString().split("T")[0];
-        setTempStart(format(start));
-        setTempEnd(format(end));
-      }}
+      handleApplyDateFilter={handleApplyDateFilter}
+      handleQuickRange={handleQuickRange}
       onClickStartLearning={handleClickStartLearning}
-      onQuestionClick={(q) => {
-        setSelectedQuestion(q);
-        setModalOpen(true);
-        setShowAnswer(false);
-      }}
+      onQuestionClick={handleQuestionClick}
       curBook={curBook}
       sequence={sequence}
       setSequence={setSequence}
