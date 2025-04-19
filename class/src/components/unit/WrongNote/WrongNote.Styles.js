@@ -21,6 +21,16 @@ export const DateHeader = styled.div`
   font-size: 20px;
 `;
 
+export const BackButton = styled.button`
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+`;
+
 export const CalendarButton = styled.button`
   position: absolute;
   right: 12px;
@@ -31,12 +41,48 @@ export const CalendarButton = styled.button`
   cursor: pointer;
 `;
 
+export const Divider = styled.hr`
+  width: 100%;
+  height: 1px;
+  background-color: #ccc;
+  border: none;
+  margin-top: 8px;
+  margin-bottom: 12px;
+`;
+
 export const Section = styled.div`
   background-color: white;
   border-radius: 12px;
   padding: 12px;
   margin-top: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+`;
+
+export const WorkbookTitle = styled.h3`
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 20px;
+  margin-bottom: 8px;
+`;
+
+export const CheckBox = styled.input`
+  margin-right: 8px;
+  transform: scale(1.2);
+`;
+
+export const DateTitle = styled.div`
+  background-color: #e4e7ff;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 12px;
+  color: #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
 `;
 
 export const QuestionItem = styled.div`
@@ -65,20 +111,6 @@ export const QuestionItem = styled.div`
     font-size: 13px;
     flex-shrink: 0;
   }
-`;
-
-export const DateTitle = styled.div`
-  background-color: #e4e7ff;
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-weight: bold;
-  font-size: 14px;
-  margin-bottom: 12px;
-  color: #333;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
 `;
 
 export const AgainButton = styled.button`
@@ -142,6 +174,15 @@ export const ModalButton = styled.button`
   border: none;
 `;
 
+export const AnswerBox = styled.div`
+  margin-top: 16px;
+  padding: 12px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  font-weight: bold;
+  color: #333;
+`;
+
 export const OptionList = styled.ul`
   list-style-type: none;
   padding-left: 0;
@@ -152,47 +193,6 @@ export const OptionItem = styled.li`
   margin-bottom: 6px;
   font-size: 14px;
   line-height: 1.5;
-`;
-
-export const AnswerBox = styled.div`
-  margin-top: 16px;
-  padding: 12px;
-  background: #f5f5f5;
-  border-radius: 8px;
-  font-weight: bold;
-  color: #333;
-`;
-
-export const BackButton = styled.button`
-  position: absolute;
-  left: 12px;
-  top: 12px;
-  background: transparent;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-`;
-
-export const Divider = styled.hr`
-  width: 100%;
-  height: 1px;
-  background-color: #ccc;
-  border: none;
-  margin-top: 8px;
-  margin-bottom: 12px;
-`;
-
-export const WorkbookTitle = styled.h3`
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
-  margin-top: 20px;
-  margin-bottom: 8px;
-`;
-
-export const CheckBox = styled.input`
-  margin-right: 8px;
-  transform: scale(1.2);
 `;
 
 export const DateModalBackdrop = styled.div`

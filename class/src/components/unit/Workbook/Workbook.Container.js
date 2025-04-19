@@ -9,7 +9,6 @@ import {
 } from "@/utils/WorkbookManager";
 import WorkbookPresenter from "./Workbook.Presenter";
 import MoveModal from "@/components/unit/MoveModal/MoveModal.Container";
-import MainContainerLogic from "@/components/common/MainContainer/MainContainer.Container";
 
 export default function WorkbookContainer() {
   const router = useRouter();
@@ -20,7 +19,6 @@ export default function WorkbookContainer() {
   const [questions, setQuestions] = useState([]);
   const [deleteMode, setDeleteMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState([]);
-
   const [moveMode, setMoveMode] = useState(false);
   const [isMoveModalOpen, setMoveModalOpen] = useState(false);
   const [targetBookId, setTargetBookId] = useState("");
@@ -29,7 +27,6 @@ export default function WorkbookContainer() {
   useEffect(() => {
     if (token && workBookId && userId) {
       getWorkbookQuestions(token, workBookId, userId).then((data) => {
-        console.log("📦 내려온 문제 데이터:", data);
         setQuestions(data || []);
       });
     }
@@ -47,12 +44,15 @@ export default function WorkbookContainer() {
     }
   }, [token]);
 
-  const handleBack = () => {
-    router.back();
-  };
+  const handleBack = () => router.back();
 
   const toggleDeleteMode = () => {
     setDeleteMode((prev) => !prev);
+    setSelectedIds([]);
+  };
+
+  const toggleMoveMode = () => {
+    setMoveMode((prev) => !prev);
     setSelectedIds([]);
   };
 
@@ -62,14 +62,7 @@ export default function WorkbookContainer() {
     );
   };
 
-  const toggleMoveMode = () => {
-    setMoveMode((prev) => !prev);
-    setSelectedIds([]);
-  };
-
-  const openMoveModal = () => {
-    setMoveModalOpen(true);
-  };
+  const openMoveModal = () => setMoveModalOpen(true);
 
   const handleMoveSubmit = async () => {
     if (!token || !workBookId || !targetBookId || selectedIds.length === 0) {
@@ -112,7 +105,7 @@ export default function WorkbookContainer() {
         alert("문제 이동 실패");
       }
     } catch (error) {
-      console.error(" 문제 이동 중 오류:", error);
+      console.error("문제 이동 중 오류:", error);
       alert("문제 이동 중 오류 발생");
     }
   };
@@ -133,7 +126,7 @@ export default function WorkbookContainer() {
       if (!res.ok) throw new Error("요청 실패");
 
       const text = await res.text();
-      console.log(" 서버 응답 메시지:", text);
+      console.log("서버 응답 메시지:", text);
 
       setQuestions((prev) =>
         prev.filter((q) => !selectedIds.includes(q.encryptedQuestionId))
@@ -141,7 +134,7 @@ export default function WorkbookContainer() {
       setSelectedIds([]);
       setDeleteMode(false);
     } catch (err) {
-      console.error(" 삭제 중 에러 발생:", err);
+      console.error("삭제 중 에러 발생:", err);
       alert("삭제 요청 중 오류 발생");
     }
   };
@@ -153,12 +146,12 @@ export default function WorkbookContainer() {
         questions={questions}
         onBack={handleBack}
         deleteMode={deleteMode}
+        moveMode={moveMode}
         onToggleDeleteMode={toggleDeleteMode}
+        onToggleMoveMode={toggleMoveMode}
         onSelect={handleSelect}
         selectedIds={selectedIds}
         onDelete={handleDelete}
-        moveMode={moveMode}
-        onToggleMoveMode={toggleMoveMode}
         onOpenMoveModal={openMoveModal}
       />
 

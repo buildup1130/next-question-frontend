@@ -30,9 +30,8 @@ export default function MoveModalContainer({
     }
 
     try {
-      const res = await createWorkbook(token, creatingName);
+      await createWorkbook(token, creatingName);
       await fetchWorkBooks();
-
       setIsCreating(false);
       setCreatingName("");
     } catch (error) {

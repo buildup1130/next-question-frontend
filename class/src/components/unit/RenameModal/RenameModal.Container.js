@@ -18,11 +18,6 @@ export default function RenameModalContainer({
       return;
     }
 
-    console.log("API URL:", process.env.NEXT_PUBLIC_API_URL);
-    console.log("book.id:", book?.id);
-    console.log("newName:", newName.trim());
-    console.log("token:", token);
-
     try {
       const response = await axios.patch(
         `${process.env.NEXT_PUBLIC_API_URL}/member/workBook/update`,
@@ -37,11 +32,6 @@ export default function RenameModalContainer({
           },
         }
       );
-
-      // ✅ 여기에 추가해줘!
-      console.log("응답 전체:", response);
-      console.log("응답 status:", response.status);
-      console.log("응답 data:", response.data);
 
       if (response.status === 200) {
         toast.success(response.data || "📘 이름이 변경되었습니다!");

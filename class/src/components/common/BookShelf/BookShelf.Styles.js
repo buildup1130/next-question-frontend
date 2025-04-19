@@ -77,6 +77,26 @@ export const SearchButton = styled.button`
   cursor: pointer;
 `;
 
+export const TopButtonBar = styled.div`
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 1000;
+`;
+
+export const LearnButton = styled.button`
+  background-color: black;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+`;
+
 export const BookList = styled.ul`
   margin-top: 20px;
   list-style: none;
@@ -98,6 +118,11 @@ export const BookInfo = styled.div`
   gap: 2px;
 `;
 
+export const BookCheckbox = styled.input`
+  margin-right: 4px;
+  transform: scale(1.2);
+`;
+
 export const MoreButtonWrapper = styled.div`
   padding: 10px;
   margin-right: -10px;
@@ -111,24 +136,6 @@ export const MoreButton = styled.button`
   background: none;
   border: none;
   font-size: 20px;
-  cursor: pointer;
-`;
-
-export const LearnButtonWrapper = styled.div`
-  position: fixed;
-  bottom: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-`;
-
-export const LearnButton = styled.button`
-  background-color: black;
-  color: white;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
   cursor: pointer;
 `;
 
@@ -182,19 +189,4 @@ export const ModalButton = styled.button`
   cursor: pointer;
   background-color: ${(props) => (props.primary ? "#007bff" : "#f0f0f0")};
   color: ${(props) => (props.primary ? "#fff" : "#000")};
-`;
-
-export const BookCheckbox = styled.input`
-  margin-right: 4px;
-  transform: scale(1.2);
-`;
-
-export const TopButtonBar = styled.div`
-  position: fixed;
-  bottom: 80px; /* 하단 네비게이션 위 */
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 10px;
-  z-index: 1000;
 `;

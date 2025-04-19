@@ -1,11 +1,9 @@
-import React from "react";
 import {
   Overlay,
   SheetContainer,
   Handle,
   SheetContent,
   OptionItem,
-  RenameModalWrapper,
 } from "./BottomSheet.Styles";
 
 export default function BottomSheetPresenter({

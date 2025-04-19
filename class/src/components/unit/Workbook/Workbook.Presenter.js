@@ -3,16 +3,15 @@ import {
   Header,
   BackButton,
   Title,
-  Divider,
+  TopRightButtonGroup,
+  TopRightButton,
   QuestionCard,
   QuestionTitle,
   Answer,
   Type,
   OptionList,
-  DeleteButton,
-  TopRightButtonGroup,
-  TopRightButton,
   Checkbox,
+  DeleteButton,
 } from "./Workbook.Styles";
 
 export default function WorkbookPresenter({
@@ -66,6 +65,7 @@ export default function WorkbookPresenter({
       {deleteMode && selectedIds.length > 0 && (
         <DeleteButton onClick={onDelete}>선택 삭제</DeleteButton>
       )}
+
       {moveMode && selectedIds.length > 0 && (
         <DeleteButton onClick={onOpenMoveModal}>
           📦 다른 문제집으로 이동

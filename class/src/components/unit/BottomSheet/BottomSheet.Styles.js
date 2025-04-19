@@ -65,37 +65,9 @@ export const OptionItem = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  transition: background 0.2s; //커서 올릴때 배경색 서서히 바뀌게게
+  transition: background 0.2s;
 
   &:hover {
     background: #f5f5f5;
-  }
-`;
-
-export const RenameModalWrapper = styled.div`
-  margin-top: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  input {
-    padding: 8px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-
-  button {
-    padding: 8px;
-    font-size: 14px;
-    border: none;
-    border-radius: 4px;
-    background: #000;
-    color: #fff;
-    cursor: pointer;
-
-    &:hover {
-      opacity: 0.9;
-    }
   }
 `;

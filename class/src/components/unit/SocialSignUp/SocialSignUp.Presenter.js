@@ -1,4 +1,3 @@
-// src/components/common/SocialSignUp/SocialSignUp.Presenter.js
 import {
   SignUpContainer,
   Label,
@@ -19,7 +18,6 @@ export default function SocialSignUpUI({
   return (
     <SignUpContainer>
       <h2>소셜 회원가입</h2>
-
       <form onSubmit={onSubmit}>
         <Label>이메일</Label>
         <InputField value={email} disabled />

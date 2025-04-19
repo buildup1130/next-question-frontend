@@ -1,12 +1,11 @@
+// utils/WorkbookManager.js
 import axios from "axios";
 
 export const searchAllWorkBooks = async (token) => {
-  console.log("Sending request with token:", token);
   try {
     const response = await axios.post(
       "http://localhost:8080/member/workBooks/search",
-      {}, // POST 방식이므로 body는 비어 있어도 {} 넘겨야 함
-
+      {},
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -24,7 +23,7 @@ export const createWorkbook = async (token, name) => {
     { workBookName: name },
     {
       headers: {
-        Authorization: `Bearer ${token}`, // 토큰 추가
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     }
@@ -39,7 +38,7 @@ export const saveAtWorkBook = async (token, Questions, workbookId) => {
       { encryptedQuestionInfoIds: Questions, encryptedWorkBookId: workbookId },
       {
         headers: {
-          Authorization: `Bearer ${token}`, // 토큰 추가
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       }
@@ -55,7 +54,7 @@ export const getWorkbookQuestions = async (token, encryptedWorkBookId) => {
     const response = await axios.post(
       "http://localhost:8080/member/workBook/search/questions",
       {
-        encryptedWorkBookId: encryptedWorkBookId, // ✅ 정확한 key 사용
+        encryptedWorkBookId: encryptedWorkBookId,
       },
       {
         headers: {
@@ -79,7 +78,7 @@ export const deleteWorkBooks = async (token, encryptedWorkBookIds) => {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        data: encryptedWorkBookIds, // 배열 형태로 보냄
+        data: encryptedWorkBookIds,
       }
     );
 
@@ -99,7 +98,7 @@ export const loadNormalQuestion = async (token, id, options) => {
 
     const response = await axios.post(
       "http://localhost:8080/member/solving/normal/search",
-      payload, // 또는 JSON.stringify(payload) 로도 테스트
+      payload,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -120,7 +119,7 @@ export const loadDailyQuestion = async (token) => {
       "http://localhost:8080/member/solving/daily/search",
       {
         headers: {
-          Authorization: `Bearer ${token}`, // 토큰 추가
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       }

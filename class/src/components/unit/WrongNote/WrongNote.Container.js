@@ -1,6 +1,6 @@
-// WrongNote.Container.js
 import { useState, useEffect } from "react";
 import { getWrongNote } from "@/utils/WrongNoteManager";
+import { loadNormalQuestion } from "@/utils/WorkbookManager";
 import { useAuth } from "@/utils/AuthContext";
 import { useRouter } from "next/router";
 import WrongNotePresenter from "./WrongNote.Presenter";
@@ -126,6 +126,19 @@ export default function WrongNoteContainer() {
     setSequence(1);
   };
 
+  const handleConfirmLearning = async () => {
+    if (!token || !curBook?.id) return alert("정보 부족");
+    try {
+      await loadNormalQuestion(token, curBook.id, count, isTest);
+      router.push({
+        pathname: "/Question",
+        query: { Id: curBook.id, count, type: isTest ? 1 : 0 },
+      });
+    } catch {
+      alert("문제 불러오기 실패");
+    }
+  };
+
   return (
     <WrongNotePresenter
       selectedDateRange={selectedDateRange}
@@ -188,18 +201,7 @@ export default function WrongNoteContainer() {
       setCount={setCount}
       isTest={isTest}
       setIsTest={setIsTest}
-      onConfirmLearning={async () => {
-        if (!token || !curBook?.id) return alert("정보 부족");
-        try {
-          await loadNormalQuestion(token, curBook.id, count, isTest);
-          router.push({
-            pathname: "/Question",
-            query: { Id: curBook.id, count, type: isTest ? 1 : 0 },
-          });
-        } catch {
-          alert("문제 불러오기 실패");
-        }
-      }}
+      onConfirmLearning={handleConfirmLearning}
     />
   );
 }

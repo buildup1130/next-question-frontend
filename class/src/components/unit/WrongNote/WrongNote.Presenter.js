@@ -26,47 +26,46 @@ import {
   QuickRangeButtonContainer,
   QuickRangeButton,
 } from "./WrongNote.Styles";
-
 import BookShelfQuestionLogic from "@/components/unit/BookShelfQuestion/BookShelfQuestion.Container";
 
-export default function WrongNotePresenter({
-  selectedDateRange,
-  setSelectedDateRange,
-  data,
-  selectedBooks,
-  setSelectedBooks,
-  isSelectMode,
-  setIsSelectMode,
-  toggleSection,
-  openSections,
-  onToggleBookSelect,
-  isModalOpen,
-  setModalOpen,
-  selectedQuestion,
-  setSelectedQuestion,
-  showAnswer,
-  setShowAnswer,
-  isDateModalOpen,
-  setIsDateModalOpen,
-  tempStart,
-  tempEnd,
-  setTempStart,
-  setTempEnd,
-  handleApplyDateFilter,
-  handleQuickRange,
-  onClickStartLearning,
-  onQuestionClick,
-  curBook,
-  sequence,
-  setSequence,
-  setCurBook,
-  count,
-  setCount,
-  isTest,
-  setIsTest,
-  onConfirmLearning,
-}) {
+export default function WrongNotePresenter(props) {
   const router = useRouter();
+
+  const {
+    selectedDateRange,
+    data,
+    selectedBooks,
+    isSelectMode,
+    toggleSection,
+    openSections,
+    onToggleBookSelect,
+    isModalOpen,
+    setModalOpen,
+    selectedQuestion,
+    setSelectedQuestion,
+    showAnswer,
+    setShowAnswer,
+    isDateModalOpen,
+    setIsDateModalOpen,
+    tempStart,
+    tempEnd,
+    setTempStart,
+    setTempEnd,
+    handleApplyDateFilter,
+    handleQuickRange,
+    onClickStartLearning,
+    onQuestionClick,
+    curBook,
+    sequence,
+    setSequence,
+    setCurBook,
+    count,
+    setCount,
+    isTest,
+    setIsTest,
+    onConfirmLearning,
+    setIsSelectMode,
+  } = props;
 
   return (
     <Wrapper>
@@ -219,6 +218,7 @@ export default function WrongNotePresenter({
           </ModalContent>
         </ModalBackdrop>
       )}
+
       {isDateModalOpen && (
         <DateModalBackdrop onClick={() => setIsDateModalOpen(false)}>
           <DateModalContent onClick={(e) => e.stopPropagation()}>

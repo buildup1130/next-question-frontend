@@ -26,6 +26,13 @@ export const BackButton = styled.button`
   position: absolute;
   left: 0;
 `;
+
+export const Title = styled.h1`
+  font-size: 20px;
+  font-weight: bold;
+  white-space: nowrap;
+`;
+
 export const TopRightButtonGroup = styled.div`
   position: absolute;
   right: 0;
@@ -43,18 +50,16 @@ export const TopRightButton = styled.button`
   padding: 4px;
 `;
 
-export const Title = styled.h1`
-  font-size: 20px;
-  font-weight: bold;
-  white-space: nowrap;
-`;
-
 export const QuestionCard = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 8px;
   border-bottom: 1px solid #ddd;
   padding: 12px 0;
+`;
+
+export const Checkbox = styled.input`
+  margin-top: 6px;
 `;
 
 export const QuestionTitle = styled.div`
@@ -77,10 +82,6 @@ export const OptionList = styled.div`
   margin-top: 6px;
   font-size: 13px;
   color: #888;
-`;
-
-export const Checkbox = styled.input`
-  margin-top: 6px;
 `;
 
 export const DeleteButton = styled.button`

@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import BottomSheetPresenter from "./BottomSheet.Presenter";
 import axios from "axios";
 import { useAuth } from "@/utils/AuthContext";
-import { toast } from "react-toastify";
 
 export default function BottomSheet({
   isOpen,
@@ -19,23 +18,15 @@ export default function BottomSheet({
   const { token } = useAuth();
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    document.body.style.overflow = isOpen ? "hidden" : "auto";
   }, [isOpen]);
 
   if (!isOpen || !book) return null;
 
   const handleLearn = () => {
-    console.log("👉 학습하기 눌림"); // ← 이거 꼭 추가
     setCurBook(book);
     setSheetOpen(false);
-    setTimeout(() => {
-      setSequence(1);
-    }, 100);
-    console.log("🎯 setCurBook with:", book);
+    setTimeout(() => setSequence(1), 100);
   };
 
   const handleDelete = async () => {
@@ -47,11 +38,9 @@ export default function BottomSheet({
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          data: [book.id], // ✅ 삭제할 암호화된 문제집 ID 배열
+          data: [book.id],
         }
       );
-
-      alert("📦 응답:", JSON.stringify(response.data));
 
       if (response.data.includes("성공적으로")) {
         alert("문제집 삭제 완료!");
@@ -67,7 +56,6 @@ export default function BottomSheet({
   };
 
   const handleRename = () => {
-    console.log("📝 이름 바꾸기 눌림"); // ← 이것도 추가
     onClose();
     setRenameModalOpen(true);
     setRenameTargetBook(book);
@@ -79,7 +67,7 @@ export default function BottomSheet({
       onClose={onClose}
       onClickLearn={handleLearn}
       onClickRename={handleRename}
-      onClickDelete={onDelete}
+      onClickDelete={onDelete || handleDelete}
     />
   );
 }

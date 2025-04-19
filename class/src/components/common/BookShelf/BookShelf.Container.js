@@ -1,4 +1,3 @@
-// ✅ BookShelf.Container.js 수정본 (학습 옵션 모달 연동)
 import { useState, useEffect } from "react";
 import BookShelfUI from "./BookShelf.Presenter";
 import BottomSheet from "../../unit/BottomSheet/BottomSheet.Container";
@@ -28,7 +27,6 @@ export default function BookShelfContainer() {
   const [isTest, setIsTest] = useState(false);
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
   const [newWorkbookTitle, setNewWorkbookTitle] = useState("");
-
   const [isSelectMode, setIsSelectMode] = useState(false);
   const [selectedBookIds, setSelectedBookIds] = useState([]);
 
@@ -58,6 +56,7 @@ export default function BookShelfContainer() {
     }
   };
 
+  // 검색 관련
   const handleSearchChange = (e) => setSearchQuery(e.target.value);
   const handleSearch = () => {
     const result = books.filter((book) =>
@@ -67,70 +66,15 @@ export default function BookShelfContainer() {
     setSearchQuery("");
   };
 
+  // 네비게이션
   const handleBack = () => router.back();
+
+  // 모달 및 기타 액션
   const handleMoreClick = (book) => {
     setSelectedBook(book);
     setSheetOpen(true);
   };
   const closeBottomSheet = () => setSheetOpen(false);
-
-  const onClickBook = (book) => {
-    if (isSelectMode) {
-      const isSelected = selectedBookIds.includes(book.id);
-      setSelectedBookIds((prev) =>
-        isSelected ? prev.filter((id) => id !== book.id) : [...prev, book.id]
-      );
-    } else {
-      router.push({
-        pathname: "Workbook",
-        query: { workBookId: book.id, title: book.title },
-      });
-    }
-  };
-
-  const onClickLearningMode = () => {
-    setIsSelectMode((prev) => !prev);
-    setSelectedBookIds([]);
-  };
-
-  const onClickLearningStart = () => {
-    if (selectedBookIds.length === 0) return alert("문제집을 선택해주세요.");
-
-    const totalQuestions = books
-      .filter((book) => selectedBookIds.includes(book.id))
-      .reduce((acc, cur) => acc + cur.items, 0);
-
-    setCurBook({
-      id: selectedBookIds,
-      items: totalQuestions,
-    });
-    setSequence(1);
-  };
-
-  const onClickLearning = () => {
-    if (!token || !curBook?.id) return alert("정보가 없습니다.");
-    console.log("🟠 API 요청 payload:", {
-      Id: curBook.id,
-      count,
-      type: isTest ? 1 : 0,
-      random: true,
-      ox: true,
-      multiple: true,
-      blank: true,
-    });
-    router.push({
-      pathname: "/Question",
-      query: {
-        Id: curBook.id,
-        count,
-        type: isTest ? 1 : 0,
-        random: true,
-        ox: true,
-        multiple: true,
-        blank: true,
-      },
-    });
-  };
 
   const handleDelete = async () => {
     if (!token || !selectedBook) return;
@@ -154,6 +98,51 @@ export default function BookShelfContainer() {
     } catch {
       alert("문제집 생성 실패");
     }
+  };
+
+  // 문제집 클릭 및 학습 관련
+  const onClickBook = (book) => {
+    if (isSelectMode) {
+      const isSelected = selectedBookIds.includes(book.id);
+      setSelectedBookIds((prev) =>
+        isSelected ? prev.filter((id) => id !== book.id) : [...prev, book.id]
+      );
+    } else {
+      router.push({
+        pathname: "Workbook",
+        query: { workBookId: book.id, title: book.title },
+      });
+    }
+  };
+
+  const onClickLearningMode = () => {
+    setIsSelectMode((prev) => !prev);
+    setSelectedBookIds([]);
+  };
+
+  const onClickLearningStart = () => {
+    if (selectedBookIds.length === 0) return alert("문제집을 선택해주세요.");
+    const totalQuestions = books
+      .filter((book) => selectedBookIds.includes(book.id))
+      .reduce((acc, cur) => acc + cur.items, 0);
+    setCurBook({ id: selectedBookIds, items: totalQuestions });
+    setSequence(1);
+  };
+
+  const onClickLearning = () => {
+    if (!token || !curBook?.id) return alert("정보가 없습니다.");
+    router.push({
+      pathname: "/Question",
+      query: {
+        Id: curBook.id,
+        count,
+        type: isTest ? 1 : 0,
+        random: true,
+        ox: true,
+        multiple: true,
+        blank: true,
+      },
+    });
   };
 
   return (

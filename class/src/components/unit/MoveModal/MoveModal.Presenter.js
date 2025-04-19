@@ -2,16 +2,16 @@ import {
   MoveModal__Wrapper as Wrapper,
   MoveModal__Container as Container,
   MoveModal__Inner as Inner,
-  MoveModal__Title,
+  MoveModal__Title as Title,
   MoveModal__SelectContainer as SelectContainer,
   MoveModal__Select as Select,
   MoveModal__SelectButton as SelectButton,
   MoveModal__CreateRow as CreateRow,
-  MoveModal__Input,
-  MoveModal__CreateButton,
+  MoveModal__Input as Input,
+  MoveModal__CreateButton as CreateButton,
   MoveModal__ButtonContainer as ButtonContainer,
-  MoveModal__CancelButton,
-  MoveModal__SubmitButton,
+  MoveModal__CancelButton as CancelButton,
+  MoveModal__SubmitButton as SubmitButton,
 } from "./MoveModal.Styles";
 
 export default function MoveModalUI({
@@ -27,18 +27,14 @@ export default function MoveModalUI({
   setCreatingName,
   onCreateWorkbook,
 }) {
-  const toggleCreating = () => {
-    setIsCreating((prev) => !prev);
-  };
+  const toggleCreating = () => setIsCreating((prev) => !prev);
 
   return (
     <Wrapper>
       <Container>
         <Inner>
-          {/* 제목 */}
-          <MoveModal__Title>문제 이동</MoveModal__Title>
+          <Title>문제 이동</Title>
 
-          {/* 문제집 선택 */}
           <SelectContainer>
             <Select
               value={targetBookId}
@@ -54,28 +50,20 @@ export default function MoveModalUI({
             <SelectButton onClick={toggleCreating}>＋</SelectButton>
           </SelectContainer>
 
-          {/* 문제집 생성 */}
           {isCreating && (
             <CreateRow>
-              <MoveModal__Input
+              <Input
                 value={creatingName}
                 placeholder="문제집명을 입력해주세요."
                 onChange={(e) => setCreatingName(e.target.value)}
               />
-              <MoveModal__CreateButton onClick={onCreateWorkbook}>
-                생성
-              </MoveModal__CreateButton>
+              <CreateButton onClick={onCreateWorkbook}>생성</CreateButton>
             </CreateRow>
           )}
 
-          {/* 버튼 */}
           <ButtonContainer>
-            <MoveModal__CancelButton onClick={onClose}>
-              이전
-            </MoveModal__CancelButton>
-            <MoveModal__SubmitButton onClick={onSubmit}>
-              이동하기
-            </MoveModal__SubmitButton>
+            <CancelButton onClick={onClose}>이전</CancelButton>
+            <SubmitButton onClick={onSubmit}>이동하기</SubmitButton>
           </ButtonContainer>
         </Inner>
       </Container>
