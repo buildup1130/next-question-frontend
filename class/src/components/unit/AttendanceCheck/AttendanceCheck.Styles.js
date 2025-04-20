@@ -24,7 +24,7 @@ export const Attendance__Component = styled.div`
     
     border: 1px solid #d9d9d9;
     border-radius: 100%;
-    background-color: ${(props) => props.$attended ? '#00b2ff' : 'white'};
+    background-color: ${(props) => props.$attended ? '#D9DEFF' : 'white'};
     color: ${(props) => props.$attended ? 'white' : 'black'};
 
 

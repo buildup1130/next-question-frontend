@@ -1,7 +1,8 @@
 import { HistoryBox__TitleContainer, HistoryBox__Wrapper,HistoryBox__InfoContainer,HistoryBox__QuestionContainer,HistoryBox__QuestionType,HistoryBox__QuestionTitle,HistoryBox__QuestionWrapper,HistoryBox__QuestionAnswer,HistoryBox__QuestionOption,HistoryBox__downButton, HistoryBox__TitleLeft } from "./HistoryBox.Styles";
 import { DownIcon } from "@/utils/SvgProvider";
 export default function HistoryBoxUI({data,visible,onClickOpen}){
-    const date = data.solvedDate.split('T')[0]
+    console.log(data.solvedDate)
+    const date = (data.solvedDate.split('.')[0]).replace("T"," ");
 
     return(
     <HistoryBox__Wrapper>

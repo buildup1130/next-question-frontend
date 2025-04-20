@@ -10,7 +10,7 @@ export const QuestionContainer = styled.div`
 
   display:flex;
   flex-direction:column;
-  justify-content:center;
+  justify-content:flex-start;
 `;
 
 export const Header = styled.div`

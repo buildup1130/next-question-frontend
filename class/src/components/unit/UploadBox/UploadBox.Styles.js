@@ -52,7 +52,7 @@ export const UploadBox__UploadButton = styled.div`
   height:60px;
   border-radius:50px;
 
-  background-color: #808ff8;
+  background-color: #97A3FD;
   color:white;
 
   display:flex;

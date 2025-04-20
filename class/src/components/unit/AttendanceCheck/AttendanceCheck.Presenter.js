@@ -36,7 +36,7 @@ export default function AttendanceCheckUI({
                     else{
                         return(
                         <Attendance__Component
-                            style={{width:"12%", backgroundColor:"#00B2FF", cursor:"pointer", color:"white"}}
+                            style={{width:"12%", backgroundColor:"#8D9BFF", cursor:"pointer", color:"white"}}
                             $attended = {attended}
                             onClick={onClickAttend}
                             key = {index}

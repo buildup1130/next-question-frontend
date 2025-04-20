@@ -49,7 +49,7 @@ export default function IndexPageUI({
               onClick={onClickLogin}
             >{!isAuthenticated?"로그인":"로그아웃"}</Home__IconBar__LoginBtn>
         </Home__IconBar__Login>
-        <Home__IconBar__Logo>LOGO</Home__IconBar__Logo>
+        <Home__IconBar__Logo><img src="/image/Logo.png"></img></Home__IconBar__Logo>
       </Home__IconBar>
       <UploadBoxLogic setFile={setFile} file={file} setIsCreated = {setIsCreated}></UploadBoxLogic>
       <AttendanceCheckLogic
