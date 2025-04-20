@@ -131,12 +131,15 @@ export default function WrongNoteUI(props) {
       </AgainButton>
 
       {isSelectMode && selectedBooks.length > 0 && (
-        <LearnConfirmButton onClick={onClickStartLearning}>
+        <LearnConfirmButton onClick={() => {
+          onClickStartLearning();
+          props.onConfirmLearning();
+        }}>
           학습하기
         </LearnConfirmButton>
       )}
 
-      {sequence === 1 && curBook && (
+      {/* {sequence === 1 && curBook && (
         <BookShelfQuestionLogic
           curBook={curBook}
           count={count}
@@ -149,7 +152,7 @@ export default function WrongNoteUI(props) {
           isTest={isTest}
           setIsTest={setIsTest}
         />
-      )}
+      )} */}
 
       {isModalOpen && selectedQuestion && (
         <ModalBackdrop

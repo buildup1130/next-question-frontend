@@ -166,8 +166,9 @@ export default function WrongNoteLogic() {
       if (book) {
         book.dates.forEach((d) => {
           d.questions.forEach((q) => {
+            console.log(q.options);
             collectedQuestions.push({
-              name: q.title,
+              name: q.title.replace("{BLANK}","OOO"),
               answer: q.answer,
               type:
                 q.type === "객관식"
