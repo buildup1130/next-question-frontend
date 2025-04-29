@@ -95,3 +95,15 @@ export const RefreshIcon = ({ size = 24, color = "#333333" }) => (
       fill="black"/>
     </svg>
   )
+
+  export const TrashCanIcon = () =>(
+    <svg width="20" height="20" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12.1875 3.4375L11.8 9.70312C11.7012 11.3037 11.6519 12.1044 11.25 12.68C11.0516 12.9645 10.7962 13.2046 10.5 13.385C9.90187 13.75 9.1 13.75 7.49625 13.75C5.89 13.75 5.08687 13.75 4.4875 13.3844C4.19118 13.2036 3.93576 12.9631 3.7375 12.6781C3.33625 12.1019 3.2875 11.3 3.19125 9.69688L2.8125 3.4375M1.875 3.4375H13.125M10.035 3.4375L9.60813 2.5575C9.325 1.9725 9.18313 1.68063 8.93875 1.49813C8.88446 1.4577 8.82698 1.42175 8.76688 1.39062C8.49625 1.25 8.17125 1.25 7.52187 1.25C6.85562 1.25 6.5225 1.25 6.24687 1.39625C6.18595 1.42888 6.12783 1.46651 6.07313 1.50875C5.82625 1.69813 5.68813 2.00125 5.41188 2.60688L5.03313 3.4375M5.9375 10.3125V6.5625M9.0625 10.3125V6.5625" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  )
+
+  export const XButton = () => (
+    <svg width="19" height="20" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11 1.5L1 11.5M1 1.5L11 11.5" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  )

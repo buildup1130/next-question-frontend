@@ -1,5 +1,5 @@
-import { RefreshIcon } from "@/utils/SvgProvider";
-import { GenerateShelf__Container, GenerateShelf__Shelf, GenerateShelf__Shelf__Container, GenerateShelf__Shelf__Input, GenerateShelf__Shelf__Input__Button, GenerateShelf__Shelf__Input__Container, GenerateShelf__Shelf__QuestionContainer, GenerateShelf__Shelf__QuestionText, GenerateShelf__Shelf__QuestionTitle, GenerateShelf__Shelf__Select, GenerateShelf__Shelf__Select__Button, GenerateShelf__Shelf__submitButton, GenerateShelf__Shelf__Title, GenerateShelf__Shelf__Title__Button, GenerateShelf__Wrapper,GenerateShelf__Shelf__QuestionWrapper, GenerateShelf__Shelf__ButtonContainer,GenerateShelf__countbutton, GenerateShelf__countbuttonContainer, GenerateShelf__Shelf__Title__Text } from "./GenerateShelf.Styles";
+import { RefreshIcon, TrashCanIcon, XButton } from "@/utils/SvgProvider";
+import { GenerateShelf__Container, GenerateShelf__Shelf, GenerateShelf__Shelf__Container, GenerateShelf__Shelf__Input, GenerateShelf__Shelf__Input__Button, GenerateShelf__Shelf__Input__Container, GenerateShelf__Shelf__QuestionContainer, GenerateShelf__Shelf__QuestionText, GenerateShelf__Shelf__QuestionTitle, GenerateShelf__Shelf__Select, GenerateShelf__Shelf__Select__Button, GenerateShelf__Shelf__submitButton, GenerateShelf__Shelf__Title, GenerateShelf__Shelf__Title__Button, GenerateShelf__Wrapper,GenerateShelf__Shelf__QuestionWrapper, GenerateShelf__Shelf__ButtonContainer,GenerateShelf__countbutton, GenerateShelf__countbuttonContainer, GenerateShelf__Shelf__Title__Text,GenerateShelf__Shelf__QuestionNum, GenerateShelf__Shelf__QuestionAnswer, GenerateShelf__Shelf__QuestionAnswerContainer, GenerateShelf__Shelf__QuestionHeader, GenerateShelf__Shelf__QuestionDeleteContainer, GenerateShelf__Shelf__QuestionDeleteContainer__TrashCan, GenerateShelf__Shelf__QuestionDeleteContainer__XButton } from "./GenerateShelf.Styles";
 
 export default function GenerateShelfUI(props){
 
@@ -108,18 +108,57 @@ const QuestionModal = (props) => {
                                 return(
                                 <GenerateShelf__Shelf__QuestionContainer
                                 key = {index}>
-                                  <GenerateShelf__Shelf__QuestionTitle>Q{index+1}</GenerateShelf__Shelf__QuestionTitle>
-                                  <GenerateShelf__Shelf__QuestionTitle>{info.name}</GenerateShelf__Shelf__QuestionTitle>
-                                  <GenerateShelf__Shelf__QuestionText>문제 유형: {info.type === "MULTIPLE_CHOICE"? "객관식": info.type === "FILL_IN_THE_BLANK"? "빈칸" : "O/X"}</GenerateShelf__Shelf__QuestionText>
+                                    <GenerateShelf__Shelf__QuestionHeader
+                                    style={{marginBottom:"8px"}}
+                                    >
+                                    <GenerateShelf__Shelf__QuestionTitle>Q{index+1}</GenerateShelf__Shelf__QuestionTitle>
+                                    <GenerateShelf__Shelf__QuestionDeleteContainer>
+                                        <GenerateShelf__Shelf__QuestionDeleteContainer__TrashCan
+                                            isVisible = {props.visibleTrashIndex === index}
+                                            onClick={() => {
+                                                props.onClickTrashCan(index);
+                                            }}
+                                        >
+                                            <TrashCanIcon></TrashCanIcon>
+                                        </GenerateShelf__Shelf__QuestionDeleteContainer__TrashCan>
+                                        <GenerateShelf__Shelf__QuestionDeleteContainer__XButton
+                                            isVisible = {props.visibleTrashIndex === index}
+                                            onClick={() => {props.onClickDelete(index)}}
+                                        >
+                                            <XButton></XButton>
+                                        </GenerateShelf__Shelf__QuestionDeleteContainer__XButton>
+                                    </GenerateShelf__Shelf__QuestionDeleteContainer>
+                                    </GenerateShelf__Shelf__QuestionHeader>
+                                  <GenerateShelf__Shelf__QuestionTitle
+                                  style={{marginBottom:"20px"}}>{info.name}</GenerateShelf__Shelf__QuestionTitle>
+                                  <GenerateShelf__Shelf__QuestionAnswerContainer>
                                   {
-                                    info.type==="MULTIPLE_CHOICE"&&
-                                    optArr.map((info,index) =>(
+                                    info.type==="MULTIPLE_CHOICE"&&(
+                                    optArr.map((optInfo,index) =>{
+                                        const ansArr = optInfo.split(".");
+                                        return(
                                         <GenerateShelf__Shelf__QuestionText>
-                                            {info}
-                                        </GenerateShelf__Shelf__QuestionText>
-                                    ))
+                                            <GenerateShelf__Shelf__QuestionNum isAns = {index === info.answer-1}>{ansArr[0]}</GenerateShelf__Shelf__QuestionNum>{ansArr[1]}
+                                        </GenerateShelf__Shelf__QuestionText>);
+                                    }))
                                   }
-                                  <GenerateShelf__Shelf__QuestionTitle>정답: {info.answer}</GenerateShelf__Shelf__QuestionTitle>
+                                  {
+                                    info.type==="OX"&&
+                                    (
+                                    <>
+                                    <GenerateShelf__Shelf__QuestionText>
+                                        <GenerateShelf__Shelf__QuestionNum isAns = {info.answer === "O"}>1</GenerateShelf__Shelf__QuestionNum>O
+                                    </GenerateShelf__Shelf__QuestionText>
+                                    <GenerateShelf__Shelf__QuestionText>
+                                        <GenerateShelf__Shelf__QuestionNum isAns = {info.answer === "X"}>2</GenerateShelf__Shelf__QuestionNum>X
+                                    </GenerateShelf__Shelf__QuestionText>
+                                    </>
+                                    )
+                                  }
+                                </GenerateShelf__Shelf__QuestionAnswerContainer>
+                                  {info.type === "FILL_IN_THE_BLANK" &&(
+                                        <GenerateShelf__Shelf__QuestionAnswer>{info.answer}</GenerateShelf__Shelf__QuestionAnswer>
+                                  )}
                                 </GenerateShelf__Shelf__QuestionContainer>);
                             }
                         )}
@@ -137,6 +176,7 @@ const QuestionModal = (props) => {
                 <GenerateShelf__Shelf__submitButton
                     onClick={() => {
                         props.setSequence(2);
+                        props.setVisibleTrashIndex(null);
                     }}
                 >
                     다음
@@ -163,21 +203,21 @@ const SavingModal = (props) => {
                             props.setSavingWorkBook(e.target.value);
                         }}
                     >
-                      <option value="">-- 문제집을 선택하세요 --</option>
+                      <option value="">문제집을 선택해주세요.</option>
                       {props.workBooks?.map((info,index) => (<option value = {info.encryptedWorkBookId} key = {index}>
                         {info.name}
                       </option>))}
                     </GenerateShelf__Shelf__Select>
-                    <GenerateShelf__Shelf__Select__Button
+                    {/* <GenerateShelf__Shelf__Select__Button
                         onClick={() => {
                             if(props.isCreating){
                                 props.setIsCreating(false)
                             }else{
                             props.setIsCreating(true)}
                         }}
-                    >+</GenerateShelf__Shelf__Select__Button>
+                    >+</GenerateShelf__Shelf__Select__Button> */}
                 </GenerateShelf__Shelf__Container>
-                {props.isCreating?
+                {/* {props.isCreating?
                     <GenerateShelf__Shelf__Input__Container>
                         <GenerateShelf__Shelf__Input
                             onChange={(e) => {props.HandleWorkBookName(e);
@@ -189,7 +229,18 @@ const SavingModal = (props) => {
                         >생성</GenerateShelf__Shelf__Input__Button>
                     </GenerateShelf__Shelf__Input__Container>
                     :
-                    <></>}
+                    <></>} */}
+                    <GenerateShelf__Shelf__Input__Container>
+                        <GenerateShelf__Shelf__Input
+                            value={props.creatingName}
+                            onChange={(e) => {props.HandleWorkBookName(e);
+                            }}
+                            placeholder="문제집명을 입력해주세요."
+                        ></GenerateShelf__Shelf__Input>
+                        <GenerateShelf__Shelf__Input__Button
+                            onClick={() => {props.onCreateWorkBook()}}
+                        >생성</GenerateShelf__Shelf__Input__Button>
+                    </GenerateShelf__Shelf__Input__Container>
                     <GenerateShelf__Shelf__ButtonContainer>
                     
                 <GenerateShelf__Shelf__submitButton

@@ -25,6 +25,8 @@ export default function GenerateShelfLogic(props){
     const [questionArr, setQuestionArr] = useState(undefined);
     //생성된 문제 정보
     const [questionInfoArr, setQuestionInfoArr] = useState(undefined);
+    //삭제버튼이 보이는 문제 index
+    const [visibleTrashIndex,setVisibleTrashIndex] = useState(null);
 
     // 비동기 작업을 처리하는 함수
     // DB에서 문제집 배열을 가져오는 함수
@@ -59,6 +61,7 @@ export default function GenerateShelfLogic(props){
         createWorkbook(token, creatingName).then(
             () => {
                 fetchWorkBooks();
+                setCreatingName("");
             }
         ).catch(
             error =>{
@@ -125,6 +128,32 @@ export default function GenerateShelfLogic(props){
     }
     }
 
+    const onClickTrashCan = (index) =>{
+        if(visibleTrashIndex === index){
+            setVisibleTrashIndex(null);
+        }else{
+            setVisibleTrashIndex(index);
+        }
+    }
+
+    const onClickDelete = (index) => {
+    console.log(`${questionArr}${questionInfoArr}`);
+    console.dir(questionArr);
+    
+    // pop() 대신 splice()를 사용하여 특정 인덱스의 요소를 제거
+    const newQuestionArr = [...questionArr];
+    const newQuestionInfoArr = [...questionInfoArr];
+    
+    newQuestionArr.splice(index, 1);
+    newQuestionInfoArr.splice(index, 1);
+    
+    setQuestionArr(newQuestionArr);
+    setQuestionInfoArr(newQuestionInfoArr);
+    
+    // 삭제 후 삭제 버튼 상태 초기화
+    setVisibleTrashIndex(null);
+    }
+
     return(
         <GenerateShelfUI
             setIsCreated = {props.setIsCreated}
@@ -147,6 +176,11 @@ export default function GenerateShelfLogic(props){
             questionArr = {questionArr}
             setFile = {props.setFile}
             onClickSubmit = {onClickSubmit}
+            visibleTrashIndex = {visibleTrashIndex}
+            setVisibleTrashIndex = {setVisibleTrashIndex}
+            onClickTrashCan = {onClickTrashCan}
+            onClickDelete = {onClickDelete}
+            creatingName = {creatingName}
         >
             
         </GenerateShelfUI>
