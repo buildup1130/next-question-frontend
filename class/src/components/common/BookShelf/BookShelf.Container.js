@@ -10,6 +10,7 @@ import {
 } from "@/utils/WorkbookManager";
 import { useAuth } from "@/utils/AuthContext";
 import { useRouter } from "next/router";
+import { fetchQuestionType } from "@/utils/WorkbookManager";
 
 export default function BookShelfLogic() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -28,6 +29,11 @@ export default function BookShelfLogic() {
   const [newWorkbookTitle, setNewWorkbookTitle] = useState("");
   const [isSelectMode, setIsSelectMode] = useState(false);
   const [selectedBookIds, setSelectedBookIds] = useState([]);
+  //선택된 Type
+  //0: 객관식 , 1: 참/거짓, 2:주관식
+  const [selectedType, setSelectedType] = useState([0, 1, 2]);
+  //Type 별 수
+  const [typeNum, setTypeNum] = useState({});
 
   const { token } = useAuth();
   const router = useRouter();
@@ -129,18 +135,37 @@ export default function BookShelfLogic() {
   };
 
   const onClickLearning = () => {
-    if (!token || !curBook?.id) return alert("정보가 없습니다.");
+    if (!token || !curBook?.id || selectedType.length === 0)
+      return alert("잘못된 접근입니다.");
+    const typeMapping = [
+      { type: 0, count: typeNum.multipleChoice },
+      { type: 1, count: typeNum.ox },
+      { type: 2, count: typeNum.fillInTheBlank },
+    ];
+
+    const queCount = typeMapping.reduce(
+      (total, { type, count }) =>
+        selectedType.includes(type) ? total + count : total,
+      0
+    );
+
     router.push({
       pathname: "/Question",
       query: {
         Id: curBook.id,
-        count,
+        count: queCount,
         type: isTest ? 1 : 0,
-        random: true,
-        ox: true,
-        multiple: true,
-        blank: true,
+        random: selectedType.length === 3 ? true : false,
+        ox: selectedType.includes(1) ? "true" : "false",
+        multiple: selectedType.includes(0) ? "true" : "false",
+        blank: selectedType.includes(2) ? "true" : "false",
       },
+    });
+  };
+
+  const onFetchType = (id) => {
+    fetchQuestionType(token, id).then((res) => {
+      setTypeNum(res);
     });
   };
 
@@ -160,6 +185,10 @@ export default function BookShelfLogic() {
           }}
           isTest={isTest}
           setIsTest={setIsTest}
+          selectedType={selectedType}
+          setSelectedType={setSelectedType}
+          typeNum={typeNum}
+          onFetchType={onFetchType}
         />
       )}
 

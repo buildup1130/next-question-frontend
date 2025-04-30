@@ -157,3 +157,28 @@ export const moveQuestions = async (
 
   return res.json();
 };
+
+export const fetchQuestionType = async (token, idArr) => {
+  console.log(typeof idArr);
+
+  //배열이 아닐 시 배열로 변환
+  if (typeof idArr !== "object") {
+    idArr = [idArr];
+  }
+
+  try {
+    const response = await axios.post(
+      "http://localhost:8080/member/solving/normal/search/type",
+      idArr,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};

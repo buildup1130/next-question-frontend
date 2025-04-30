@@ -12,7 +12,7 @@ export default function QuestionSolveLogic(props) {
   const { Id, count, random, ox, multiple, blank, type } = router.query;
 
   useEffect(() => {
-    console.log("✅ router.query:", router.query);
+    console.log("✅ router.query:", typeof router.query.ox);
 
     // 비회원 학습: localStorage 기반
     if (type === "3") {
@@ -44,10 +44,10 @@ export default function QuestionSolveLogic(props) {
       if (Id) {
         loadNormalQuestion(token, Id, {
           count: count || 5,
-          random: !!random,
-          ox: !!ox,
-          multiple: !!multiple,
-          blank: !!blank,
+          random: random === "true" ? true : false,
+          ox: ox === "true" ? true : false,
+          multiple: multiple === "true" ? true : false,
+          blank: blank === "true" ? true : false,
         }).then((result) => {
           if (result) {
             const processed = handleQuestions(result);
@@ -73,12 +73,11 @@ export default function QuestionSolveLogic(props) {
       }
     }
     // 3. 예외처리
-    else{
-        alert("잘못된 접근입니다.");
-        router.push("/");
+    else {
+      alert("잘못된 접근입니다.");
+      router.push("/");
     }
   }, [Id, token, count, random, ox, multiple, blank, type]);
-
 
   // //LocalStorage사용 방식
   // useEffect(() => {
