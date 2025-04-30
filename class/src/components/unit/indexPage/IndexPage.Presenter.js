@@ -8,11 +8,16 @@ import {
   Home__CalMore,
   Home__IconBar__LoginBtn,
   Home__IconBar__Logo,
+  Home__BlurContainer,
+  Home__LoginButton,
+  Home__LoginMessage,
+  Home__LoginOverlay
 } from "./IndexPage.Styles"
 import UploadBoxLogic from "../UploadBox/UploadBox.Container";
 import GenerateShelfLogic from "../GenerateShelf/GenerateShelf.Container";
 import AttendanceCheckLogic from "../AttendanceCheck/AttendanceCheck.Container";
 import MainCalendarLogic from "../MainCalendar/MainCalendar.Container";
+import MainChartLogic from "../MainChart/MainChart.Container";
 
 export default function IndexPageUI({
   onClickLogin,
@@ -52,17 +57,44 @@ export default function IndexPageUI({
         <Home__IconBar__Logo><img src="/image/Logo.png"></img></Home__IconBar__Logo>
       </Home__IconBar>
       <UploadBoxLogic setFile={setFile} file={file} setIsCreated = {setIsCreated}></UploadBoxLogic>
+        {/* 로그인 시 보이는 학습분석 */}
+        {isAuthenticated && (
+          <>
+            <Home__CalBar><Home__CalTitle>주간 학습 분석</Home__CalTitle></Home__CalBar>
+              <MainChartLogic />
+              <AttendanceCheckLogic checkArr={checkArr} />
+          </>
+        )}
+        {/* 비로그인 시 보이는 학습분석 */}
+        {!isAuthenticated && (
+          <>
+            <Home__CalBar><Home__CalTitle>주간 학습 분석</Home__CalTitle></Home__CalBar>
+            <div style={{ position: 'relative', width:"100%", maxWidth:"500px"}}>
+              <Home__BlurContainer>
+                <MainChartLogic />
+                <AttendanceCheckLogic checkArr={checkArr} />
+              </Home__BlurContainer>
+              <Home__LoginOverlay>
+                <Home__LoginMessage>로그인 후 이용 가능합니다</Home__LoginMessage>
+                <Home__LoginButton onClick={onClickLogin}>로그인하기</Home__LoginButton>
+              </Home__LoginOverlay>
+            </div>
+          </>
+        )}
+      {/* <Home__CalBar><Home__CalTitle>주간 학습 분석</Home__CalTitle></Home__CalBar>
+      <MainChartLogic></MainChartLogic>
       <AttendanceCheckLogic
         checkArr={checkArr}
-      ></AttendanceCheckLogic>
-      <Home__CalBar>
+      ></AttendanceCheckLogic> */}
+      {/* <Home__CalBar>
         <Home__CalTitle>캘린더</Home__CalTitle>
         <Home__CalMore>
           <>더보기</>
           <Home_CalMore_Image src="/image/Vector_next.png"></Home_CalMore_Image>
         </Home__CalMore>
       </Home__CalBar>
-      <MainCalendarLogic></MainCalendarLogic>
+      <MainCalendarLogic></MainCalendarLogic> */}
+
     </MainContainerLogic>
   );
 }

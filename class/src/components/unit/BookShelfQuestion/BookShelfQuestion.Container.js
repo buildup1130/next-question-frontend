@@ -1,11 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import BookShelfQuestionUI from "./BookShelfQuestion.Presenter";
+import { fetchQuestionType } from "@/utils/WorkbookManager";
+import { useAuth } from "@/utils/AuthContext";
 
 export default function BookShelfQuestionLogic(props) {
+  const { token } = useAuth();
+
   // 문제 수를 모달 열 때 최대값으로 초기화
   useEffect(() => {
     if (props.curBook?.items) {
       props.setCount(props.curBook.items);
+      console.log(props.curBook);
+      props.onFetchType(props.curBook?.id);
     }
   }, [props.curBook]);
 
@@ -27,6 +33,19 @@ export default function BookShelfQuestionLogic(props) {
     }
   };
 
+  //0: 객관식 , 1: 참/거짓, 2:주관식
+  const onClickType = (type) => {
+    const index = props.selectedType.indexOf(type);
+    if (index !== -1) {
+      const newSelectedType = [...props.selectedType];
+      newSelectedType.splice(index, 1);
+      props.setSelectedType(newSelectedType);
+    } else {
+      props.setSelectedType([...props.selectedType, type]);
+    }
+    console.log(props.selectedType);
+  };
+
   return (
     <BookShelfQuestionUI
       curBook={props.curBook}
@@ -37,6 +56,9 @@ export default function BookShelfQuestionLogic(props) {
       onClose={props.onClose}
       setIsTest={props.setIsTest}
       isTest={props.isTest}
+      typeNum={props.typeNum}
+      onClickType={onClickType}
+      selectedType={props.selectedType}
     />
   );
 }

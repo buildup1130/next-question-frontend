@@ -112,8 +112,9 @@ export const Home__IconBar__Logo = styled.div`
 export const Home__CalBar = styled.div`
     width:100%;
     max-width: 500px;
-    margin-top:20px;
-    padding: 0 16px;
+    border-top: 1px solid #d9d9d9;
+    padding-top:20px;
+    margin-bottom:10px;
 
     display:flex;
     flex-direction:row;
@@ -122,7 +123,7 @@ export const Home__CalBar = styled.div`
 `
 
 export const Home__CalTitle = styled.div`
-    font-size: 24px;
+    font-size: 18px;
     font-weight:700;
     color:#111111;
 `
@@ -140,3 +141,46 @@ export const Home_CalMore_Image = styled.img`
     width:9px;
     height:9px;
 `
+
+export const Home__BlurContainer = styled.div`
+  position: relative;
+  filter: blur(2px);
+  pointer-events: none; // 블러 처리된 콘텐츠와 상호작용 방지
+`;
+
+export const Home__LoginOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 10;
+  border-radius: 8px;
+`;
+
+export const Home__LoginMessage = styled.div`
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333;
+`;
+
+export const Home__LoginButton = styled.button`
+  padding: 10px 20px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  
+  &:hover {
+    background-color: #2563eb;
+  }
+`;

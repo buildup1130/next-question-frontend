@@ -62,7 +62,7 @@ export const BookShelfQuestion__SubTitle = styled.div`
   width: 100%;
   margin-top: 24px;
 
-  text-align: center;
+  text-align: left;
 
   font-size: 16px;
   font-weight: 700;
@@ -177,4 +177,64 @@ export const BookShelfQuestion__isTestButton = styled.button`
   background-color: ${(props) => (props.isTest ? "yellow" : null)};
   border-radius: 5px;
   border: 1px solid #d9d9d9;
+`;
+
+export const BookShelfQuestion__typeContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 10px;
+  padding: 0 10px;
+
+  gap: 10px;
+`;
+
+export const BookShelfQuestion__type = styled.div`
+  width: 100%;
+  height: 50px;
+  padding: 0 10px;
+  cursor: pointer;
+
+  font-size: 18px;
+
+  border-radius: 15px;
+  background-color: ${(props) =>
+    props.isSelected ? "#edefff" : "transparent"};
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  user-select: none; /* 텍스트 선택 방지 */
+  -webkit-user-select: none; /* Safari 지원 */
+  -moz-user-select: none; /* Firefox 지원 */
+  -ms-user-select: none; /* IE/Edge 지원 */
+
+  /* 이미지나 요소 드래그 방지 */
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+`;
+
+export const BookShelfQuestion__typeElement = styled.div`
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+
+  gap: 10px;
+`;
+
+export const BookShelfQuestion__typeCount = styled.div`
+  color: #9e9e9e;
+  font-size: 14px;
+`;
+
+export const BookShelfQuestion__count = styled.div`
+  width: 100%;
+  text-align: right;
+  font-size: 14px;
+  color: #9e9e9e;
 `;

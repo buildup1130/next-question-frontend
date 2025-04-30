@@ -5,6 +5,7 @@ export const Attendance__Container = styled.div`
     max-width: 500px;
     height: 80px;
 
+    margin-top:20px;
     border-top: 1px solid #d9d9d9;
     border-bottom: 1px solid #d9d9d9;
 

@@ -80,11 +80,14 @@ export const GenerateShelf__Shelf__Container = styled.div`
 
 export const GenerateShelf__Shelf__Select = styled.select`
   width:100%;
-  height:40px;
+  height:45px;
 
   font-size:16px;
 
-  text-align:center;
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+
+  padding-left: 22px;
 `
 
 export const GenerateShelf__Shelf__Select__Button = styled.button`
@@ -99,9 +102,11 @@ export const GenerateShelf__Shelf__Select__Button = styled.button`
 
 export const GenerateShelf__Shelf__Input__Container = styled.div`
   width:100%;
+  padding: 6px 10px 6px 0;
   margin-top:20px;
-  padding: 0 8px;
 
+  border-radius: 10px;
+  background-color: #edefff;
   display:flex;
   flex-direction:row;
   justify-content:center;
@@ -110,19 +115,20 @@ export const GenerateShelf__Shelf__Input__Container = styled.div`
 
 export const GenerateShelf__Shelf__Input = styled.input`
   width:100%;
-
-  padding: 0 5px;
+  border:none;
+  background-color:transparent;
+  padding: 0 0 0 22px;
 `
 
 export const GenerateShelf__Shelf__Input__Button = styled.button`
-  height:40px;
+  height:33px;
   width:80px;
 
 border-radius: 20px;
-border: 1px solid #d9d9d9;
+border: none;
 
-background-color: #3b82f6;
-color: white;
+background-color: white;
+color: #808fff;
 
 display:flex;
 justify-content:center;
@@ -175,12 +181,64 @@ export const GenerateShelf__Shelf__QuestionContainer = styled.div`
   border-radius:20px;
 `
 
+export const GenerateShelf__Shelf__QuestionHeader = styled.div`
+  display:flex;
+  justify-content:space-between;
+`
+
+export const GenerateShelf__Shelf__QuestionDeleteContainer = styled.div`
+  display:flex;
+
+
+`
+
+export const GenerateShelf__Shelf__QuestionDeleteContainer__TrashCan = styled.div`
+  padding:0 2px;
+  color:#b3b3b3;
+`
+
+export const GenerateShelf__Shelf__QuestionDeleteContainer__XButton = styled.div`
+  padding:0 2px;
+  display:${(props) => (props.isVisible?"":"none")}
+`
+
 export const GenerateShelf__Shelf__QuestionTitle = styled.div`
-  font-size:20px;
+  font-size:18px;
   font-weight:700;
 `
 export const GenerateShelf__Shelf__QuestionText = styled.div`
   font-size:16px;
+  display:flex;
+
+  align-items:center;
+  gap:4px;
+`
+export const GenerateShelf__Shelf__QuestionAnswerContainer = styled.div`
+  display:flex;
+  flex-direction:column;
+
+  gap:8px;
+`
+
+export const GenerateShelf__Shelf__QuestionNum = styled.div`
+  font-size:16px;
+  color:${(props) => (props.isAns?"#ffffff":"#b2b099")};
+  width:20px;
+  height:20px;
+  
+  background-color:${(props) => (props.isAns?"#808fff":"#f3f4f6")};
+  border-radius: 5px;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  margin-right:2px;
+`
+
+export const GenerateShelf__Shelf__QuestionAnswer = styled.div`
+  font-size:16px;
+  color: #a7a7a7;
 `
 
 export const GenerateShelf__Shelf__ButtonContainer = styled.div`
