@@ -103,7 +103,7 @@ const QuestionModal = (props) => {
                 <GenerateShelf__Shelf__QuestionWrapper>
                         {props.questionInfoArr?.map(
                             (info,index) => {
-                                const optArr = info.opt?info.opt.split("/"):[];
+                                const optArr = info.opt?info.opt.split("|||"):[];
 
                                 return(
                                 <GenerateShelf__Shelf__QuestionContainer
@@ -135,10 +135,12 @@ const QuestionModal = (props) => {
                                   {
                                     info.type==="MULTIPLE_CHOICE"&&(
                                     optArr.map((optInfo,index) =>{
-                                        const ansArr = optInfo.split(".");
+                                        const number = optInfo[0];
+                                        const subs = optInfo.slice(2);
                                         return(
                                         <GenerateShelf__Shelf__QuestionText>
-                                            <GenerateShelf__Shelf__QuestionNum isAns = {index === info.answer-1}>{ansArr[0]}</GenerateShelf__Shelf__QuestionNum>{ansArr[1]}
+                                            <GenerateShelf__Shelf__QuestionNum isAns = {index === info.answer-1}>{number}</GenerateShelf__Shelf__QuestionNum>
+                                            <div>{subs}</div>
                                         </GenerateShelf__Shelf__QuestionText>);
                                     }))
                                   }

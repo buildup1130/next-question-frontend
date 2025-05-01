@@ -23,14 +23,15 @@ export default function LoginLogic() {
         "http://localhost:8080/public/member/login/local",
         { userId, password }
       );
-
+      console.log("response = ",response);
       login(
         {
           userId,
           nickname: response.data.nickname,
           role: response.data.role,
         },
-        response.data.accessToken
+        response.data.accessToken,
+        response.data.refreshToken
       );
 
       router.push("/");

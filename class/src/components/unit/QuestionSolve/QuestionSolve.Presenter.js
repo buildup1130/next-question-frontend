@@ -159,7 +159,7 @@ export default function QuestionSolveUI(props) {
   // 올바른 방법:
   const options =
     question && question.type === "MULTIPLE_CHOICE" && question.opt
-      ? question.opt.split("/")
+      ? question.opt.split("|||")
       : [];
 
   // 문제 풀이 완료시 표현되는 화면
@@ -235,7 +235,7 @@ export default function QuestionSolveUI(props) {
           <BackButton>←</BackButton>
           <Title>문제 풀이</Title>
         </Header>
-        <QuestionSolve__ProgressBarContainer>
+        {/* <QuestionSolve__ProgressBarContainer>
           <ProgressBar>
             <Progress
               current={currentQuestion + 1}
@@ -246,24 +246,21 @@ export default function QuestionSolveUI(props) {
           <ProgressText>
             {currentQuestion + 1}/{props.questions.length}
           </ProgressText>
-        </QuestionSolve__ProgressBarContainer>
+        </QuestionSolve__ProgressBarContainer> */}
         <QuestionContainer>
-          {/* 진행 상태 바 */}
-
           {/* 문제 헤더 */}
           <QuestionHeader>
             • 문제집 이름 {currentQuestion + 1} • n번 오답
           </QuestionHeader>
-
           {/* 문제 카드 */}
           <QuestionBox>
+            {/* 선택지 영역 */}
+            <OptionContainer>
             <QuestionBox__Header>
               <QuestionIcon src="/image/Vector_Questionmark.png"></QuestionIcon>
               {/*문제 제목 */}
               <QuestionTitle>{question.name}</QuestionTitle>
             </QuestionBox__Header>
-            {/* 선택지 영역 */}
-            <OptionContainer>
               {/* 오지선다 */}
               {question.type === "MULTIPLE_CHOICE" &&
                 options.map((option, index) => (
@@ -321,6 +318,18 @@ export default function QuestionSolveUI(props) {
                 />
               )}
             </OptionContainer>
+            <QuestionSolve__ProgressBarContainer>
+            <ProgressBar>
+            <Progress
+              current={currentQuestion + 1}
+              total={props.questions.length}
+            />
+          </ProgressBar>
+          <ProgressText>
+            {currentQuestion + 1}/{props.questions.length}
+          </ProgressText>
+            </QuestionSolve__ProgressBarContainer>
+
           </QuestionBox>
 
           {/* 다음 버튼 */}
@@ -358,7 +367,7 @@ const ResultModal = (props) => {
           ) : (
             <QuestionSolve__QuestionWrapper>
               {wrongQuestions.map((info, index) => {
-                const optArr = info.opt ? info.opt.split("/") : [];
+                const optArr = info.opt ? info.opt.split("|||") : [];
                 return (
                   <QuestionSolve__QuestionContainer key={index}>
                     <QuestionSolve__QuestionTitle>

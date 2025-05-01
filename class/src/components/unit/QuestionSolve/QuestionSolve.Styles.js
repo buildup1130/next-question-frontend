@@ -43,9 +43,11 @@ export const Title = styled.h1`
 
 export const QuestionSolve__ProgressBarContainer = styled.div`
   width: 100%;
-  max-width: 500px;
-  height: 20px;
-  margin-top: 20px;
+  margin-top:10px;
+
+  display:flex;
+  flex-direction:column;
+  gap:10px;
 `
 
 export const ProgressBar = styled.div`
@@ -53,7 +55,7 @@ export const ProgressBar = styled.div`
   background-color: #f0f0f0;
   border-radius: 5px;
   overflow: hidden;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
 `;
 
 export const Progress = styled.div`
@@ -65,7 +67,6 @@ export const Progress = styled.div`
 
 export const ProgressText = styled.div`
   text-align: center;
-  margin-bottom: 20px;
   font-size: 16px;
 `;
 
@@ -82,6 +83,12 @@ export const QuestionBox = styled.div`
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 20px;
+
+  min-height:50%;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
 `;
 
 export const QuestionTitle = styled.div`
