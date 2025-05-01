@@ -234,6 +234,7 @@ export const GenerateShelf__Shelf__QuestionNum = styled.div`
   align-items:center;
 
   margin-right:2px;
+  flex-shrink:0;
 `
 
 export const GenerateShelf__Shelf__QuestionAnswer = styled.div`
