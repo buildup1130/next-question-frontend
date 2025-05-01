@@ -103,7 +103,7 @@ const QuestionModal = (props) => {
                 <GenerateShelf__Shelf__QuestionWrapper>
                         {props.questionInfoArr?.map(
                             (info,index) => {
-                                const optArr = info.opt?info.opt.split("/"):[];
+                                const optArr = info.opt?info.opt.split("|||"):[];
 
                                 return(
                                 <GenerateShelf__Shelf__QuestionContainer
