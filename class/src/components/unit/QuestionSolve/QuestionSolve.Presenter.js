@@ -28,6 +28,7 @@ import {
   QuestionSolve__QuestionText,
   QuestionSolve__ButtonContainer,
   QuestionSolve__submitButton,
+  QuestionSolve__FillAnswer
 } from "./QuestionSolve.Styles";
 import { useRouter } from "next/router";
 import { savingCheck, savingStat } from "@/utils/StatisticManager";
@@ -43,6 +44,14 @@ export default function QuestionSolveUI(props) {
   const [inputValue, setInputValue] = useState(""); // 빈 칸형 문제용 입력값 상태 추가
   const [wrongArr, setWrongArr] = useState([]);
   const [isResult, setIsResult] = useState(false);
+  const [fillAns, setFillAns] = useState("");
+  const [fillSeq,setFillSeq] = useState(0);
+
+  const QUESTION_TYPE = {
+    NORMAL: 0,
+    MOCK_TEST: 1,
+    DAILY: 2,
+  };
 
   const inputRef = useRef(null); // 입력 필드 참조 추가
   const router = useRouter();
@@ -67,82 +76,205 @@ export default function QuestionSolveUI(props) {
 
   const question = props.questions[currentQuestion];
 
+
   // 다음 문제로 이동
   // selectedAnswer 와 question.answer가 동일할 때 다음 문제로 이동
   // 1. selectedAnswer와 question.answer를 비교한 후 동일하다면 색을 변경
   // 2. 변수를 사용하여 한 번 더 누르면 다음 문제로 이동
   // props.isTest 모달을 이용
-  const handleNextQuestion = () => {
-    // 아직 정답 여부가 확인되지 않은 상태라면
-    if (!isCorrect) {
-      // 처음 문제를 맞췄을 때만 correctAnswer 증가
-      if (question.answer == selectedAnswer) {
-        // 이 문제를 이전에 틀린 적이 없는 경우만 correctAnswer 증가
-        if (!wrongArr.includes(currentQuestion)) {
-          setCorrectAnswer(correctAnswer + 1);
-        }
-        setIsCorrect(true);
-      } else {
-        // 틀린 경우 wrongArr에 추가 (중복 방지)
-        if (!wrongArr.includes(currentQuestion)) {
-          setWrongArr([...wrongArr, currentQuestion]);
-        }
-        // 일반문제 풀이인 경우 오답이면 isCorrect false 유지
-        if (props.type === 0) {
-          console.log(`type은 0입니다 setFalse`);
-          setIsCorrect(false);
-        } else {
-          // console.log("setTrue");
-          console.log(`type은 1입니다 setCorrect`);
-          setIsCorrect(true);
-        }
-      }
-      //가장 최근에 선택한 답변 저장
-      setCurAns(selectedAnswer);
-    }
-    // 이미 정답 확인이 완료된 상태라면 다음 문제로 이동
-    else {
-      if (currentQuestion < props.questions.length - 1) {
-        console.log(`${question.answer} = ${selectedAnswer}`);
-        console.log(`${question.answer == selectedAnswer}`);
+  // const handleNextQuestion = () => {
+  //   // 아직 정답 여부가 확인되지 않은 상태라면
+  //   if (!isCorrect) {
+  //     // 처음 문제를 맞췄을 때만 correctAnswer 증가
+  //     if (question.answer == selectedAnswer) {
+  //       // 이 문제를 이전에 틀린 적이 없는 경우만 correctAnswer 증가
+  //       if (!wrongArr.includes(currentQuestion)) {
+  //         setCorrectAnswer(correctAnswer + 1);
+  //       }
+  //       setIsCorrect(true);
+  //     } else {
+  //       // 틀린 경우 wrongArr에 추가 (중복 방지)
+  //       if (!wrongArr.includes(currentQuestion)) {
+  //         setWrongArr([...wrongArr, currentQuestion]);
+  //       }
+  //       // 일반문제 풀이인 경우 오답이면 isCorrect false 유지
+  //       if (props.type === 0) {
+  //         console.log(`type은 0입니다 setFalse`);
+  //         setIsCorrect(false);
+  //       } else {
+  //         // console.log("setTrue");
+  //         console.log(`type은 1입니다 setCorrect`);
+  //         setIsCorrect(true);
+  //       }
+  //     }
+  //     //가장 최근에 선택한 답변 저장
+  //     setCurAns(selectedAnswer);
+  //   }
+  //   // 이미 정답 확인이 완료된 상태라면 다음 문제로 이동
+  //   else {
+  //     if (currentQuestion < props.questions.length - 1) {
+  //       console.log(`${question.answer} = ${selectedAnswer}`);
+  //       console.log(`${question.answer == selectedAnswer}`);
 
-        setCurrentQuestion(currentQuestion + 1);
-        // 문제가 끝났다면 결과 화면으로 이동
-      } else {
-        setIsCompleted(true);
-        if (props.onFinish) {
-          props.onFinish(wrongArr);
-        }
-        if (props.type === 2) {
-          //일일 문제풀이가 끝난 경우 출석체크
-          savingCheck(props.questions, wrongArr, token);
-        }
-        //일반 문제풀이, 모의고사 문제풀이 인 경우 결과 저장
-        else if (props.type === 0 || props.type === 1) {
-          savingStat(
-            props.questions,
-            wrongArr,
-            props.type,
-            props.workBookId,
-            token
-          );
-        } else {
-          console.log("비회원 문제풀이");
-        }
-        console.log(
-          `wrongArr = ${wrongArr} ${wrongArr.map((value) => {
-            console.log(props.questions[value]);
-          })}`
-        );
-      }
+  //       setCurrentQuestion(currentQuestion + 1);
+  //       // 문제가 끝났다면 결과 화면으로 이동
+  //     } else {
+  //       setIsCompleted(true);
+  //       if (props.onFinish) {
+  //         props.onFinish(wrongArr);
+  //       }
+  //       if (props.type === 2) {
+  //         //일일 문제풀이가 끝난 경우 출석체크
+  //         savingCheck(props.questions, wrongArr, token);
+  //       }
+  //       //일반 문제풀이, 모의고사 문제풀이 인 경우 결과 저장
+  //       else if (props.type === 0 || props.type === 1) {
+  //         savingStat(
+  //           props.questions,
+  //           wrongArr,
+  //           props.type,
+  //           props.workBookId,
+  //           token
+  //         );
+  //       } else {
+  //         console.log("비회원 문제풀이");
+  //       }
+  //       console.log(
+  //         `wrongArr = ${wrongArr} ${wrongArr.map((value) => {
+  //           console.log(props.questions[value]);
+  //         })}`
+  //       );
+  //     }
+  //   }
+  //   //테스트 콘솔솔
+  //   console.log(
+  //     `props.type = ${typeof props.type} isAnswer = ${
+  //       question.answer == selectedAnswer
+  //     } isCorrect = ${isCorrect} questions = ${question}`
+  //   );
+  // };
+
+
+
+
+// 정답 체크 함수
+const checkAnswer = () => {
+  const isAnswerCorrect = question.answer.trim() == selectedAnswer;
+  console.log(question.answer.length, selectedAnswer?.length);
+  
+  if (isAnswerCorrect) {
+    if (!wrongArr.includes(currentQuestion)) {
+      setCorrectAnswer(correctAnswer + 1);
     }
-    //테스트 콘솔솔
-    console.log(
-      `props.type = ${typeof props.type} isAnswer = ${
-        question.answer == selectedAnswer
-      } isCorrect = ${isCorrect} questions = ${question}`
+    setIsCorrect(true);
+  } else {
+    if (!wrongArr.includes(currentQuestion)) {
+      setWrongArr([...wrongArr, currentQuestion]);
+    }
+    
+    // 일반문제 풀이인 경우 오답이면 isCorrect false 유지
+    setIsCorrect(props.type === 0 ? false : true);
+  }
+  
+  setCurAns(selectedAnswer);
+  // 질문 타입에 따른 추가 처리
+  handleQuestionTypeSpecificLogic(isAnswerCorrect);
+};
+
+// 질문 타입별 특수 로직 처리
+const handleQuestionTypeSpecificLogic = (isAnswerCorrect) => {
+  switch (question.type) {
+    case "MULTIPLE_CHOICE":
+      // 객관식 문제에 대한 특수 처리
+      console.log("객관식 문제 처리");
+      // 여기에 객관식 관련 추가 기능 구현
+      break;
+      
+    case "OX":
+      // OX 문제에 대한 특수 처리
+      console.log("OX 문제 처리");
+      // 여기에 OX 관련 추가 기능 구현
+      break;
+      
+    case "FILL_IN_THE_BLANK":
+      if(props.type === 0){
+        console.log("빈칸, 일반 문제");
+        console.log(question);
+        const q = Math.floor(question.answer.length/3);
+        const m = question.answer.length%3;
+        console.log(question.answer);
+        if(fillSeq === 0){
+          setFillAns("O".repeat(question.answer.length));
+          setFillSeq(1);
+        }
+        else{
+          const num = q*fillSeq+m;
+          const tmpArr = fillSeq < 3?question.answer.substring(0,num) + "O".repeat(question.answer.length-num):question.answer;
+          setFillSeq(fillSeq+1);
+          setFillAns(tmpArr);
+          console.log(q*fillSeq,tmpArr);
+        }
+      }
+      // 빈칸 문제에 대한 특수 처리
+      console.log("빈칸 문제 처리");
+      // 여기에 빈칸 채우기 관련 추가 기능 구현
+      break;
+      
+    default:
+      console.log("알 수 없는 문제 유형");
+  }
+};
+
+//문제 마지막 페이지로 이동하는 함수
+const completeQuiz = () => {
+  setIsCompleted(true);
+  if (props.onFinish) {
+    props.onFinish(wrongArr);
+  }
+  if (props.type === 2) {
+    //일일 문제풀이가 끝난 경우 출석체크
+    savingCheck(props.questions, wrongArr, token);
+  }
+  //일반 문제풀이, 모의고사 문제풀이 인 경우 결과 저장
+  else if (props.type === 0 || props.type === 1) {
+    savingStat(
+      props.questions,
+      wrongArr,
+      props.type,
+      props.workBookId,
+      token
     );
-  };
+  } else {
+    console.log("비회원 문제풀이");
+  }
+  console.log(
+    `wrongArr = ${wrongArr} ${wrongArr.map((value) => {
+      console.log(props.questions[value]);
+    })}`
+  );
+}
+
+// 다음 문제로 이동하는 함수
+const moveToNextQuestion = () => {
+  if (currentQuestion < props.questions.length - 1) {
+    setCurrentQuestion(currentQuestion + 1);
+    setFillAns(null);
+    setFillSeq(0);
+  } else {
+    completeQuiz();
+  }
+};
+
+// 통합 핸들러 함수
+const handleNextQuestion = () => {
+  console.log(isCorrect);
+  if (!isCorrect) {
+    checkAnswer();
+  } else {
+    moveToNextQuestion();
+  }
+};
+
 
   // 옵션 선택 처리
   const handleSelectOption = (index) => {
@@ -235,18 +367,7 @@ export default function QuestionSolveUI(props) {
           <BackButton>←</BackButton>
           <Title>문제 풀이</Title>
         </Header>
-        {/* <QuestionSolve__ProgressBarContainer>
-          <ProgressBar>
-            <Progress
-              current={currentQuestion + 1}
-              total={props.questions.length}
-            />
-          </ProgressBar>
-
-          <ProgressText>
-            {currentQuestion + 1}/{props.questions.length}
-          </ProgressText>
-        </QuestionSolve__ProgressBarContainer> */}
+        
         <QuestionContainer>
           {/* 문제 헤더 */}
           <QuestionHeader>
@@ -298,6 +419,8 @@ export default function QuestionSolveUI(props) {
 
               {/* 빈 칸형 문제 */}
               {question.type === "FILL_IN_THE_BLANK" && (
+                <>
+                <QuestionSolve__FillAnswer style={{display:fillSeq?"":"none"}}>{fillAns}</QuestionSolve__FillAnswer>
                 <input
                   ref={inputRef}
                   type="text"
@@ -308,7 +431,7 @@ export default function QuestionSolveUI(props) {
                     borderRadius: "5px",
                     // border: "1px solid #ddd",
                     border: selectedAnswer
-                      ? selectedAnswer === question.answer
+                      ? selectedAnswer.trim() === question.answer.trim()
                         ? "1px solid green"
                         : "1px solid red"
                       : "1px solid #ddd",
@@ -316,6 +439,7 @@ export default function QuestionSolveUI(props) {
                   }}
                   onChange={handleInputChange}
                 />
+                </>
               )}
             </OptionContainer>
             <QuestionSolve__ProgressBarContainer>

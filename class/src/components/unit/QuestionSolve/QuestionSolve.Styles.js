@@ -134,6 +134,11 @@ export const OptionItem = styled.div`
   }
 `;
 
+export const QuestionSolve__FillAnswer = styled.div`
+    color: #a7a7a7;
+
+`
+
 export const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
