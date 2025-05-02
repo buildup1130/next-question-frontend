@@ -1,16 +1,15 @@
 import { useState, useEffect } from "react";
 import BookShelfUI from "./BookShelf.Presenter";
-import BottomSheet from "../../unit/BottomSheet/BottomSheet.Container";
 import RenameModalLogic from "../../unit/RenameModal/RenameModal.Container";
 import BookShelfQuestionLogic from "../../unit/BookShelfQuestion/BookShelfQuestion.Container";
 import {
   deleteWorkBooks,
   searchAllWorkBooks,
   createWorkbook,
+  fetchQuestionType,
 } from "@/utils/WorkbookManager";
 import { useAuth } from "@/utils/AuthContext";
 import { useRouter } from "next/router";
-import { fetchQuestionType } from "@/utils/WorkbookManager";
 
 export default function BookShelfLogic() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -18,7 +17,6 @@ export default function BookShelfLogic() {
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [count, setCount] = useState(1);
-  const [isSheetOpen, setSheetOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
   const [curBook, setCurBook] = useState(null);
   const [sequence, setSequence] = useState(0);
@@ -29,10 +27,7 @@ export default function BookShelfLogic() {
   const [newWorkbookTitle, setNewWorkbookTitle] = useState("");
   const [isSelectMode, setIsSelectMode] = useState(false);
   const [selectedBookIds, setSelectedBookIds] = useState([]);
-  //선택된 Type
-  //0: 객관식 , 1: 참/거짓, 2:주관식
   const [selectedType, setSelectedType] = useState([0, 1, 2]);
-  //Type 별 수
   const [typeNum, setTypeNum] = useState({});
 
   const { token } = useAuth();
@@ -61,33 +56,22 @@ export default function BookShelfLogic() {
     }
   };
 
-  // 검색 관련
-  const handleSearchChange = (e) => setSearchQuery(e.target.value);
-  const handleSearch = () => {
+  const handleSearchChange = (e) => {
+    const keyword = e.target.value;
+    setSearchQuery(keyword);
     const result = books.filter((book) =>
-      book.title.toLowerCase().includes(searchQuery.toLowerCase())
+      book.title.toLowerCase().includes(keyword.toLowerCase())
     );
     setFilteredBooks(result);
-    setSearchQuery("");
   };
-
-  // 네비게이션
-  const handleBack = () => router.back();
-
-  // 모달 및 기타 액션
-  const handleMoreClick = (book) => {
-    setSelectedBook(book);
-    setSheetOpen(true);
-  };
-  const closeBottomSheet = () => setSheetOpen(false);
 
   const handleDelete = async () => {
-    if (!token || !selectedBook) return;
+    if (!token || selectedBookIds.length === 0) return;
     try {
-      await deleteWorkBooks(token, [selectedBook.id]);
+      await deleteWorkBooks(token, selectedBookIds);
       fetchWorkBooks();
-      setSelectedBook(null);
-      setSheetOpen(false);
+      setSelectedBookIds([]);
+      setIsSelectMode(false);
     } catch (err) {
       alert("삭제 중 오류 발생");
     }
@@ -105,7 +89,23 @@ export default function BookShelfLogic() {
     }
   };
 
-  // 문제집 클릭 및 학습 관련
+  const handleMoreClick = (book, action) => {
+    if (action === "learn") {
+      setCurBook({ id: book.id, items: book.items });
+      setSequence(1);
+    } else if (action === "rename") {
+      setRenameTargetBook(book);
+      setRenameModalOpen(true);
+    } else if (action === "delete") {
+      deleteWorkBooks(token, [book.id])
+        .then(() => {
+          fetchWorkBooks();
+          alert("삭제되었습니다.");
+        })
+        .catch(() => alert("삭제 중 오류 발생"));
+    }
+  };
+
   const onClickBook = (book) => {
     if (isSelectMode) {
       const isSelected = selectedBookIds.includes(book.id);
@@ -142,13 +142,11 @@ export default function BookShelfLogic() {
       { type: 1, count: typeNum.ox },
       { type: 2, count: typeNum.fillInTheBlank },
     ];
-
     const queCount = typeMapping.reduce(
       (total, { type, count }) =>
         selectedType.includes(type) ? total + count : total,
       0
     );
-
     router.push({
       pathname: "/Question",
       query: {
@@ -171,7 +169,7 @@ export default function BookShelfLogic() {
 
   return (
     <>
-      {sequence === 1 && curBook && !isSheetOpen && (
+      {sequence === 1 && curBook && (
         <BookShelfQuestionLogic
           curBook={curBook}
           count={count}
@@ -197,12 +195,11 @@ export default function BookShelfLogic() {
         isLoading={isLoading}
         searchQuery={searchQuery}
         onSearchChange={handleSearchChange}
-        onSearch={handleSearch}
-        onBack={handleBack}
+        onSearch={() => {}}
         onMoreClick={handleMoreClick}
         onClickBook={onClickBook}
         onClickLearningMode={onClickLearningMode}
-        onClickLearningStart={onClickLearningStart}
+        onClickLearningStart={handleDelete}
         isSelectMode={isSelectMode}
         selectedBookIds={selectedBookIds}
         onOpenCreateModal={() => setCreateModalOpen(true)}
@@ -211,19 +208,13 @@ export default function BookShelfLogic() {
         setNewWorkbookTitle={setNewWorkbookTitle}
         onCreateWorkbook={handleCreateWorkbook}
         onCloseCreateModal={() => setCreateModalOpen(false)}
-      />
-
-      <BottomSheet
-        isOpen={isSheetOpen}
-        onClose={closeBottomSheet}
-        book={selectedBook}
-        setCurBook={setCurBook}
-        setSequence={setSequence}
-        setSheetOpen={setSheetOpen}
-        fetchWorkBooks={fetchWorkBooks}
-        setRenameModalOpen={setRenameModalOpen}
-        setRenameTargetBook={setRenameTargetBook}
-        onDelete={handleDelete}
+        onClickRename={(book) => {
+          setRenameTargetBook(book);
+          setRenameModalOpen(true);
+        }}
+        onClickDelete={(book) => {
+          deleteWorkBooks(token, [book.id]).then(fetchWorkBooks);
+        }}
       />
 
       {isRenameModalOpen && (
