@@ -28,20 +28,16 @@ export const HomeIcon = () => (
 );
 
 export const BookIcon = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M12 19.0002C10.6318 18.2103 9.07983 17.7944 7.5 17.7944C5.92017 17.7944 4.36817 18.2103 3 19.0002V6.00021C4.36817 5.21029 5.92017 4.79443 7.5 4.79443C9.07983 4.79443 10.6318 5.21029 12 6.00021M12 19.0002C13.3682 18.2103 14.9202 17.7944 16.5 17.7944C18.0798 17.7944 19.6318 18.2103 21 19.0002V6.00021C19.6318 5.21029 18.0798 4.79443 16.5 4.79443C14.9202 4.79443 13.3682 5.21029 12 6.00021M12 19.0002V6.00021"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      fill="currentColor"
-    />
+  <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="26" height="26" fill="url(#pattern0_1016_4599)"/>
+    <defs>
+    <pattern id="pattern0_1016_4599" patternContentUnits="objectBoundingBox" width="1" height="1">
+    <use xlinkHref="#image0_1016_4599" transform="scale(0.01)"/>
+    </pattern>
+    <image id="image0_1016_4599" width="100" height="100" preserveAspectRatio="none" xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB+UlEQVR4nO3dsY5MYRiH8SfcAaHbDW5AR6LZ2USro6LWKnVEsxGFaGh1Gq4AiStwCXQUrkDE7isnM2IVe7banf/3zvNL3v7L9+yZL3Mmew5IkiRJkiRJOuwicAd4ADxsONuj5L4BfAT2gWo8C8KdBV4EbFQZBM4A7wI2qQyy9CRgg8ogS5eBnwEbVAZZenXMRnxZHfIfBp0a6VCfzo7vRyz4B7DD+GqkIFszC75LDzVSkGszCz5HDzVSkMXMgrsog2QxSBiDhDFIGIOE2aggz1bf5Nc9b2bWuFFBXgfck5rm08waDYJBvELwCvEj6yR4hjQLsgDuB8ytmTVu1KE+AoOEMUgYg4QxSBiDhDFIGIOEMUgYg4QxSBiDhDFIGIOEMUgYg4QxSBiDhDFIGIOEMUgYg4QxSBiDhDFIGIOEMUgYg4QxSBiDhDFIGIOEMUiYVkHOA1eBmwNPdQnyGTgI+B/0OqEZLkj3WRDIIGEMEsYgYQwyUJBfwKORXutwhDaH+hSjg+oSZHrIcgfV5UHK07f0DqrLo8bv0UON9jD+bzMP499lfDVSkMnLY24xfPV1Fafrki90yfM44GZfnfLEfmT9PUveBmxSGeT/1+Y9b/4bSI1yhRx2HXgP/A7YtDLIPxeA26tXr+4BT5vNlTX+0UuSJEmSJEmswx8VNgFTHUrQxgAAAABJRU5ErkJggg=="/>
+    </defs>
   </svg>
+
 );
 
 export const ShelfIcon = () => (
@@ -201,3 +197,11 @@ export const DocsIcon = () => (
     </defs>
   </svg>
 );
+
+
+export const XIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M1.60156 13.3983L7.49994 7.49994L13.3983 13.3983M13.3983 1.60156L7.49881 7.49994L1.60156 1.60156" stroke="#FF4545" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+
+)

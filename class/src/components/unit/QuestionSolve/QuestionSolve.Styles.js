@@ -105,6 +105,7 @@ export const OptionContainer = styled.div`
 `;
 
 export const OptionItem = styled.div`
+  width:100%;
   padding: 15px;
   border-radius: 5px;
   background-color: ${(props) => (props.selected ? "#e6f4ff" : "white")};
@@ -174,35 +175,35 @@ export const QuestionBox__Header = styled.div`
   gap: 10px;
 `;
 
-export const QuestionSolve__ResultWrapper = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color:rgba(0, 0, 0, 0.5);
-  z-Index: 10;
+// export const QuestionSolve__ResultWrapper = styled.div`
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   right: 0;
+//   bottom: 0;
+//   background-color:rgba(0, 0, 0, 0.5);
+//   z-Index: 10;
 
-  overflow: hidden;
+//   overflow: hidden;
 
-  display:flex;
-  justify-content:center;
-`
+//   display:flex;
+//   justify-content:center;
+// `
 
-export const QuestionSolve__ResultContainer = styled.div`
-  width:100%;
-  height:100%;
+// export const QuestionSolve__ResultContainer = styled.div`
+//   width:100%;
+//   height:100%;
 
-  max-width:500px;
+//   max-width:500px;
 
-  display:flex;
-  justify-content:center;
-  align-items:center;
+//   display:flex;
+//   justify-content:center;
+//   align-items:center;
 
-  z-index:100;
+//   z-index:100;
 
-  padding: 20px 8px;
-`
+//   padding: 20px 8px;
+// `
 
 export const QuestionSolve__ResultBox = styled.div`
   width:100%;
@@ -334,4 +335,131 @@ export const QuestionSolve__LoadingTitle = styled.div`
 
 export const QuestionSolve__LoadingSubtitle = styled.div`
   color:#a7a7a7;
+`
+
+export const QuestionSolve__SubHeader = styled.div`
+  width:100%;
+  max-width:500px;
+  display:flex;
+`
+
+export const QuestionSolve__SubHeader__Element = styled.div`
+  width:50%;
+
+  font-size:18px;
+  color:${(props) => (props.isSelected?"#808fff":"")};
+  border-bottom:${(props) => (props.isSelected?"2px solid #808fff":"none")};
+  
+  padding: 10px 0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  cursor: pointer;
+`
+
+export const QuestionSolve__ResultWrapper = styled.div`
+  width:100%;
+  max-width:500px;
+  height:100%;
+  padding:12px 8px;
+
+  background-color:#f0f0f0;
+`
+
+export const QuestionSolve__ResultContainer = styled.div`
+  width:100%;
+
+  background-color:white;
+  border-radius:10px;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:20px 8px;
+  gap: 10px;
+`
+
+export const QuestionSolve__RateContainer = styled.div`
+  width:40%;
+  aspect-ratio:1/1;
+
+`
+
+export const QuestionSolve__RateContainer__Rate = styled.div`
+   width: 100%;
+   height: 100%;
+   border-radius: 50%;
+
+   display: flex;
+   justify-content: center;
+   align-items: center;
+
+   background:${(props) => {
+     return(
+       `conic-gradient(#6470e8 ${props.matchRate}%, #e6e6e6 0)`
+     )
+   }};
+   position: relative;
+`
+
+export const QuestionSolve__RateContainer__Percentage = styled.div`
+  width:calc(100% - 20px);
+  height:calc(100% - 20px);
+
+  border-radius:50%;
+  background-color:white;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap: 10px;
+
+  font-size:22px;
+  font-weight:700;
+`
+
+export const QuestionSolve__RateContainer__subtitle = styled.div`
+  font-size:14px;
+  font-weight:400;
+  color:#a7a7a7;
+`
+
+export const QuestionSolve__Result__SubContent = styled.div`
+  margin-top:20px;
+  width:40%;
+  padding:8px 0;
+
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+`
+
+export const QuestionSolve__Result__SubContent__element = styled.div`
+  width:100%;
+  padding-bottom:2px;
+  border-bottom:1px solid #ded9d9;
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+`
+
+export const QuestionSolve__RateContainer__bold = styled.div`
+  font-size:18px;
+`
+
+export const QuestionSolve__ResultDetails__header = styled.div`
+  display:flex;
+  align-items:center;
+
+  gap: 2px;
+`
+
+export const QuestionSolve__ResultDetails__content = styled.div`
+  display:flex;
+  flex-direction:column;
+
+  gap:20px;
 `

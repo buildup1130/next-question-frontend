@@ -14,6 +14,7 @@ export const GenerateShelf__Wrapper = styled.div`
 
   display:flex;
   justify-content:center;
+  z-index:9999;
 `;
 
 export const GenerateShelf__Container = styled.div`

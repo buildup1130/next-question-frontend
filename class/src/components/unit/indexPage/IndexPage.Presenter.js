@@ -11,13 +11,17 @@ import {
   Home__BlurContainer,
   Home__LoginButton,
   Home__LoginMessage,
-  Home__LoginOverlay
+  Home__LoginOverlay,
+  Home__StatButton,
+  Home__StatContainer,
+  Home__StatTitle
 } from "./IndexPage.Styles"
 import UploadBoxLogic from "../UploadBox/UploadBox.Container";
 import GenerateShelfLogic from "../GenerateShelf/GenerateShelf.Container";
 import AttendanceCheckLogic from "../AttendanceCheck/AttendanceCheck.Container";
 import MainCalendarLogic from "../MainCalendar/MainCalendar.Container";
 import MainChartLogic from "../MainChart/MainChart.Container";
+import { BookIcon, DownIcon } from "@/utils/SvgProvider";
 
 export default function IndexPageUI({
   onClickLogin,
@@ -63,6 +67,11 @@ export default function IndexPageUI({
             <Home__CalBar><Home__CalTitle>주간 학습 분석</Home__CalTitle></Home__CalBar>
               <MainChartLogic />
               <AttendanceCheckLogic checkArr={checkArr} />
+              <Home__StatContainer>
+              <Home__StatButton><Home__StatTitle><BookIcon></BookIcon>최근에 틀렸던 문제</Home__StatTitle><div style={{transform:"rotate(-90deg)"}}><DownIcon></DownIcon></div></Home__StatButton>
+              <Home__StatButton><Home__StatTitle><BookIcon></BookIcon>여러번 틀렸던 문제</Home__StatTitle><div style={{transform:"rotate(-90deg)"}}><DownIcon></DownIcon></div></Home__StatButton>
+              <Home__StatButton><Home__StatTitle><BookIcon></BookIcon>최근 학습한 문제</Home__StatTitle><div style={{transform:"rotate(-90deg)"}}><DownIcon></DownIcon></div></Home__StatButton>
+              </Home__StatContainer>
           </>
         )}
         {/* 비로그인 시 보이는 학습분석 */}
@@ -73,6 +82,11 @@ export default function IndexPageUI({
               <Home__BlurContainer>
                 <MainChartLogic />
                 <AttendanceCheckLogic checkArr={checkArr} />
+                <Home__StatContainer>
+                  <Home__StatButton><Home__StatTitle><BookIcon></BookIcon>최근에 틀렸던 문제</Home__StatTitle><div style={{transform:"rotate(-90deg)"}}><DownIcon></DownIcon></div></Home__StatButton>
+                  <Home__StatButton><Home__StatTitle><BookIcon></BookIcon>여러번 틀렸던 문제</Home__StatTitle><div style={{transform:"rotate(-90deg)"}}><DownIcon></DownIcon></div></Home__StatButton>
+                  <Home__StatButton><Home__StatTitle><BookIcon></BookIcon>최근 학습한 문제</Home__StatTitle><div style={{transform:"rotate(-90deg)"}}><DownIcon></DownIcon></div></Home__StatButton>
+                </Home__StatContainer>
               </Home__BlurContainer>
               <Home__LoginOverlay>
                 <Home__LoginMessage>로그인 후 이용 가능합니다</Home__LoginMessage>
