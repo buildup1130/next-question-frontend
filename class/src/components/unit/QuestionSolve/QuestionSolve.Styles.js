@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { keyframes } from "@emotion/react";
 
 // 스타일 컴포넌트 정의
 export const QuestionContainer = styled.div`
@@ -18,9 +19,10 @@ export const Header = styled.div`
   max-width: 500px;
 
   display: flex;
-  justify-content: center; /* 가운데 정렬 */
+  justify-content: left; /* 가운데 정렬 */
   align-items: center;
   position: relative;
+  padding-left: 10px;
   padding-bottom: 20px;
 
   border-bottom: 1px solid #d9d9d9;
@@ -61,7 +63,7 @@ export const ProgressBar = styled.div`
 export const Progress = styled.div`
   height: 100%;
   width: ${(props) => (props.current / props.total) * 100}%;
-  background-color: #0099ff;
+  background-color: #808fff;
   border-radius: 5px;
 `;
 
@@ -109,7 +111,7 @@ export const OptionItem = styled.div`
   border: 1px solid ${(props) => {
     // 최근 제출한 선택지의 답에 따른 색 조정
     if(props.curAns){
-     const tmpColor = props.isRightAnswer? "#155724": "#721c24";
+     const tmpColor = props.isRightAnswer? "#2fafff": "#721c24";
      return tmpColor;
     }
     // 최근 선택한 선택지 색 조정 
@@ -121,7 +123,7 @@ export const OptionItem = styled.div`
 
   color: ${(props) =>{
     if(props.curAns){
-     const tmpColor = props.isRightAnswer? "#155724": "#721c24";
+     const tmpColor = props.isRightAnswer? "#2fafff": "#721c24";
      return tmpColor;
     }
     else{
@@ -147,14 +149,15 @@ export const ButtonContainer = styled.div`
 
 export const NextButton = styled.button`
   padding: 10px 20px;
-  background-color: white;
+  background-color: #808fff;
+  color:white;
   border: 1px solid #ddd;
-  border-radius: 20px;
+  border-radius: 8px;
   font-size: 16px;
   cursor: pointer;
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: #b3bcff;
   }
 `;
 
@@ -268,4 +271,67 @@ justify-content:center;
 align-items:center;
 
 cursor: pointer;
+`
+
+const UpDown = keyframes`
+  from {
+    transform: translateY(-50px);
+    opacity:0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity:100;
+  }
+`;
+
+export const QuestionSolve__LoadingWrapper = styled.div`
+  width:100%;
+  height:100%;
+  min-height:100vh;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+`
+
+export const QuestionSolve__LoadingContainer = styled.div`
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+
+  gap:10px;
+`
+
+export const QuestionSolve__LoadingImg = styled.img`
+  animation: ${UpDown} 2s linear infinite;
+  -webkit-animation: ${UpDown} 1s ease-in 1 alternate;
+  transform-origin: center;
+  -webkit-transform-origin: center;
+`
+
+export const QuestionSolve__LoadingSubsContainer = styled.div`
+  width:100%;
+  max-width:400px;
+  padding:10px 0;
+
+  border-radius:10px;
+  background-color:#f4f4f4;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+
+  gap:10px;
+`
+
+export const QuestionSolve__LoadingTitle = styled.div`
+  font-size:18px;
+  font-weight:700;
+`
+
+export const QuestionSolve__LoadingSubtitle = styled.div`
+  color:#a7a7a7;
 `

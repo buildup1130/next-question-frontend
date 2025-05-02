@@ -28,7 +28,13 @@ import {
   QuestionSolve__QuestionText,
   QuestionSolve__ButtonContainer,
   QuestionSolve__submitButton,
-  QuestionSolve__FillAnswer
+  QuestionSolve__FillAnswer,
+  QuestionSolve__LoadingContainer,
+  QuestionSolve__LoadingImg,
+  QuestionSolve__LoadingWrapper,
+  QuestionSolve__LoadingSubsContainer,
+  QuestionSolve__LoadingTitle,
+  QuestionSolve__LoadingSubtitle
 } from "./QuestionSolve.Styles";
 import { useRouter } from "next/router";
 import { savingCheck, savingStat } from "@/utils/StatisticManager";
@@ -46,6 +52,7 @@ export default function QuestionSolveUI(props) {
   const [isResult, setIsResult] = useState(false);
   const [fillAns, setFillAns] = useState("");
   const [fillSeq,setFillSeq] = useState(0);
+  const [isLoading, setIsLoading] = useState(0);
 
   const QUESTION_TYPE = {
     NORMAL: 0,
@@ -161,7 +168,7 @@ export default function QuestionSolveUI(props) {
 const checkAnswer = () => {
   const isAnswerCorrect = question.answer.trim() == selectedAnswer;
   console.log(question.answer.length, selectedAnswer?.length);
-  
+  if(selectedAnswer){
   if (isAnswerCorrect) {
     if (!wrongArr.includes(currentQuestion)) {
       setCorrectAnswer(correctAnswer + 1);
@@ -179,6 +186,7 @@ const checkAnswer = () => {
   setCurAns(selectedAnswer);
   // 질문 타입에 따른 추가 처리
   handleQuestionTypeSpecificLogic(isAnswerCorrect);
+  }
 };
 
 // 질문 타입별 특수 로직 처리
@@ -227,7 +235,12 @@ const handleQuestionTypeSpecificLogic = (isAnswerCorrect) => {
 
 //문제 마지막 페이지로 이동하는 함수
 const completeQuiz = () => {
-  setIsCompleted(true);
+  setIsLoading(true);
+  //로딩 시간 기록
+  setTimeout(()=>{
+    setIsLoading(false);
+    setIsCompleted(true);
+  },3000);
   if (props.onFinish) {
     props.onFinish(wrongArr);
   }
@@ -294,6 +307,12 @@ const handleNextQuestion = () => {
       ? question.opt.split("|||")
       : [];
 
+  if(isLoading){
+    return(
+      <LoadingModal></LoadingModal>
+    )
+  }
+
   // 문제 풀이 완료시 표현되는 화면
   if (isCompleted) {
     return (
@@ -306,7 +325,6 @@ const handleNextQuestion = () => {
           ></ResultModal>
         ) : null}
         <Header>
-          <BackButton>←</BackButton>
           <Title>책장</Title>
         </Header>
         <div
@@ -364,7 +382,6 @@ const handleNextQuestion = () => {
     return (
       <MainContainerLogic>
         <Header>
-          <BackButton>←</BackButton>
           <Title>문제 풀이</Title>
         </Header>
         
@@ -431,8 +448,8 @@ const handleNextQuestion = () => {
                     borderRadius: "5px",
                     // border: "1px solid #ddd",
                     border: selectedAnswer
-                      ? selectedAnswer.trim() === question.answer.trim()
-                        ? "1px solid green"
+                      ? selectedAnswer?.trim() === question.answer?.trim()
+                        ? "1px solid #2fafff"
                         : "1px solid red"
                       : "1px solid #ddd",
                     fontSize: "16px",
@@ -531,3 +548,22 @@ const ResultModal = (props) => {
     </QuestionSolve__ResultWrapper>
   );
 };
+
+const LoadingModal = () => {
+  return(
+    <QuestionSolve__LoadingWrapper>
+      <QuestionSolve__LoadingContainer>
+      <QuestionSolve__LoadingImg src="/image/Loading.png"></QuestionSolve__LoadingImg>
+      <QuestionSolve__LoadingSubsContainer>
+        <QuestionSolve__LoadingTitle>
+          문제를 채점하고 있어요.
+        </QuestionSolve__LoadingTitle>
+        <QuestionSolve__LoadingSubtitle>
+          문제가 채점될 때 까지 기다려주세요.
+        </QuestionSolve__LoadingSubtitle>
+      </QuestionSolve__LoadingSubsContainer>
+    </QuestionSolve__LoadingContainer>
+    </QuestionSolve__LoadingWrapper>
+    
+  )
+}
