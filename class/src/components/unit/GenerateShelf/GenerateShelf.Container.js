@@ -42,13 +42,23 @@ export default function GenerateShelfLogic(props){
         }
     };
 
-
+    
 
     useEffect(() => {
         // 함수 실행
         fetchWorkBooks();
     }, [isAuthenticated, token,isCreating]); // 의존성 배열에 isAuthenticated와 token 포함
         // isCreating 변경 마다 워크북 동기화
+
+        //pdf가 아닌경우 예외처리
+    useEffect(() => {
+        console.log(props.file.name.slice(-3));
+        if(props.file.name.slice(-3)!== "pdf"){
+            alert("pdf 파일만 업로드 가능합니다.");
+            props.setFile(null);
+            props.setIsCreated(false);
+        }
+    },[props.file])
 
     const HandleWorkBookName = (e) => {
         setCreatingName(e.target.value);

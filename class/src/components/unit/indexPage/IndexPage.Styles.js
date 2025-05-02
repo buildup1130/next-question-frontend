@@ -184,3 +184,35 @@ export const Home__LoginButton = styled.button`
     background-color: #2563eb;
   }
 `;
+
+export const Home__StatContainer = styled.div`
+  width:100%;
+  max-width:500px;
+
+  padding-top:20px;
+
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+`
+
+export const Home__StatTitle = styled.div`
+  display:flex;
+  align-items:center;
+  gap: 10px;
+
+  font-weight: 600;
+`
+
+export const Home__StatButton = styled.div`
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+
+  padding: 4px 8px;
+  cursor: pointer;
+
+  &:hover{
+    background-color:#f5f5f5;
+  }
+`

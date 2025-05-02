@@ -28,10 +28,29 @@ import {
   QuestionSolve__QuestionText,
   QuestionSolve__ButtonContainer,
   QuestionSolve__submitButton,
+  QuestionSolve__FillAnswer,
+  QuestionSolve__LoadingContainer,
+  QuestionSolve__LoadingImg,
+  QuestionSolve__LoadingWrapper,
+  QuestionSolve__LoadingSubsContainer,
+  QuestionSolve__LoadingTitle,
+  QuestionSolve__LoadingSubtitle,
+  QuestionSolve__SubHeader,
+  QuestionSolve__SubHeader__Element,
+  QuestionSolve__RateContainer,
+  QuestionSolve__RateContainer__Rate,
+  QuestionSolve__RateContainer__Percentage,
+  QuestionSolve__RateContainer__subtitle,
+  QuestionSolve__Result__SubContent,
+  QuestionSolve__Result__SubContent__element,
+  QuestionSolve__RateContainer__bold,
+  QuestionSolve__ResultDetails__header,
+  QuestionSolve__ResultDetails__content
 } from "./QuestionSolve.Styles";
 import { useRouter } from "next/router";
 import { savingCheck, savingStat } from "@/utils/StatisticManager";
 import { useAuth } from "@/utils/AuthContext";
+import { CheckedIcon, CheckIcon, XButton, XIcon } from "@/utils/SvgProvider";
 
 export default function QuestionSolveUI(props) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -43,6 +62,15 @@ export default function QuestionSolveUI(props) {
   const [inputValue, setInputValue] = useState(""); // 빈 칸형 문제용 입력값 상태 추가
   const [wrongArr, setWrongArr] = useState([]);
   const [isResult, setIsResult] = useState(false);
+  const [fillAns, setFillAns] = useState("");
+  const [fillSeq,setFillSeq] = useState(0);
+  const [isLoading, setIsLoading] = useState(0);
+  const [resultSeq, setResultSeq] = useState(0);
+  //시간 기록용 시작 시간 기록
+  const [startTime, setStartTime] = useState(null);
+  const [totalTime, setTotalTime] = useState(null);
+  //각 문제별 처음 등록한 답 기록
+  const [answerArr ,setAnswerArr] = useState([]);
 
   const inputRef = useRef(null); // 입력 필드 참조 추가
   const router = useRouter();
@@ -60,6 +88,12 @@ export default function QuestionSolveUI(props) {
     setCurAns(null);
   }, [currentQuestion]);
 
+  //컴포넌트 로딩시에 시작 시간 기록
+  useEffect(() => {
+    setStartTime(Date.now());
+    console.log(startTime);
+  },[])
+
   // 문제 데이터가 없으면 로딩 또는 빈 상태 표시
   if (!props.questions || props.questions.length === 0) {
     return <MainContainerLogic>문제를 불러오는 중...</MainContainerLogic>;
@@ -67,82 +101,140 @@ export default function QuestionSolveUI(props) {
 
   const question = props.questions[currentQuestion];
 
-  // 다음 문제로 이동
-  // selectedAnswer 와 question.answer가 동일할 때 다음 문제로 이동
-  // 1. selectedAnswer와 question.answer를 비교한 후 동일하다면 색을 변경
-  // 2. 변수를 사용하여 한 번 더 누르면 다음 문제로 이동
-  // props.isTest 모달을 이용
-  const handleNextQuestion = () => {
-    // 아직 정답 여부가 확인되지 않은 상태라면
-    if (!isCorrect) {
-      // 처음 문제를 맞췄을 때만 correctAnswer 증가
-      if (question.answer == selectedAnswer) {
-        // 이 문제를 이전에 틀린 적이 없는 경우만 correctAnswer 증가
-        if (!wrongArr.includes(currentQuestion)) {
-          setCorrectAnswer(correctAnswer + 1);
-        }
-        setIsCorrect(true);
-      } else {
-        // 틀린 경우 wrongArr에 추가 (중복 방지)
-        if (!wrongArr.includes(currentQuestion)) {
-          setWrongArr([...wrongArr, currentQuestion]);
-        }
-        // 일반문제 풀이인 경우 오답이면 isCorrect false 유지
-        if (props.type === 0) {
-          console.log(`type은 0입니다 setFalse`);
-          setIsCorrect(false);
-        } else {
-          // console.log("setTrue");
-          console.log(`type은 1입니다 setCorrect`);
-          setIsCorrect(true);
-        }
-      }
-      //가장 최근에 선택한 답변 저장
-      setCurAns(selectedAnswer);
-    }
-    // 이미 정답 확인이 완료된 상태라면 다음 문제로 이동
-    else {
-      if (currentQuestion < props.questions.length - 1) {
-        console.log(`${question.answer} = ${selectedAnswer}`);
-        console.log(`${question.answer == selectedAnswer}`);
 
-        setCurrentQuestion(currentQuestion + 1);
-        // 문제가 끝났다면 결과 화면으로 이동
-      } else {
-        setIsCompleted(true);
-        if (props.onFinish) {
-          props.onFinish(wrongArr);
-        }
-        if (props.type === 2) {
-          //일일 문제풀이가 끝난 경우 출석체크
-          savingCheck(props.questions, wrongArr, token);
-        }
-        //일반 문제풀이, 모의고사 문제풀이 인 경우 결과 저장
-        else if (props.type === 0 || props.type === 1) {
-          savingStat(
-            props.questions,
-            wrongArr,
-            props.type,
-            props.workBookId,
-            token
-          );
-        } else {
-          console.log("비회원 문제풀이");
-        }
-        console.log(
-          `wrongArr = ${wrongArr} ${wrongArr.map((value) => {
-            console.log(props.questions[value]);
-          })}`
-        );
-      }
+// 정답 체크 함수
+const checkAnswer = () => {
+  const isAnswerCorrect = question.answer.trim() == selectedAnswer;
+  console.log(question.answer.length, selectedAnswer?.length);
+  if(selectedAnswer){
+  if (isAnswerCorrect) {
+    if (!wrongArr.includes(currentQuestion)) {
+      setCorrectAnswer(correctAnswer + 1);
+      //처음 맞춘 경우
+      setAnswerArr([...answerArr,selectedAnswer]);
     }
-    //테스트 콘솔솔
-    console.log(
-      `props.type = ${typeof props.type} isAnswer = ${
-        question.answer == selectedAnswer
-      } isCorrect = ${isCorrect} questions = ${question}`
+    setIsCorrect(true);
+  } else {
+    if (!wrongArr.includes(currentQuestion)) {
+      setWrongArr([...wrongArr, currentQuestion]);
+      //처음 틀린 경우
+      setAnswerArr([...answerArr,selectedAnswer]);
+    }
+    
+    // 일반문제 풀이인 경우 오답이면 isCorrect false 유지
+    setIsCorrect(props.type === 0 ? false : true);
+  }
+  
+  setCurAns(selectedAnswer);
+  // 질문 타입에 따른 추가 처리
+  handleQuestionTypeSpecificLogic(isAnswerCorrect);
+  }
+};
+
+// 질문 타입별 특수 로직 처리
+const handleQuestionTypeSpecificLogic = (isAnswerCorrect) => {
+  switch (question.type) {
+    case "MULTIPLE_CHOICE":
+      // 객관식 문제에 대한 특수 처리
+      console.log("객관식 문제 처리");
+      // 여기에 객관식 관련 추가 기능 구현
+      break;
+      
+    case "OX":
+      // OX 문제에 대한 특수 처리
+      console.log("OX 문제 처리");
+      // 여기에 OX 관련 추가 기능 구현
+      break;
+      
+    case "FILL_IN_THE_BLANK":
+      if(props.type === 0){
+        console.log("빈칸, 일반 문제");
+        console.log(question);
+        const q = Math.floor(question.answer.length/3);
+        const m = question.answer.length%3;
+        console.log(question.answer);
+        if(fillSeq === 0){
+          setFillAns("O".repeat(question.answer.length));
+          setFillSeq(1);
+        }
+        else{
+          const num = q*fillSeq+m;
+          const tmpArr = fillSeq < 3?question.answer.substring(0,num) + "O".repeat(question.answer.length-num):question.answer;
+          setFillSeq(fillSeq+1);
+          setFillAns(tmpArr);
+          console.log(q*fillSeq,tmpArr);
+        }
+      }
+      // 빈칸 문제에 대한 특수 처리
+      console.log("빈칸 문제 처리");
+      // 여기에 빈칸 채우기 관련 추가 기능 구현
+      break;
+      
+    default:
+      console.log("알 수 없는 문제 유형");
+  }
+};
+
+//문제 마지막 페이지로 이동하는 함수
+const completeQuiz = () => {
+  //문제 풀이 시간 계산
+  const endTime = Date.now();
+  const spentTime = Math.floor((endTime - startTime) / 1000);
+  setTotalTime(spentTime);
+  console.log(`answer Arr = ${answerArr}`);
+  setIsLoading(true);
+  //로딩 시간 기록
+  setTimeout(()=>{
+    setIsLoading(false);
+    setIsCompleted(true);
+  },3000);
+  if (props.onFinish) {
+    props.onFinish(wrongArr);
+  }
+  if (props.type === 2) {
+    //일일 문제풀이가 끝난 경우 출석체크
+    savingCheck(props.questions, wrongArr, token);
+  }
+  //일반 문제풀이, 모의고사 문제풀이 인 경우 결과 저장
+  else if (props.type === 0 || props.type === 1) {
+    savingStat(
+      props.questions,
+      wrongArr,
+      props.type,
+      props.workBookId,
+      token
     );
-  };
+  } else {
+    console.log("비회원 문제풀이");
+  }
+  console.log(
+    `wrongArr = ${wrongArr} ${wrongArr.map((value) => {
+      console.log(props.questions[value]);
+    })}`
+  );
+}
+
+// 다음 문제로 이동하는 함수
+const moveToNextQuestion = () => {
+  if (currentQuestion < props.questions.length - 1) {
+    setCurrentQuestion(currentQuestion + 1);
+    setFillAns(null);
+    setFillSeq(0);
+  } else {
+    completeQuiz();
+  }
+};
+
+// 통합 핸들러 함수
+const handleNextQuestion = () => {
+  console.log(isCorrect);
+  if (!isCorrect) {
+    checkAnswer();
+  } else {
+    moveToNextQuestion();
+  }
+};
+
 
   // 옵션 선택 처리
   const handleSelectOption = (index) => {
@@ -162,22 +254,61 @@ export default function QuestionSolveUI(props) {
       ? question.opt.split("|||")
       : [];
 
+  if(isLoading){
+    return(
+      <LoadingModal></LoadingModal>
+    )
+  }
+
   // 문제 풀이 완료시 표현되는 화면
   if (isCompleted) {
     return (
       <MainContainerLogic>
-        {isResult ? (
+        {/* {isResult ? (
           <ResultModal
             wrongArr={wrongArr}
             questions={props.questions}
             setIsResult={setIsResult}
           ></ResultModal>
-        ) : null}
+        ) : null} */}
         <Header>
-          <BackButton>←</BackButton>
-          <Title>책장</Title>
+          <Title>문제 풀이 결과</Title>
         </Header>
-        <div
+        <QuestionSolve__SubHeader>
+          <QuestionSolve__SubHeader__Element
+            isSelected = {fillSeq === 0}
+            onClick={() => {setFillSeq(0)}}
+          >결과 요약</QuestionSolve__SubHeader__Element>
+          <QuestionSolve__SubHeader__Element
+            isSelected = {fillSeq === 1}
+            onClick={() => {setFillSeq(1)}}
+          >결과 상세보기</QuestionSolve__SubHeader__Element>
+        </QuestionSolve__SubHeader>
+        <QuestionSolve__ResultWrapper>
+          {fillSeq === 0?<ResultSummary
+            match = {correctAnswer}
+            number = {props.questions.length}
+            totalTime = {totalTime}
+          ></ResultSummary>:<ResultDetails
+            match = {correctAnswer}
+            questions = {props.questions}
+            answerArr = {answerArr}
+          ></ResultDetails>}
+          <NextButton
+            onClick={() => {
+              router.push("/");
+            }}
+            style={{
+              width:"100%",
+              marginTop: "24px",
+              backgroundColor: "#808fff",
+              color: "white",
+            }}
+          >
+            홈으로
+          </NextButton>
+        </QuestionSolve__ResultWrapper>
+        {/* <div
           style={{
             width: "100%",
             height: "100%",
@@ -222,7 +353,8 @@ export default function QuestionSolveUI(props) {
           >
             홈으로
           </NextButton>
-        </div>
+        </div> */}
+
       </MainContainerLogic>
     );
   }
@@ -232,21 +364,9 @@ export default function QuestionSolveUI(props) {
     return (
       <MainContainerLogic>
         <Header>
-          <BackButton>←</BackButton>
           <Title>문제 풀이</Title>
         </Header>
-        {/* <QuestionSolve__ProgressBarContainer>
-          <ProgressBar>
-            <Progress
-              current={currentQuestion + 1}
-              total={props.questions.length}
-            />
-          </ProgressBar>
-
-          <ProgressText>
-            {currentQuestion + 1}/{props.questions.length}
-          </ProgressText>
-        </QuestionSolve__ProgressBarContainer> */}
+        
         <QuestionContainer>
           {/* 문제 헤더 */}
           <QuestionHeader>
@@ -298,6 +418,8 @@ export default function QuestionSolveUI(props) {
 
               {/* 빈 칸형 문제 */}
               {question.type === "FILL_IN_THE_BLANK" && (
+                <>
+                <QuestionSolve__FillAnswer style={{display:fillSeq?"":"none"}}>{fillAns}</QuestionSolve__FillAnswer>
                 <input
                   ref={inputRef}
                   type="text"
@@ -308,14 +430,15 @@ export default function QuestionSolveUI(props) {
                     borderRadius: "5px",
                     // border: "1px solid #ddd",
                     border: selectedAnswer
-                      ? selectedAnswer === question.answer
-                        ? "1px solid green"
+                      ? selectedAnswer?.trim() === question.answer?.trim()
+                        ? "1px solid #2fafff"
                         : "1px solid red"
                       : "1px solid #ddd",
                     fontSize: "16px",
                   }}
                   onChange={handleInputChange}
                 />
+                </>
               )}
             </OptionContainer>
             <QuestionSolve__ProgressBarContainer>
@@ -342,68 +465,224 @@ export default function QuestionSolveUI(props) {
   }
 }
 
-//틀린 문제 결과
-const ResultModal = (props) => {
-  const wrongQuestions = [];
-  props.wrongArr.map((data) => {
-    const tmpobj = {
-      name: props.questions[data].name,
-      type: props.questions[data].type,
-      answer: props.questions[data].answer,
-      opt: props.questions[data].opt,
-      number: data + 1,
-    };
-    wrongQuestions.push(tmpobj);
-  });
-  console.log(wrongQuestions);
-  return (
-    <QuestionSolve__ResultWrapper>
-      <QuestionSolve__ResultContainer>
-        <QuestionSolve__ResultBox>
-          {wrongQuestions.length === 0 ? (
-            <QuestionSolve__QuestionTitle>
-              "대단해요! 모두 정답이에요!"
-            </QuestionSolve__QuestionTitle>
-          ) : (
-            <QuestionSolve__QuestionWrapper>
-              {wrongQuestions.map((info, index) => {
-                const optArr = info.opt ? info.opt.split("|||") : [];
-                return (
-                  <QuestionSolve__QuestionContainer key={index}>
-                    <QuestionSolve__QuestionTitle>
-                      {info.number}. {info.name}
-                    </QuestionSolve__QuestionTitle>
-                    <QuestionSolve__QuestionText>
-                      문제 유형: {info.type}
-                    </QuestionSolve__QuestionText>
+// //틀린 문제 결과
+// const ResultModal = (props) => {
+//   const wrongQuestions = [];
+//   props.wrongArr.map((data) => {
+//     const tmpobj = {
+//       name: props.questions[data].name,
+//       type: props.questions[data].type,
+//       answer: props.questions[data].answer,
+//       opt: props.questions[data].opt,
+//       number: data + 1,
+//     };
+//     wrongQuestions.push(tmpobj);
+//   });
+//   console.log(wrongQuestions);
+//   return (
+//     <QuestionSolve__ResultWrapper>
+//       <QuestionSolve__ResultContainer>
+//         <QuestionSolve__ResultBox>
+//           {wrongQuestions.length === 0 ? (
+//             <QuestionSolve__QuestionTitle>
+//               "대단해요! 모두 정답이에요!"
+//             </QuestionSolve__QuestionTitle>
+//           ) : (
+//             <QuestionSolve__QuestionWrapper>
+//               {wrongQuestions.map((info, index) => {
+//                 const optArr = info.opt ? info.opt.split("|||") : [];
+//                 return (
+//                   <QuestionSolve__QuestionContainer key={index}>
+//                     <QuestionSolve__QuestionTitle>
+//                       {info.number}. {info.name}
+//                     </QuestionSolve__QuestionTitle>
+//                     <QuestionSolve__QuestionText>
+//                       문제 유형: {info.type}
+//                     </QuestionSolve__QuestionText>
 
-                    <QuestionSolve__QuestionTitle>
-                      정답:
-                      {info.type === "MULTIPLE_CHOICE" &&
-                        optArr[info.answer - 1]}
-                      {info.type === "FILL_IN_THE_BLANK" && info.answer}
-                      {info.type === "OX"
-                        ? info.answer === "0"
-                          ? "O"
-                          : "X"
-                        : ""}
-                    </QuestionSolve__QuestionTitle>
-                  </QuestionSolve__QuestionContainer>
-                );
-              })}
-            </QuestionSolve__QuestionWrapper>
-          )}
-          <QuestionSolve__ButtonContainer>
-            <QuestionSolve__submitButton
-              onClick={() => {
-                props.setIsResult(false);
-              }}
-            >
-              확인
-            </QuestionSolve__submitButton>
-          </QuestionSolve__ButtonContainer>
-        </QuestionSolve__ResultBox>
-      </QuestionSolve__ResultContainer>
-    </QuestionSolve__ResultWrapper>
-  );
-};
+//                     <QuestionSolve__QuestionTitle>
+//                       정답:
+//                       {info.type === "MULTIPLE_CHOICE" &&
+//                         optArr[info.answer - 1]}
+//                       {info.type === "FILL_IN_THE_BLANK" && info.answer}
+//                       {info.type === "OX"
+//                         ? info.answer === "0"
+//                           ? "O"
+//                           : "X"
+//                         : ""}
+//                     </QuestionSolve__QuestionTitle>
+//                   </QuestionSolve__QuestionContainer>
+//                 );
+//               })}
+//             </QuestionSolve__QuestionWrapper>
+//           )}
+//           <QuestionSolve__ButtonContainer>
+//             <QuestionSolve__submitButton
+//               onClick={() => {
+//                 props.setIsResult(false);
+//               }}
+//             >
+//               확인
+//             </QuestionSolve__submitButton>
+//           </QuestionSolve__ButtonContainer>
+//         </QuestionSolve__ResultBox>
+//       </QuestionSolve__ResultContainer>
+//     </QuestionSolve__ResultWrapper>
+//   );
+// };
+
+const LoadingModal = () => {
+  return(
+    <QuestionSolve__LoadingWrapper>
+      <QuestionSolve__LoadingContainer>
+      <QuestionSolve__LoadingImg src="/image/Loading.png"></QuestionSolve__LoadingImg>
+      <QuestionSolve__LoadingSubsContainer>
+        <QuestionSolve__LoadingTitle>
+          문제를 채점하고 있어요.
+        </QuestionSolve__LoadingTitle>
+        <QuestionSolve__LoadingSubtitle>
+          문제가 채점될 때 까지 기다려주세요.
+        </QuestionSolve__LoadingSubtitle>
+      </QuestionSolve__LoadingSubsContainer>
+    </QuestionSolve__LoadingContainer>
+    </QuestionSolve__LoadingWrapper>
+    
+  )
+}
+
+const ResultSummary = (props) => {
+  const matchRate = Math.floor(props.match/props.number * 100);
+  const min = props.totalTime < 60?0:Math.floor(props.totalTime/60);
+  const sec = props.totalTime % 60;
+
+  return(
+    <QuestionSolve__ResultContainer>
+      <QuestionSolve__RateContainer>
+        <QuestionSolve__RateContainer__Rate
+          matchRate = {matchRate}
+        >
+          <QuestionSolve__RateContainer__Percentage>
+            <QuestionSolve__RateContainer__subtitle>정답률</QuestionSolve__RateContainer__subtitle>
+            <div>{matchRate}%</div>
+          </QuestionSolve__RateContainer__Percentage>
+        </QuestionSolve__RateContainer__Rate>
+      </QuestionSolve__RateContainer>
+      <QuestionSolve__Result__SubContent>
+        <QuestionSolve__Result__SubContent__element>
+          <QuestionSolve__RateContainer__subtitle>
+            정답수<br/>/문항수
+          </QuestionSolve__RateContainer__subtitle>
+          <QuestionSolve__RateContainer__bold>
+            {props.match}/{props.number}
+          </QuestionSolve__RateContainer__bold>
+        </QuestionSolve__Result__SubContent__element>
+        <QuestionSolve__Result__SubContent__element>
+        <QuestionSolve__RateContainer__subtitle>
+            풀이 시간
+          </QuestionSolve__RateContainer__subtitle>
+          <QuestionSolve__RateContainer__bold>
+            {min}분 {sec}초
+          </QuestionSolve__RateContainer__bold>
+        </QuestionSolve__Result__SubContent__element>
+      </QuestionSolve__Result__SubContent>
+    </QuestionSolve__ResultContainer>
+  )
+}
+
+const ResultDetails = (props) => {
+  return(
+    <>
+      <QuestionSolve__ResultDetails__header>
+        <span style={{color:"#2fafff"}}><CheckedIcon /></span>{props.match}
+        <span style={{marginLeft:"10px", marginRight:"2px"}}><XIcon /></span>{props.questions.length - props.match}
+      </QuestionSolve__ResultDetails__header>
+      <QuestionSolve__ResultDetails__content>
+        {props.questions.map((question, index) => {
+          // 객관식 선택지 처리
+          const options = question.type === "MULTIPLE_CHOICE" && question.opt
+            ? question.opt.split("|||")
+            : [];
+          
+          // 사용자가 선택한 답변
+          const userAnswer = props.answerArr[index];
+          
+          // 정답 여부
+          const isCorrect = question.answer.trim() == userAnswer;
+          
+          return (
+            <QuestionSolve__ResultContainer key={index}>
+              <QuestionBox__Header>
+                <QuestionIcon src="/image/Vector_Questionmark.png" />
+                <QuestionTitle>{question.name}</QuestionTitle>
+              </QuestionBox__Header>
+              
+              {/* 객관식 문제 */}
+              {question.type === "MULTIPLE_CHOICE" &&
+                options.map((option, optIndex) => (
+                  <OptionItem
+                    key={optIndex}
+                    selected={userAnswer === optIndex + 1}
+                    curAns={userAnswer === optIndex + 1}
+                    isRightAnswer={question.answer == optIndex + 1}
+                    // onClick 함수 제거 (읽기 전용)
+                  >
+                    {optIndex + 1}. {option.split(". ")[1] || option}
+                  </OptionItem>
+                ))}
+              
+              {/* OX 문제 */}
+              {question.type === "OX" && (
+                <>
+                  <OptionItem
+                    selected={userAnswer === 0}
+                    curAns={userAnswer === 0}
+                    isRightAnswer={question.answer == 0}
+                    // onClick 함수 제거 (읽기 전용)
+                  >
+                    1. O
+                  </OptionItem>
+                  <OptionItem
+                    selected={userAnswer === 1}
+                    curAns={userAnswer === 1}
+                    isRightAnswer={question.answer == 1}
+                    // onClick 함수 제거 (읽기 전용)
+                  >
+                    2. X
+                  </OptionItem>
+                </>
+              )}
+              
+              {/* 빈 칸형 문제 */}
+              {question.type === "FILL_IN_THE_BLANK" && (
+                <div style={{
+                  padding: "15px",
+                  borderRadius: "5px",
+                  border: isCorrect ? "1px solid #2fafff" : "1px solid red",
+                  fontSize: "16px"
+                }}>
+                  <div>사용자 답변: {userAnswer || "입력 없음"}</div>
+                  <div>정답: {question.answer}</div>
+                </div>
+              )}
+              
+              {/* 정답 표시 */}
+              <div style={{
+                marginTop: "10px", 
+                padding: "8px", 
+                backgroundColor: isCorrect ? "#e6f7ff" : "#fff1f0",
+                borderRadius: "4px",
+                display:"flex",
+                alignItems:"center",
+                gap: "4px"
+              }}>
+                {isCorrect ? 
+                  <><CheckedIcon /> 정답입니다.</> : 
+                  <><XIcon /> 오답입니다. 정답: {question.answer}</>}
+              </div>
+            </QuestionSolve__ResultContainer>
+          );
+        })}
+      </QuestionSolve__ResultDetails__content>
+    </>
+  )
+}

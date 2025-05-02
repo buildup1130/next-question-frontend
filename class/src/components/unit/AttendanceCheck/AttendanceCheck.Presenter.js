@@ -15,7 +15,7 @@ export default function AttendanceCheckUI({
                     onClickAttend();
                 }}
             >출석하러 가기</button> */}
-            <Attendance__Title>출석 체크</Attendance__Title>
+            <Attendance__Title>출석</Attendance__Title>
             {["월","화","수","목","금","토","일"].map((dayName,index) =>{
                 const date = weekDates[index];
                 const attended = isAttended(date);
