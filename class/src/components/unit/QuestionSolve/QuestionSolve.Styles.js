@@ -169,7 +169,9 @@ export const QuestionIcon = styled.img`
 `;
 
 export const QuestionBox__Header = styled.div`
+  width:100%;
   display: flex;
+  justify-content:flex-start;
   margin-bottom: 20px;
 
   gap: 10px;

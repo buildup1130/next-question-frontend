@@ -105,8 +105,8 @@ export default function QuestionSolveUI(props) {
 // 정답 체크 함수
 const checkAnswer = () => {
   const isAnswerCorrect = question.answer.trim() == selectedAnswer;
-  console.log(question.answer.length, selectedAnswer?.length);
-  if(selectedAnswer){
+  console.log(`정답은${question.answer}, 선택한 답은${selectedAnswer}`);
+  if(selectedAnswer !== null){
   if (isAnswerCorrect) {
     if (!wrongArr.includes(currentQuestion)) {
       setCorrectAnswer(correctAnswer + 1);
@@ -400,7 +400,7 @@ const handleNextQuestion = () => {
                   <OptionItem
                     selected={selectedAnswer === 0}
                     curAns={curAns === 0}
-                    isRightAnswer={question.answer == 0}
+                    isRightAnswer={question.answer == '0'}
                     onClick={() => handleSelectOption(0)}
                   >
                     1. O
@@ -408,7 +408,7 @@ const handleNextQuestion = () => {
                   <OptionItem
                     selected={selectedAnswer === 1}
                     curAns={curAns === 1}
-                    isRightAnswer={question.answer == 1}
+                    isRightAnswer={question.answer == '1'}
                     onClick={() => handleSelectOption(1)}
                   >
                     2. X
@@ -621,7 +621,6 @@ const ResultDetails = (props) => {
                 options.map((option, optIndex) => (
                   <OptionItem
                     key={optIndex}
-                    selected={userAnswer === optIndex + 1}
                     curAns={userAnswer === optIndex + 1}
                     isRightAnswer={question.answer == optIndex + 1}
                     // onClick 함수 제거 (읽기 전용)
@@ -634,7 +633,6 @@ const ResultDetails = (props) => {
               {question.type === "OX" && (
                 <>
                   <OptionItem
-                    selected={userAnswer === 0}
                     curAns={userAnswer === 0}
                     isRightAnswer={question.answer == 0}
                     // onClick 함수 제거 (읽기 전용)
@@ -642,7 +640,6 @@ const ResultDetails = (props) => {
                     1. O
                   </OptionItem>
                   <OptionItem
-                    selected={userAnswer === 1}
                     curAns={userAnswer === 1}
                     isRightAnswer={question.answer == 1}
                     // onClick 함수 제거 (읽기 전용)
@@ -655,30 +652,30 @@ const ResultDetails = (props) => {
               {/* 빈 칸형 문제 */}
               {question.type === "FILL_IN_THE_BLANK" && (
                 <div style={{
+                  width:"100%",
                   padding: "15px",
                   borderRadius: "5px",
                   border: isCorrect ? "1px solid #2fafff" : "1px solid red",
                   fontSize: "16px"
                 }}>
-                  <div>사용자 답변: {userAnswer || "입력 없음"}</div>
-                  <div>정답: {question.answer}</div>
+                  <div>{userAnswer || "입력 없음"}</div>
                 </div>
               )}
-              
-              {/* 정답 표시 */}
-              <div style={{
-                marginTop: "10px", 
-                padding: "8px", 
-                backgroundColor: isCorrect ? "#e6f7ff" : "#fff1f0",
-                borderRadius: "4px",
-                display:"flex",
-                alignItems:"center",
-                gap: "4px"
-              }}>
-                {isCorrect ? 
-                  <><CheckedIcon /> 정답입니다.</> : 
-                  <><XIcon /> 오답입니다. 정답: {question.answer}</>}
-              </div>
+              {isCorrect?<></>:
+                <div style={{
+                  marginTop: "10px", 
+                  padding: "0 8px", 
+                  borderRadius: "4px",
+                  width:"100%",
+                  display:"flex",
+                  alignItems:"center",
+                  justifyContent:"flex-end",
+                  gap: "4px",
+                  color:"red"
+                }}>
+                  정답: {question.type === "OX"?question.answer==="0"?"O":"X":question.answer}
+                </div>
+              }
             </QuestionSolve__ResultContainer>
           );
         })}
