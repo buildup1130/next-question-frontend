@@ -4,10 +4,19 @@ export const Wrapper = styled.div`
   width: 100%;
   max-width: 500px;
   height: 100vh;
-  padding-top: 20px;
+  padding: 16px;
   padding-bottom: 80px;
   margin: 0 auto;
-  position: relative;
+  background-color: #ffffff;
+
+  overflow-y: scroll;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const Header = styled.div`
@@ -15,7 +24,6 @@ export const Header = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
-  margin-bottom: 20px;
 `;
 
 export const BackButton = styled.button`
@@ -28,70 +36,126 @@ export const BackButton = styled.button`
 `;
 
 export const Title = styled.h1`
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
+  margin: 12px 0;
+`;
+
+export const Divider = styled.hr`
+  border: none;
+  border-bottom: 1px solid #eee;
+`;
+
+export const ControlBar = styled.div`
+  width: 100%;
+  height: 44px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 8px 0;
+`;
+
+export const FilterWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+export const ToggleAnswerButton = styled.button`
+  padding: 6px 12px;
+  height: 32px;
+  border-radius: 6px;
+  background-color: #808fff;
+  border: 1px solid #b3bcff;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+`;
+
+export const ActionButtonGroup = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+`;
+
+export const ActionButton = styled.button`
+  flex: 1;
+  height: 32px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background-color: ${({ disabled }) => (disabled ? "#B3BCFF" : "#808FFF")};
+  border: 1px solid #b3bcff;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: ${({ disabled }) => (disabled ? "default" : "pointer")};
   white-space: nowrap;
 `;
 
-export const TopRightButtonGroup = styled.div`
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  gap: 8px;
-`;
-
-export const TopRightButton = styled.button`
-  font-size: 18px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-`;
-
 export const QuestionCard = styled.div`
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
   border-bottom: 1px solid #ddd;
   padding: 12px 0;
 `;
 
-export const Checkbox = styled.input`
-  margin-top: 6px;
+export const QuestionRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+`;
+
+export const QuestionTextWrapper = styled.div`
+  flex: 1;
+  min-width: 0;
 `;
 
 export const QuestionTitle = styled.div`
   font-weight: bold;
-  margin-bottom: 6px;
+  font-size: 16px;
+  margin-bottom: 8px;
+  word-break: keep-all;
+  white-space: normal;
 `;
 
-export const Answer = styled.div`
-  color: green;
-  font-size: 14px;
+export const OptionWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
 `;
 
-export const Type = styled.div`
-  color: #555;
+export const Option = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+`;
+
+export const OptionNumber = styled.div`
+  width: 20px;
+  height: 20px;
   font-size: 13px;
+  background-color: ${(props) => (props.isAnswer ? "#808fff" : "#f3f4f6")};
+  color: ${(props) => (props.isAnswer ? "#fff" : "#999")};
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+`;
+
+export const Checkbox = styled.input`
+  width: 16px;
+  height: 16px;
+  accent-color: #3b3bff;
+  flex-shrink: 0;
   margin-top: 4px;
 `;
 
-export const OptionList = styled.div`
-  margin-top: 6px;
-  font-size: 13px;
-  color: #888;
-`;
-
-export const DeleteButton = styled.button`
-  margin-top: 20px;
-  padding: 10px 16px;
-  background-color: red;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  width: 100%;
-  font-size: 16px;
-  cursor: pointer;
+export const Answer = styled.div`
+  font-size: 14px;
+  color: #a7a7a7;
+  margin-top: 8px;
 `;

@@ -6,9 +6,11 @@ import {
   searchAllWorkBooks,
   moveQuestions,
   getWorkbookQuestions,
+  fetchQuestionType, // ✅ 문제 수 가져오기 함수 추가
 } from "@/utils/WorkbookManager";
 import WorkbookUI from "./Workbook.Presenter";
 import MoveModal from "@/components/unit/MoveModal/MoveModal.Container";
+import DeleteQuestionModal from "@/components/unit/DeleteQuestionModal/DeleteQuestionModal.Container";
 
 export default function WorkbookLogic() {
   const router = useRouter();
@@ -18,11 +20,14 @@ export default function WorkbookLogic() {
 
   const [questions, setQuestions] = useState([]);
   const [deleteMode, setDeleteMode] = useState(false);
-  const [selectedIds, setSelectedIds] = useState([]);
   const [moveMode, setMoveMode] = useState(false);
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [isSelectMode, setIsSelectMode] = useState(false);
   const [isMoveModalOpen, setMoveModalOpen] = useState(false);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [targetBookId, setTargetBookId] = useState("");
   const [workBooks, setWorkBooks] = useState([]);
+  const [showAnswer, setShowAnswer] = useState(false);
 
   useEffect(() => {
     if (token && workBookId && userId) {
@@ -38,6 +43,7 @@ export default function WorkbookLogic() {
         const books = data.map((item) => ({
           encryptedWorkBookId: item.encryptedWorkBookId,
           name: item.name,
+          totalQuestion: item.totalQuestion, // ✅ 추가
         }));
         setWorkBooks(books);
       });
@@ -46,14 +52,14 @@ export default function WorkbookLogic() {
 
   const handleBack = () => router.back();
 
-  const toggleDeleteMode = () => {
-    setDeleteMode((prev) => !prev);
-    setSelectedIds([]);
+  const toggleDeleteMode = (value) => {
+    if (typeof value === "boolean") setDeleteMode(value);
+    else setDeleteMode((prev) => !prev);
   };
 
-  const toggleMoveMode = () => {
-    setMoveMode((prev) => !prev);
-    setSelectedIds([]);
+  const toggleMoveMode = (value) => {
+    if (typeof value === "boolean") setMoveMode(value);
+    else setMoveMode((prev) => !prev);
   };
 
   const handleSelect = (id) => {
@@ -63,6 +69,12 @@ export default function WorkbookLogic() {
   };
 
   const openMoveModal = () => setMoveModalOpen(true);
+
+  const openDeleteModal = () => {
+    if (selectedIds.length > 0) {
+      setDeleteModalOpen(true);
+    }
+  };
 
   const handleMoveSubmit = async () => {
     if (!token || !workBookId || !targetBookId || selectedIds.length === 0) {
@@ -98,7 +110,6 @@ export default function WorkbookLogic() {
         setMoveModalOpen(false);
         setMoveMode(false);
         setSelectedIds([]);
-
         const updated = await getWorkbookQuestions(token, workBookId, userId);
         setQuestions(updated);
       } else {
@@ -110,7 +121,28 @@ export default function WorkbookLogic() {
     }
   };
 
-  const handleDelete = async () => {
+  // ✅ 문제 수를 최신화하는 함수 추가
+  const updateSingleBookCount = async (bookId) => {
+    try {
+      const res = await fetchQuestionType(token, [bookId]); // ✅ 배열로 넘김
+      const total =
+        res?.[bookId]?.multipleChoice +
+        res?.[bookId]?.ox +
+        res?.[bookId]?.fillInTheBlank;
+
+      setWorkBooks((prev) =>
+        prev.map((book) =>
+          book.encryptedWorkBookId === bookId
+            ? { ...book, totalQuestion: total }
+            : book
+        )
+      );
+    } catch (err) {
+      console.error("문제 수 업데이트 실패:", err);
+    }
+  };
+
+  const handleDeleteConfirm = async () => {
     if (selectedIds.length === 0) return;
 
     try {
@@ -125,14 +157,14 @@ export default function WorkbookLogic() {
 
       if (!res.ok) throw new Error("요청 실패");
 
-      const text = await res.text();
-      console.log("서버 응답 메시지:", text);
+      const updated = await getWorkbookQuestions(token, workBookId, userId);
+      setQuestions(updated);
 
-      setQuestions((prev) =>
-        prev.filter((q) => !selectedIds.includes(q.encryptedQuestionId))
-      );
+      await updateSingleBookCount(workBookId); // ✅ 문제 수 최신화
+
       setSelectedIds([]);
       setDeleteMode(false);
+      setDeleteModalOpen(false);
     } catch (err) {
       console.error("삭제 중 에러 발생:", err);
       alert("삭제 요청 중 오류 발생");
@@ -151,8 +183,12 @@ export default function WorkbookLogic() {
         onToggleMoveMode={toggleMoveMode}
         onSelect={handleSelect}
         selectedIds={selectedIds}
-        onDelete={handleDelete}
+        onOpenDeleteModal={openDeleteModal}
         onOpenMoveModal={openMoveModal}
+        isSelectMode={isSelectMode}
+        setIsSelectMode={setIsSelectMode}
+        showAnswer={showAnswer}
+        setShowAnswer={setShowAnswer}
       />
 
       {isMoveModalOpen && (
@@ -163,6 +199,13 @@ export default function WorkbookLogic() {
           selectedIds={selectedIds}
           targetBookId={targetBookId}
           setTargetBookId={setTargetBookId}
+        />
+      )}
+
+      {isDeleteModalOpen && (
+        <DeleteQuestionModal
+          onClose={() => setDeleteModalOpen(false)}
+          onConfirm={handleDeleteConfirm}
         />
       )}
     </>

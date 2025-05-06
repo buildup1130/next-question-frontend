@@ -70,16 +70,15 @@ export const getWorkbookQuestions = async (token, encryptedWorkBookId) => {
 
 export const deleteWorkBooks = async (token, encryptedWorkBookIds) => {
   try {
-    const response = await axios.delete(
-      "http://localhost:8080/member/workBooks/delete",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        data: encryptedWorkBookIds,
-      }
-    );
+    const response = await axios({
+      method: "delete", // ✅ 객체 형태로 요청
+      url: "http://localhost:8080/member/workBooks/delete",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      data: encryptedWorkBookIds, // ✅ 반드시 이렇게 넘겨야 DELETE + body 형식 됨
+    });
 
     return response.data;
   } catch (error) {

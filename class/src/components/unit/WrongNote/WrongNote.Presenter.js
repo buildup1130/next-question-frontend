@@ -1,18 +1,19 @@
-// WrongNote.Presenter.js
 import { useRouter } from "next/router";
 import {
   Wrapper,
+  Header,
+  PageTitle,
   DateHeader,
-  Section,
-  QuestionItem,
-  DateTitle,
-  AgainButton,
-  LearnConfirmButton,
-  CalendarButton,
-  BackButton,
+  FilterBar,
+  SelectBox,
+  FilterButton,
   Divider,
-  WorkbookTitle,
+  WorkbookRow,
+  WorkbookName,
+  WorkbookArrow,
   CheckBox,
+  AgainButton,
+  CalendarButton,
   ModalBackdrop,
   ModalContent,
   ModalButtons,
@@ -26,8 +27,12 @@ import {
   DateModalButtons,
   QuickRangeButtonContainer,
   QuickRangeButton,
+  QuestionListItem,
+  QuestionNumber,
+  QuestionTitle,
+  WorkbookCount,
+  WorkbookRight,
 } from "./WrongNote.Styles";
-import BookShelfQuestionLogic from "@/components/unit/BookShelfQuestion/BookShelfQuestion.Container";
 
 export default function WrongNoteUI(props) {
   const router = useRouter();
@@ -36,8 +41,6 @@ export default function WrongNoteUI(props) {
     data,
     selectedBooks,
     isSelectMode,
-    toggleSection,
-    openSections,
     onToggleBookSelect,
     isModalOpen,
     setModalOpen,
@@ -54,105 +57,111 @@ export default function WrongNoteUI(props) {
     handleQuickRange,
     onClickStartLearning,
     onQuestionClick,
-    curBook,
-    sequence,
-    setSequence,
-    setCurBook,
-    count,
-    setCount,
-    isTest,
-    setIsTest,
-    setIsSelectMode,
-    setSelectedQuestion,
+    toggleSection,
+    filterOptions,
+    selectedFilterBook,
+    setSelectedFilterBook,
   } = props;
+
+  const filteredData =
+    selectedFilterBook === "모든 문제집"
+      ? data
+      : data.filter((book) => book.workbook === selectedFilterBook);
 
   return (
     <Wrapper>
+      <Header>
+        <PageTitle>오답 노트</PageTitle>
+      </Header>
+      <Divider />
+
       <DateHeader>
-        <BackButton onClick={() => router.push("/")}>←</BackButton>
         {selectedDateRange.start} ~ {selectedDateRange.end}
         <CalendarButton onClick={() => setIsDateModalOpen(true)}>
           📅
         </CalendarButton>
       </DateHeader>
 
+      <FilterBar>
+        <SelectBox
+          value={selectedFilterBook}
+          onChange={(e) => setSelectedFilterBook(e.target.value)}
+        >
+          {filterOptions.map((option, idx) => (
+            <option key={idx} value={option}>
+              {option}
+            </option>
+          ))}
+        </SelectBox>
+        <FilterButton onClick={() => props.setIsSelectMode(!isSelectMode)}>
+          {isSelectMode ? "취소" : "선택"}
+        </FilterButton>
+      </FilterBar>
+
       <Divider />
 
-      {data.length === 0 ? (
+      {filteredData.length === 0 ? (
         <p style={{ textAlign: "center", marginTop: "24px" }}>
           해당 기간에 오답 문제가 없습니다.
         </p>
       ) : (
-        data.map((book) => (
-          <Section key={book.workbook}>
-            <WorkbookTitle>
-              {isSelectMode && (
-                <CheckBox
-                  type="checkbox"
-                  checked={selectedBooks.includes(book.workbook)}
-                  onChange={() => onToggleBookSelect(book.workbook)}
-                />
-              )}
-              {book.workbook}
-            </WorkbookTitle>
-            {book.dates.map((d) => {
-              const key = `${book.workbook}_${d.date}`;
-              return (
-                <div key={key}>
-                  <DateTitle
-                    onClick={() => toggleSection(book.workbook, d.date)}
-                  >
-                    {d.date} {openSections[key] ? "▲" : "▼"} 전체{" "}
-                    {d.questions.length}개
-                  </DateTitle>
-                  {openSections[key] &&
-                    d.questions.map((q) => (
-                      <QuestionItem
-                        key={q.id}
-                        onClick={() => onQuestionClick(q)}
+        filteredData.map((book) => {
+          const isOpen = props.openSections[`${book.workbook}_all`];
+
+          return (
+            <div key={book.workbook}>
+              <WorkbookRow
+                onClick={() => props.toggleSection(book.workbook, "all")}
+              >
+                <WorkbookName>{book.workbook}</WorkbookName>
+                <WorkbookRight>
+                  <WorkbookCount>{book.total}문제</WorkbookCount>
+                  {isSelectMode ? (
+                    <CheckBox
+                      type="checkbox"
+                      checked={selectedBooks.includes(book.workbook)}
+                      onClick={(e) => e.stopPropagation()}
+                      onChange={() => onToggleBookSelect(book.workbook)}
+                    />
+                  ) : (
+                    <WorkbookArrow>{isOpen ? "▲" : "▼"}</WorkbookArrow>
+                  )}
+                </WorkbookRight>
+              </WorkbookRow>
+
+              {isOpen && (
+                <div style={{ padding: "0 16px", marginBottom: "12px" }}>
+                  {book.dates
+                    .flatMap((d) => d.questions)
+                    .map((q, i) => (
+                      <QuestionListItem
+                        key={i}
+                        onClick={() => props.onQuestionClick(q)}
                       >
-                        <span className="title">
-                          {q.type === "빈칸"
-                            ? q.title.replace("{BLANK}", "OOO")
-                            : q.title}
-                        </span>
-                        <span className="type">{q.type}</span>
-                      </QuestionItem>
+                        <QuestionNumber>Q{i + 1}.</QuestionNumber>
+                        <QuestionTitle>{q.title}</QuestionTitle>
+                      </QuestionListItem>
                     ))}
                 </div>
-              );
-            })}
-          </Section>
-        ))
+              )}
+
+              <Divider />
+            </div>
+          );
+        })
       )}
 
-      <AgainButton onClick={() => setIsSelectMode(!isSelectMode)}>
+      <AgainButton
+        disabled={!isSelectMode || selectedBooks.length === 0}
+        onClick={() => {
+          if (isSelectMode && selectedBooks.length > 0) {
+            onClickStartLearning();
+            props.onConfirmLearning();
+          }
+        }}
+      >
         다시 학습하기
       </AgainButton>
-
-      {isSelectMode && selectedBooks.length > 0 && (
-        <LearnConfirmButton onClick={() => {
-          onClickStartLearning();
-          props.onConfirmLearning();
-        }}>
-          학습하기
-        </LearnConfirmButton>
-      )}
-
-      {/* {sequence === 1 && curBook && (
-        <BookShelfQuestionLogic
-          curBook={curBook}
-          count={count}
-          setCount={setCount}
-          onClickLearning={props.onConfirmLearning}
-          onClose={() => {
-            setSequence(0);
-            setCurBook(null);
-          }}
-          isTest={isTest}
-          setIsTest={setIsTest}
-        />
-      )} */}
 
       {isModalOpen && selectedQuestion && (
         <ModalBackdrop
@@ -183,9 +192,9 @@ export default function WrongNoteUI(props) {
                   <strong>보기</strong>
                   <OptionList>
                     {selectedQuestion.options.map((option, idx) => (
-                      <OptionItem key={idx}>{`${idx + 1}. ${
-                        option.split(". ")[1] || option
-                      }`}</OptionItem>
+                      <OptionItem key={idx}>
+                        {`${idx + 1}. ${option.split(". ")[1] || option}`}
+                      </OptionItem>
                     ))}
                   </OptionList>
                 </div>
