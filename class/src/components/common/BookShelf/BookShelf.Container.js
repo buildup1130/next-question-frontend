@@ -52,7 +52,7 @@ export default function BookShelfLogic() {
 
   useEffect(() => {
     if (token) fetchWorkBooks();
-  }, [token]);
+  }, [token, router.asPath]);
 
   useEffect(() => {
     let sorted = [...books];
@@ -97,13 +97,12 @@ export default function BookShelfLogic() {
   const handleDelete = async () => {
     if (!token) return;
 
-    const validIds = selectedBookIds.filter((id) => !!id); // null, undefined 제거
+    const validIds = selectedBookIds.filter((id) => !!id);
     if (validIds.length === 0) return alert("삭제할 문제집이 없습니다.");
 
-    console.log("🔍 선택 삭제 요청:", validIds);
     try {
       await deleteWorkBooks(token, validIds);
-      fetchWorkBooks();
+      await fetchWorkBooks();
       setSelectedBookIds([]);
       setIsSelectMode(false);
     } catch (err) {
@@ -117,17 +116,10 @@ export default function BookShelfLogic() {
   };
 
   const confirmDelete = async () => {
-    console.log("✅ confirmDelete 실행됨");
-    console.log("🔍 deleteTarget 값:", deleteTarget);
-
-    if (!token || !deleteTarget || !deleteTarget.id) {
-      console.warn("❌ 유효하지 않은 deleteTarget");
-      return;
-    }
-
+    if (!token || !deleteTarget || !deleteTarget.id) return;
     try {
       await deleteWorkBooks(token, [deleteTarget.id]);
-      fetchWorkBooks();
+      await fetchWorkBooks();
     } catch {
       alert("삭제 중 오류 발생");
     } finally {
@@ -142,7 +134,7 @@ export default function BookShelfLogic() {
       await createWorkbook(token, newWorkbookTitle.trim());
       setCreateModalOpen(false);
       setNewWorkbookTitle("");
-      fetchWorkBooks();
+      await fetchWorkBooks();
     } catch {
       alert("문제집 생성 실패");
     }
@@ -236,22 +228,40 @@ export default function BookShelfLogic() {
       total.fillInTheBlank += res.fillInTheBlank;
     }
 
+    const totalCount = total.multipleChoice + total.ox + total.fillInTheBlank;
+
     setTypeNum(total);
+    setCount(totalCount);
   };
 
   const handleStartLearning = async () => {
     if (selectedBookIds.length === 0) return alert("문제집을 선택해주세요.");
 
-    await onFetchType(selectedBookIds);
+    const response = await searchAllWorkBooks(token);
+    const bookArr = response.map((data) => ({
+      id: data.encryptedWorkBookId,
+      title: data.name,
+      items: data.totalQuestion,
+      date: data.recentSolvedDate?.substring(0, 10) || "N/A",
+    }));
 
-    const totalQuestions = books
-      .filter((book) => selectedBookIds.includes(book.id))
-      .reduce((acc, cur) => acc + cur.items, 0);
+    setBooks(bookArr);
+
+    const selectedBooks = bookArr.filter((book) =>
+      selectedBookIds.includes(book.id)
+    );
+
+    const totalQuestions = selectedBooks.reduce(
+      (acc, cur) => acc + cur.items,
+      0
+    );
 
     if (totalQuestions === 0) {
       alert("선택한 문제집에 문제가 없습니다!");
       return;
     }
+
+    await onFetchType(selectedBookIds);
 
     setCurBook({ id: selectedBookIds, items: totalQuestions });
     setSequence(1);
@@ -333,9 +343,9 @@ export default function BookShelfLogic() {
           onClose={() => setIsDeleteModalOpen(false)}
           onConfirm={() => {
             if (isSelectMode) {
-              handleDelete(); // 🔧 선택 삭제
+              handleDelete();
             } else {
-              confirmDelete(); // 🔧 단건 삭제
+              confirmDelete();
             }
           }}
         />

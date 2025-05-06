@@ -13,18 +13,17 @@ export const Container = styled.div`
 
 export const Header = styled.div`
   display: flex;
-  justify-content: center; // 가운데 정렬로 변경
-  align-items: center; // 세로 가운데
-  padding: 16px 0 4px 0;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 0 4px 0;
 `;
 
 export const Title = styled.h1`
-  font-size: 18px;
+  font-size: 22px;
   font-weight: bold;
   margin: 0;
   padding: 8px 0 4px 0;
-  text-align: center; // 텍스트도 중앙 정렬
-  width: 100%; // 상위 flex 정렬 영향을 받지 않도록
+  width: 100%;
 `;
 
 export const Divider = styled.div`

@@ -232,7 +232,6 @@ export default function BookShelfUI({
       <Header>
         <Title>책장</Title>
       </Header>
-      <Divider />
 
       <SearchWrapper>
         <SearchIcon>

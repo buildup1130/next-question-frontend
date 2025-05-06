@@ -3,51 +3,79 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
   width: 100%;
   max-width: 500px;
-  height: 100vh;
-  padding-top: 20px;
-  padding-bottom: 160px;
+  min-height: 100dvh;
   margin: 0 auto;
+  padding: 0 16px 100px;
+  box-sizing: border-box;
+  background-color: #ffffff;
   position: relative;
+`;
+
+export const Header = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 0 4px 0;
+`;
+
+export const PageTitle = styled.h2`
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+  padding: 8px 0 4px 0;
+  text-align: center;
+  width: 100%;
 `;
 
 export const DateHeader = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
-  margin-bottom: 20px;
-  padding-top: 12px;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 16px;
+  margin-top: 10px;
+  margin-bottom: 4px;
+  gap: 6px;
+  flex-wrap: wrap;
 `;
 
-export const BackButton = styled.button`
-  position: absolute;
-  left: 12px;
-  top: 12px;
+export const CalendarButton = styled.button`
+  margin-left: 8px;
   background: transparent;
   border: none;
   font-size: 20px;
   cursor: pointer;
 `;
 
-export const CalendarButton = styled.button`
-  position: absolute;
-  right: 12px;
-  top: 12px;
-  background: transparent;
+export const FilterBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 16px 0 12px;
+  padding: 0 16px;
+`;
+
+export const SelectBox = styled.select`
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+`;
+
+export const FilterButton = styled.button`
+  background-color: #808fff;
+  color: white;
+  font-weight: bold;
+  padding: 6px 16px;
   border: none;
-  font-size: 20px;
+  border-radius: 8px;
+  font-size: 14px;
   cursor: pointer;
 `;
 
 export const Divider = styled.hr`
-  width: 100%;
-  height: 1px;
-  background-color: #ccc;
   border: none;
-  margin-top: 8px;
-  margin-bottom: 12px;
+  border-bottom: 1px solid #eee;
 `;
 
 export const Section = styled.div`
@@ -58,17 +86,21 @@ export const Section = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 `;
 
-export const WorkbookTitle = styled.h3`
+export const WorkbookTitle = styled.div`
+  display: flex;
+  align-items: center;
   font-size: 16px;
   font-weight: bold;
   color: #333;
-  margin-top: 20px;
-  margin-bottom: 8px;
+  padding: 12px 0;
 `;
 
 export const CheckBox = styled.input`
-  margin-right: 8px;
-  transform: scale(1.2);
+  width: 18px;
+  height: 18px;
+  accent-color: #6f6cf1;
+  margin-left: 12px;
+  cursor: pointer;
 `;
 
 export const DateTitle = styled.div`
@@ -115,16 +147,20 @@ export const QuestionItem = styled.div`
 
 export const AgainButton = styled.button`
   position: fixed;
-  bottom: 80px;
+  bottom: 64px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #6f6cf1;
-  color: white;
-  padding: 12px 24px;
-  font-weight: bold;
-  border: none;
+  margin-bottom: 30px;
+  padding: 14px 24px;
   border-radius: 12px;
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: bold;
+  width: 80%;
+  max-width: 400px;
+  background-color: ${({ disabled }) => (disabled ? "#B3BCFF" : "#808FFF")};
+  color: white;
+  border: none;
+  cursor: ${({ disabled }) => (disabled ? "default" : "pointer")};
   z-index: 999;
 `;
 
@@ -169,9 +205,13 @@ export const ModalButtons = styled.div`
 `;
 
 export const ModalButton = styled.button`
-  padding: 8px 16px;
-  border-radius: 8px;
+  flex: 1;
+  padding: 10px;
+  font-weight: bold;
+  font-size: 14px;
+  border-radius: 10px;
   border: none;
+  cursor: pointer;
 `;
 
 export const AnswerBox = styled.div`
@@ -211,57 +251,132 @@ export const DateModalContent = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   background: white;
-  padding: 20px;
+  padding: 24px 20px;
   width: 90%;
-  max-width: 400px;
-  border-radius: 10px;
+  max-width: 360px;
+  border-radius: 20px;
+  box-sizing: border-box;
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 `;
 
 export const DateInput = styled.input`
   width: 100%;
-  padding: 8px;
-  font-size: 16px;
+  padding: 10px;
+  font-size: 14px;
   border: 1px solid #ccc;
-  border-radius: 6px;
-  background-color: white;
+  border-radius: 10px;
+  background-color: #fff;
   box-sizing: border-box;
 `;
 
 export const DateModalButtons = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
+  gap: 12px;
+
+  & > button:first-child {
+    background: #e0e0e0;
+    color: #333;
+  }
+
+  & > button:last-child {
+    background: #808fff;
+    color: white;
+  }
 `;
 
 export const QuickRangeButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 12px 0;
+  flex-wrap: wrap;
+  gap: 8px;
 `;
 
 export const QuickRangeButton = styled.button`
   flex: 1;
-  padding: 8px;
-  margin: 0 4px;
-  border: 1px solid #ddd;
-  background: #f8f8f8;
-  border-radius: 8px;
+  padding: 10px 0;
+  border: none;
+  background: #eef0ff;
+  border-radius: 10px;
+  color: #6f6cf1;
+  font-weight: bold;
+  font-size: 13px;
   cursor: pointer;
-  font-size: 14px;
 
   &:hover {
-    background: #eaeaea;
+    background: #dbe0ff;
   }
+`;
 
-  &:first-child {
-    margin-left: 0;
-  }
+export const WorkbookRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 16px;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+`;
 
-  &:last-child {
-    margin-right: 0;
+export const WorkbookName = styled.div`
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  flex: 1;
+`;
+
+export const WorkbookArrow = styled.div`
+  font-size: 14px;
+  color: #666;
+  margin-left: 12px;
+  white-space: nowrap;
+`;
+
+export const QuestionListItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  background-color: #f9f9fc;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  margin-bottom: 8px;
+  cursor: pointer;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &:hover {
+    background-color: #eef0ff;
   }
+`;
+
+export const QuestionNumber = styled.span`
+  flex-shrink: 0;
+  font-weight: bold;
+  color: #6f6cf1;
+`;
+
+export const QuestionTitle = styled.span`
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+export const WorkbookRight = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  min-width: 80px;
+`;
+
+export const WorkbookCount = styled.div`
+  color: #666;
+  font-size: 14px;
+  flex-shrink: 0;
 `;

@@ -32,6 +32,8 @@ export default function WrongNoteLogic() {
   const [sequence, setSequence] = useState(0);
   const [count, setCount] = useState(1);
   const [isTest, setIsTest] = useState(false);
+  const [filterOptions, setFilterOptions] = useState(["모든 문제집", "학습별"]);
+  const [selectedFilterBook, setSelectedFilterBook] = useState("모든 문제집");
 
   useEffect(() => {
     if (token) fetchWrongNotes();
@@ -81,19 +83,30 @@ export default function WrongNoteLogic() {
       const formatted = Object.entries(grouped).map(
         ([workbook, { id, dates }]) => {
           map[workbook] = id;
+
+          const datesArr = Object.entries(dates).map(([date, questions]) => ({
+            date,
+            questions,
+          }));
+
+          const total = datesArr.reduce(
+            (sum, dateObj) => sum + dateObj.questions.length,
+            0
+          );
+
           return {
             workbook,
             workbookId: id,
-            dates: Object.entries(dates).map(([date, questions]) => ({
-              date,
-              questions,
-            })),
+            dates: datesArr,
+            total,
           };
         }
       );
 
       setWorkbookMap(map);
       setWrongNoteData(formatted);
+      const workbookNames = [...new Set(formatted.map((w) => w.workbook))];
+      setFilterOptions(["모든 문제집", "학습별", ...workbookNames]);
     } catch (err) {
       console.error("오답노트 에러:", err);
     }
@@ -166,9 +179,8 @@ export default function WrongNoteLogic() {
       if (book) {
         book.dates.forEach((d) => {
           d.questions.forEach((q) => {
-            console.log(q.options);
             collectedQuestions.push({
-              name: q.title.replace("{BLANK}","OOO"),
+              name: q.title.replace("{BLANK}", "OOO"),
               answer: q.answer,
               type:
                 q.type === "객관식"
@@ -189,13 +201,11 @@ export default function WrongNoteLogic() {
       return alert("학습할 문제가 없습니다");
     }
 
-    // localStorage에 저장
     localStorage.setItem(
       "tempQuestionData",
       JSON.stringify(collectedQuestions)
     );
 
-    // Question 페이지로 이동
     router.push({
       pathname: "/Question",
       query: { type: 3 },
@@ -245,6 +255,9 @@ export default function WrongNoteLogic() {
       isTest={isTest}
       setIsTest={setIsTest}
       onConfirmLearning={handleConfirmLearning}
+      filterOptions={filterOptions}
+      selectedFilterBook={selectedFilterBook}
+      setSelectedFilterBook={setSelectedFilterBook}
     />
   );
 }
