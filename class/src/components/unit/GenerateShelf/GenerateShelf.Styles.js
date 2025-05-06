@@ -52,7 +52,7 @@ export const GenerateShelf__Shelf = styled.div`
 export const GenerateShelf__Shelf__Title = styled.div`
   width:100%;
 
-  font-size:20px;
+  font-size:18px;
   font-weight:700;
 
   display:flex;
@@ -151,7 +151,7 @@ border-radius: 20px;
 margin-top:40px;
 border: 1px solid #d9d9d9;
 
-background-color: #3b82f6;
+background-color: #808fff;
 color: white;
 
 display:flex;
@@ -321,4 +321,61 @@ export const LoadingCircle = styled.circle`
 export const GenerateShelf__Shelf__Title__Text = styled.div`
   width:100%;
   text-align:center;
+`
+
+export const GenerateShelf__typeContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 10px;
+  padding: 0 10px;
+
+  gap: 10px;
+`;
+
+export const GenerateShelf__type = styled.div`
+  width: 100%;
+  height: 50px;
+  padding: 0 10px;
+  cursor: pointer;
+
+  font-size: 18px;
+
+  border-radius: 15px;
+  background-color: ${(props) =>
+    props.isSelected ? "#edefff" : "transparent"};
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  user-select: none; /* 텍스트 선택 방지 */
+  -webkit-user-select: none; /* Safari 지원 */
+  -moz-user-select: none; /* Firefox 지원 */
+  -ms-user-select: none; /* IE/Edge 지원 */
+
+  /* 이미지나 요소 드래그 방지 */
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+`;
+
+export const GenerateShelf__typeElement = styled.div`
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+
+  gap: 10px;
+`;
+
+export const GenerateShelf__Shelf__Subtitle = styled.div`
+  width:100%;
+
+  font-size:16px;
+  padding:5px 10px;
+
+  border-top:1px solid #ebeaea;
 `

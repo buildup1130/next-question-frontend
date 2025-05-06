@@ -1,5 +1,6 @@
 import { RefreshIcon, TrashCanIcon, XButton } from "@/utils/SvgProvider";
-import { GenerateShelf__Container, GenerateShelf__Shelf, GenerateShelf__Shelf__Container, GenerateShelf__Shelf__Input, GenerateShelf__Shelf__Input__Button, GenerateShelf__Shelf__Input__Container, GenerateShelf__Shelf__QuestionContainer, GenerateShelf__Shelf__QuestionText, GenerateShelf__Shelf__QuestionTitle, GenerateShelf__Shelf__Select, GenerateShelf__Shelf__Select__Button, GenerateShelf__Shelf__submitButton, GenerateShelf__Shelf__Title, GenerateShelf__Shelf__Title__Button, GenerateShelf__Wrapper,GenerateShelf__Shelf__QuestionWrapper, GenerateShelf__Shelf__ButtonContainer,GenerateShelf__countbutton, GenerateShelf__countbuttonContainer, GenerateShelf__Shelf__Title__Text,GenerateShelf__Shelf__QuestionNum, GenerateShelf__Shelf__QuestionAnswer, GenerateShelf__Shelf__QuestionAnswerContainer, GenerateShelf__Shelf__QuestionHeader, GenerateShelf__Shelf__QuestionDeleteContainer, GenerateShelf__Shelf__QuestionDeleteContainer__TrashCan, GenerateShelf__Shelf__QuestionDeleteContainer__XButton } from "./GenerateShelf.Styles";
+import { GenerateShelf__Container, GenerateShelf__Shelf, GenerateShelf__Shelf__Container, GenerateShelf__Shelf__Input, GenerateShelf__Shelf__Input__Button, GenerateShelf__Shelf__Input__Container, GenerateShelf__Shelf__QuestionContainer, GenerateShelf__Shelf__QuestionText, GenerateShelf__Shelf__QuestionTitle, GenerateShelf__Shelf__Select, GenerateShelf__Shelf__Select__Button, GenerateShelf__Shelf__submitButton, GenerateShelf__Shelf__Title, GenerateShelf__Shelf__Title__Button, GenerateShelf__Wrapper,GenerateShelf__Shelf__QuestionWrapper, GenerateShelf__Shelf__ButtonContainer,GenerateShelf__countbutton, GenerateShelf__countbuttonContainer, GenerateShelf__Shelf__Title__Text,GenerateShelf__Shelf__QuestionNum, GenerateShelf__Shelf__QuestionAnswer, GenerateShelf__Shelf__QuestionAnswerContainer, GenerateShelf__Shelf__QuestionHeader, GenerateShelf__Shelf__QuestionDeleteContainer, GenerateShelf__Shelf__QuestionDeleteContainer__TrashCan, GenerateShelf__Shelf__QuestionDeleteContainer__XButton,GenerateShelf__type,GenerateShelf__typeContainer,GenerateShelf__typeElement, GenerateShelf__Shelf__Subtitle } from "./GenerateShelf.Styles";
+import { DocsIcon } from "@/utils/SvgProvider";
 
 export default function GenerateShelfUI(props){
 
@@ -7,14 +8,17 @@ export default function GenerateShelfUI(props){
     <GenerateShelf__Wrapper>
         <GenerateShelf__Container>
             <GenerateShelf__Shelf>
-            {(!props.questionInfoArr && props.sequence === 1) ?
+            {(!props.questionInfoArr && props.sequence === 2) ?
              <LoadingModal></LoadingModal>:
                 <>
-                {props.sequence === 0 ? (
-                <OptionModal {...props} />
+                {
+                props.sequence === 0 ? (
+                <TypeModal {...props}/>
             ) : props.sequence === 1 ? (
-                <QuestionModal {...props} />
+                <OptionModal {...props} />
             ) : props.sequence === 2 ? (
+                <QuestionModal {...props} />
+            ) : props.sequence === 3 ? (
                 <SavingModal {...props} />
             ) : <div>문제가 저장되었습니다.</div>}                                  
             </>
@@ -22,6 +26,60 @@ export default function GenerateShelfUI(props){
             </GenerateShelf__Shelf>
         </GenerateShelf__Container>
     </GenerateShelf__Wrapper>);
+}
+
+//타입 선택 모달
+const TypeModal = (props) => {
+    return(
+    <>
+    <GenerateShelf__Shelf__Title>
+            <GenerateShelf__Shelf__Title__Text>문제 생성하기</GenerateShelf__Shelf__Title__Text>
+            <GenerateShelf__Shelf__Title__Button
+                onClick={() => {
+                    props.setIsCreated(false);
+                }}
+            >X</GenerateShelf__Shelf__Title__Button>
+    </GenerateShelf__Shelf__Title>
+    <GenerateShelf__Shelf__Subtitle>
+        문제 유형
+    </GenerateShelf__Shelf__Subtitle>
+    <GenerateShelf__typeContainer>
+        {[
+        "객관식","참/거짓","주관식"
+        ].map((type, index) => (
+    <GenerateShelf__type
+        onClick={() => {
+            props.onClickType(index);
+        }}
+        isSelected={props.selectedType.includes(index)}
+        >
+        <GenerateShelf__typeElement>
+            <DocsIcon></DocsIcon>
+            {type}
+        </GenerateShelf__typeElement>
+        </GenerateShelf__type>
+    ))}
+    </GenerateShelf__typeContainer>
+    <GenerateShelf__Shelf__ButtonContainer>
+                
+                <GenerateShelf__Shelf__submitButton
+                    onClick={() => {
+                        props.setIsCreated(false);
+                    }}
+                    style={{backgroundColor:"#ffffff", color:"#111111"}}
+                >
+                    취소
+                </GenerateShelf__Shelf__submitButton>
+                <GenerateShelf__Shelf__submitButton
+                    onClick={() => {
+                        props.setSequence(1);
+                    }}
+                >
+                    다음
+                </GenerateShelf__Shelf__submitButton>
+                </GenerateShelf__Shelf__ButtonContainer>
+    </>
+    );
 }
 
 //옵션 모달
@@ -68,11 +126,11 @@ const OptionModal = (props) =>{
                 <GenerateShelf__Shelf__ButtonContainer>
                 <GenerateShelf__Shelf__submitButton
                     onClick={() => {
-                        props.setIsCreated(false);
+                        props.setSequence(0);
                     }}
                     style={{backgroundColor:"#ffffff", color:"#111111"}}
                 >
-                    취소
+                    이전
                 </GenerateShelf__Shelf__submitButton>
                 <GenerateShelf__Shelf__submitButton
                     onClick={() => {
@@ -177,7 +235,7 @@ const QuestionModal = (props) => {
                 </GenerateShelf__Shelf__submitButton>
                 <GenerateShelf__Shelf__submitButton
                     onClick={() => {
-                        props.setSequence(2);
+                        props.setSequence(3);
                         props.setVisibleTrashIndex(null);
                     }}
                 >
@@ -247,7 +305,7 @@ const SavingModal = (props) => {
                     
                 <GenerateShelf__Shelf__submitButton
                     onClick={() => {
-                        props.setSequence(1);
+                        props.setSequence(2);
                     }}
                     style={{backgroundColor:"#ffffff", color:"#111111"}}
                 >

@@ -27,6 +27,8 @@ export default function GenerateShelfLogic(props){
     const [questionInfoArr, setQuestionInfoArr] = useState(undefined);
     //삭제버튼이 보이는 문제 index
     const [visibleTrashIndex,setVisibleTrashIndex] = useState(null);
+    //선택된 타입
+    const [selectedType, setSelectedType] = useState([0,1,2]);
 
     // 비동기 작업을 처리하는 함수
     // DB에서 문제집 배열을 가져오는 함수
@@ -98,10 +100,11 @@ export default function GenerateShelfLogic(props){
     }
 
     const onCreateQuestion = () => {
-        setSequence(1);
+        setSequence(2);
         const response = createQuestion(
                     props.file,
                     questionCount,
+                    selectedType,
                     token,
                     isAuthenticated
                   ).then(
@@ -128,7 +131,7 @@ export default function GenerateShelfLogic(props){
         if(savingWorkBook !== ""){
         onSaveQuestion();
         //setIsCreated(false);
-        setSequence(3);
+        setSequence(4);
         setTimeout(() => {
             props.setIsCreated(false);
             props.setFile(null);
@@ -164,6 +167,20 @@ export default function GenerateShelfLogic(props){
     setVisibleTrashIndex(null);
     }
 
+      //0: 객관식 , 1: 참/거짓, 2:주관식
+    const onClickType = (type) => {
+        const index = selectedType.indexOf(type);
+        if (index !== -1) {
+        const newSelectedType = [...selectedType];
+        newSelectedType.splice(index, 1);
+        setSelectedType(newSelectedType);
+        } else {
+        setSelectedType([...selectedType, type]);
+        }
+        console.log(selectedType);
+    };
+
+
     return(
         <GenerateShelfUI
             setIsCreated = {props.setIsCreated}
@@ -191,6 +208,9 @@ export default function GenerateShelfLogic(props){
             onClickTrashCan = {onClickTrashCan}
             onClickDelete = {onClickDelete}
             creatingName = {creatingName}
+            onClickType = {onClickType}
+            selectedType = {selectedType}
+            setSelectedType = {setSelectedType}
         >
             
         </GenerateShelfUI>
