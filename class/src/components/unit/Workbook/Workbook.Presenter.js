@@ -3,15 +3,21 @@ import {
   Header,
   BackButton,
   Title,
-  TopRightButtonGroup,
-  TopRightButton,
+  ControlBar,
+  FilterWrapper,
+  ToggleAnswerButton,
   QuestionCard,
+  QuestionRow,
+  QuestionTextWrapper,
   QuestionTitle,
+  OptionWrapper,
+  Option,
+  OptionNumber,
   Answer,
-  Type,
-  OptionList,
   Checkbox,
-  DeleteButton,
+  Divider,
+  ActionButtonGroup,
+  ActionButton,
 } from "./Workbook.Styles";
 
 export default function WorkbookUI({
@@ -24,52 +30,131 @@ export default function WorkbookUI({
   onToggleMoveMode,
   onSelect,
   selectedIds,
-  onDelete,
+  // ✅ 변경됨
+  onOpenDeleteModal,
   onOpenMoveModal,
+  isSelectMode,
+  setIsSelectMode,
+  showAnswer,
+  setShowAnswer,
 }) {
+  const handleCancel = () => {
+    setIsSelectMode(false);
+    onToggleDeleteMode(false);
+    onToggleMoveMode(false);
+  };
+
   return (
     <Wrapper>
       <Header>
         <BackButton onClick={onBack}>←</BackButton>
         <Title>{title}</Title>
-        <TopRightButtonGroup>
-          <TopRightButton onClick={onToggleMoveMode}>📤</TopRightButton>
-          <TopRightButton onClick={onToggleDeleteMode}>🗑</TopRightButton>
-        </TopRightButtonGroup>
       </Header>
+      <Divider />
 
-      <hr />
+      <ControlBar>
+        {!isSelectMode ? (
+          <FilterWrapper>
+            <ToggleAnswerButton onClick={() => setShowAnswer((prev) => !prev)}>
+              {showAnswer ? "정답 숨기기" : "정답 보기"}
+            </ToggleAnswerButton>
+            <ActionButton
+              onClick={() => {
+                setIsSelectMode(true);
+                onToggleDeleteMode(true);
+                onToggleMoveMode(true);
+              }}
+            >
+              선택
+            </ActionButton>
+          </FilterWrapper>
+        ) : (
+          <ActionButtonGroup>
+            <ActionButton
+              onClick={onOpenMoveModal}
+              disabled={selectedIds.length === 0}
+            >
+              문제 이동
+            </ActionButton>
+            <ActionButton
+              // ✅ 수정됨
+              onClick={onOpenDeleteModal}
+              disabled={selectedIds.length === 0}
+            >
+              문제 삭제
+            </ActionButton>
+            <ActionButton onClick={handleCancel}>선택취소</ActionButton>
+          </ActionButtonGroup>
+        )}
+      </ControlBar>
+      <Divider />
 
       {questions && questions.length > 0 ? (
-        questions.map((q) => (
-          <QuestionCard key={q.encryptedQuestionId}>
-            {(deleteMode || moveMode) && (
-              <Checkbox
-                type="checkbox"
-                checked={selectedIds.includes(q.encryptedQuestionId)}
-                onChange={() => onSelect(q.encryptedQuestionId)}
-              />
-            )}
-            <div style={{ flex: 1 }}>
-              <QuestionTitle>Q. {q.name}</QuestionTitle>
-              <Answer>정답: {q.answer}</Answer>
-              <Type>유형: {q.type}</Type>
-              {q.opt && <OptionList>선택지: {q.opt}</OptionList>}
-            </div>
-          </QuestionCard>
-        ))
+        questions.map((q, idx) => {
+          const opts = q.opt ? q.opt.split("|||") : [];
+          return (
+            <QuestionCard key={q.encryptedQuestionId}>
+              <QuestionRow>
+                <QuestionTextWrapper>
+                  <QuestionTitle>
+                    Q{idx + 1} {q.name.replace(/\{BLANK\}/g, "OOO")}
+                  </QuestionTitle>
+
+                  {q.type === "MULTIPLE_CHOICE" && (
+                    <OptionWrapper>
+                      {opts.map((optStr, i) => {
+                        const label = optStr[0];
+                        const text = optStr.slice(2);
+                        const isAnswer = Number(q.answer) === i + 1;
+                        return (
+                          <Option key={i}>
+                            <OptionNumber isAnswer={showAnswer && isAnswer}>
+                              {label}
+                            </OptionNumber>
+                            <div>{text}</div>
+                          </Option>
+                        );
+                      })}
+                    </OptionWrapper>
+                  )}
+
+                  {q.type === "OX" && (
+                    <OptionWrapper>
+                      <Option>
+                        <OptionNumber isAnswer={showAnswer && q.answer === "O"}>
+                          1
+                        </OptionNumber>{" "}
+                        O
+                      </Option>
+                      <Option>
+                        <OptionNumber isAnswer={showAnswer && q.answer === "X"}>
+                          2
+                        </OptionNumber>{" "}
+                        X
+                      </Option>
+                    </OptionWrapper>
+                  )}
+
+                  {q.type === "FILL_IN_THE_BLANK" && showAnswer && (
+                    <Answer>{q.answer}</Answer>
+                  )}
+                </QuestionTextWrapper>
+
+                {deleteMode || moveMode || isSelectMode ? (
+                  <Checkbox
+                    type="checkbox"
+                    checked={selectedIds.includes(q.encryptedQuestionId)}
+                    onChange={() => onSelect(q.encryptedQuestionId)}
+                  />
+                ) : (
+                  <div style={{ width: "16px" }} />
+                )}
+              </QuestionRow>
+            </QuestionCard>
+          );
+        })
       ) : (
         <div>문제가 없습니다.</div>
-      )}
-
-      {deleteMode && selectedIds.length > 0 && (
-        <DeleteButton onClick={onDelete}>선택 삭제</DeleteButton>
-      )}
-
-      {moveMode && selectedIds.length > 0 && (
-        <DeleteButton onClick={onOpenMoveModal}>
-          📦 다른 문제집으로 이동
-        </DeleteButton>
       )}
     </Wrapper>
   );

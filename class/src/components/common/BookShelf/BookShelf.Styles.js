@@ -5,7 +5,7 @@ export const Container = styled.div`
   max-width: 500px;
   min-height: 100dvh;
   margin: 0 auto;
-  padding: 16px 16px 100px;
+  padding: 0 16px 100px;
   box-sizing: border-box;
   background-color: #fff;
   position: relative;
@@ -13,25 +13,37 @@ export const Container = styled.div`
 
 export const Header = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 12px;
+  justify-content: center; // 가운데 정렬로 변경
+  align-items: center; // 세로 가운데
+  padding: 16px 0 4px 0;
 `;
 
 export const Title = styled.h1`
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
+  margin: 0;
+  padding: 8px 0 4px 0;
+  text-align: center; // 텍스트도 중앙 정렬
+  width: 100%; // 상위 flex 정렬 영향을 받지 않도록
+`;
+
+export const Divider = styled.div`
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto 8px;
+  height: 1px;
+  background-color: #ddd;
 `;
 
 export const SearchWrapper = styled.div`
   position: relative;
-  width: 100%;
-  max-width: 350px;
-  margin: 0 auto 12px;
+  width: fit-content;
+  margin-left: auto;
+  margin-bottom: 12px;
 `;
 
 export const StyledSearchInput = styled.input`
-  width: 100%;
+  width: 200px;
   height: 32px;
   padding: 6px 10px 6px 32px;
   border: 1px solid #ccc;
@@ -115,15 +127,20 @@ export const BookItem = styled.li`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
+  height: 60px;
+  padding: 10px 12px;
   border-bottom: 1px solid #ddd;
   cursor: pointer;
   position: relative;
+  box-sizing: border-box;
 `;
 
 export const BookCheckbox = styled.input`
-  transform: scale(1.2);
-  margin-left: 8px;
+  width: 16px;
+  height: 16px;
+  transform: none;
+  accent-color: #808fff;
+  cursor: pointer;
 `;
 
 export const MoreButton = styled.button`
@@ -131,7 +148,12 @@ export const MoreButton = styled.button`
   border: none;
   font-size: 20px;
   cursor: pointer;
-  padding: 8px;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const OptionPopup = styled.div`
@@ -176,7 +198,7 @@ export const BottomFloatingButton = styled.div`
   border-radius: 8px;
   font-size: 14px;
   font-weight: 500;
-  z-index: 200;
+  z-index: 0;
   white-space: nowrap;
 `;
 
@@ -237,4 +259,85 @@ export const ModalContent = styled.div`
     background-color: #eee;
     color: #333;
   }
+`;
+
+export const TileGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+`;
+
+export const TileItem = styled.div`
+  position: relative;
+`;
+
+export const Card = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+`;
+
+export const CardTop = styled.div`
+  position: relative;
+  background-color: #dce6ff;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+`;
+
+export const CardBottom = styled.div`
+  background-color: white;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const CardTitle = styled.div`
+  font-weight: bold;
+  margin-bottom: 4px;
+`;
+
+export const CardInfo = styled.div`
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 8px;
+`;
+
+export const CardActions = styled.div`
+  display: flex;
+  gap: 8px;
+
+  button {
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    background-color: white;
+  }
+`;
+
+export const TileTopRightButton = styled.div`
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
+`;
+
+export const PlusCard = styled(Card)`
+  border: 2px dashed #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+  cursor: pointer;
+  color: #999;
+  font-size: 32px;
 `;

@@ -12,7 +12,6 @@ export default function MoveModalLogic({
 }) {
   const { token } = useAuth();
   const [workBooks, setWorkBooks] = useState([]);
-  const [isCreating, setIsCreating] = useState(false);
   const [creatingName, setCreatingName] = useState("");
 
   // 문제집 리스트 불러오기
@@ -31,9 +30,8 @@ export default function MoveModalLogic({
 
     try {
       await createWorkbook(token, creatingName);
-      await fetchWorkBooks();
-      setIsCreating(false);
-      setCreatingName("");
+      await fetchWorkBooks(); // 새로 생성 후 리스트 갱신
+      setCreatingName(""); // 입력창 초기화
     } catch (error) {
       console.error("문제집 생성 오류:", error);
       if (error.response?.status === 500) {
@@ -56,8 +54,6 @@ export default function MoveModalLogic({
       selectedIds={selectedIds}
       targetBookId={targetBookId}
       setTargetBookId={setTargetBookId}
-      isCreating={isCreating}
-      setIsCreating={setIsCreating}
       creatingName={creatingName}
       setCreatingName={setCreatingName}
       onCreateWorkbook={handleCreateWorkbook}

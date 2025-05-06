@@ -19,7 +19,6 @@ export const MoveModal__Container = styled.div`
 export const MoveModal__Inner = styled.div`
   width: 100%;
   padding: 16px 8px;
-  border: 1px solid #d9d9d9;
   border-radius: 20px;
   box-shadow: 0 16px 24px rgba(0, 0, 0, 0.1);
   background-color: #ffffff;
@@ -29,93 +28,105 @@ export const MoveModal__Inner = styled.div`
 `;
 
 export const MoveModal__Title = styled.div`
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   text-align: center;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   width: 100%;
+`;
+
+export const MoveModal__Select = styled.select`
+  flex: 1;
+  height: 44px;
+  padding: 0 12px;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 1px solid #d9d9d9;
+  background-color: #ffffff;
+  color: #8c8b81;
+`;
+
+export const MoveModal__Input = styled.input`
+  flex: 1;
+  height: 36px;
+  border: none;
+  background-color: transparent;
+  font-size: 14px;
+  padding: 0 12px;
+  color: #333;
+  outline: none;
+`;
+
+export const MoveModal__CreateButton = styled.button`
+  height: 33px;
+  width: 68px;
+
+  border-radius: 20px;
+  border: none;
+
+  background-color: white;
+  color: #808fff;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+
+  font-size: 16px;
+
+  white-space: nowrap;
+`;
+
+export const MoveModal__ButtonContainer = styled.div`
+  width: 100%;
+  margin-top: 32px;
+  display: flex;
+  gap: 12px;
+  padding: 0 8px;
+`;
+
+export const MoveModal__CancelButton = styled.button`
+  flex: 1;
+  min-height: 48px;
+  border-radius: 12px;
+  background-color: #ffffff;
+  color: #111;
+  border: 1px solid #d9d9d9;
+  font-size: 15px;
+`;
+
+export const MoveModal__SubmitButton = styled.button`
+  flex: 1;
+  min-height: 48px;
+  border-radius: 12px;
+  background-color: ${({ disabled }) => (disabled ? "#B3BCFF" : "#808FFF")};
+  color: white;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: ${({ disabled }) => (disabled ? "default" : "pointer")};
+`;
+
+export const MoveModal__InputContainer = styled.div`
+  width: 100%;
+  padding: 6px 10px 6px 0;
+  margin-top: 8px;
+
+  border-radius: 10px;
+  background-color: #edefff;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
 `;
 
 export const MoveModal__SelectContainer = styled.div`
   width: 100%;
   margin-top: 20px;
-  display: flex;
-  gap: 8px;
-`;
 
-export const MoveModal__Select = styled.select`
-  flex: 1;
-  height: 40px;
-  font-size: 16px;
-  text-align: center;
-`;
-
-export const MoveModal__SelectButton = styled.button`
-  width: 36px;
-  height: 36px;
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
   display: flex;
+  flex-direction: row;
   justify-content: center;
-  align-items: center;
-`;
-
-export const MoveModal__CreateRow = styled.div`
-  width: 100%;
-  margin-top: 20px;
-  padding: 0 8px;
-  display: flex;
-  gap: 10px;
-`;
-
-export const MoveModal__Input = styled.input`
-  flex: 1;
-  padding: 8px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-`;
-
-export const MoveModal__CreateButton = styled.button`
-  height: 40px;
-  padding: 0 16px;
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  font-size: 14px;
-  white-space: nowrap;
-  cursor: pointer;
-`;
-
-export const MoveModal__ButtonContainer = styled.div`
-  width: 100%;
-  margin-top: 40px;
-  padding: 0 8px;
-  display: flex;
-  gap: 12px;
-`;
-
-export const MoveModal__CancelButton = styled.button`
-  flex: 1;
-  min-height: 52px;
-  border-radius: 20px;
-  background-color: #ffffff;
-  color: #111;
-  border: 1px solid #d9d9d9;
-  font-size: 16px;
-  cursor: pointer;
-`;
-
-export const MoveModal__SubmitButton = styled.button`
-  flex: 1;
-  min-height: 52px;
-  border-radius: 20px;
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
 `;

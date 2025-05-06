@@ -3,45 +3,60 @@ import styled from "@emotion/styled";
 export const ModalOverlay = styled.div`
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.4);
   z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const ModalContainer = styled.div`
-  width: 90%;
-  max-width: 400px;
-  background: white;
-  border-radius: 10px;
-  margin: 250px auto;
+  background: #fff;
+  border-radius: 12px;
   padding: 24px;
+  width: 90%;
+  max-width: 360px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   text-align: center;
+
+  h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 16px;
+  }
 
   input {
     width: 100%;
-    padding: 12px 10px;
-    margin-top: 12px;
-    font-size: 16px;
+    height: 36px;
+    margin-bottom: 16px;
+    padding: 0 12px;
     border: 1px solid #ccc;
-    border-radius: 6px;
+    border-radius: 8px;
+    font-size: 14px;
   }
 `;
 
 export const ButtonRow = styled.div`
-  margin-top: 24px;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 12px;
 
   button {
-    padding: 10px 20px;
+    height: 36px;
+    padding: 0 16px;
+    border-radius: 8px;
     border: none;
-    border-radius: 6px;
-    background: #000;
-    color: #fff;
     font-size: 14px;
     cursor: pointer;
+  }
 
-    &:hover {
-      opacity: 0.9;
-    }
+  button:first-of-type {
+    background-color: #808fff;
+    color: white;
+  }
+
+  button:last-of-type {
+    background-color: #eee;
+    color: #333;
   }
 `;
