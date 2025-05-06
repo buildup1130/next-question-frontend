@@ -1,4 +1,4 @@
-import { RefreshIcon, TrashCanIcon, XButton } from "@/utils/SvgProvider";
+import { CheckedIcon, RefreshIcon, TrashCanIcon, XButton } from "@/utils/SvgProvider";
 import { GenerateShelf__Container, GenerateShelf__Shelf, GenerateShelf__Shelf__Container, GenerateShelf__Shelf__Input, GenerateShelf__Shelf__Input__Button, GenerateShelf__Shelf__Input__Container, GenerateShelf__Shelf__QuestionContainer, GenerateShelf__Shelf__QuestionText, GenerateShelf__Shelf__QuestionTitle, GenerateShelf__Shelf__Select, GenerateShelf__Shelf__Select__Button, GenerateShelf__Shelf__submitButton, GenerateShelf__Shelf__Title, GenerateShelf__Shelf__Title__Button, GenerateShelf__Wrapper,GenerateShelf__Shelf__QuestionWrapper, GenerateShelf__Shelf__ButtonContainer,GenerateShelf__countbutton, GenerateShelf__countbuttonContainer, GenerateShelf__Shelf__Title__Text,GenerateShelf__Shelf__QuestionNum, GenerateShelf__Shelf__QuestionAnswer, GenerateShelf__Shelf__QuestionAnswerContainer, GenerateShelf__Shelf__QuestionHeader, GenerateShelf__Shelf__QuestionDeleteContainer, GenerateShelf__Shelf__QuestionDeleteContainer__TrashCan, GenerateShelf__Shelf__QuestionDeleteContainer__XButton,GenerateShelf__type,GenerateShelf__typeContainer,GenerateShelf__typeElement, GenerateShelf__Shelf__Subtitle } from "./GenerateShelf.Styles";
 import { DocsIcon } from "@/utils/SvgProvider";
 
@@ -57,6 +57,7 @@ const TypeModal = (props) => {
             <DocsIcon></DocsIcon>
             {type}
         </GenerateShelf__typeElement>
+        {props.selectedType.includes(index)?<div style={{color:"#a0a0a0"}}><CheckedIcon></CheckedIcon></div>:<></>}
         </GenerateShelf__type>
     ))}
     </GenerateShelf__typeContainer>

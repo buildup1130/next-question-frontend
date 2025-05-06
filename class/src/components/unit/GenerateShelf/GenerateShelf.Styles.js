@@ -366,7 +366,6 @@ export const GenerateShelf__type = styled.div`
 export const GenerateShelf__typeElement = styled.div`
   display: flex;
   align-items: center;
-  font-weight: 700;
 
   gap: 10px;
 `;

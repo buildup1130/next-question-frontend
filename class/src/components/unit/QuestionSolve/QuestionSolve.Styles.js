@@ -405,6 +405,7 @@ export const QuestionSolve__RateContainer__Rate = styled.div`
    position: relative;
 `
 
+
 export const QuestionSolve__RateContainer__Percentage = styled.div`
   width:calc(100% - 20px);
   height:calc(100% - 20px);
@@ -430,7 +431,7 @@ export const QuestionSolve__RateContainer__subtitle = styled.div`
 
 export const QuestionSolve__Result__SubContent = styled.div`
   margin-top:20px;
-  width:40%;
+  width:70%;
   padding:8px 0;
 
   display:flex;

@@ -15,7 +15,7 @@ export const savingStat = async(questions, wrongArr, type,workBookId,token) => {
         const response = await axios.post(
             "http://localhost:8080/member/solving/save",
             { type: type?"MOCK":"NORMAL",
-              encryptedWorkBookId: workBookId,
+              encryptedWorkBookId: Array.isArray(workBookId) ? workBookId : [workBookId],
               info:infoArr
              },
             {

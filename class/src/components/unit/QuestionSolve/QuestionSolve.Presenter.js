@@ -54,7 +54,7 @@ import { CheckedIcon, CheckIcon, XButton, XIcon } from "@/utils/SvgProvider";
 
 export default function QuestionSolveUI(props) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [selectedAnswer, setSelectedAnswer] = useState("");
   const [correctAnswer, setCorrectAnswer] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
@@ -81,7 +81,7 @@ export default function QuestionSolveUI(props) {
   useEffect(() => {
     setInputValue("");
     // selectedAnswer 초기화도 여기서 처리
-    setSelectedAnswer(null);
+    setSelectedAnswer("");
     // isCorrect 초기화
     setIsCorrect(null);
     // curAns 초기화
@@ -104,9 +104,9 @@ export default function QuestionSolveUI(props) {
 
 // 정답 체크 함수
 const checkAnswer = () => {
-  const isAnswerCorrect = question.answer.trim() == selectedAnswer;
+  const isAnswerCorrect = question.answer?.trim() == selectedAnswer;
   console.log(`정답은${question.answer}, 선택한 답은${selectedAnswer}`);
-  if(selectedAnswer !== null){
+  if(selectedAnswer !== ""){
   if (isAnswerCorrect) {
     if (!wrongArr.includes(currentQuestion)) {
       setCorrectAnswer(correctAnswer + 1);
@@ -220,6 +220,7 @@ const moveToNextQuestion = () => {
     setCurrentQuestion(currentQuestion + 1);
     setFillAns(null);
     setFillSeq(0);
+    setSelectedAnswer("");
   } else {
     completeQuiz();
   }
@@ -245,7 +246,7 @@ const handleNextQuestion = () => {
   const handleInputChange = (e) => {
     const value = e.target.value;
     setInputValue(value);
-    setSelectedAnswer(value.trim());
+    setSelectedAnswer(value);
   };
 
   // 올바른 방법:
@@ -423,14 +424,14 @@ const handleNextQuestion = () => {
                 <input
                   ref={inputRef}
                   type="text"
-                  placeholder="답을 입력하세요"
+                  placeholder="답을 입력"
                   value={inputValue}
                   style={{
                     padding: "15px",
                     borderRadius: "5px",
                     // border: "1px solid #ddd",
-                    border: selectedAnswer
-                      ? selectedAnswer?.trim() === question.answer?.trim()
+                    border: curAns
+                      ? curAns.trim() === question.answer?.trim()
                         ? "1px solid #2fafff"
                         : "1px solid red"
                       : "1px solid #ddd",
@@ -607,7 +608,7 @@ const ResultDetails = (props) => {
           const userAnswer = props.answerArr[index];
           
           // 정답 여부
-          const isCorrect = question.answer.trim() == userAnswer;
+          const isCorrect = question.answer?.trim() == userAnswer;
           
           return (
             <QuestionSolve__ResultContainer key={index}>

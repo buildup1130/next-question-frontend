@@ -201,7 +201,6 @@ export const Home__StatTitle = styled.div`
   align-items:center;
   gap: 10px;
 
-  font-weight: 600;
 `
 
 export const Home__StatButton = styled.div`
