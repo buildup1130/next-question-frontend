@@ -58,7 +58,7 @@ export default function QuestionSolveUI(props) {
   const [correctAnswer, setCorrectAnswer] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
-  const [curAns, setCurAns] = useState(null);
+  const [curAns, setCurAns] = useState("");
   const [inputValue, setInputValue] = useState(""); // 빈 칸형 문제용 입력값 상태 추가
   const [wrongArr, setWrongArr] = useState([]);
   const [isResult, setIsResult] = useState(false);
@@ -85,7 +85,7 @@ export default function QuestionSolveUI(props) {
     // isCorrect 초기화
     setIsCorrect(null);
     // curAns 초기화
-    setCurAns(null);
+    setCurAns("");
   }, [currentQuestion]);
 
   //컴포넌트 로딩시에 시작 시간 기록

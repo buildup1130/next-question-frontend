@@ -3,20 +3,42 @@ import axios from "axios";
 export const savingStat = async(questions, wrongArr, type,workBookId,token) => {
     console.log(`wrongArr = ${wrongArr}`)
     const infoArr = [];
+    //가져온 데이터 객체화
     questions.map((data, index) => {
         const tmpObj = {
             encryptedQuestionId: questions[index].encryptedQuestionId,
+            encryptedWorkBookId: questions[index].encryptedWorkbookId,
             wrong: wrongArr.includes(index)?true:false,
         }
         infoArr.push(tmpObj);
     })
-    console.log(infoArr);
+
+    //workBook Id Array화
+    let workBookIds;
+    if (typeof workBookId === 'string' && workBookId.includes(',')) {
+      workBookIds = workBookId.split(',');
+    } else if (Array.isArray(workBookId)) {
+      workBookIds = workBookId;
+    } else {
+      workBookIds = [workBookId];
+    }
+
+    const dtoObj = [];
+    workBookIds.map((data,index) => {
+        console.log(data);
+        const tmpObj = {
+            encryptedWorkBookId:data,
+            info:infoArr.filter(obj => obj.encryptedWorkBookId === data)
+        }
+        dtoObj.push(tmpObj);
+    })
+
+    console.log(dtoObj);
     try{
         const response = await axios.post(
             "http://localhost:8080/member/solving/save",
             { type: type?"MOCK":"NORMAL",
-              encryptedWorkBookId: Array.isArray(workBookId) ? workBookId : [workBookId],
-              info:infoArr
+              workBookInfoDTOS:dtoObj
              },
             {
                 headers: {
