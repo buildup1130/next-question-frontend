@@ -89,8 +89,19 @@ export const deleteWorkBooks = async (token, encryptedWorkBookIds) => {
 
 export const loadNormalQuestion = async (token, id, options) => {
   try {
+    
+    // id가 문자열이고 쉼표가 포함되어 있다면 배열로 분할
+    let workBookIds;
+    if (typeof id === 'string' && id.includes(',')) {
+      workBookIds = id.split(',');
+    } else if (Array.isArray(id)) {
+      workBookIds = id;
+    } else {
+      workBookIds = [id];
+    }
+
     const payload = {
-      encryptedWorkBookIds: Array.isArray(id) ? id : [id],
+      encryptedWorkBookIds: workBookIds,
       options,
     };
 
