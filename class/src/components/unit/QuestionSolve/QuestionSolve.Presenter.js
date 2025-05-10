@@ -368,9 +368,9 @@ const handleNextQuestion = () => {
   if (question) {
     return (
       <QuestionSolve__Container>
-        <Header>
+        {/* <Header>
           <Title>문제 풀이</Title>
-        </Header>
+        </Header> */}
         
         <QuestionContainer>
           {/* 문제 헤더 */}
