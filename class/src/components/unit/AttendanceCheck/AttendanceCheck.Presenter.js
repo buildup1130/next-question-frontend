@@ -41,7 +41,7 @@ export default function AttendanceCheckUI({
                             onClick={onClickAttend}
                             key = {index}
                         >
-                            오늘<br></br>출석
+                            출석
                         </Attendance__Component>
                         )
                     }

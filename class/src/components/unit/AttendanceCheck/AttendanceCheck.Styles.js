@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import keyframes from "styled-components";
 
 export const Attendance__Container = styled.div`
     width: 100%;
@@ -19,6 +20,15 @@ export const Attendance__Title = styled.div`
     font-size:16px;
 `
 
+const flow = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
 export const Attendance__Component = styled.div`
     width:10%;
     aspect-ratio: 1/1;
@@ -31,6 +41,8 @@ export const Attendance__Component = styled.div`
 
     display:flex;
     justify-content:center;
-    align-items:center
+    align-items:center;
+    
+    animation: ${(props) => props.$attended ? 'none' : `${flow} 2s linear infinite`};
 `
 
