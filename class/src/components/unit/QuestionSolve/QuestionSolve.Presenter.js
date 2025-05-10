@@ -89,7 +89,7 @@ export default function QuestionSolveUI(props) {
     // isCorrect 초기화
     setIsCorrect(null);
     // curAns 초기화
-    setCurAns("");
+    setCurAns(null);
   }, [currentQuestion]);
 
   //컴포넌트 로딩시에 시작 시간 기록
@@ -435,11 +435,11 @@ const handleNextQuestion = () => {
                     padding: "15px",
                     borderRadius: "5px",
                     // border: "1px solid #ddd",
-                    border: curAns
-                      ? curAns.trim() === question.answer?.trim()
-                        ? "1px solid #2fafff"
-                        : "1px solid red"
-                      : "1px solid #ddd",
+                    border: curAns !== undefined && curAns !== null
+                    ? String(curAns) === String(question.answer)
+                      ? "1px solid #2fafff"
+                      : "1px solid red"
+                    : "1px solid #ddd",
                     fontSize: "16px",
                   }}
                   onChange={handleInputChange}

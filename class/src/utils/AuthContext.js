@@ -68,7 +68,8 @@ export function AuthProvider({ children }) {
             // 서버에서 명시적으로 인증 실패를 반환한 경우에만 로그아웃
             if (refreshError.response && (
                 refreshError.response.status === 401 || 
-                refreshError.response.status === 403)) {
+                refreshError.response.status === 403 ||
+                refreshError.response.status === 500)) {
               console.log("인증 실패로 로그아웃 실행");
               logout();
             } else {

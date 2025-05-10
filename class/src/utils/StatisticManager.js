@@ -110,3 +110,19 @@ export const fetchCheck = async(token) => {
         console.error(error);
     }
 }
+
+export const fetchMainStat = async(token) => {
+    try{
+        const response = await axios.get(
+            "http://localhost:8080/member/statistics/main",
+            {
+                headers:{
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+    }catch(error){
+        console.error(error);
+    }
+}

@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useAuth } from "@/utils/AuthContext";
 import { useState, useEffect } from "react";
 import { createQuestion } from "@/utils/QuestionGenerator";
-import { fetchCheck } from "@/utils/StatisticManager";
+import { fetchCheck, fetchMainStat } from "@/utils/StatisticManager";
 
 export default function IndexPageLogic() {
   const router = useRouter();
@@ -19,6 +19,9 @@ export default function IndexPageLogic() {
   //출석체크 관련 State
   const [checkArr,setCheckArr] = useState([]);
 
+  //차트 관련 State
+  const [chartArr, setChartArr] = useState([])
+
   const onClickLogin = () => {
     if(isAuthenticated){
       logout();
@@ -32,6 +35,18 @@ export default function IndexPageLogic() {
       if(isAuthenticated){
         const response = fetchCheck(token).then(response => {  
           setCheckArr(response);
+        });
+        const mainStatResponse = fetchMainStat(token).then(response => {
+          const dayArr = []; 
+          const totalArr = [];
+          const correctArr = []; 
+          response?.map((data,index) =>{
+            dayArr.push(data.day);
+            totalArr.push(data.total);
+            correctArr.push(data.correct);
+          });
+          setChartArr({day: dayArr,total: totalArr,correct: correctArr});
+          console.log(chartArr);
         });
       }
     },[token]
@@ -64,6 +79,7 @@ export default function IndexPageLogic() {
       setFile={setFile}
       numArr={numArr}
       checkArr = {checkArr}
+      chartArr = {chartArr}
     ></IndexPageUI>
   );
 }

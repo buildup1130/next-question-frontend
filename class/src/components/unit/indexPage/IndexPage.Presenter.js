@@ -34,8 +34,10 @@ export default function IndexPageUI({
   questionArr,
   questionInfoArr,
   numArr,
-  checkArr
+  checkArr,
+  chartArr
 }) {
+  console.log(chartArr);
   return (
     <MainContainerLogic>
       {(isCreated && file) &&(
@@ -65,7 +67,9 @@ export default function IndexPageUI({
         {isAuthenticated && (
           <>
             <Home__CalBar><Home__CalTitle>주간 학습 분석</Home__CalTitle></Home__CalBar>
-              <MainChartLogic />
+              <MainChartLogic
+
+              />
               <AttendanceCheckLogic checkArr={checkArr} />
               <Home__StatContainer>
               <Home__StatButton><Home__StatTitle><BookIcon></BookIcon>최근에 틀렸던 문제</Home__StatTitle><div style={{transform:"rotate(-90deg)"}}><DownIcon></DownIcon></div></Home__StatButton>
