@@ -13,7 +13,6 @@ export default function QuestionSolveLogic(props) {
 
   useEffect(() => {
     console.log("✅ router.query:", router.query.title);
-    
 
     // 비회원 학습: localStorage 기반
     if (type === "3") {
@@ -51,7 +50,15 @@ export default function QuestionSolveLogic(props) {
           blank: blank === "true" ? true : false,
         }).then((result) => {
           if (result) {
-            const processed = handleQuestions(result);
+            // Title 정보를 포함한 후처리
+            const idToTitleMap = parseIdsAndTitles(Id, title);
+            const processed = handleQuestions(result).map(question => {
+              if (question.encryptedWorkbookId && idToTitleMap[question.encryptedWorkbookId]) {
+                return { ...question, workBookTitle: idToTitleMap[question.encryptedWorkbookId] };
+              }
+              return question;
+            });
+            // console.log(processed);
             setQuestions(processed);
           } else {
             alert("잘못된 워크북 아이디입니다.");
@@ -133,3 +140,21 @@ function handleQuestions(questions) {
     return newData;
   });
 }
+
+// 외부로 분리된 유틸리티 함수
+function parseIdsAndTitles(idString, titleString) {
+  const ids = idString ? idString.split(',') : [];
+  const titles = titleString ? titleString.split(',') : [];
+  
+  // ID와 Title의 매핑 객체 생성
+  const idToTitleMap = {};
+  ids.forEach((id, index) => {
+    if (titles[index]) {
+      idToTitleMap[id] = titles[index];
+    }
+  });
+  
+  // console.log(idToTitleMap)
+  return idToTitleMap;
+}
+

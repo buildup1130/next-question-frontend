@@ -374,7 +374,8 @@ const handleNextQuestion = () => {
         <QuestionContainer>
           {/* 문제 헤더 */}
           <QuestionHeader>
-            • 문제집 이름 {currentQuestion + 1}
+            {/* • 문제집 이름 {currentQuestion + 1} */}
+            {question.workBookTitle?"• "+question.workBookTitle:""}
           </QuestionHeader>
           {/* 문제 카드 */}
           <QuestionBox>

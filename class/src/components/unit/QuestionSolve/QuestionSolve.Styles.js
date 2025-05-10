@@ -88,7 +88,7 @@ export const QuestionHeader = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-  font-size: 14px;
+  font-size: 16px;
   color: #666;
 `;
 
