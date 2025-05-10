@@ -492,3 +492,9 @@ export const QuestionSolve__ResultDetails__Comment = styled.div`
   color:white;
   border-radius:5px;
 `
+
+export const QuestionSolve__ResultDetails__WorkBookTitle = styled.div`
+  width:100%;
+  font-size: 14px;
+  color: #666;
+`

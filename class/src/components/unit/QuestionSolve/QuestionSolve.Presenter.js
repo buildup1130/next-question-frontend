@@ -48,7 +48,8 @@ import {
   QuestionSolve__ResultDetails__content,
   QuestionSolve__Container,
   QuestionSolve__ResultDetails__CommentContainer,
-  QuestionSolve__ResultDetails__Comment
+  QuestionSolve__ResultDetails__Comment,
+  QuestionSolve__ResultDetails__WorkBookTitle
 } from "./QuestionSolve.Styles";
 import { useRouter } from "next/router";
 import { savingCheck, savingStat } from "@/utils/StatisticManager";
@@ -622,7 +623,15 @@ const ResultDetails = (props) => {
           const isCorrect = question.answer?.trim() == userAnswer;
           
           return (
-            <QuestionSolve__ResultContainer key={index}>
+            <QuestionSolve__ResultContainer key={index}
+              style={{paddingTop:"8px"}}
+            >
+              {question.workBookTitle?
+              <QuestionSolve__ResultDetails__WorkBookTitle>
+              {question.workBookTitle?"• "+question.workBookTitle:""}
+              </QuestionSolve__ResultDetails__WorkBookTitle>:
+              <></>}
+              
               <QuestionBox__Header>
                 <QuestionIcon src="/image/Vector_Questionmark.png" />
                 <QuestionTitle>{question.name}</QuestionTitle>
