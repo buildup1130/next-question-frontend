@@ -370,7 +370,6 @@ const handleNextQuestion = () => {
       <QuestionSolve__Container>
         <Header>
           {/* <Title>문제 풀이</Title> */}
-          <BackIcon></BackIcon>
         </Header>
         
         <QuestionContainer>
