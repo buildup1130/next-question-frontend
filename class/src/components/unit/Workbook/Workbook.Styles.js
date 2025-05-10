@@ -1,3 +1,4 @@
+// 수정된 Workbook.Styles.js 스타일 코드
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
@@ -8,9 +9,7 @@ export const Wrapper = styled.div`
   padding-bottom: 80px;
   margin: 0 auto;
   background-color: #ffffff;
-
   overflow-y: scroll;
-
   -ms-overflow-style: none;
   scrollbar-width: none;
 
@@ -44,6 +43,9 @@ export const Title = styled.h1`
 export const Divider = styled.hr`
   border: none;
   border-bottom: 1px solid #eee;
+  width: 100%;
+  max-width: 500px;
+  margin: 4px auto;
 `;
 
 export const ControlBar = styled.div`
@@ -52,7 +54,7 @@ export const ControlBar = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin: 8px 0;
+  margin: 4px 0;
 `;
 
 export const FilterWrapper = styled.div`
@@ -95,8 +97,8 @@ export const ActionButton = styled.button`
 `;
 
 export const QuestionCard = styled.div`
+  padding: 16px 0 12px 0;
   border-bottom: 1px solid #ddd;
-  padding: 12px 0;
 `;
 
 export const QuestionRow = styled.div`
@@ -112,18 +114,19 @@ export const QuestionTextWrapper = styled.div`
 `;
 
 export const QuestionTitle = styled.div`
-  font-weight: bold;
   font-size: 16px;
-  margin-bottom: 8px;
-  word-break: keep-all;
-  white-space: normal;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 `;
 
 export const OptionWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-top: 8px;
+  gap: 10px;
+  margin-top: 10px;
 `;
 
 export const Option = styled.div`
@@ -149,13 +152,32 @@ export const OptionNumber = styled.div`
 export const Checkbox = styled.input`
   width: 16px;
   height: 16px;
-  accent-color: #3b3bff;
+  accent-color: #65558f;
   flex-shrink: 0;
   margin-top: 4px;
 `;
 
 export const Answer = styled.div`
-  font-size: 14px;
-  color: #a7a7a7;
-  margin-top: 8px;
+  font-size: 16px;
+  color: #333;
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 24px; // ✅ 항상 공간 확보
+`;
+
+export const AnswerLabel = styled.div`
+  width: 20px;
+  height: 20px;
+  font-size: 13px;
+  font-weight: bold;
+  background-color: #808fff;
+  color: white;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  margin-right: 6px;
 `;

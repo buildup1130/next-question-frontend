@@ -14,6 +14,7 @@ import {
   Option,
   OptionNumber,
   Answer,
+  AnswerLabel,
   Checkbox,
   Divider,
   ActionButtonGroup,
@@ -30,7 +31,6 @@ export default function WorkbookUI({
   onToggleMoveMode,
   onSelect,
   selectedIds,
-  // ✅ 변경됨
   onOpenDeleteModal,
   onOpenMoveModal,
   isSelectMode,
@@ -93,11 +93,20 @@ export default function WorkbookUI({
         questions.map((q, idx) => {
           const opts = q.opt ? q.opt.split("|||") : [];
           return (
-            <QuestionCard key={q.encryptedQuestionId}>
+            <QuestionCard
+              key={q.encryptedQuestionId}
+              onClick={() => {
+                if (deleteMode || moveMode || isSelectMode) {
+                  onSelect(q.encryptedQuestionId);
+                }
+              }}
+              style={{ cursor: isSelectMode ? "pointer" : "default" }}
+            >
               <QuestionRow>
                 <QuestionTextWrapper>
                   <QuestionTitle>
-                    Q{idx + 1} {q.name.replace(/\{BLANK\}/g, "OOO")}
+                    <div>Q{idx + 1}</div>
+                    <div>{q.name.replace(/\{BLANK\}/g, "OOO")}</div>
                   </QuestionTitle>
 
                   {q.type === "MULTIPLE_CHOICE" && (
@@ -135,8 +144,11 @@ export default function WorkbookUI({
                     </OptionWrapper>
                   )}
 
-                  {q.type === "FILL_IN_THE_BLANK" && showAnswer && (
-                    <Answer>{q.answer}</Answer>
+                  {q.type === "FILL_IN_THE_BLANK" && (
+                    <Answer>
+                      <AnswerLabel>A</AnswerLabel>
+                      {showAnswer ? q.answer : null}
+                    </Answer>
                   )}
                 </QuestionTextWrapper>
 
@@ -144,7 +156,8 @@ export default function WorkbookUI({
                   <Checkbox
                     type="checkbox"
                     checked={selectedIds.includes(q.encryptedQuestionId)}
-                    onChange={() => onSelect(q.encryptedQuestionId)}
+                    onClick={(e) => e.stopPropagation()} // 카드 클릭 방지
+                    onChange={() => onSelect(q.encryptedQuestionId)} // ✅ 핵심
                   />
                 ) : (
                   <div style={{ width: "16px" }} />

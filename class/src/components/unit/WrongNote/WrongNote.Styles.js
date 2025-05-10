@@ -13,18 +13,17 @@ export const Wrapper = styled.div`
 
 export const Header = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: 16px 0 4px 0;
+  justify-content: space-between;
+  padding: 16px 0 8px 0;
 `;
 
 export const PageTitle = styled.h2`
-  font-size: 18px;
-  font-weight: bold;
+  font-size: 20px;
+  font-weight: 700;
   margin: 0;
-  padding: 8px 0 4px 0;
-  text-align: center;
-  width: 100%;
+  padding: 0;
+  color: #222;
 `;
 
 export const DateHeader = styled.div`
@@ -98,7 +97,7 @@ export const WorkbookTitle = styled.div`
 export const CheckBox = styled.input`
   width: 18px;
   height: 18px;
-  accent-color: #6f6cf1;
+  accent-color: #65558f;
   margin-left: 12px;
   cursor: pointer;
 `;

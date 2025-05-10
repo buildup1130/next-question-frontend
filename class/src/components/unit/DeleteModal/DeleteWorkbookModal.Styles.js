@@ -23,10 +23,16 @@ export const ModalContent = styled.div`
   text-align: center;
 `;
 
-export const ModalText = styled.p`
-  font-size: 16px;
+export const ModalTitle = styled.h2`
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+`;
+
+export const ModalDescription = styled.p`
+  font-size: 14px;
+  color: #555;
   margin-bottom: 20px;
-  color: #333;
 `;
 
 export const ModalButtons = styled.div`
@@ -35,33 +41,23 @@ export const ModalButtons = styled.div`
   gap: 12px;
 `;
 
-export const ModalTitle = styled.h2`
-  // 변경: <p> → <h2>
-  font-size: 18px; // 크기 맞춤
-  font-weight: 700;
-  margin-bottom: 12px;
-`;
-
-export const ModalDescription = styled.p`
-  font-size: 14px; // 크기 맞춤
-  color: #555; // 동일한 톤
-  margin-bottom: 20px;
-`;
-
 export const CancelButton = styled.button`
-  padding: 8px 16px;
+  flex: 1;
+  min-height: 40px;
   border-radius: 8px;
-  border: none;
-  background-color: #eee;
+  background-color: #f3f3f3;
   color: #333;
-  cursor: pointer;
+  border: 1px solid #ddd;
+  font-size: 14px;
 `;
 
 export const ConfirmButton = styled.button`
-  padding: 8px 16px;
+  flex: 1;
+  min-height: 40px;
   border-radius: 8px;
-  border: none;
   background-color: #ff6b6b;
   color: white;
-  cursor: pointer;
+  border: none;
+  font-size: 14px;
+  font-weight: bold;
 `;
