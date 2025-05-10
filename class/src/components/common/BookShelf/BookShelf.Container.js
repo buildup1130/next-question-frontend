@@ -146,7 +146,7 @@ export default function BookShelfLogic() {
         alert("문제집이 비어있습니다!");
         return;
       }
-      setCurBook({ id: book.id, items: book.items });
+      setCurBook({ id: book.id, items: book.items,name:book.title });
       setSequence(1);
       setIsLearningModalOpen(true);
     } else if (action === "rename") {
@@ -193,6 +193,7 @@ export default function BookShelfLogic() {
     );
 
     const ids = Array.isArray(curBook.id) ? curBook.id : [curBook.id];
+    const titles = Array.isArray(curBook.name) ? curBook.name : [curBook.name];
 
     setSequence(0);
     setCurBook(null);
@@ -210,6 +211,7 @@ export default function BookShelfLogic() {
         ox: selectedType.includes(1) ? "true" : "false",
         multiple: selectedType.includes(0) ? "true" : "false",
         blank: selectedType.includes(2) ? "true" : "false",
+        title:  titles.join(",")
       },
     });
   };
@@ -246,6 +248,7 @@ export default function BookShelfLogic() {
     }));
 
     setBooks(bookArr);
+    console.log(bookArr);
 
     const selectedBooks = bookArr.filter((book) =>
       selectedBookIds.includes(book.id)
@@ -256,6 +259,13 @@ export default function BookShelfLogic() {
       0
     );
 
+    const selectedTitles = [];
+    selectedBooks.map((data,index) => {
+      selectedTitles.push(data.title);
+    })
+
+    console.log(selectedTitles);
+
     if (totalQuestions === 0) {
       alert("선택한 문제집에 문제가 없습니다!");
       return;
@@ -263,7 +273,7 @@ export default function BookShelfLogic() {
 
     await onFetchType(selectedBookIds);
 
-    setCurBook({ id: selectedBookIds, items: totalQuestions });
+    setCurBook({ id: selectedBookIds, items: totalQuestions, name:selectedTitles});
     setSequence(1);
     setIsLearningModalOpen(true);
   };

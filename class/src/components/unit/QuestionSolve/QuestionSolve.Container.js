@@ -9,10 +9,11 @@ export default function QuestionSolveLogic(props) {
   const router = useRouter();
   const { token, isAuthenticated } = useAuth();
 
-  const { Id, count, random, ox, multiple, blank, type } = router.query;
+  const { Id, count, random, ox, multiple, blank, type, title } = router.query;
 
   useEffect(() => {
-    console.log("✅ router.query:", typeof router.query.ox);
+    console.log("✅ router.query:", router.query.title);
+    
 
     // 비회원 학습: localStorage 기반
     if (type === "3") {
@@ -129,7 +130,6 @@ function handleQuestions(questions) {
     if (newData.type === "FILL_IN_THE_BLANK") {
       newData.name = newData.name.replace("{BLANK}", "OOO");
     }
-
     return newData;
   });
 }
