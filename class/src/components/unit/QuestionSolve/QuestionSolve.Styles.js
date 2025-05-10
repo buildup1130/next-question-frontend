@@ -37,7 +37,6 @@ export const Header = styled.div`
   padding-left: 10px;
   padding-bottom: 20px;
 
-  border-bottom: 1px solid #d9d9d9;
 `;
 
 export const BackButton = styled.button`

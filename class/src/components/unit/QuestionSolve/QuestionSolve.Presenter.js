@@ -54,7 +54,7 @@ import {
 import { useRouter } from "next/router";
 import { savingCheck, savingStat } from "@/utils/StatisticManager";
 import { useAuth } from "@/utils/AuthContext";
-import { CheckedIcon, CheckIcon, XButton, XIcon } from "@/utils/SvgProvider";
+import { BackIcon, CheckedIcon, CheckIcon, HomeIcon, XButton, XIcon } from "@/utils/SvgProvider";
 
 export default function QuestionSolveUI(props) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -369,7 +369,7 @@ const handleNextQuestion = () => {
     return (
       <QuestionSolve__Container>
         <Header>
-          <Title>문제 풀이</Title>
+          {/* <Title>문제 풀이</Title> */}
         </Header>
         
         <QuestionContainer>
@@ -576,7 +576,7 @@ const ResultSummary = (props) => {
       <QuestionSolve__ResultDetails__CommentContainer>
         <QuestionSolve__ResultDetails__Comment>
           {
-            matchRate === 100? "완벽해요!" : matchRate >= 75? "잘했어요!" : "부족해요."
+            matchRate === 100? "완벽해요!" : matchRate >= 75? "잘했어요!" : "부족해요"
           }
         </QuestionSolve__ResultDetails__Comment>
       </QuestionSolve__ResultDetails__CommentContainer>

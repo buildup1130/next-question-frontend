@@ -14,6 +14,8 @@ export const NavContainer = styled.nav`
   align-items: center;
   border-top: 1px solid #e0e0e0;
   box-shadow: 0px 16px 24px rgba(0, 0, 0, 0.1);
+
+  z-index:999;
 `;
 
 export const NavItem = styled.div`
