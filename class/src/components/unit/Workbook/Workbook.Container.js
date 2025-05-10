@@ -88,9 +88,18 @@ export default function WorkbookLogic() {
     }
 
     const encryptedQuestionInfoIds = questions
-      .filter((q) => selectedIds.includes(q.encryptedQuestionId))
+      .filter((q) => selectedIds.includes(String(q.encryptedQuestionId)))
       .map((q) => q.encryptedQuestionInfoId)
       .filter((id) => typeof id === "string" && !!id.trim());
+
+    console.log("📌 selectedIds:", selectedIds);
+    console.log(
+      "📌 questions:",
+      questions.map((q) => ({
+        encryptedQuestionId: q.encryptedQuestionId,
+        encryptedQuestionInfoId: q.encryptedQuestionInfoId,
+      }))
+    );
 
     if (encryptedQuestionInfoIds.length === 0) {
       alert("유효한 문제 ID가 없습니다.");
@@ -105,19 +114,15 @@ export default function WorkbookLogic() {
         encryptedQuestionInfoIds
       );
 
-      if (response.success) {
-        toast.success(response.message);
-        setMoveModalOpen(false);
-        setMoveMode(false);
-        setSelectedIds([]);
-        const updated = await getWorkbookQuestions(token, workBookId, userId);
-        setQuestions(updated);
-      } else {
-        alert("문제 이동 실패");
-      }
+      toast.success("문제 이동 성공");
+      setMoveModalOpen(false);
+      setMoveMode(false);
+      setSelectedIds([]);
+      const updated = await getWorkbookQuestions(token, workBookId, userId);
+      setQuestions(updated);
     } catch (error) {
       console.error("문제 이동 중 오류:", error);
-      alert("문제 이동 중 오류 발생");
+      alert(error.message); // ✅ 여기에 모든 메시지 뜸
     }
   };
 
@@ -152,11 +157,15 @@ export default function WorkbookLogic() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(selectedIds),
+        body: JSON.stringify({
+          encryptedWorkBookId: workBookId, // ✅ 명세서 기준으로 수정
+          encryptedQuestionIds: selectedIds,
+        }),
       });
 
       if (!res.ok) throw new Error("요청 실패");
 
+      // ✅ 삭제 성공 후 UI 업데이트
       const updated = await getWorkbookQuestions(token, workBookId, userId);
       setQuestions(updated);
 
@@ -165,6 +174,9 @@ export default function WorkbookLogic() {
       setSelectedIds([]);
       setDeleteMode(false);
       setDeleteModalOpen(false);
+
+      // ✅ 삭제 완료 안내
+      toast.success("문제 삭제 완료!");
     } catch (err) {
       console.error("삭제 중 에러 발생:", err);
       alert("삭제 요청 중 오류 발생");

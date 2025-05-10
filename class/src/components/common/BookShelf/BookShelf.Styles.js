@@ -13,17 +13,17 @@ export const Container = styled.div`
 
 export const Header = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: 0px 0 4px 0;
+  justify-content: space-between;
+  padding: 16px 0 8px 0;
 `;
 
 export const Title = styled.h1`
-  font-size: 22px;
-  font-weight: bold;
+  font-size: 20px;
+  font-weight: 700;
   margin: 0;
-  padding: 8px 0 4px 0;
-  width: 100%;
+  padding: 0;
+  color: #222;
 `;
 
 export const Divider = styled.div`
@@ -138,7 +138,7 @@ export const BookCheckbox = styled.input`
   width: 16px;
   height: 16px;
   transform: none;
-  accent-color: #808fff;
+  accent-color: #65558f;
   cursor: pointer;
 `;
 

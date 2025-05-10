@@ -73,7 +73,6 @@ export default function WrongNoteUI(props) {
       <Header>
         <PageTitle>오답 노트</PageTitle>
       </Header>
-      <Divider />
 
       <DateHeader>
         {selectedDateRange.start} ~ {selectedDateRange.end}
@@ -97,8 +96,6 @@ export default function WrongNoteUI(props) {
           {isSelectMode ? "취소" : "선택"}
         </FilterButton>
       </FilterBar>
-
-      <Divider />
 
       {filteredData.length === 0 ? (
         <p style={{ textAlign: "center", marginTop: "24px" }}>

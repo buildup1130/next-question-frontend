@@ -150,17 +150,33 @@ export const moveQuestions = async (
   });
 
   if (!res.ok) {
-    const errorMessage = await res.text();
-    throw new Error(`문제 이동 실패: ${errorMessage}`);
+    let message = "알 수 없는 오류";
+
+    try {
+      const errorJson = await res.clone().json();
+      message = errorJson.message || errorJson.error || message;
+
+      if (res.status === 500 && message.includes("동일한 문제가 존재")) {
+        throw new Error(
+          "🚫 대상 문제집에 이미 같은 문제가 있어 이동할 수 없습니다."
+        );
+      }
+    } catch {
+      try {
+        const fallback = await res.text();
+        message = fallback || message;
+      } catch {
+        message = "응답 파싱 중 오류 발생";
+      }
+    }
+
+    throw new Error(`문제 이동 실패: ${message}`);
   }
 
   return res.json();
 };
 
 export const fetchQuestionType = async (token, idArr) => {
-  console.log(typeof idArr);
-
-  //배열이 아닐 시 배열로 변환
   if (typeof idArr !== "object") {
     idArr = [idArr];
   }
@@ -178,6 +194,6 @@ export const fetchQuestionType = async (token, idArr) => {
     );
     return response.data;
   } catch (error) {
-    console.error(error);
+    console.error("📛 문제 유형 조회 에러:", error);
   }
 };
