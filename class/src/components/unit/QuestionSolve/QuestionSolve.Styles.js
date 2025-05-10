@@ -1,6 +1,18 @@
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
 
+export const QuestionSolve__Container = styled.div`
+    width:100%;
+    min-height:100vh;
+    padding: 24px 8px;
+    padding-bottom: 96px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    
+    background-color:#ffffff;
+`
+
 // 스타일 컴포넌트 정의
 export const QuestionContainer = styled.div`
   width: 100%;
@@ -465,4 +477,18 @@ export const QuestionSolve__ResultDetails__content = styled.div`
   flex-direction:column;
 
   gap:20px;
+`
+
+export const QuestionSolve__ResultDetails__CommentContainer = styled.div`
+  width:100%;
+  display:flex;
+  justify-content:center;
+`
+
+export const QuestionSolve__ResultDetails__Comment = styled.div`
+  padding: 4px 8px;
+
+  background-color:#808fff;
+  color:white;
+  border-radius:5px;
 `

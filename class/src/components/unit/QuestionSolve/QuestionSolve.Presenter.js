@@ -45,7 +45,10 @@ import {
   QuestionSolve__Result__SubContent__element,
   QuestionSolve__RateContainer__bold,
   QuestionSolve__ResultDetails__header,
-  QuestionSolve__ResultDetails__content
+  QuestionSolve__ResultDetails__content,
+  QuestionSolve__Container,
+  QuestionSolve__ResultDetails__CommentContainer,
+  QuestionSolve__ResultDetails__Comment
 } from "./QuestionSolve.Styles";
 import { useRouter } from "next/router";
 import { savingCheck, savingStat } from "@/utils/StatisticManager";
@@ -363,7 +366,7 @@ const handleNextQuestion = () => {
   //문제 화면
   if (question) {
     return (
-      <MainContainerLogic>
+      <QuestionSolve__Container>
         <Header>
           <Title>문제 풀이</Title>
         </Header>
@@ -461,7 +464,7 @@ const handleNextQuestion = () => {
             <NextButton onClick={handleNextQuestion}>Next Question</NextButton>
           </ButtonContainer>
         </QuestionContainer>
-      </MainContainerLogic>
+      </QuestionSolve__Container>
     );
   }
 }
@@ -568,6 +571,13 @@ const ResultSummary = (props) => {
           </QuestionSolve__RateContainer__Percentage>
         </QuestionSolve__RateContainer__Rate>
       </QuestionSolve__RateContainer>
+      <QuestionSolve__ResultDetails__CommentContainer>
+        <QuestionSolve__ResultDetails__Comment>
+          {
+            matchRate === 100? "완벽해요!" : matchRate >= 75? "잘했어요!" : "부족해요."
+          }
+        </QuestionSolve__ResultDetails__Comment>
+      </QuestionSolve__ResultDetails__CommentContainer>
       <QuestionSolve__Result__SubContent>
         <QuestionSolve__Result__SubContent__element>
           <QuestionSolve__RateContainer__subtitle>

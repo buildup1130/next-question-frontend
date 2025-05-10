@@ -378,3 +378,72 @@ export const GenerateShelf__Shelf__Subtitle = styled.div`
 
   border-top:1px solid #ebeaea;
 `
+
+export const GenerateShelf__Shelf__CountContainer = styled.div`
+    width:100%;
+    margin-top:20px;
+    padding:0 10px;
+
+
+    color: #9e9e9e;
+
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    align-items:center;
+
+    /* 이미지나 요소 드래그 방지 */
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+`
+
+// Styled components for custom select
+export const GenerateShelf__Shelf__SelectContainer = styled.div`
+  position: relative;
+  width: fit-content;
+  cursor: pointer;
+`;
+
+export const GenerateShelf__Shelf__StyledSelect = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border: none;
+  background: transparent;
+  padding: 4px 8px;
+  cursor: pointer;
+  outline: none;
+`;
+
+export const GenerateShelf__Shelf__Arrow = styled.span`
+  display: inline-block;
+  transform: ${props => props.isOpen ? 'rotate(0)' : 'rotate(-90deg)'};
+  transition: transform 0.3s ease;
+`;
+
+export const GenerateShelf__Shelf__OptionContainer = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  overflow-y: auto;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 10;
+  display: ${props => props.isOpen ? 'block' : 'none'};
+`;
+
+export const GenerateShelf__Shelf__Option = styled.div`
+  padding: 8px;
+  cursor: pointer;
+  display:flex;
+  justify-content:center;
+  
+  &:hover {
+    background-color: #f5f5f5;
+  }
+`;

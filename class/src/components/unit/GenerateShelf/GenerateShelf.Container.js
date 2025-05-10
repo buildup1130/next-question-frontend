@@ -100,7 +100,7 @@ export default function GenerateShelfLogic(props){
     }
 
     const onCreateQuestion = () => {
-        setSequence(2);
+        setSequence(1);
         const response = createQuestion(
                     props.file,
                     questionCount,
@@ -131,7 +131,7 @@ export default function GenerateShelfLogic(props){
         if(savingWorkBook !== ""){
         onSaveQuestion();
         //setIsCreated(false);
-        setSequence(4);
+        setSequence(3);
         setTimeout(() => {
             props.setIsCreated(false);
             props.setFile(null);

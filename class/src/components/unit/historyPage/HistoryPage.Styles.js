@@ -43,6 +43,6 @@ export const History__Container = styled.div`
   padding-top:20px;
 
   display:flex;
-  flex-direction:column;
+  flex-direction:column-reverse;
   gap:10px;
 `
