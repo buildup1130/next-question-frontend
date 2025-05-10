@@ -89,11 +89,10 @@ export const deleteWorkBooks = async (token, encryptedWorkBookIds) => {
 
 export const loadNormalQuestion = async (token, id, options) => {
   try {
-    
     // id가 문자열이고 쉼표가 포함되어 있다면 배열로 분할
     let workBookIds;
-    if (typeof id === 'string' && id.includes(',')) {
-      workBookIds = id.split(',');
+    if (typeof id === "string" && id.includes(",")) {
+      workBookIds = id.split(",");
     } else if (Array.isArray(id)) {
       workBookIds = id;
     } else {
@@ -206,5 +205,24 @@ export const fetchQuestionType = async (token, idArr) => {
     return response.data;
   } catch (error) {
     console.error("📛 문제 유형 조회 에러:", error);
+  }
+};
+
+export const fetchWrongNoteHistoryQuestions = async (token, historyId) => {
+  try {
+    const response = await axios.post(
+      "http://localhost:8080/member/solving/history/search",
+      { historyIds: [historyId] },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data.questions || [];
+  } catch (error) {
+    console.error("문제 조회 실패:", error);
+    return [];
   }
 };

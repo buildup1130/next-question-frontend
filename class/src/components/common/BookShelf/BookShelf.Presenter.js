@@ -1,3 +1,5 @@
+// ✅ BookShelfUI.jsx (BookIcon 제거 및 CardTop의 SVG 관련 코드 삭제됨)
+
 import {
   Container,
   Header,
@@ -70,7 +72,11 @@ export default function BookShelfUI({
       <TileItem key={book.id} onClick={() => onClickBook(book)}>
         <Card>
           <CardTop>
-            📘
+            <img
+              src="/public/image/book_icon.png"
+              alt="책 아이콘"
+              style={{ width: "32px", height: "32px" }}
+            />
             {isSelectMode && !isLearningModalOpen ? (
               <TileTopRightButton onClick={(e) => e.stopPropagation()}>
                 <BookCheckbox

@@ -1,9 +1,11 @@
-// WrongNoteContainer.js
+// ✅ WrongNoteContainer.js (setOpenStartCalendar / setOpenEndCalendar 추가 반영)
 import { useState, useEffect } from "react";
 import { getWrongNote } from "@/utils/WrongNoteManager";
 import { useAuth } from "@/utils/AuthContext";
 import { useRouter } from "next/router";
 import WrongNoteUI from "./WrongNote.Presenter";
+import { toast } from "react-toastify";
+import { fetchWrongNoteHistoryQuestions } from "@/utils/WorkbookManager";
 
 export default function WrongNoteLogic() {
   const today = new Date();
@@ -19,6 +21,7 @@ export default function WrongNoteLogic() {
   });
   const [wrongNoteData, setWrongNoteData] = useState([]);
   const [workbookMap, setWorkbookMap] = useState({});
+  const [groupedHistory, setGroupedHistory] = useState([]);
   const [selectedBooks, setSelectedBooks] = useState([]);
   const [isSelectMode, setIsSelectMode] = useState(false);
   const [openSections, setOpenSections] = useState({});
@@ -34,6 +37,8 @@ export default function WrongNoteLogic() {
   const [isTest, setIsTest] = useState(false);
   const [filterOptions, setFilterOptions] = useState(["모든 문제집", "학습별"]);
   const [selectedFilterBook, setSelectedFilterBook] = useState("모든 문제집");
+  const [openStartCalendar, setOpenStartCalendar] = useState(false); // ✅ 추가
+  const [openEndCalendar, setOpenEndCalendar] = useState(false); // ✅ 추가
 
   useEffect(() => {
     if (token) fetchWrongNotes();
@@ -76,8 +81,34 @@ export default function WrongNoteLogic() {
               ? "O"
               : "X"
             : q.answer,
+          solvedAt: q.solvedAt || q.solvedDate,
         });
       });
+
+      const handleClickHistoryGroup = async (historyId) => {
+        const questions = await fetchWrongNoteHistoryQuestions(
+          token,
+          historyId
+        );
+        if (!questions || questions.length === 0) {
+          return alert("문제를 불러올 수 없습니다.");
+        }
+
+        const formatted = questions.map((q) => ({
+          name: q.name.replace("{BLANK}", "OOO"),
+          answer: q.answer,
+          type:
+            q.type === "MULTIPLE_CHOICE"
+              ? "MULTIPLE_CHOICE"
+              : q.type === "OX"
+              ? "OX"
+              : "FILL_IN_THE_BLANK",
+          ...(q.opt && { opt: q.opt }),
+        }));
+
+        localStorage.setItem("tempQuestionData", JSON.stringify(formatted));
+        router.push({ pathname: "/Question", query: { type: 3 } });
+      };
 
       const map = {};
       const formatted = Object.entries(grouped).map(
@@ -105,6 +136,8 @@ export default function WrongNoteLogic() {
 
       setWorkbookMap(map);
       setWrongNoteData(formatted);
+      setGroupedHistory(result.groupedWorkBooks || []);
+
       const workbookNames = [...new Set(formatted.map((w) => w.workbook))];
       setFilterOptions(["모든 문제집", "학습별", ...workbookNames]);
     } catch (err) {
@@ -124,8 +157,16 @@ export default function WrongNoteLogic() {
   };
 
   const handleApplyDateFilter = () => {
+    const start = new Date(tempStart);
+    const end = new Date(tempEnd);
+
+    if (start > end) {
+      toast.error("날짜 순서를 확인해주세요.");
+      return; // ✅ 날짜 범위가 유효하지 않으므로 함수 중단
+    }
+
     setSelectedDateRange({ start: tempStart, end: tempEnd });
-    setDateModalOpen(false);
+    setDateModalOpen(false); // ✅ 정상일 때만 모달 닫힘
   };
 
   const handleQuickRange = (type) => {
@@ -258,6 +299,11 @@ export default function WrongNoteLogic() {
       filterOptions={filterOptions}
       selectedFilterBook={selectedFilterBook}
       setSelectedFilterBook={setSelectedFilterBook}
+      groupedHistory={groupedHistory}
+      openStartCalendar={openStartCalendar} // ✅ 추가
+      setOpenStartCalendar={setOpenStartCalendar} // ✅ 추가
+      openEndCalendar={openEndCalendar} // ✅ 추가
+      setOpenEndCalendar={setOpenEndCalendar} // ✅ 추가
     />
   );
 }

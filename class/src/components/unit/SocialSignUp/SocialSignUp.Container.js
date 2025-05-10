@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import SocialSignUpUI from "./SocialSignUp.Presenter";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function SocialSignUpLogic() {
   const router = useRouter();
@@ -32,7 +34,7 @@ export default function SocialSignUpLogic() {
         }
       );
 
-      alert("소셜 회원가입 성공! 다시 로그인해 주세요.");
+      toast.success("회원가입 성공! 다시 로그인해 주세요.");
       router.push("/Login");
     } catch (err) {
       console.error("회원가입 실패:", err);

@@ -1,4 +1,11 @@
 import { useRouter } from "next/router";
+import { Calendar } from "lucide-react";
+import { Calendar as DatePicker } from "react-date-range";
+import { ko } from "date-fns/locale";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
+import React, { useState } from "react";
+
 import {
   Wrapper,
   Header,
@@ -23,15 +30,15 @@ import {
   AnswerBox,
   DateModalBackdrop,
   DateModalContent,
+  DateInputGroup,
+  DateInputLabel,
   DateInput,
   DateModalButtons,
   QuickRangeButtonContainer,
   QuickRangeButton,
-  QuestionListItem,
-  QuestionNumber,
-  QuestionTitle,
   WorkbookCount,
   WorkbookRight,
+  DateRangeWrapper,
 } from "./WrongNote.Styles";
 
 export default function WrongNoteUI(props) {
@@ -61,6 +68,12 @@ export default function WrongNoteUI(props) {
     filterOptions,
     selectedFilterBook,
     setSelectedFilterBook,
+    groupedHistory,
+    onClickHistory,
+    openStartCalendar,
+    setOpenStartCalendar,
+    openEndCalendar,
+    setOpenEndCalendar,
   } = props;
 
   const filteredData =
@@ -77,7 +90,7 @@ export default function WrongNoteUI(props) {
       <DateHeader>
         {selectedDateRange.start} ~ {selectedDateRange.end}
         <CalendarButton onClick={() => setIsDateModalOpen(true)}>
-          📅
+          <Calendar size={20} strokeWidth={2} />
         </CalendarButton>
       </DateHeader>
 
@@ -97,20 +110,60 @@ export default function WrongNoteUI(props) {
         </FilterButton>
       </FilterBar>
 
-      {filteredData.length === 0 ? (
+      {(selectedFilterBook === "학습별" ? groupedHistory : filteredData)
+        ?.length === 0 ? (
         <p style={{ textAlign: "center", marginTop: "24px" }}>
-          해당 기간에 오답 문제가 없습니다.
+          학습 기록이 없습니다.
         </p>
+      ) : selectedFilterBook === "학습별" ? (
+        groupedHistory.map((group, idx) => (
+          <WorkbookRow
+            key={idx}
+            onClick={() => onClickHistory(group.historyId)}
+          >
+            <WorkbookName>
+              {group.solvedAt?.replace("T", " ").slice(0, 16)}{" "}
+              {group.mainWorkBookName}
+              {group.workBookCount > 1 &&
+                ` 외 ${group.workBookCount - 1} 문제집`}
+            </WorkbookName>
+            <WorkbookRight>
+              <WorkbookCount>{group.questionCount}문제</WorkbookCount>
+              <WorkbookArrow>▶</WorkbookArrow>
+            </WorkbookRight>
+          </WorkbookRow>
+        ))
       ) : (
         filteredData.map((book) => {
-          const isOpen = props.openSections[`${book.workbook}_all`];
+          const firstQuestion = book.dates?.[0]?.questions?.[0];
+          const dt = firstQuestion?.solvedAt
+            ? new Date(firstQuestion.solvedAt.replace(" ", "T"))
+            : null;
+          const formattedTime =
+            dt && !isNaN(dt.getTime())
+              ? dt.toISOString().slice(0, 16).replace("T", " ")
+              : "시간 정보 없음";
 
           return (
             <div key={book.workbook}>
               <WorkbookRow
-                onClick={() => props.toggleSection(book.workbook, "all")}
+                onClick={() => {
+                  if (isSelectMode) {
+                    onToggleBookSelect(book.workbook);
+                  } else {
+                    router.push({
+                      pathname: "/WrongWorkbook",
+                      query: {
+                        workbookId: book.workbookId,
+                        title: book.workbook,
+                      },
+                    });
+                  }
+                }}
               >
-                <WorkbookName>{book.workbook}</WorkbookName>
+                <WorkbookName>
+                  {formattedTime} {book.workbook}
+                </WorkbookName>
                 <WorkbookRight>
                   <WorkbookCount>{book.total}문제</WorkbookCount>
                   {isSelectMode ? (
@@ -121,27 +174,10 @@ export default function WrongNoteUI(props) {
                       onChange={() => onToggleBookSelect(book.workbook)}
                     />
                   ) : (
-                    <WorkbookArrow>{isOpen ? "▲" : "▼"}</WorkbookArrow>
+                    <WorkbookArrow>▶</WorkbookArrow>
                   )}
                 </WorkbookRight>
               </WorkbookRow>
-
-              {isOpen && (
-                <div style={{ padding: "0 16px", marginBottom: "12px" }}>
-                  {book.dates
-                    .flatMap((d) => d.questions)
-                    .map((q, i) => (
-                      <QuestionListItem
-                        key={i}
-                        onClick={() => props.onQuestionClick(q)}
-                      >
-                        <QuestionNumber>Q{i + 1}.</QuestionNumber>
-                        <QuestionTitle>{q.title}</QuestionTitle>
-                      </QuestionListItem>
-                    ))}
-                </div>
-              )}
-
               <Divider />
             </div>
           );
@@ -230,22 +266,65 @@ export default function WrongNoteUI(props) {
       {isDateModalOpen && (
         <DateModalBackdrop onClick={() => setIsDateModalOpen(false)}>
           <DateModalContent onClick={(e) => e.stopPropagation()}>
-            <div>
-              <label>시작일:</label>
+            <DateInputGroup>
+              <DateInputLabel>시작일</DateInputLabel>
               <DateInput
-                type="date"
                 value={tempStart}
-                onChange={(e) => setTempStart(e.target.value)}
+                readOnly
+                onClick={() => {
+                  setOpenStartCalendar(!openStartCalendar);
+                  setOpenEndCalendar(false);
+                }}
               />
-            </div>
-            <div>
-              <label>종료일:</label>
+              {openStartCalendar && (
+                <DateRangeWrapper>
+                  <DatePicker
+                    locale={ko}
+                    date={new Date(tempStart)}
+                    onChange={(date) => {
+                      const offsetDate = new Date(
+                        date.getTime() + 9 * 60 * 60 * 1000
+                      ); // ✅ KST 보정
+                      const localDateStr = offsetDate
+                        .toISOString()
+                        .split("T")[0];
+                      setTempStart(localDateStr); // ✅ 시작일 설정
+                      setOpenStartCalendar(false);
+                    }}
+                  />
+                </DateRangeWrapper>
+              )}
+            </DateInputGroup>
+
+            <DateInputGroup>
+              <DateInputLabel>종료일</DateInputLabel>
               <DateInput
-                type="date"
                 value={tempEnd}
-                onChange={(e) => setTempEnd(e.target.value)}
+                readOnly
+                onClick={() => {
+                  setOpenEndCalendar(!openEndCalendar);
+                  setOpenStartCalendar(false);
+                }}
               />
-            </div>
+              {openEndCalendar && (
+                <DateRangeWrapper>
+                  <DatePicker
+                    locale={ko}
+                    date={new Date(tempEnd)}
+                    onChange={(date) => {
+                      const offsetDate = new Date(
+                        date.getTime() + 9 * 60 * 60 * 1000
+                      ); // ✅ KST 보정
+                      const localDateStr = offsetDate
+                        .toISOString()
+                        .split("T")[0];
+                      setTempEnd(localDateStr); // ✅ 종료일 설정
+                      setOpenEndCalendar(false);
+                    }}
+                  />
+                </DateRangeWrapper>
+              )}
+            </DateInputGroup>
 
             <QuickRangeButtonContainer>
               <QuickRangeButton onClick={() => handleQuickRange("today")}>
@@ -263,12 +342,8 @@ export default function WrongNoteUI(props) {
             </QuickRangeButtonContainer>
 
             <DateModalButtons>
-              <ModalButton onClick={() => setIsDateModalOpen(false)}>
-                취소
-              </ModalButton>
-              <ModalButton onClick={handleApplyDateFilter}>
-                적용하기
-              </ModalButton>
+              <button onClick={() => setIsDateModalOpen(false)}>취소</button>
+              <button onClick={handleApplyDateFilter}>확인</button>
             </DateModalButtons>
           </DateModalContent>
         </DateModalBackdrop>

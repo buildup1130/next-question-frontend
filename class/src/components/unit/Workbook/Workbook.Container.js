@@ -6,7 +6,7 @@ import {
   searchAllWorkBooks,
   moveQuestions,
   getWorkbookQuestions,
-  fetchQuestionType, // ✅ 문제 수 가져오기 함수 추가
+  fetchQuestionType,
 } from "@/utils/WorkbookManager";
 import WorkbookUI from "./Workbook.Presenter";
 import MoveModal from "@/components/unit/MoveModal/MoveModal.Container";

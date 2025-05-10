@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import SignUpUI from "./SignUp.Presenter";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function SignUpLogic() {
   const router = useRouter();
@@ -44,7 +45,7 @@ export default function SignUpLogic() {
       );
 
       if (response.status === 201) {
-        alert("회원가입 성공!");
+        toast.success("회원가입 성공! 다시 로그인해 주세요."); // ✅ 변경된 부분
         router.push("/Login");
       } else {
         throw new Error("회원가입 실패");

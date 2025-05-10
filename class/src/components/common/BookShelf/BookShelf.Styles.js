@@ -280,16 +280,6 @@ export const Card = styled.div`
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 `;
 
-export const CardTop = styled.div`
-  position: relative;
-  background-color: #dce6ff;
-  height: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 24px;
-`;
-
 export const CardBottom = styled.div`
   background-color: white;
   padding: 12px;
@@ -301,6 +291,15 @@ export const CardBottom = styled.div`
 export const CardTitle = styled.div`
   font-weight: bold;
   margin-bottom: 4px;
+`;
+
+export const CardTop = styled.div`
+  position: relative;
+  background-color: #eef0ff;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const CardInfo = styled.div`

@@ -1,3 +1,4 @@
+// ✅ WrongNote.Styles.js
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
@@ -39,11 +40,18 @@ export const DateHeader = styled.div`
 `;
 
 export const CalendarButton = styled.button`
-  margin-left: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 6px;
   background: transparent;
   border: none;
-  font-size: 20px;
   cursor: pointer;
+  padding: 0;
+
+  svg {
+    vertical-align: middle;
+  }
 `;
 
 export const FilterBar = styled.div`
@@ -102,48 +110,6 @@ export const CheckBox = styled.input`
   cursor: pointer;
 `;
 
-export const DateTitle = styled.div`
-  background-color: #e4e7ff;
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-weight: bold;
-  font-size: 14px;
-  margin-bottom: 12px;
-  color: #333;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-`;
-
-export const QuestionItem = styled.div`
-  padding: 10px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid #f0f0f0;
-
-  &:first-child {
-    border-top: none;
-  }
-
-  span.title {
-    font-size: 14px;
-    color: #333;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    flex: 1;
-  }
-
-  span.type {
-    margin-left: 12px;
-    color: #7f7f7f;
-    font-size: 13px;
-    flex-shrink: 0;
-  }
-`;
-
 export const AgainButton = styled.button`
   position: fixed;
   bottom: 64px;
@@ -186,6 +152,30 @@ export const ModalBackdrop = styled.div`
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
   z-index: 9999;
+`;
+
+export const DateModalBackdrop = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+`;
+
+export const DateModalContent = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  background: white;
+  padding: 24px 20px;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 `;
 
 export const ModalContent = styled.div`
@@ -234,79 +224,104 @@ export const OptionItem = styled.li`
   line-height: 1.5;
 `;
 
-export const DateModalBackdrop = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 999;
+export const DateRangeWrapper = styled.div`
+  margin-top: 8px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+  .rdrCalendarWrapper {
+    font-family: inherit;
+    border-radius: 12px;
+  }
+
+  .rdrDayNumber span {
+    font-size: 13px;
+  }
+
+  .rdrDayToday .rdrDayNumber span {
+    border-bottom: none;
+  }
+
+  .rdrSelected {
+    background: #808fff;
+  }
+
+  .rdrInRange,
+  .rdrStartEdge,
+  .rdrEndEdge {
+    background: #cfd4ff;
+  }
 `;
 
-export const DateModalContent = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 24px 20px;
-  width: 90%;
-  max-width: 360px;
-  border-radius: 20px;
-  box-sizing: border-box;
-  z-index: 1000;
+export const DateInputGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
+  margin-bottom: 16px; // ✅ 간격 증가
+`;
+
+export const DateInputLabel = styled.label`
+  font-size: 13px;
+  color: #000000;
 `;
 
 export const DateInput = styled.input`
   width: 100%;
-  padding: 10px;
+  padding: 10px 14px;
   font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: #ffffff;
   box-sizing: border-box;
+  color: #8c8b81;
 `;
 
 export const DateModalButtons = styled.div`
   display: flex;
-  justify-content: space-between;
   gap: 12px;
+  margin-top: 16px; // ✅ 버튼 위 간격 추가
 
-  & > button:first-child {
-    background: #e0e0e0;
-    color: #333;
+  button {
+    flex: 1;
+    padding: 12px 0;
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
   }
 
-  & > button:last-child {
+  button:first-child {
+    background: #eeeeee;
+    color: #444444;
+  }
+
+  button:last-child {
     background: #808fff;
     color: white;
   }
 `;
 
 export const QuickRangeButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 8px;
+  margin-bottom: 16px; // ✅ 버튼 아래와 간격
 `;
 
 export const QuickRangeButton = styled.button`
   flex: 1;
   padding: 10px 0;
+  background: #edefff;
   border: none;
-  background: #eef0ff;
-  border-radius: 10px;
-  color: #6f6cf1;
-  font-weight: bold;
+  border-radius: 12px;
+  color: #8c8b81;
   font-size: 13px;
   cursor: pointer;
 
   &:hover {
-    background: #dbe0ff;
+    background: #e1e4f9;
   }
 `;
 

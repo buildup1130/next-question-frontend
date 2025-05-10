@@ -4,6 +4,8 @@ import BookShelfUI from "./BookShelf.Presenter";
 import RenameModalLogic from "../../unit/RenameModal/RenameModal.Container";
 import BookShelfQuestionLogic from "../../unit/BookShelfQuestion/BookShelfQuestion.Container";
 import DeleteWorkbookModalLogic from "../../unit/DeleteModal/DeleteWorkbookModal.Container";
+import { toast } from "react-toastify";
+
 import {
   deleteWorkBooks,
   searchAllWorkBooks,
@@ -98,15 +100,19 @@ export default function BookShelfLogic() {
     if (!token) return;
 
     const validIds = selectedBookIds.filter((id) => !!id);
-    if (validIds.length === 0) return alert("삭제할 문제집이 없습니다.");
+    if (validIds.length === 0) {
+      toast.warn("삭제할 문제집이 없습니다.");
+      return;
+    }
 
     try {
       await deleteWorkBooks(token, validIds);
       await fetchWorkBooks();
       setSelectedBookIds([]);
       setIsSelectMode(false);
+      toast.success("선택한 문제집이 삭제되었습니다.");
     } catch (err) {
-      alert("삭제 중 오류 발생");
+      toast.error("문제집 삭제 중 오류가 발생했습니다.");
     }
   };
 
@@ -117,11 +123,13 @@ export default function BookShelfLogic() {
 
   const confirmDelete = async () => {
     if (!token || !deleteTarget || !deleteTarget.id) return;
+
     try {
       await deleteWorkBooks(token, [deleteTarget.id]);
       await fetchWorkBooks();
+      toast.success("문제집이 삭제되었습니다.");
     } catch {
-      alert("삭제 중 오류 발생");
+      toast.error("문제집 삭제 중 오류가 발생했습니다.");
     } finally {
       setIsDeleteModalOpen(false);
       setDeleteTarget(null);
@@ -129,14 +137,26 @@ export default function BookShelfLogic() {
   };
 
   const handleCreateWorkbook = async () => {
-    if (!newWorkbookTitle.trim()) return alert("문제집 이름을 입력해주세요.");
+    if (!newWorkbookTitle.trim()) {
+      toast.error("문제집 이름을 입력해주세요.");
+      return;
+    }
+
     try {
       await createWorkbook(token, newWorkbookTitle.trim());
+      toast.success("새 문제집이 추가됐습니다!");
       setCreateModalOpen(false);
       setNewWorkbookTitle("");
       await fetchWorkBooks();
-    } catch {
-      alert("문제집 생성 실패");
+    } catch (err) {
+      if (
+        err?.response?.data?.message?.includes("이미 존재") || // 백엔드 메시지 기반
+        err?.message?.includes("already exists")
+      ) {
+        toast.error("이미 존재하는 문제집입니다.");
+      } else {
+        toast.error("문제집 생성 실패");
+      }
     }
   };
 
@@ -146,7 +166,7 @@ export default function BookShelfLogic() {
         alert("문제집이 비어있습니다!");
         return;
       }
-      setCurBook({ id: book.id, items: book.items,name:book.title });
+      setCurBook({ id: book.id, items: book.items, name: book.title });
       setSequence(1);
       setIsLearningModalOpen(true);
     } else if (action === "rename") {
@@ -211,7 +231,7 @@ export default function BookShelfLogic() {
         ox: selectedType.includes(1) ? "true" : "false",
         multiple: selectedType.includes(0) ? "true" : "false",
         blank: selectedType.includes(2) ? "true" : "false",
-        title:  titles.join(",")
+        title: titles.join(","),
       },
     });
   };
@@ -260,9 +280,9 @@ export default function BookShelfLogic() {
     );
 
     const selectedTitles = [];
-    selectedBooks.map((data,index) => {
+    selectedBooks.map((data, index) => {
       selectedTitles.push(data.title);
-    })
+    });
 
     console.log(selectedTitles);
 
@@ -273,7 +293,11 @@ export default function BookShelfLogic() {
 
     await onFetchType(selectedBookIds);
 
-    setCurBook({ id: selectedBookIds, items: totalQuestions, name:selectedTitles});
+    setCurBook({
+      id: selectedBookIds,
+      items: totalQuestions,
+      name: selectedTitles,
+    });
     setSequence(1);
     setIsLearningModalOpen(true);
   };
