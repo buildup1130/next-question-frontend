@@ -53,12 +53,17 @@ export const Password = styled.div`
 export const InputField = styled.input`
   width: 80%;
   height: 40px;
-  padding: 8px 12px;
+  padding: 1px 8px 10px;
   border: 1px solid #ccc;
   border-radius: 6px;
   background-color: white;
   font-size: 14px;
   outline: none;
+
+  &::placeholder {
+    font-size: 12px;
+    color: #aaa;
+  }
 `;
 
 export const KeepLoginWrapper = styled.div`

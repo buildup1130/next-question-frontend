@@ -45,13 +45,37 @@ export const FillForm = styled.form`
 export const InputField = styled.input`
   width: 80%;
   height: 40px;
-  padding: 8px 12px;
+  padding: 10px 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
   background-color: white;
   font-size: 14px;
   outline: none;
   margin-bottom: 20px;
+
+  &::placeholder {
+    font-size: 12px;
+    color: #aaa;
+    line-height: 1; // ✅ placeholder가 너무 아래로 내려가지 않게
+  }
+`;
+
+export const InputFieldSmallPlaceholder = styled.input`
+  width: 80%;
+  height: 40px;
+  padding: 1px 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: white;
+  font-size: 14px;
+  outline: none;
+  margin-bottom: 20px;
+
+  &::placeholder {
+    font-size: 12px;
+    color: #aaa;
+    line-height: 1;
+  }
 `;
 
 export const ErrorMessage = styled.p`

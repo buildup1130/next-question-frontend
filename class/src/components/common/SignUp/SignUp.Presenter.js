@@ -31,7 +31,7 @@ export default function SignUpUI({ form, onChange, onSubmit, errors }) {
 
   return (
     <SignUpContainer>
-      <BackButton onClick={() => router.push("/")}>
+      <BackButton onClick={() => router.push("/Login")}>
         <BackIcon />
       </BackButton>
 

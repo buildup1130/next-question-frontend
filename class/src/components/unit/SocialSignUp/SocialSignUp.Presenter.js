@@ -8,6 +8,7 @@ import {
   Logo,
   FillForm,
   InputField,
+  InputFieldSmallPlaceholder,
   ErrorMessage,
   SubmitButton,
 } from "./SocialSignUp.Styles";
@@ -25,7 +26,7 @@ export default function SocialSignUpUI({
 
   return (
     <SignUpContainer>
-      <BackButton onClick={() => router.push("/")}>
+      <BackButton onClick={() => router.push("/Login")}>
         <BackIcon />
       </BackButton>
 
@@ -33,15 +34,20 @@ export default function SocialSignUpUI({
         <Logo src="/image/Logo.png" alt="logo" />
 
         <FillForm onSubmit={onSubmit}>
-          <InputField value={email} disabled />
-
           <InputField
+            type="email"
+            name="email"
+            value={email}
+            readOnly
+            placeholder="이메일"
+          />
+
+          <InputFieldSmallPlaceholder
             type="text"
             name="nickname"
             value={nickname}
             onChange={onChange}
             placeholder="닉네임"
-            required
           />
 
           {error && <ErrorMessage>{error}</ErrorMessage>}

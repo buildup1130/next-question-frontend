@@ -55,8 +55,13 @@ export const InputField = styled.input`
   border-radius: 6px;
   font-size: 14px;
   outline: none;
-  padding: 12px;
+  padding: 1px 8px 10px; // top padding을 줄이고, bottom을 조금 줘서 placeholder 위로
   box-sizing: border-box;
+
+  &::placeholder {
+    font-size: 12px;
+    color: #aaa;
+  }
 `;
 
 export const ErrorMessage = styled.p`

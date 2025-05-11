@@ -162,8 +162,10 @@ export default function WrongNoteUI(props) {
                 }}
               >
                 <WorkbookName>
-                  {formattedTime} {book.workbook}
+                  <div className="title">{book.workbook}</div>
+                  <div className="date">{formattedTime}</div>
                 </WorkbookName>
+
                 <WorkbookRight>
                   <WorkbookCount>{book.total}문제</WorkbookCount>
                   {isSelectMode ? (
@@ -178,6 +180,7 @@ export default function WrongNoteUI(props) {
                   )}
                 </WorkbookRight>
               </WorkbookRow>
+
               <Divider />
             </div>
           );

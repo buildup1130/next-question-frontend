@@ -1,5 +1,3 @@
-// ✅ BookShelfUI.jsx (BookIcon 제거 및 CardTop의 SVG 관련 코드 삭제됨)
-
 import {
   Container,
   Header,
@@ -34,9 +32,15 @@ import {
   CardActions,
   TileTopRightButton,
   PlusCard,
+  BookInfoLeft,
+  BookTitle,
+  BookDate,
+  BookInfoRight,
+  BookCount,
 } from "./BookShelf.Styles";
 
 import { useState } from "react";
+import { WorkBookIcon } from "@/utils/SvgProvider";
 
 export default function BookShelfUI({
   books,
@@ -72,11 +76,8 @@ export default function BookShelfUI({
       <TileItem key={book.id} onClick={() => onClickBook(book)}>
         <Card>
           <CardTop>
-            <img
-              src="/public/image/book_icon.png"
-              alt="책 아이콘"
-              style={{ width: "32px", height: "32px" }}
-            />
+            <WorkBookIcon size={32} color="#6D78FF" />
+
             {isSelectMode && !isLearningModalOpen ? (
               <TileTopRightButton onClick={(e) => e.stopPropagation()}>
                 <BookCheckbox
@@ -170,33 +171,34 @@ export default function BookShelfUI({
     const isSelected = selectedBookIds.includes(book.id);
     return (
       <BookItem key={book.id} onClick={() => onClickBook(book)}>
-        <div>
-          <div>{book.title}</div>
-          <div style={{ fontSize: "14px", color: "#666" }}>
-            {book.items}문제, 최근 학습일: {book.date}
-          </div>
-        </div>
+        <BookInfoLeft>
+          <BookTitle>{book.title}</BookTitle>
+          <BookDate>최근 학습일: {book.date}</BookDate>
+        </BookInfoLeft>
 
-        {isSelectMode && !isLearningModalOpen ? (
-          <BookCheckbox
-            type="checkbox"
-            checked={isSelected}
-            onChange={() => {}}
-            onClick={(e) => {
-              e.stopPropagation();
-              onClickBook(book);
-            }}
-          />
-        ) : !isSelectMode && !isLearningModalOpen ? (
-          <MoreButton
-            onClick={(e) => {
-              e.stopPropagation();
-              setOptionOpenId(book.id === optionOpenId ? null : book.id);
-            }}
-          >
-            ⋮
-          </MoreButton>
-        ) : null}
+        <BookInfoRight>
+          <BookCount>{book.items}문제</BookCount>
+          {isSelectMode && !isLearningModalOpen ? (
+            <BookCheckbox
+              type="checkbox"
+              checked={isSelected}
+              onChange={() => {}}
+              onClick={(e) => {
+                e.stopPropagation();
+                onClickBook(book);
+              }}
+            />
+          ) : !isSelectMode && !isLearningModalOpen ? (
+            <MoreButton
+              onClick={(e) => {
+                e.stopPropagation();
+                setOptionOpenId(book.id === optionOpenId ? null : book.id);
+              }}
+            >
+              ⋮
+            </MoreButton>
+          ) : null}
+        </BookInfoRight>
 
         {!isSelectMode && optionOpenId === book.id && !isLearningModalOpen && (
           <OptionPopup>
@@ -295,7 +297,15 @@ export default function BookShelfUI({
 
       {viewType === "list" ? (
         <>
-          <BookList>{books.map(renderListItem)}</BookList>
+          <BookList>
+            {books.map((book, idx) => (
+              <div key={book.id}>
+                {renderListItem(book)}
+                {idx < books.length - 1 && <Divider />} {/* 마지막엔 생략 */}
+              </div>
+            ))}
+          </BookList>
+
           <AddBookArea onClick={onOpenCreateModal}>＋</AddBookArea>
         </>
       ) : (

@@ -19,24 +19,32 @@ export const Wrapper = styled.div`
 
 export const Header = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   position: relative;
+  height: 48px;
 `;
 
 export const BackButton = styled.button`
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
   position: absolute;
   left: 0;
+  top: 50%;
+  transform: translateY(-40%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
 `;
 
 export const Title = styled.h1`
-  font-size: 18px;
-  font-weight: bold;
-  margin: 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
 `;
 
 export const Divider = styled.hr`
@@ -64,7 +72,7 @@ export const ToggleAnswerButton = styled.button`
   border: 1px solid #b3bcff;
   color: white;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 500;
   cursor: pointer;
 `;
 
@@ -86,7 +94,7 @@ export const QuestionTextWrapper = styled.div`
 `;
 
 export const QuestionTitle = styled.div`
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   margin-bottom: 16px;
   display: flex;
@@ -105,13 +113,13 @@ export const Option = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 15px;
+  font-size: 12px;
 `;
 
 export const OptionNumber = styled.div`
-  width: 20px;
-  height: 20px;
-  font-size: 13px;
+  width: 18px;
+  height: 18px;
+  font-size: 14px;
   background-color: ${(props) => (props.isAnswer ? "#808fff" : "#f3f4f6")};
   color: ${(props) => (props.isAnswer ? "#fff" : "#999")};
   border-radius: 5px;
@@ -122,19 +130,20 @@ export const OptionNumber = styled.div`
 `;
 
 export const Answer = styled.div`
-  font-size: 16px;
+  font-size: 14px;
+  line-height: 1.2;
   color: #333;
   margin-top: 12px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 2px;
   min-height: 24px;
 `;
 
 export const AnswerLabel = styled.div`
-  width: 20px;
-  height: 20px;
-  font-size: 13px;
+  width: 18px;
+  height: 18px;
+  font-size: 14px;
   font-weight: bold;
   background-color: #808fff;
   color: white;

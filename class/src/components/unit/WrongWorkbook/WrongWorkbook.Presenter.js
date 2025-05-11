@@ -16,6 +16,7 @@ import {
   Answer,
   AnswerLabel,
 } from "./WrongWorkbook.Styles";
+import { BackIcon } from "@/utils/SvgProvider";
 
 export default function WrongWorkbookUI({
   title,
@@ -27,10 +28,12 @@ export default function WrongWorkbookUI({
   return (
     <Wrapper>
       <Header>
-        <BackButton onClick={onBack}>←</BackButton>
+        <BackButton onClick={onBack}>
+          <BackIcon />
+        </BackButton>
+
         <Title>{title}</Title>
       </Header>
-      <Divider />
 
       <ControlBar>
         <ToggleAnswerButton onClick={() => setShowAnswer((prev) => !prev)}>
