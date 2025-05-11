@@ -123,7 +123,7 @@ export const OptionItem = styled.div`
   border: 1px solid ${(props) => {
     // 최근 제출한 선택지의 답에 따른 색 조정
     if(props.curAns){
-     const tmpColor = props.isRightAnswer? "#2fafff": "#721c24";
+     const tmpColor = props.isRightAnswer? "#2fafff": "red";
      return tmpColor;
     }
     // 최근 선택한 선택지 색 조정 
@@ -135,7 +135,7 @@ export const OptionItem = styled.div`
 
   color: ${(props) =>{
     if(props.curAns){
-     const tmpColor = props.isRightAnswer? "#2fafff": "#721c24";
+     const tmpColor = props.isRightAnswer? "#2fafff": "red";
      return tmpColor;
     }
     else{

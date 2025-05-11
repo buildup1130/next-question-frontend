@@ -755,7 +755,7 @@ const ResultDetails = (props) => {
                   alignItems:"center",
                   justifyContent:"flex-end",
                   gap: "4px",
-                  color:"red"
+                  color:"#2fafff"
                 }}>
                   정답: {question.type === "OX"?question.answer==="0"?"O":"X":question.answer}
                 </div>
