@@ -561,11 +561,33 @@ const ResultSummary = (props) => {
   const min = props.totalTime < 60?0:Math.floor(props.totalTime/60);
   const sec = props.totalTime % 60;
 
+  const [currentRate, setCurrentRate] = useState(0);
+  useEffect(() => {
+    const startTime = Date.now();
+    const duration = 1000; // 2초
+    const startValue = currentRate;
+    const endValue = matchRate;
+    
+    const animateValue = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      const newValue = startValue + (endValue - startValue) * progress;
+      setCurrentRate(newValue);
+      
+      if (progress < 1) {
+        requestAnimationFrame(animateValue);
+      }
+    };
+    
+    requestAnimationFrame(animateValue);
+  }, [matchRate]);  
+
   return(
     <QuestionSolve__ResultContainer>
       <QuestionSolve__RateContainer>
         <QuestionSolve__RateContainer__Rate
-          matchRate = {matchRate}
+          matchRate = {Math.round(currentRate)}
         >
           <QuestionSolve__RateContainer__Percentage>
             <QuestionSolve__RateContainer__subtitle>정답률</QuestionSolve__RateContainer__subtitle>

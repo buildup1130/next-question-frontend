@@ -374,9 +374,8 @@ export const GenerateShelf__Shelf__Subtitle = styled.div`
   width:100%;
 
   font-size:16px;
-  padding:5px 10px;
+  padding:5px 12px;
 
-  border-top:1px solid #ebeaea;
 `
 
 export const GenerateShelf__Shelf__CountContainer = styled.div`
@@ -413,7 +412,7 @@ export const GenerateShelf__Shelf__StyledSelect = styled.div`
   gap: 8px;
   border: none;
   background: transparent;
-  padding: 4px 8px;
+  padding: 4px 0;
   cursor: pointer;
   outline: none;
 `;

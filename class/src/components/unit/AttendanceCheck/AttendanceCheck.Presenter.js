@@ -1,5 +1,6 @@
 import { CheckedIcon } from "@/utils/SvgProvider";
-import { Attendance__Component, Attendance__Container, Attendance__Title } from "./AttendanceCheck.Styles";
+import { Attendance__Component, Attendance__Container, Attendance__Title,Attendance__Component__UnChecked } from "./AttendanceCheck.Styles";
+import { useEffect, useState } from "react";
 
 export default function AttendanceCheckUI({
     onClickAttend,
@@ -7,6 +8,18 @@ export default function AttendanceCheckUI({
     isAttended,
     today
 }){
+    const [isAnimating, setIsAnimating] = useState(false);
+
+    useEffect(() => {
+    setIsAnimating(true);
+    
+    // 애니메이션을 주기적으로 반복
+    const interval = setInterval(() => {
+      setIsAnimating(prev => !prev);
+    }, 2000); // 2초마다 애니메이션 상태 토글
+    
+    return () => clearInterval(interval);
+  }, [])
 
     return(
         <Attendance__Container>
@@ -35,14 +48,14 @@ export default function AttendanceCheckUI({
                     //출석 이전
                     else{
                         return(
-                        <Attendance__Component
-                            style={{width:"12%", backgroundColor:"#8D9BFF", cursor:"pointer", color:"white"}}
+                        <Attendance__Component__UnChecked
                             $attended = {attended}
                             onClick={onClickAttend}
                             key = {index}
+                            isAnimating = {isAnimating}
                         >
                             출석
-                        </Attendance__Component>
+                        </Attendance__Component__UnChecked>
                         )
                     }
                 }
