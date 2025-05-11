@@ -557,6 +557,43 @@ const LoadingModal = () => {
 }
 
 const ResultSummary = (props) => {
+  // 이징 함수들
+  const easingFunctions = {
+    // 선형 (기본)
+    linear: t => t,
+    
+    // 부드러운 시작
+    easeInQuad: t => t * t,
+    easeInCubic: t => t * t * t,
+    
+    // 부드러운 종료
+    easeOutQuad: t => t * (2 - t),
+    easeOutCubic: t => (--t) * t * t + 1,
+    
+    // 부드러운 시작과 종료
+    easeInOutQuad: t => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t,
+    easeInOutCubic: t => t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1,
+    
+    // 탄성 효과
+    easeOutElastic: t => {
+      const p = 0.3;
+      return Math.pow(2, -10 * t) * Math.sin((t - p / 4) * (2 * Math.PI) / p) + 1;
+    },
+    
+    // 바운스 효과
+    easeOutBounce: t => {
+      if (t < (1 / 2.75)) {
+        return 7.5625 * t * t;
+      } else if (t < (2 / 2.75)) {
+        return 7.5625 * (t -= (1.5 / 2.75)) * t + 0.75;
+      } else if (t < (2.5 / 2.75)) {
+        return 7.5625 * (t -= (2.25 / 2.75)) * t + 0.9375;
+      } else {
+        return 7.5625 * (t -= (2.625 / 2.75)) * t + 0.984375;
+      }
+    }
+};
+
   const matchRate = Math.floor(props.match/props.number * 100);
   const min = props.totalTime < 60?0:Math.floor(props.totalTime/60);
   const sec = props.totalTime % 60;
@@ -564,15 +601,19 @@ const ResultSummary = (props) => {
   const [currentRate, setCurrentRate] = useState(0);
   useEffect(() => {
     const startTime = Date.now();
-    const duration = 1000; // 2초
+    const duration = 1500; // 2초
     const startValue = currentRate;
     const endValue = matchRate;
+
+    const easingFunction = easingFunctions.easeInOutCubic;
     
     const animateValue = () => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / duration, 1);
+
+      const easedProgress = easingFunction(progress)
       
-      const newValue = startValue + (endValue - startValue) * progress;
+      const newValue = startValue + (endValue - startValue) * easedProgress;
       setCurrentRate(newValue);
       
       if (progress < 1) {
