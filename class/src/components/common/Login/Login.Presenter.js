@@ -1,21 +1,24 @@
 import { useRouter } from "next/router";
+import { BackIcon } from "@/utils/SvgProvider";
+
 import {
   LoginContainer,
-  Password,
+  FormWrapper,
+  BackButton,
+  Logo,
   UserID,
-  LoginButton,
+  Password,
   InputField,
-  ErrorMessageWrapper,
+  KeepLoginWrapper,
+  KeepLoginCheckbox,
+  KeepLoginLabel,
   ErrorMessage,
+  LoginButton,
+  LoginSubText,
+  DividerWithText,
   GoogleLoginButtonWrapper,
   GoogleLoginButton,
   GoogleIcon,
-  Logo,
-  BackButton,
-  LoginTitle,
-  LoginSubText,
-  DividerWithText,
-  FormWrapper,
 } from "./Login.Styles";
 
 export default function LoginUI({
@@ -27,27 +30,15 @@ export default function LoginUI({
   onSignUp,
   error,
   handleSocialLogin,
+  keepLogin,
+  onChangeKeepLogin,
 }) {
   const router = useRouter();
 
   return (
     <LoginContainer>
       <BackButton onClick={() => router.push("/")}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M15 19l-7-7 7-7"
-          />
-        </svg>
+        <BackIcon />
       </BackButton>
 
       <FormWrapper>
@@ -61,6 +52,7 @@ export default function LoginUI({
             onChange={onUsernameChange}
           />
         </UserID>
+
         <Password>
           <InputField
             type="password"
@@ -70,11 +62,20 @@ export default function LoginUI({
           />
         </Password>
 
-        <ErrorMessageWrapper>
-          {error && <ErrorMessage>{error}</ErrorMessage>}
-        </ErrorMessageWrapper>
+        <KeepLoginWrapper>
+          <KeepLoginCheckbox
+            type="checkbox"
+            checked={keepLogin}
+            onChange={onChangeKeepLogin}
+            id="keepLogin"
+          />
+          <KeepLoginLabel htmlFor="keepLogin">로그인 상태 유지</KeepLoginLabel>
+        </KeepLoginWrapper>
+
+        {error && <ErrorMessage>{error}</ErrorMessage>}
 
         <LoginButton onClick={onLogin}>로그인</LoginButton>
+
         <LoginSubText>
           계정이 없으신가요? <span onClick={onSignUp}>회원가입</span>
         </LoginSubText>

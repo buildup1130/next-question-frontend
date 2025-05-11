@@ -10,20 +10,32 @@ export default function LoginLogic() {
 
   const [userId, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [keepLogin, setKeepLogin] = useState(false);
   const [error, setError] = useState("");
 
-  const handleUsernameChange = (event) => setUsername(event.target.value);
-  const handlePasswordChange = (event) => setPassword(event.target.value);
+  const handleUsernameChange = (e) => setUsername(e.target.value);
+  const handlePasswordChange = (e) => setPassword(e.target.value);
+  const handleKeepLoginChange = () => setKeepLogin((prev) => !prev);
 
   const handleLogin = async () => {
     setError("");
 
+    // console.log("로그인 요청 데이터:", {
+    //   userId,
+    //   password,
+    //   keepLogin,
+    // });
+
     try {
       const response = await axios.post(
         "http://localhost:8080/public/member/login/local",
-        { userId, password }
+        {
+          userId,
+          password,
+          keepLogin,
+        }
       );
-      console.log("response = ",response);
+
       login(
         {
           userId,
@@ -36,7 +48,6 @@ export default function LoginLogic() {
 
       router.push("/");
     } catch (error) {
-      console.error("로그인 실패:", error.response?.data || error.message);
       setError("로그인 실패! 아이디와 비밀번호를 확인하세요.");
     }
   };
@@ -48,9 +59,8 @@ export default function LoginLogic() {
       const response = await axios.post(
         "http://localhost:8080/public/oauth2/google"
       );
-      window.location.href = response.data; // 리턴된 구글 로그인 URL로 이동
+      window.location.href = response.data;
     } catch (error) {
-      console.error("소셜 로그인 실패:", error);
       setError("소셜 로그인 중 문제가 발생했습니다.");
     }
   };
@@ -67,6 +77,8 @@ export default function LoginLogic() {
       onSignUp={goToSignUp}
       handleSocialLogin={handleSocialLogin}
       error={error}
+      keepLogin={keepLogin}
+      onChangeKeepLogin={handleKeepLoginChange}
     />
   );
 }

@@ -15,21 +15,50 @@ export default function SignUpLogic() {
     nickname: "",
   });
 
-  const [error, setError] = useState(""); // 에러 메시지 상태 추가
+  const [errors, setErrors] = useState({
+    userId: "",
+    password: "",
+    confirmPassword: "",
+    email: "",
+    nickname: "",
+  });
 
-  // 입력값 변경 핸들러
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  // 회원가입 처리
+  const validateForm = () => {
+    const newErrors = {};
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const allowedDomains = ["gmail.com", "google.com", "naver.com", "daum.net"];
+    const emailParts = form.email.split("@");
+    const domain = emailParts[1];
+
+    if (!form.userId.trim()) newErrors.userId = "아이디를 입력해 주세요.";
+    if (!form.password.trim()) newErrors.password = "비밀번호를 입력해 주세요.";
+    if (form.password !== form.confirmPassword) {
+      newErrors.confirmPassword = "비밀번호가 일치하지 않습니다.";
+    }
+    if (!emailRegex.test(form.email)) {
+      newErrors.email = "올바른 이메일 형식이 아닙니다.";
+    } else if (!domain || !allowedDomains.includes(domain)) {
+      newErrors.email =
+        "gmail.com, naver.com, daum.net 이메일만 사용 가능합니다.";
+    }
+    if (!form.nickname.trim()) newErrors.nickname = "닉네임을 입력해 주세요.";
+
+    return newErrors;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // 기존 에러 초기화
+    setErrors({});
 
-    if (form.password !== form.confirmPassword) {
-      setError("비밀번호가 일치하지 않습니다.");
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
       return;
     }
 
@@ -45,20 +74,35 @@ export default function SignUpLogic() {
       );
 
       if (response.status === 201) {
-        toast.success("회원가입 성공! 다시 로그인해 주세요."); // ✅ 변경된 부분
+        toast.success("회원가입 성공! 로그인해 주세요.");
         router.push("/Login");
       } else {
         throw new Error("회원가입 실패");
       }
     } catch (error) {
-      console.error("회원가입 중 오류 발생:", error);
-      setError("회원가입 중 오류가 발생했습니다. 다시 시도해 주세요.");
-    }
-  };
+      const message =
+        error?.response?.data?.message ||
+        error?.response?.data?.error ||
+        error.message;
 
-  // 로그인 페이지로 이동
-  const handleGoToLogin = () => {
-    router.push("/Login");
+      const newErrors = {};
+
+      if (message?.includes("아이디")) {
+        newErrors.userId = "입력하신 아이디는 이미 사용 중입니다.";
+      }
+      if (message?.includes("이메일")) {
+        newErrors.email = "입력하신 이메일은 이미 사용 중입니다.";
+      }
+      if (message?.includes("닉네임") || message?.includes("별명")) {
+        newErrors.nickname = "입력하신 닉네임은 이미 사용 중입니다.";
+      }
+
+      if (Object.keys(newErrors).length === 0) {
+        toast.error("회원가입 중 오류가 발생했습니다.");
+      }
+
+      setErrors((prev) => ({ ...prev, ...newErrors }));
+    }
   };
 
   return (
@@ -66,8 +110,7 @@ export default function SignUpLogic() {
       form={form}
       onChange={handleChange}
       onSubmit={handleSubmit}
-      onSignUpClick={handleGoToLogin}
-      error={error} // 에러 메시지를 UI에 전달
+      errors={errors}
     />
   );
 }

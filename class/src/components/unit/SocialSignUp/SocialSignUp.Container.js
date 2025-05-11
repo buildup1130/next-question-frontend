@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function SocialSignUpLogic() {
   const router = useRouter();
+
   const [email, setEmail] = useState(null);
   const [nickname, setNickname] = useState("");
   const [error, setError] = useState("");
@@ -15,7 +16,7 @@ export default function SocialSignUpLogic() {
     if (router.isReady && router.query.email) {
       setEmail(router.query.email);
     }
-  }, [router.isReady, router.query]);
+  }, [router.isReady, router.query.email]);
 
   const handleChange = (e) => {
     setNickname(e.target.value);
