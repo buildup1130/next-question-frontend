@@ -34,8 +34,8 @@ export const UploadContainer__text = styled.div`
 `;
 
 export const CurrentFilename = styled.div`
-  font-size: 12px;
-  padding-left: 8px;
+  margin-top: 8px;
+  font-size: 16px;
   color: #767676;
 
   overflow: hidden;
