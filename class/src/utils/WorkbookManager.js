@@ -184,6 +184,7 @@ export const moveQuestions = async (
 };
 
 export const fetchQuestionType = async (token, idArr) => {
+  console.log(idArr);
   if (typeof idArr !== "object") {
     idArr = [idArr];
   }

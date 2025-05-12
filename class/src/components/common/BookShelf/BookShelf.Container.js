@@ -202,7 +202,9 @@ export default function BookShelfLogic() {
 
   const onFetchType = async (ids) => {
     const total = { multipleChoice: 0, ox: 0, fillInTheBlank: 0 };
-    for (const id of ids) {
+    const idArr = Array.isArray(ids) ? ids : [ids];
+    for (const id of idArr) {
+      console.log(id);
       const res = await fetchQuestionType(token, id);
       total.multipleChoice += res.multipleChoice;
       total.ox += res.ox;
@@ -214,7 +216,7 @@ export default function BookShelfLogic() {
 
   const onClickLearning = () => {
     if (!token || !curBook?.id || selectedType.length === 0)
-      return alert("잘못된 접근입니다.");
+      return toast.error("잘못된 접근입니다.",{position:"top-center"});
     const typeMap = [
       { type: 0, count: typeNum.multipleChoice },
       { type: 1, count: typeNum.ox },
@@ -225,6 +227,10 @@ export default function BookShelfLogic() {
         selectedType.includes(type) ? sum + count : sum,
       0
     );
+    console.log(`문제 수 ${count} 총 문제 수 ${total}`);
+    if(count > total){
+      return toast.error("선택한 타입의 문제수가 적습니다.",{position:"top-center"})
+    }
     const ids = Array.isArray(curBook.id) ? curBook.id : [curBook.id];
     const titles = Array.isArray(curBook.name) ? curBook.name : [curBook.name];
     setSequence(0);

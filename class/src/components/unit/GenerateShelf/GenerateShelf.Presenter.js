@@ -44,8 +44,10 @@ import {
   GenerateShelf__Shelf__SelectContainer,
   GenerateShelf__Shelf__StyledSelect,
 } from './GenerateShelf.Styles';
+import CustomSelectLogic from '../CustomSelect/CustomSelect.Container';
 import { DocsIcon } from '@/utils/SvgProvider';
 import { useState } from 'react';
+
 import dynamic
  from 'next/dynamic';
 
@@ -119,13 +121,13 @@ const TypeModal = (props) => {
       </GenerateShelf__typeContainer>
       <GenerateShelf__Shelf__CountContainer>
         <div>질문 수</div>
-        <CustomSelect
-          options={[5, 10, 15, 20, 25, 30]}
+        <CustomSelectLogic
+          options={props.numArr}
           defaultValue={5}
           onChange={(value) => {
             props.setQuestionCount(value);
           }}
-        ></CustomSelect>
+        ></CustomSelectLogic>
       </GenerateShelf__Shelf__CountContainer>
       <GenerateShelf__Shelf__ButtonContainer>
         <GenerateShelf__Shelf__submitButton
@@ -451,52 +453,52 @@ const LoadingModal = () => {
   );
 };
 
-// 커스텀 셀렉트트
-const CustomSelect = ({
-  options,
-  defaultValue,
-  onChange,
-  optionContainerStyle,
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState(
-    defaultValue || options[0]
-  );
+// // 커스텀 셀렉트트
+// const CustomSelect = ({
+//   options,
+//   defaultValue,
+//   onChange,
+//   optionContainerStyle,
+// }) => {
+//   const [isOpen, setIsOpen] = useState(false);
+//   const [selectedValue, setSelectedValue] = useState(
+//     defaultValue || options[0]
+//   );
 
-  const toggleSelect = () => {
-    setIsOpen(!isOpen);
-  };
+//   const toggleSelect = () => {
+//     setIsOpen(!isOpen);
+//   };
 
-  const handleSelect = (option) => {
-    setSelectedValue(option);
-    setIsOpen(false);
-    if (onChange) onChange(option);
-  };
+//   const handleSelect = (option) => {
+//     setSelectedValue(option);
+//     setIsOpen(false);
+//     if (onChange) onChange(option);
+//   };
 
-  return (
-    <GenerateShelf__Shelf__SelectContainer onClick={toggleSelect}>
-      <GenerateShelf__Shelf__StyledSelect>
-        {selectedValue}
-        <GenerateShelf__Shelf__Arrow isOpen={isOpen}>
-          <DownIcon></DownIcon>
-        </GenerateShelf__Shelf__Arrow>
-      </GenerateShelf__Shelf__StyledSelect>
-      <GenerateShelf__Shelf__OptionContainer
-        isOpen={isOpen}
-        style={optionContainerStyle}
-      >
-        {options.map((option, index) => (
-          <GenerateShelf__Shelf__Option
-            key={index}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleSelect(option);
-            }}
-          >
-            {option}
-          </GenerateShelf__Shelf__Option>
-        ))}
-      </GenerateShelf__Shelf__OptionContainer>
-    </GenerateShelf__Shelf__SelectContainer>
-  );
-};
+//   return (
+//     <GenerateShelf__Shelf__SelectContainer onClick={toggleSelect}>
+//       <GenerateShelf__Shelf__StyledSelect>
+//         {selectedValue}
+//         <GenerateShelf__Shelf__Arrow isOpen={isOpen}>
+//           <DownIcon></DownIcon>
+//         </GenerateShelf__Shelf__Arrow>
+//       </GenerateShelf__Shelf__StyledSelect>
+//       <GenerateShelf__Shelf__OptionContainer
+//         isOpen={isOpen}
+//         style={optionContainerStyle}
+//       >
+//         {options.map((option, index) => (
+//           <GenerateShelf__Shelf__Option
+//             key={index}
+//             onClick={(e) => {
+//               e.stopPropagation();
+//               handleSelect(option);
+//             }}
+//           >
+//             {option}
+//           </GenerateShelf__Shelf__Option>
+//         ))}
+//       </GenerateShelf__Shelf__OptionContainer>
+//     </GenerateShelf__Shelf__SelectContainer>
+//   );
+// };

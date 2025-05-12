@@ -55,7 +55,7 @@ export default function IndexPageUI({
         <Home__IconBar__Login>
           {!isAuthenticated
             ? "로그인이 필요합니다."
-            : user.nickname + " 님 환영합니다."}
+            : user.nickname + "님 환영합니다."}
             <Home__IconBar__LoginBtn
               onClick={onClickLogin}
             >{!isAuthenticated?"로그인":"로그아웃"}</Home__IconBar__LoginBtn>

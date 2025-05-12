@@ -118,8 +118,14 @@ const checkAnswer = () => {
       setCorrectAnswer(correctAnswer + 1);
       //처음 맞춘 경우
       setAnswerArr([...answerArr,selectedAnswer]);
+    setTimeout(() => {
+      moveToNextQuestion();
+    },300);
     }
     setIsCorrect(true);
+    setTimeout(() => {
+      moveToNextQuestion();
+    },500);
   } else {
     if (!wrongArr.includes(currentQuestion)) {
       setWrongArr([...wrongArr, currentQuestion]);

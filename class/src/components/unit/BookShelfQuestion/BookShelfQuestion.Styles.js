@@ -233,7 +233,10 @@ export const BookShelfQuestion__typeCount = styled.div`
 
 export const BookShelfQuestion__count = styled.div`
   width: 100%;
-  text-align: right;
-  font-size: 14px;
-  color: #9e9e9e;
+  display:flex;
+  justify-content: space-between;
+  align-items:center;
+  margin-top: 20px;
+  padding:0 20px;
+  color:#9e9e9e;
 `;

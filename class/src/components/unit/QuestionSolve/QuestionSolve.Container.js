@@ -76,7 +76,7 @@ export default function QuestionSolveLogic(props) {
           }
         });
       } else {
-        alert("로그인 정보가 없습니다.");
+        // alert("로그인 정보가 없습니다.");
         router.push("/");
       }
     }

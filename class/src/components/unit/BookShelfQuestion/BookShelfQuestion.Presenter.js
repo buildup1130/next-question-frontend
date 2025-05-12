@@ -22,6 +22,7 @@ import {
   BookShelfQuestion__typeCount,
   BookShelfQuestion__count,
 } from "./BookShelfQuestion.Styles";
+import CustomSelectLogic from "../CustomSelect/CustomSelect.Container";
 
 export default function BookShelfQuestionUI(props) {
   return (
@@ -72,7 +73,16 @@ export default function BookShelfQuestionUI(props) {
               </BookShelfQuestion__type>
             ))}
           </BookShelfQuestion__typeContainer>
-          <BookShelfQuestion__count></BookShelfQuestion__count>
+          <BookShelfQuestion__count>
+            <div>문제 수</div>
+            <CustomSelectLogic
+              options = {[5,10,15,20,25,30]}
+              defaultValue={props.curBook.items}
+              onChange={(value) =>{
+                props.setCount(value)
+              }}
+            ></CustomSelectLogic>
+          </BookShelfQuestion__count>
           <BookShelfQuestion__CountContainer>
             <div>모의고사 모드</div>
             <BookShelfQuestion__isTestButton
