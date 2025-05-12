@@ -1,17 +1,20 @@
 import AttendanceCheckUI from "./AttendanceCheck.Presenter";
 import { useRouter } from "next/router";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 export default function AttendanceCheckLogic(
     {
         checkArr
     }
 ){
+    useEffect(() => {
+        
+    },[]);
+
     
     const router = useRouter();
 
     const onClickAttend = () => {
-        
         router.push({
             pathname:"/Question",
             query:{

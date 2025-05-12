@@ -57,7 +57,6 @@ export const Title = styled.h1`
 
 export const QuestionSolve__ProgressBarContainer = styled.div`
   width: 100%;
-  margin-top:10px;
 
   display:flex;
   flex-direction:column;
@@ -65,18 +64,25 @@ export const QuestionSolve__ProgressBarContainer = styled.div`
 `
 
 export const ProgressBar = styled.div`
-  height: 10px;
+  height: 30px;
+
   background-color: #f0f0f0;
-  border-radius: 5px;
+  border-radius: 20px;
   overflow: hidden;
   /* margin-bottom: 20px; */
+  
 `;
 
 export const Progress = styled.div`
   height: 100%;
   width: ${(props) => (props.current / props.total) * 100}%;
+  padding: 0 24px;
   background-color: #808fff;
+  color:white;
   border-radius: 5px;
+
+  display:flex;
+  align-items:center;
 `;
 
 export const ProgressText = styled.div`
@@ -307,6 +313,9 @@ export const QuestionSolve__LoadingWrapper = styled.div`
   display:flex;
   justify-content:center;
   align-items:center;
+
+  background-color:white;
+  padding: 0 10px;
 `
 
 export const QuestionSolve__LoadingContainer = styled.div`
@@ -497,4 +506,14 @@ export const QuestionSolve__ResultDetails__WorkBookTitle = styled.div`
   width:100%;
   font-size: 14px;
   color: #666;
+`
+
+export const Question__Upper = styled.div`
+  width:100%;
+  padding: 0 20px;
+
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  gap:10px;
 `

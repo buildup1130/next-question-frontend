@@ -132,7 +132,7 @@ export default function WorkbookLogic() {
     if (selectedIds.length === 0) return;
 
     try {
-      const res = await fetch("http://localhost:8080/member/questions/delete", {
+      const res = await fetch("/api/member/questions/delete", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

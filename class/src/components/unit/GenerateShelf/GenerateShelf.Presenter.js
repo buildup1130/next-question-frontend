@@ -4,7 +4,7 @@ import {
   RefreshIcon,
   TrashCanIcon,
   XButton,
-} from "@/utils/SvgProvider";
+} from '@/utils/SvgProvider';
 import {
   GenerateShelf__Container,
   GenerateShelf__Shelf,
@@ -43,9 +43,11 @@ import {
   GenerateShelf__Shelf__OptionContainer,
   GenerateShelf__Shelf__SelectContainer,
   GenerateShelf__Shelf__StyledSelect,
-} from "./GenerateShelf.Styles";
-import { DocsIcon } from "@/utils/SvgProvider";
-import { useState } from "react";
+} from './GenerateShelf.Styles';
+import { DocsIcon } from '@/utils/SvgProvider';
+import { useState } from 'react';
+import Lottie from 'lottie-react';
+import loadingAnimation from '@/lotties/generate_loading.json';
 
 export default function GenerateShelfUI(props) {
   return (
@@ -91,7 +93,7 @@ const TypeModal = (props) => {
       </GenerateShelf__Shelf__Title>
       <GenerateShelf__Shelf__Subtitle>문제 유형</GenerateShelf__Shelf__Subtitle>
       <GenerateShelf__typeContainer>
-        {["객관식", "참/거짓", "주관식"].map((type, index) => (
+        {['객관식', '참/거짓', '주관식'].map((type, index) => (
           <GenerateShelf__type
             onClick={() => {
               props.onClickType(index);
@@ -103,7 +105,7 @@ const TypeModal = (props) => {
               {type}
             </GenerateShelf__typeElement>
             {props.selectedType.includes(index) ? (
-              <div style={{ color: "#a0a0a0" }}>
+              <div style={{ color: '#a0a0a0' }}>
                 <CheckedIcon></CheckedIcon>
               </div>
             ) : (
@@ -127,7 +129,7 @@ const TypeModal = (props) => {
           onClick={() => {
             props.setIsCreated(false);
           }}
-          style={{ backgroundColor: "#ffffff", color: "#111111" }}
+          style={{ backgroundColor: '#ffffff', color: '#111111' }}
         >
           취소
         </GenerateShelf__Shelf__submitButton>
@@ -167,12 +169,12 @@ const OptionModal = (props) => {
             style={
               props.questionCount === num
                 ? {
-                    backgroundColor: "#3b82f6",
-                    color: "white",
+                    backgroundColor: '#3b82f6',
+                    color: 'white',
                   }
                 : {
-                    backgroundColor: "#e5e7eb",
-                    color: "black",
+                    backgroundColor: '#e5e7eb',
+                    color: 'black',
                   }
             }
             onClick={() => {
@@ -189,7 +191,7 @@ const OptionModal = (props) => {
           onClick={() => {
             props.setSequence(0);
           }}
-          style={{ backgroundColor: "#ffffff", color: "#111111" }}
+          style={{ backgroundColor: '#ffffff', color: '#111111' }}
         >
           이전
         </GenerateShelf__Shelf__submitButton>
@@ -223,16 +225,14 @@ const QuestionModal = (props) => {
       </GenerateShelf__Shelf__Title>
       <GenerateShelf__Shelf__QuestionWrapper>
         {props.questionInfoArr?.map((info, index) => {
-          const optArr = info.opt ? info.opt.split("|||") : [];
+          const optArr = info.opt ? info.opt.split('|||') : [];
 
           return (
             <GenerateShelf__Shelf__QuestionContainer key={index}>
               <GenerateShelf__Shelf__QuestionHeader
-                style={{ marginBottom: "8px" }}
+                style={{ marginBottom: '8px' }}
+
               >
-                <GenerateShelf__Shelf__QuestionTitle>
-                  Q{index + 1}
-                </GenerateShelf__Shelf__QuestionTitle>
                 <GenerateShelf__Shelf__QuestionDeleteContainer>
                   <GenerateShelf__Shelf__QuestionDeleteContainer__TrashCan
                     isVisible={props.visibleTrashIndex === index}
@@ -253,12 +253,12 @@ const QuestionModal = (props) => {
                 </GenerateShelf__Shelf__QuestionDeleteContainer>
               </GenerateShelf__Shelf__QuestionHeader>
               <GenerateShelf__Shelf__QuestionTitle
-                style={{ marginBottom: "20px" }}
+                style={{ marginBottom: '20px' }}
               >
                 {info.name}
               </GenerateShelf__Shelf__QuestionTitle>
               <GenerateShelf__Shelf__QuestionAnswerContainer>
-                {info.type === "MULTIPLE_CHOICE" &&
+                {info.type === 'MULTIPLE_CHOICE' &&
                   optArr.map((optInfo, index) => {
                     const number = optInfo[0];
                     const subs = optInfo.slice(2);
@@ -273,11 +273,11 @@ const QuestionModal = (props) => {
                       </GenerateShelf__Shelf__QuestionText>
                     );
                   })}
-                {info.type === "OX" && (
+                {info.type === 'OX' && (
                   <>
                     <GenerateShelf__Shelf__QuestionText>
                       <GenerateShelf__Shelf__QuestionNum
-                        isAns={info.answer === "O"}
+                        isAns={info.answer === 'O'}
                       >
                         1
                       </GenerateShelf__Shelf__QuestionNum>
@@ -285,7 +285,7 @@ const QuestionModal = (props) => {
                     </GenerateShelf__Shelf__QuestionText>
                     <GenerateShelf__Shelf__QuestionText>
                       <GenerateShelf__Shelf__QuestionNum
-                        isAns={info.answer === "X"}
+                        isAns={info.answer === 'X'}
                       >
                         2
                       </GenerateShelf__Shelf__QuestionNum>
@@ -294,7 +294,7 @@ const QuestionModal = (props) => {
                   </>
                 )}
               </GenerateShelf__Shelf__QuestionAnswerContainer>
-              {info.type === "FILL_IN_THE_BLANK" && (
+              {info.type === 'FILL_IN_THE_BLANK' && (
                 <GenerateShelf__Shelf__QuestionAnswer>
                   {info.answer}
                 </GenerateShelf__Shelf__QuestionAnswer>
@@ -308,7 +308,7 @@ const QuestionModal = (props) => {
           onClick={() => {
             props.setIsCreated(false);
           }}
-          style={{ backgroundColor: "#ffffff", color: "#111111" }}
+          style={{ backgroundColor: '#ffffff', color: '#111111' }}
         >
           취소
         </GenerateShelf__Shelf__submitButton>
@@ -392,7 +392,7 @@ const SavingModal = (props) => {
           onClick={() => {
             props.setSequence(1);
           }}
-          style={{ backgroundColor: "#ffffff", color: "#111111" }}
+          style={{ backgroundColor: '#ffffff', color: '#111111' }}
         >
           이전
         </GenerateShelf__Shelf__submitButton>
@@ -410,39 +410,45 @@ const SavingModal = (props) => {
 
 const LoadingModal = () => {
   return (
-    <>
-      <div>로딩 중</div>
-      <svg
-        viewBox="0 0 100 100"
-        xmlns="http://www.w3.org/2000/svg"
-        width="50px"
-        height="50px"
+    <div
+      style={{
+        height: '35vh',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <div
         style={{
-          animation: "spin 1.5s ease-in-out infinite",
-          transformOrigin: "center",
+          width: '200px',
+          height: '200px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
-        <style>
-          {`
-            @keyframes spin {
-              from { transform: rotate(0deg); }
-              to { transform: rotate(360deg); }
-            }
-          `}
-        </style>
-        <circle
-          cx="50"
-          cy="50"
-          r="40"
-          fill="none"
-          stroke="black"
-          strokeWidth="5"
-          strokeLinecap="round"
-          strokeDasharray="251.2"
-          strokeDashoffset="62.8"
+        <Lottie
+          animationData={loadingAnimation}
+          loop
+          autoplay
+          style={{ display: 'block', width: '100%', height: '100%' }}
         />
-      </svg>
-    </>
+      </div>
+      <div
+        style={{
+          marginTop: '8px',
+          fontSize: '22px',
+          textAlign: 'center',
+          color: 'black',
+        }}
+      >
+        문제를 생성 중이에요
+      </div>
+
+      
+    </div>
   );
 };
 

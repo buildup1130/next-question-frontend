@@ -49,7 +49,8 @@ import {
   QuestionSolve__Container,
   QuestionSolve__ResultDetails__CommentContainer,
   QuestionSolve__ResultDetails__Comment,
-  QuestionSolve__ResultDetails__WorkBookTitle
+  QuestionSolve__ResultDetails__WorkBookTitle,
+  Question__Upper
 } from "./QuestionSolve.Styles";
 import { useRouter } from "next/router";
 import { savingCheck, savingStat } from "@/utils/StatisticManager";
@@ -100,7 +101,7 @@ export default function QuestionSolveUI(props) {
 
   // 문제 데이터가 없으면 로딩 또는 빈 상태 표시
   if (!props.questions || props.questions.length === 0) {
-    return <MainContainerLogic>문제를 불러오는 중...</MainContainerLogic>;
+    return <></>;
   }
 
   const question = props.questions[currentQuestion];
@@ -371,7 +372,19 @@ const handleNextQuestion = () => {
         <Header>
           {/* <Title>문제 풀이</Title> */}
         </Header>
-        
+        <Question__Upper>
+          <BackIcon size={32}></BackIcon>
+          <QuestionSolve__ProgressBarContainer>
+            <ProgressBar>
+              <Progress
+                current={currentQuestion + 1}
+                total={props.questions.length}
+              >
+                {currentQuestion + 1}/{props.questions.length}
+              </Progress>
+            </ProgressBar>
+          </QuestionSolve__ProgressBarContainer>
+        </Question__Upper>
         <QuestionContainer>
           {/* 문제 헤더 */}
           <QuestionHeader>
@@ -447,7 +460,7 @@ const handleNextQuestion = () => {
                 </>
               )}
             </OptionContainer>
-            <QuestionSolve__ProgressBarContainer>
+            {/* <QuestionSolve__ProgressBarContainer>
             <ProgressBar>
             <Progress
               current={currentQuestion + 1}
@@ -457,15 +470,29 @@ const handleNextQuestion = () => {
           <ProgressText>
             {currentQuestion + 1}/{props.questions.length}
           </ProgressText>
-            </QuestionSolve__ProgressBarContainer>
+            </QuestionSolve__ProgressBarContainer> */}
 
           </QuestionBox>
-
+          {/* 팔로워 영역 */}
+          {/* <Question__Upper
+          style={{padding:0}}>
+          <QuestionSolve__ProgressBarContainer>
+            <ProgressBar>
+              <Progress
+                current={currentQuestion + 1}
+                total={props.questions.length}
+              >
+                {currentQuestion + 1}/{props.questions.length}
+              </Progress>
+            </ProgressBar>
+          </QuestionSolve__ProgressBarContainer>
+        </Question__Upper> */}
           {/* 다음 버튼 */}
           <ButtonContainer>
             <NextButton onClick={handleNextQuestion}>Next Question</NextButton>
           </ButtonContainer>
           {/* 팔로워 영역 */}
+          
         </QuestionContainer>
       </QuestionSolve__Container>
     );
