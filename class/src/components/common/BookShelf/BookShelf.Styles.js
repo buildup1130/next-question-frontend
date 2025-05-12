@@ -105,6 +105,7 @@ export const SelectButton = styled.button`
 `;
 
 export const DeleteButton = styled.button`
+  width: 60px;
   padding: 6px 12px;
   height: 32px;
   border-radius: 6px;

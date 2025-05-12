@@ -31,7 +31,7 @@ export const DateHeader = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 15px;
   margin-top: 6px;
   margin-bottom: 18px;

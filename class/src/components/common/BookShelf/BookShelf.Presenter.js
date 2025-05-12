@@ -153,17 +153,20 @@ export default function BookShelfUI({
                     onMoreClick(book, "learn");
                   }}
                 >
-                  <TrashIcon size={12} />
+                  <TrashIcon
+                    style={{ width: 16, height: 16, marginRight: 6 }}
+                  />
                   학습하기
                 </OptionItem>
                 <OptionItem
+                  style={{ backgroundColor: "#EEF0FF" }}
                   onClick={(e) => {
                     e.stopPropagation();
                     closeOptionPopup();
                     onClickRename(book);
                   }}
                 >
-                  <EditIcon size={16} />
+                  <EditIcon style={{ width: 16, height: 16, marginRight: 6 }} />
                   수정하기
                 </OptionItem>
                 <OptionItem
@@ -173,7 +176,9 @@ export default function BookShelfUI({
                     onClickDelete(book);
                   }}
                 >
-                  <BookIcon2 size={16} />
+                  <BookIcon2
+                    style={{ width: 16, height: 16, marginRight: 6 }}
+                  />
                   삭제하기
                 </OptionItem>
               </OptionPopup>
@@ -230,17 +235,18 @@ export default function BookShelfUI({
                 onMoreClick(book, "learn");
               }}
             >
-              <TrashIcon />
+              <TrashIcon style={{ width: 16, height: 16, marginRight: 6 }} />
               학습하기
             </OptionItem>
             <OptionItem
+              style={{ backgroundColor: "#EEF0FF" }}
               onClick={(e) => {
                 e.stopPropagation();
                 closeOptionPopup();
                 onClickRename(book);
               }}
             >
-              <EditIcon />
+              <EditIcon style={{ width: 16, height: 16, marginRight: 6 }} />
               수정하기
             </OptionItem>
             <OptionItem
@@ -250,7 +256,7 @@ export default function BookShelfUI({
                 onClickDelete(book);
               }}
             >
-              <Book />
+              <BookIcon2 style={{ width: 16, height: 16, marginRight: 6 }} />
               삭제하기
             </OptionItem>
           </OptionPopup>

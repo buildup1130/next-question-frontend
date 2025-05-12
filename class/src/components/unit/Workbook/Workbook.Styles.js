@@ -128,7 +128,7 @@ export const QuestionTextWrapper = styled.div`
 
 export const QuestionTitle = styled.div`
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
   margin-bottom: 16px;
   display: flex;
   flex-direction: column;

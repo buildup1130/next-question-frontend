@@ -125,6 +125,7 @@ export default function BookShelfLogic() {
       toast.success("선택한 문제집이 삭제되었습니다.", {
         position: "top-center",
       });
+      setIsDeleteModalOpen(false);
     } catch (err) {
       toast.error("문제집 삭제 중 오류가 발생했습니다.", {
         position: "top-center",
