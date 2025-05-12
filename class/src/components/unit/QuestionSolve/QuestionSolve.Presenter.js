@@ -50,7 +50,11 @@ import {
   QuestionSolve__ResultDetails__CommentContainer,
   QuestionSolve__ResultDetails__Comment,
   QuestionSolve__ResultDetails__WorkBookTitle,
-  Question__Upper
+  Question__Upper,
+  BackModal__Wrapper,
+  BackModal__Container,
+  BackModal__ButtonContainer,
+  BackModal__Button
 } from "./QuestionSolve.Styles";
 import { useRouter } from "next/router";
 import { savingCheck, savingStat } from "@/utils/StatisticManager";
@@ -77,6 +81,8 @@ export default function QuestionSolveUI(props) {
   const [totalTime, setTotalTime] = useState(null);
   //각 문제별 처음 등록한 답 기록
   const [answerArr ,setAnswerArr] = useState([]);
+  //뒤로가기 모달
+  const [isBackModal, setIsBackModal] = useState(false);
 
   const inputRef = useRef(null); // 입력 필드 참조 추가
   const router = useRouter();
@@ -377,12 +383,40 @@ const handleNextQuestion = () => {
   //문제 화면
   if (question) {
     return (
+      <>
+      {isBackModal&&
+      <BackModal__Wrapper>
+          <BackModal__Container>
+            <div style={{textAlign:"center",fontSize:"22px"}}>학습을 중단하시겠어요?</div>
+            <div style={{textAlign:"center", color:"#878787", lineHeight:"24px"}}>학습을 중단하면<br></br>진행한 풀이내용이 저장되지 않습니다.</div>
+            <BackModal__ButtonContainer>
+              <BackModal__Button
+                style={{backgroundColor:"#808fff", color:"white"}}
+                onClick={() => {
+                  router.push("/");
+                }}
+              >나가기</BackModal__Button>
+              <BackModal__Button
+              style={{backgroundColor:"#d9d9d9"}}
+              onClick={() => {
+                setIsBackModal(false);
+              }}
+              >취소</BackModal__Button>
+            </BackModal__ButtonContainer>
+          </BackModal__Container>
+      </BackModal__Wrapper>}
       <QuestionSolve__Container>
         <Header>
           {/* <Title>문제 풀이</Title> */}
         </Header>
         <Question__Upper>
-          <BackIcon size={32}></BackIcon>
+          <div
+            style={{display:"flex", alignItems:"center", cursor:"pointer"}}
+            onClick={() => {setIsBackModal(true)}}
+          >
+          <BackIcon size={32}
+          ></BackIcon>
+          </div>
           <QuestionSolve__ProgressBarContainer>
             <ProgressBar>
               <Progress
@@ -504,6 +538,7 @@ const handleNextQuestion = () => {
           
         </QuestionContainer>
       </QuestionSolve__Container>
+      </>
     );
   }
 }

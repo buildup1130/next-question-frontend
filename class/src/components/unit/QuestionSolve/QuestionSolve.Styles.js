@@ -517,3 +517,54 @@ export const Question__Upper = styled.div`
   align-items:center;
   gap:10px;
 `
+
+export const BackModal__Wrapper = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 10;
+
+  overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items:center;
+  z-index: 9999;
+`
+
+export const BackModal__Container = styled.div`
+  width:calc(100% - 40px);
+  max-width:420px;
+  height:auto;
+  padding: 20px;
+  border:1px solid #a7a7a7;
+
+  border-radius:30px;
+  background-color:white;
+
+  display:flex;
+  justify-content:center;
+  flex-direction:column;
+  gap: 10px;
+`
+
+export const BackModal__ButtonContainer = styled.div`
+  padding: 0 20px;
+
+  display:flex;
+  gap: 20px;
+`
+
+export const BackModal__Button = styled.div`
+  width:100%;
+  padding: 10px 0;
+  border-radius:10px;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  cursor: pointer;
+`
