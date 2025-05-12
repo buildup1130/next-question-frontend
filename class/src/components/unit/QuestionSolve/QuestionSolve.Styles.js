@@ -3,6 +3,7 @@ import { keyframes } from "@emotion/react";
 
 export const QuestionSolve__Container = styled.div`
     width:100%;
+    max-width:500px;
     min-height:100vh;
     padding: 24px 8px;
     padding-bottom: 96px;
