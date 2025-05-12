@@ -11,14 +11,6 @@ import styled from "styled-components";
 
 export default function UploadBoxUI(props) {
   const [isHover, setIsHover] = useState(false);
-  const draw = keyframes`
-    to{stroke-dashoffset:0;}
-  `
-  const AnimatedPath = styled.path`
-  stroke-dasharray: 50;
-  stroke-dashoffset: 50;
-  animation: ${draw} 1s ease-in-out forwards;
-`;
 
   return (
     <>
