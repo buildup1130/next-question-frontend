@@ -46,7 +46,10 @@ import {
 } from './GenerateShelf.Styles';
 import { DocsIcon } from '@/utils/SvgProvider';
 import { useState } from 'react';
-import Lottie from 'lottie-react';
+import dynamic
+ from 'next/dynamic';
+
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 import loadingAnimation from '@/lotties/generate_loading.json';
 
 export default function GenerateShelfUI(props) {
@@ -215,13 +218,6 @@ const QuestionModal = (props) => {
         <GenerateShelf__Shelf__Title__Text>
           문제 확인
         </GenerateShelf__Shelf__Title__Text>
-        <GenerateShelf__Shelf__Title__Button
-          onClick={() => {
-            props.setIsCreated(false);
-          }}
-        >
-          X
-        </GenerateShelf__Shelf__Title__Button>
       </GenerateShelf__Shelf__Title>
       <GenerateShelf__Shelf__QuestionWrapper>
         {props.questionInfoArr?.map((info, index) => {
@@ -231,8 +227,11 @@ const QuestionModal = (props) => {
             <GenerateShelf__Shelf__QuestionContainer key={index}>
               <GenerateShelf__Shelf__QuestionHeader
                 style={{ marginBottom: '8px' }}
-
               >
+              <GenerateShelf__Shelf__QuestionTitle
+              style={{fontWeight:700}}>
+                Q{index + 1}
+              </GenerateShelf__Shelf__QuestionTitle>
                 <GenerateShelf__Shelf__QuestionDeleteContainer>
                   <GenerateShelf__Shelf__QuestionDeleteContainer__TrashCan
                     isVisible={props.visibleTrashIndex === index}

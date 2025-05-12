@@ -84,7 +84,6 @@ export const Home__IconBar__Login = styled.div`
 
 
     font-size:16px;
-    font-weight:700;
 
     display:flex;
     align-items:center;
