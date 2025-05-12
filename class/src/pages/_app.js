@@ -6,9 +6,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
 
-import { AnimatePresence, motion } from "framer-motion";
-import { useRouter } from "next/router";
-
 export default function App({ Component, pageProps }) {
   const router = useRouter();
 

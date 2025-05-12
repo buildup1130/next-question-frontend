@@ -52,7 +52,7 @@ export const StyledSearchInput = styled.input`
 
 export const SearchIcon = styled.div`
   position: absolute;
-  top: 50%;
+  top: 52%;
   left: 12px;
   transform: translateY(-50%);
   pointer-events: none;
@@ -85,8 +85,8 @@ export const FilterSelect = styled.select`
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 14px;
-  background-color: #fff;
-  color: #000;
+  background-color: #ffffff;
+  color: #000000;
 `;
 
 export const SelectButton = styled.button`

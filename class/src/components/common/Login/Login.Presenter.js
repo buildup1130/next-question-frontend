@@ -50,6 +50,7 @@ export default function LoginUI({
             placeholder="아이디"
             value={userId}
             onChange={onUsernameChange}
+            $hasValue={!!userId}
           />
         </UserID>
 

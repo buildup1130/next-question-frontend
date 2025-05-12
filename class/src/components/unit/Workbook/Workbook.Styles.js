@@ -182,9 +182,9 @@ export const AnswerLabel = styled.div`
   width: 18px;
   height: 18px;
   font-size: 14px;
-  font-weight: bold;
-  background-color: #808fff;
-  color: white;
+  font-weight: 400;
+  background-color: ${({ isAnswer }) => (isAnswer ? "#808fff" : "#f3f4f6")};
+  color: ${({ isAnswer }) => (isAnswer ? "#fff" : "#999")};
   border-radius: 5px;
   display: flex;
   justify-content: center;

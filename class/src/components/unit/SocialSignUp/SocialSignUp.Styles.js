@@ -54,24 +54,36 @@ export const FillForm = styled.form`
 
 export const InputField = styled.input`
   width: 100%;
+  max-width: 300px;
   height: 40px;
-  padding: 10px 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
   background-color: white;
   font-size: 14px;
   outline: none;
-  margin-bottom: 20px;
+  padding-left: 10px;
 
   &::placeholder {
     font-size: 12px;
     color: #aaa;
-    line-height: 1;
   }
 `;
 
 export const InputFieldSmallPlaceholder = styled(InputField)`
-  padding: 1px 8px 10px;
+  width: 100%;
+  max-width: 300px;
+  height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: white;
+  font-size: 14px;
+  outline: none;
+  align-items: center;
+
+  &::placeholder {
+    font-size: 12px;
+    color: #aaa;
+  }
 `;
 
 export const ErrorMessage = styled.p`

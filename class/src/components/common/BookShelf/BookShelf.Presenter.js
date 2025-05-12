@@ -130,7 +130,7 @@ export default function BookShelfUI(props) {
                 closeOptionPopup();
                 onClickRename(book);
               }}
-              style={{ backgroundColor: "#EEF0FF" }}
+              style={{ backgroundColor: "#FFFFFF" }}
             >
               <EditIcon style={{ width: 16, height: 16, marginRight: 6 }} />{" "}
               수정하기
@@ -235,7 +235,7 @@ export default function BookShelfUI(props) {
                     closeOptionPopup();
                     onClickRename(book);
                   }}
-                  style={{ backgroundColor: "#EEF0FF" }}
+                  style={{ backgroundColor: "#ffffff" }}
                 >
                   <EditIcon style={{ width: 16, height: 16, marginRight: 6 }} />{" "}
                   수정하기
