@@ -1,3 +1,5 @@
+// ✅ BookShelf.Presenter.js (리팩토링 완료)
+import { useState } from "react";
 import {
   Container,
   Header,
@@ -39,7 +41,6 @@ import {
   BookCount,
 } from "./BookShelf.Styles";
 
-import { useState } from "react";
 import {
   WorkBookIcon,
   TrashIcon,
@@ -47,58 +48,129 @@ import {
   BookIcon2,
 } from "@/utils/SvgProvider";
 
-export default function BookShelfUI({
-  books,
-  searchQuery,
-  onSearchChange,
-  onMoreClick,
-  onClickBook,
-  onClickLearningMode,
-  onClickLearningStart,
-  isSelectMode,
-  isSmallScreen,
-  selectedBookIds,
-  onOpenCreateModal,
-  isCreateModalOpen,
-  newWorkbookTitle,
-  setNewWorkbookTitle,
-  onCreateWorkbook,
-  onCloseCreateModal,
-  onClickRename,
-  onClickDelete,
-  viewType,
-  setViewType,
-  isLearningModalOpen,
-  sortOption,
-  setSortOption,
-}) {
+export default function BookShelfUI(props) {
+  const {
+    books,
+    searchQuery,
+    onSearchChange,
+    onMoreClick,
+    onClickBook,
+    onClickLearningMode,
+    onClickLearningStart,
+    isSelectMode,
+    isSmallScreen,
+    selectedBookIds,
+    onOpenCreateModal,
+    isCreateModalOpen,
+    newWorkbookTitle,
+    setNewWorkbookTitle,
+    onCreateWorkbook,
+    onCloseCreateModal,
+    onClickRename,
+    onClickDelete,
+    viewType,
+    setViewType,
+    isLearningModalOpen,
+    sortOption,
+    setSortOption,
+  } = props;
+
   const [optionOpenId, setOptionOpenId] = useState(null);
 
   const closeOptionPopup = () => setOptionOpenId(null);
+
+  const renderListItem = (book) => {
+    const isSelected = selectedBookIds.includes(book.id);
+    return (
+      <BookItem
+        key={book.id}
+        onClick={() => book.items > 0 && onClickBook(book)}
+      >
+        <BookInfoLeft>
+          <BookTitle>{book.title}</BookTitle>
+          <BookDate>최근 학습일: {book.date}</BookDate>
+        </BookInfoLeft>
+
+        <BookInfoRight>
+          <BookCount>{book.items}문제</BookCount>
+          {isSelectMode && !isLearningModalOpen ? (
+            <BookCheckbox
+              type="checkbox"
+              checked={isSelected}
+              onClick={(e) => e.stopPropagation()}
+              onChange={() => onClickBook(book)}
+            />
+          ) : !isSelectMode && !isLearningModalOpen ? (
+            <MoreButton
+              onClick={(e) => {
+                e.stopPropagation();
+                setOptionOpenId(optionOpenId === book.id ? null : book.id);
+              }}
+            >
+              ⋮
+            </MoreButton>
+          ) : null}
+        </BookInfoRight>
+
+        {!isSelectMode && optionOpenId === book.id && !isLearningModalOpen && (
+          <OptionPopup>
+            <OptionItem
+              onClick={(e) => {
+                e.stopPropagation();
+                closeOptionPopup();
+                onMoreClick(book, "learn");
+              }}
+            >
+              <TrashIcon style={{ width: 16, height: 16, marginRight: 6 }} />{" "}
+              학습하기
+            </OptionItem>
+            <OptionItem
+              onClick={(e) => {
+                e.stopPropagation();
+                closeOptionPopup();
+                onClickRename(book);
+              }}
+              style={{ backgroundColor: "#EEF0FF" }}
+            >
+              <EditIcon style={{ width: 16, height: 16, marginRight: 6 }} />{" "}
+              수정하기
+            </OptionItem>
+            <OptionItem
+              onClick={(e) => {
+                e.stopPropagation();
+                closeOptionPopup();
+                onClickDelete(book);
+              }}
+            >
+              <BookIcon2 style={{ width: 16, height: 16, marginRight: 6 }} />{" "}
+              삭제하기
+            </OptionItem>
+          </OptionPopup>
+        )}
+      </BookItem>
+    );
+  };
 
   const renderTileItem = (book) => {
     const isSelected = selectedBookIds.includes(book.id);
     return (
       <TileItem
         key={book.id}
-        onClick={() => {
-          if (book.items > 0) onClickBook(book);
-        }}
+        onClick={() => book.items > 0 && onClickBook(book)}
       >
         <Card>
           <CardTop>
             <WorkBookIcon size={32} color="#6D78FF" />
-
             {isSelectMode && !isLearningModalOpen ? (
               <TileTopRightButton onClick={(e) => e.stopPropagation()}>
                 <BookCheckbox
                   type="checkbox"
                   checked={isSelected}
-                  onChange={() => {}}
                   onClick={(e) => {
                     e.stopPropagation();
                     onClickBook(book);
                   }}
+                  onChange={() => {}}
                 />
               </TileTopRightButton>
             ) : !isSelectMode && !isLearningModalOpen ? (
@@ -106,7 +178,7 @@ export default function BookShelfUI({
                 <MoreButton
                   onClick={(e) => {
                     e.stopPropagation();
-                    setOptionOpenId(book.id === optionOpenId ? null : book.id);
+                    setOptionOpenId(optionOpenId === book.id ? null : book.id);
                   }}
                 >
                   ⋮
@@ -121,7 +193,6 @@ export default function BookShelfUI({
               <div>{book.items}문제</div>
               <div>최근: {book.date}</div>
             </CardInfo>
-
             <CardActions>
               <button
                 onClick={(e) => {
@@ -155,18 +226,18 @@ export default function BookShelfUI({
                 >
                   <TrashIcon
                     style={{ width: 16, height: 16, marginRight: 6 }}
-                  />
+                  />{" "}
                   학습하기
                 </OptionItem>
                 <OptionItem
-                  style={{ backgroundColor: "#EEF0FF" }}
                   onClick={(e) => {
                     e.stopPropagation();
                     closeOptionPopup();
                     onClickRename(book);
                   }}
+                  style={{ backgroundColor: "#EEF0FF" }}
                 >
-                  <EditIcon style={{ width: 16, height: 16, marginRight: 6 }} />
+                  <EditIcon style={{ width: 16, height: 16, marginRight: 6 }} />{" "}
                   수정하기
                 </OptionItem>
                 <OptionItem
@@ -178,90 +249,13 @@ export default function BookShelfUI({
                 >
                   <BookIcon2
                     style={{ width: 16, height: 16, marginRight: 6 }}
-                  />
+                  />{" "}
                   삭제하기
                 </OptionItem>
               </OptionPopup>
             )}
         </Card>
       </TileItem>
-    );
-  };
-
-  const renderListItem = (book) => {
-    const isSelected = selectedBookIds.includes(book.id);
-    return (
-      <BookItem
-        key={book.id}
-        onClick={() => {
-          if (book.items > 0) onClickBook(book);
-        }}
-      >
-        <BookInfoLeft>
-          <BookTitle>{book.title}</BookTitle>
-          <BookDate>최근 학습일: {book.date}</BookDate>
-        </BookInfoLeft>
-
-        <BookInfoRight>
-          <BookCount>{book.items}문제</BookCount>
-          {isSelectMode && !isLearningModalOpen ? (
-            <BookCheckbox
-              type="checkbox"
-              checked={isSelected}
-              onChange={() => {}}
-              onClick={(e) => {
-                e.stopPropagation();
-                onClickBook(book);
-              }}
-            />
-          ) : !isSelectMode && !isLearningModalOpen ? (
-            <MoreButton
-              onClick={(e) => {
-                e.stopPropagation();
-                setOptionOpenId(book.id === optionOpenId ? null : book.id);
-              }}
-            >
-              ⋮
-            </MoreButton>
-          ) : null}
-        </BookInfoRight>
-
-        {!isSelectMode && optionOpenId === book.id && !isLearningModalOpen && (
-          <OptionPopup>
-            <OptionItem
-              onClick={(e) => {
-                e.stopPropagation();
-                closeOptionPopup();
-                onMoreClick(book, "learn");
-              }}
-            >
-              <TrashIcon style={{ width: 16, height: 16, marginRight: 6 }} />
-              학습하기
-            </OptionItem>
-            <OptionItem
-              style={{ backgroundColor: "#EEF0FF" }}
-              onClick={(e) => {
-                e.stopPropagation();
-                closeOptionPopup();
-                onClickRename(book);
-              }}
-            >
-              <EditIcon style={{ width: 16, height: 16, marginRight: 6 }} />
-              수정하기
-            </OptionItem>
-            <OptionItem
-              onClick={(e) => {
-                e.stopPropagation();
-                closeOptionPopup();
-                onClickDelete(book);
-              }}
-            >
-              <BookIcon2 style={{ width: 16, height: 16, marginRight: 6 }} />
-              삭제하기
-            </OptionItem>
-          </OptionPopup>
-        )}
-      </BookItem>
     );
   };
 
@@ -300,7 +294,6 @@ export default function BookShelfUI({
             <option value="created">등록순</option>
             <option value="count">문제 수</option>
           </FilterSelect>
-
           <FilterSelect
             value={viewType}
             onChange={(e) => setViewType(e.target.value)}
@@ -316,11 +309,11 @@ export default function BookShelfUI({
               disabled={selectedBookIds.length === 0}
               onClick={onClickDelete}
             >
-              삭제 {/* ✅ 항상 짧게 */}
+              삭제
             </DeleteButton>
           )}
           <SelectButton onClick={onClickLearningMode}>
-            {isSelectMode ? "취소" : "선택"} {/* ✅ 항상 짧게 */}
+            {isSelectMode ? "취소" : "선택"}
           </SelectButton>
         </FilterActionGroup>
       </FilterRow>
@@ -331,11 +324,10 @@ export default function BookShelfUI({
             {books.map((book, idx) => (
               <div key={book.id}>
                 {renderListItem(book)}
-                {idx < books.length - 1 && <Divider />} {/* 마지막엔 생략 */}
+                {idx < books.length - 1 && <Divider />}
               </div>
             ))}
           </BookList>
-
           <AddBookArea onClick={onOpenCreateModal}>＋</AddBookArea>
         </>
       ) : (

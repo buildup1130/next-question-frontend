@@ -1,4 +1,3 @@
-// ✅ WrongNote.Container.js (리팩토링)
 import { useState, useEffect } from "react";
 import { getWrongNote } from "@/utils/WrongNoteManager";
 import { useAuth } from "@/utils/AuthContext";
@@ -55,17 +54,21 @@ export default function WrongNoteLogic() {
         answer: q.answer,
         type:
           q.type === "MULTIPLE_CHOICE"
-            ? "MULTIPLE_CHOICE"
+            ? "객관식"
             : q.type === "OX"
-            ? "OX"
-            : "FILL_IN_THE_BLANK",
-        ...(q.opt && { opt: q.opt }),
+            ? "O/X"
+            : "빈칸",
+        fullText: q.name,
+        opt: q.opt || "",
       }));
 
-      localStorage.setItem("tempQuestionData", JSON.stringify(formatted));
-      router.push({ pathname: "/Question", query: { type: 3 } });
+      localStorage.setItem(
+        "tempWrongHistoryQuestions",
+        JSON.stringify(formatted)
+      );
+      router.push("/WrongHistoryDetail");
     } catch (err) {
-      console.error("학습별 문제 불러오기 실패:", err);
+      console.error("학습별 문제 보기 실패:", err);
       alert("문제를 가져오는 데 실패했습니다.");
     }
   };
@@ -81,17 +84,21 @@ export default function WrongNoteLogic() {
       if (!result || !result.questions) return;
 
       const grouped = {};
+      const timeGrouped = {};
+
       result.questions.forEach((q, idx) => {
         const date = new Date(q.solvedDate);
         date.setHours(date.getHours() + 9);
         const dateStr = date.toISOString().split("T")[0];
         const title = q.workBookName?.trim() || "미지정 문제집";
         const id = q.encryptedWorkBookId;
+        const solvedAt =
+          q.solvedAt?.slice(0, 16) || date.toISOString().slice(0, 16);
 
         if (!grouped[title]) grouped[title] = { id, dates: {} };
         if (!grouped[title].dates[dateStr]) grouped[title].dates[dateStr] = [];
 
-        grouped[title].dates[dateStr].push({
+        const formattedQ = {
           id: idx,
           type:
             q.type === "MULTIPLE_CHOICE"
@@ -107,8 +114,13 @@ export default function WrongNoteLogic() {
               ? "O"
               : "X"
             : q.answer,
-          solvedAt: q.solvedAt || q.solvedDate,
-        });
+          solvedAt,
+          workBookName: title,
+        };
+
+        grouped[title].dates[dateStr].push(formattedQ);
+        if (!timeGrouped[solvedAt]) timeGrouped[solvedAt] = [];
+        timeGrouped[solvedAt].push(formattedQ);
       });
 
       const map = {};
@@ -127,9 +139,20 @@ export default function WrongNoteLogic() {
         }
       );
 
+      const groupedArr = Object.entries(timeGrouped).map(([solvedAt, qs]) => {
+        const workBookNames = [...new Set(qs.map((q) => q.workBookName))];
+        return {
+          solvedAt,
+          mainWorkBookName: workBookNames[0],
+          workBookCount: workBookNames.length,
+          wrongCount: qs.length,
+          historyId: `history_${solvedAt.replace(/[-: ]/g, "")}`,
+        };
+      });
+
       setWorkbookMap(map);
       setWrongNoteData(formatted);
-      setGroupedHistory(result.groupedWorkBooks || []);
+      setGroupedHistory(groupedArr);
 
       const workbookNames = [...new Set(formatted.map((w) => w.workbook))];
       setFilterOptions(["모든 문제집", "학습별", ...workbookNames]);
@@ -202,12 +225,10 @@ export default function WrongNoteLogic() {
   };
 
   const handleConfirmLearning = async () => {
-    if (!selectedBooks.length || !wrongNoteData.length) {
+    if (!selectedBooks.length || !wrongNoteData.length)
       return alert("문제집 선택 또는 데이터가 없습니다");
-    }
 
     const collectedQuestions = [];
-
     selectedBooks.forEach((bookName) => {
       const book = wrongNoteData.find((b) => b.workbook === bookName);
       if (book) {
@@ -229,9 +250,7 @@ export default function WrongNoteLogic() {
       }
     });
 
-    if (!collectedQuestions.length) {
-      return alert("학습할 문제가 없습니다");
-    }
+    if (!collectedQuestions.length) return alert("학습할 문제가 없습니다");
 
     localStorage.setItem(
       "tempQuestionData",
