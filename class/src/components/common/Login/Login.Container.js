@@ -19,7 +19,7 @@ export default function LoginLogic() {
 
   const handleLogin = async () => {
     setError("");
-
+    console.log(process.env.NEXT_PUBLIC_API_URL)
     // console.log("로그인 요청 데이터:", {
     //   userId,
     //   password,
@@ -28,7 +28,7 @@ export default function LoginLogic() {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/public/member/login/local",
+        '/api/public/member/login/local',
         {
           userId,
           password,
@@ -57,7 +57,7 @@ export default function LoginLogic() {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/public/oauth2/google"
+        "/api/public/oauth2/google"
       );
       window.location.href = response.data;
     } catch (error) {

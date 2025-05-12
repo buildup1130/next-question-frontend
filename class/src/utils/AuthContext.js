@@ -41,7 +41,7 @@ export function AuthProvider({ children }) {
           
           try {
             const response = await axios.get(
-              "http://localhost:8080/public/member/refresh",
+              "/api/public/member/refresh",
               {
                 headers: {
                   'Authorization': `Bearer ${refreshToken}`,
@@ -83,10 +83,23 @@ export function AuthProvider({ children }) {
         return Promise.reject(error);
       }
     );
+
+    const requestInterceptor = axios.interceptors.request.use(
+      (config) => {  
+        // CORS 관련 헤더 추가
+        config.headers['ngrok-skip-browser-warning'] = 'true';
+        
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
     
     // 컴포넌트 언마운트 시 인터셉터 제거
     return () => {
       axios.interceptors.response.eject(responseInterceptor);
+      axios.interceptors.request.eject(requestInterceptor);
     };
   }, []);
 

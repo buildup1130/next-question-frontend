@@ -3,7 +3,7 @@ import axios from "axios";
 export const searchAllWorkBooks = async (token) => {
   try {
     const response = await axios.post(
-      "http://localhost:8080/member/workBooks/search",
+      "/api/member/workBooks/search",
       {},
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -18,7 +18,7 @@ export const searchAllWorkBooks = async (token) => {
 
 export const createWorkbook = async (token, name) => {
   const response = await axios.post(
-    "http://localhost:8080/member/workBook/create",
+    "/api/member/workBook/create",
     { workBookName: name },
     {
       headers: {
@@ -33,7 +33,7 @@ export const createWorkbook = async (token, name) => {
 export const saveAtWorkBook = async (token, Questions, workbookId) => {
   try {
     const response = await axios.post(
-      "http://localhost:8080/member/questions/save",
+      "/api/member/questions/save",
       { encryptedQuestionInfoIds: Questions, encryptedWorkBookId: workbookId },
       {
         headers: {
@@ -51,7 +51,7 @@ export const saveAtWorkBook = async (token, Questions, workbookId) => {
 export const getWorkbookQuestions = async (token, encryptedWorkBookId) => {
   try {
     const response = await axios.post(
-      "http://localhost:8080/member/workBook/search/questions",
+      "/api/member/workBook/search/questions",
       {
         encryptedWorkBookId: encryptedWorkBookId,
       },
@@ -72,7 +72,7 @@ export const deleteWorkBooks = async (token, encryptedWorkBookIds) => {
   try {
     const response = await axios({
       method: "delete", // ✅ 객체 형태로 요청
-      url: "http://localhost:8080/member/workBooks/delete",
+      url: "/api/member/workBooks/delete",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -105,7 +105,7 @@ export const loadNormalQuestion = async (token, id, options) => {
     };
 
     const response = await axios.post(
-      "http://localhost:8080/member/solving/normal/search",
+      "/api/member/solving/normal/search",
       payload,
       {
         headers: {
@@ -124,7 +124,7 @@ export const loadNormalQuestion = async (token, id, options) => {
 export const loadDailyQuestion = async (token) => {
   try {
     const response = await axios.get(
-      "http://localhost:8080/member/solving/daily/search",
+      "/api/member/solving/daily/search",
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -150,7 +150,7 @@ export const moveQuestions = async (
     encryptedQuestionInfoIds,
   };
 
-  const res = await fetch("http://localhost:8080/member/questions/move", {
+  const res = await fetch("/api/member/questions/move", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -193,7 +193,7 @@ export const fetchQuestionType = async (token, idArr) => {
 
   try {
     const response = await axios.post(
-      "http://localhost:8080/member/solving/normal/search/type",
+      "/api/member/solving/normal/search/type",
       idArr,
       {
         headers: {

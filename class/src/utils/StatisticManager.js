@@ -36,7 +36,7 @@ export const savingStat = async(questions, wrongArr, type,workBookId,token) => {
     console.log(dtoObj);
     try{
         const response = await axios.post(
-            "http://localhost:8080/member/solving/save",
+            "/api/member/solving/save",
             { type: type?"MOCK":"NORMAL",
               workBookInfoDTOS:dtoObj
              },
@@ -55,7 +55,7 @@ export const savingStat = async(questions, wrongArr, type,workBookId,token) => {
 export const fetchHistories = async(token) => {
     try{
         const response = await axios.get(
-            "http://localhost:8080/member/solving/histories/search",
+            "/api/member/solving/histories/search",
             {
                 headers:{
                     'Authorization': `Bearer ${token}`,
@@ -81,7 +81,7 @@ export const savingCheck = async(questions, wrongArr,token) => {
     console.log(infoArr);
     try{
         const response = await axios.post(
-            "http://localhost:8080/member/solving/daily/check",
+            "/api/member/solving/daily/check",
               infoArr,
             {
                 headers: {
@@ -98,7 +98,7 @@ export const savingCheck = async(questions, wrongArr,token) => {
 export const fetchCheck = async(token) => {
     try{
         const response = await axios.get(
-            "http://localhost:8080/member/attendences/find",
+            "/api/member/attendences/find",
             {
                 headers:{
                     'Authorization': `Bearer ${token}`,
@@ -114,7 +114,7 @@ export const fetchCheck = async(token) => {
 export const fetchMainStat = async(token) => {
     try{
         const response = await axios.get(
-            "http://localhost:8080/member/statistics/main",
+            "/api/member/statistics/main",
             {
                 headers:{
                     'Authorization': `Bearer ${token}`,

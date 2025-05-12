@@ -64,7 +64,7 @@ export default function SignUpLogic() {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/public/member/regist",
+        "/api/public/member/regist",
         {
           userId: form.userId,
           password: form.password,

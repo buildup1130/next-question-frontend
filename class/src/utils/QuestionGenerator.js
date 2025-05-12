@@ -57,7 +57,7 @@ export const createQuestion = async (file, numOfQuestions,selectedType, token, i
 
 const generateQuestion_member = async (formData, token) => {
   const response = await axios.post(
-    "http://localhost:8080/member/questions/upload",
+    "/api/member/questions/upload",
     formData,
     {
       headers: {
@@ -73,7 +73,7 @@ const generateQuestion_member = async (formData, token) => {
 
 const generateQuestion_nonMember = async (formData) => {
   const response = await axios.post(
-    "http://localhost:8080/public/questions/upload",
+    "/api/public/questions/upload",
     formData,
     {
       headers: {

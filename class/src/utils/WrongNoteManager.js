@@ -5,7 +5,7 @@ export const getWrongNote = async (
   periodType = "custom"
 ) => {
   try {
-    const response = await fetch("http://localhost:8080/solving/wrong/search", {
+    const response = await fetch("/api/solving/wrong/search", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,

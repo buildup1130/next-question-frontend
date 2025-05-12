@@ -34,7 +34,7 @@ export default function SocialSignUpLogic() {
 
     try {
       await axios.post(
-        "http://localhost:8080/public/member/regist/social/google",
+        "/api/public/member/regist/social/google",
         {
           userId: email,
           nickname,
