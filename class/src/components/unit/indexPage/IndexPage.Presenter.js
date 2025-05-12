@@ -81,9 +81,9 @@ export default function IndexPageUI({
         {/* 비로그인 시 보이는 학습분석 */}
         {!isAuthenticated && (
           <>
-            <Home__CalBar><Home__CalTitle>주간 학습 분석</Home__CalTitle></Home__CalBar>
             <div style={{ position: 'relative', width:"100%", maxWidth:"500px"}}>
               <Home__BlurContainer>
+                <Home__CalBar><Home__CalTitle>주간 학습 분석</Home__CalTitle></Home__CalBar>
                 <MainChartLogic />
                 <AttendanceCheckLogic checkArr={checkArr} />
                 <Home__StatContainer>
