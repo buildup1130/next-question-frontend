@@ -249,7 +249,9 @@ const QuestionModal = (props) => {
                       props.onClickDelete(index);
                     }}
                   >
-                    <XButton></XButton>
+                    <XButton
+                      color='red'
+                    ></XButton>
                   </GenerateShelf__Shelf__QuestionDeleteContainer__XButton>
                 </GenerateShelf__Shelf__QuestionDeleteContainer>
               </GenerateShelf__Shelf__QuestionHeader>

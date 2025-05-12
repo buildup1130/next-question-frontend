@@ -164,7 +164,7 @@ export const TrashCanIcon = () => (
   </svg>
 );
 
-export const XButton = () => (
+export const XButton = ({color="black"}) => (
   <svg
     width="19"
     height="20"
@@ -174,8 +174,8 @@ export const XButton = () => (
   >
     <path
       d="M11 1.5L1 11.5M1 1.5L11 11.5"
-      stroke="black"
-      stroke-width="2"
+      stroke={color}
+      stroke-width="1.1"
       stroke-linecap="round"
       stroke-linejoin="round"
     />

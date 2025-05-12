@@ -242,7 +242,7 @@ export default function BookShelfLogic() {
       pathname: "/Question",
       query: {
         Id: ids.join(","),
-        count: total,
+        count: count,
         type: isTest ? 1 : 0,
         random: selectedType.length === 3,
         ox: selectedType.includes(1).toString(),
