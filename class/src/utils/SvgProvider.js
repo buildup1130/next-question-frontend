@@ -12,10 +12,10 @@ export const RefreshIcon = ({ size = 24, color = "#333333" }) => (
   </svg>
 );
 
-export const HomeIcon = () => (
+export const HomeIcon = ({size = 24}) => (
   <svg
-    width="24"
-    height="24"
+    width={size}
+    height={size}
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -56,10 +56,10 @@ export const BookIcon = () => (
   </svg>
 );
 
-export const ShelfIcon = () => (
+export const ShelfIcon = ({size = 24}) => (
   <svg
-    width="24"
-    height="24"
+    width={size}
+    height={size}
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -71,10 +71,10 @@ export const ShelfIcon = () => (
   </svg>
 );
 
-export const CheckIcon = () => (
+export const CheckIcon = ({size = 24}) => (
   <svg
-    width="24"
-    height="24"
+    width={size}
+    height={size}
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -99,10 +99,10 @@ export const CheckIcon = () => (
   </svg>
 );
 
-export const HistoryIcon = () => (
+export const HistoryIcon = ({size = 24}) => (
   <svg
-    width="24"
-    height="24"
+    width={size}
+    height={size}
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"

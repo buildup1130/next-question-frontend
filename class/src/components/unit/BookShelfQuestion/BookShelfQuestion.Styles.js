@@ -7,7 +7,7 @@ export const BookShelfQuestion__Wrapper = styled.div`
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 10;
+  z-index: 9999;
 
   overflow: hidden;
 
@@ -61,11 +61,11 @@ export const BookShelfQuestion__Title = styled.div`
 export const BookShelfQuestion__SubTitle = styled.div`
   width: 100%;
   margin-top: 24px;
+  padding: 0 10px;
 
   text-align: left;
 
   font-size: 16px;
-  font-weight: 700;
 `;
 
 // 전체 컨테이너 - 포지셔닝 컨텍스트 설정
@@ -142,11 +142,11 @@ export const BookShelfQuestion__submitButton = styled.div`
   max-width: 500px;
   min-height: 40px;
 
-  border-radius: 20px;
+  border-radius: 8px;
   margin-top: 20px;
   border: 1px solid #d9d9d9;
 
-  background-color: #3b82f6;
+  background-color: #808fff;
   color: white;
 
   display: flex;
@@ -174,7 +174,7 @@ export const BookShelfQuestion__isTestButton = styled.button`
   width: 20px;
   height: 20px;
 
-  background-color: ${(props) => (props.isTest ? "yellow" : null)};
+  background-color: ${(props) => (props.isTest ? "#808fff" : null)};
   border-radius: 5px;
   border: 1px solid #d9d9d9;
 `;

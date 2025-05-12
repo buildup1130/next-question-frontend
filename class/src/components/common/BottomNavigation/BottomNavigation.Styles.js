@@ -29,6 +29,10 @@ export const NavItem = styled.div`
   flex: 1;
   cursor: pointer;
   color: ${(props) => (props.active ? "#007BFF" : "#CCCCCC")};
+
+  &:hover{
+    color: #007bff;
+  }
 `;
 
 export const NavTitle = styled.div`
@@ -36,5 +40,5 @@ export const NavTitle = styled.div`
 `;
 
 export const Icon = styled.div`
-  font-size: 24px;
+
 `;
