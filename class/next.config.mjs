@@ -7,7 +7,7 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: `${process.env.API_URL}/:path*`, // ngrok URL로 변경하세요
+        destination: `${process.env.LOCALAPI_URL}/:path*`, // ngrok URL로 변경하세요
       },
     ];
   },
