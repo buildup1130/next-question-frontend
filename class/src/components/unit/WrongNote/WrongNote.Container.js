@@ -91,7 +91,6 @@ export default function WrongNoteLogic() {
         const title = q.workBookName?.trim() || "미지정 문제집";
         const id = q.encryptedWorkBookId;
 
-        // ✅ UTC → KST 보정
         let solvedAt;
         if (q.solvedAt) {
           const kst = new Date(q.solvedAt);

@@ -3,7 +3,7 @@ import WrongHistoryDetailUI from "./WrongHistoryDetail.Presenter";
 
 export default function WrongHistoryDetailContainer() {
   const [questions, setQuestions] = useState([]);
-  const [showAnswer, setShowAnswer] = useState(false); // ✅ 정답 보기 상태 추가
+  const [showAnswer, setShowAnswer] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem("tempWrongHistoryQuestions");
@@ -21,7 +21,7 @@ export default function WrongHistoryDetailContainer() {
     <WrongHistoryDetailUI
       questions={questions}
       showAnswer={showAnswer}
-      setShowAnswer={setShowAnswer} // ✅ 정답 토글 함수 전달
+      setShowAnswer={setShowAnswer}
     />
   );
 }

@@ -179,8 +179,8 @@ export const MoreButton = styled.button`
 
 export const OptionPopup = styled.div`
   position: absolute;
-  top: 40px; // ✅ 버튼 아래로 약간 띄움
-  right: 0; // ✅ 버튼 오른쪽 정렬 유지
+  top: 40px;
+  right: 0;
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);

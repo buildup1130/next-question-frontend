@@ -28,8 +28,8 @@ export default function WrongHistoryDetailUI({
   const router = useRouter();
 
   const renderOptions = (q, idx) => {
-    console.log(`🔍 Q${idx + 1} type:`, q.type); // ✅ 타입 확인
-    console.log(`🔍 Q${idx + 1} options:`, q.opt); // ✅ 보기 확인
+    console.log(`🔍 Q${idx + 1} type:`, q.type);
+    console.log(`🔍 Q${idx + 1} options:`, q.opt);
 
     const opts = q.opt ? q.opt.split("|||") : [];
 

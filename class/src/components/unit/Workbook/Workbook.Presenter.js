@@ -1,4 +1,3 @@
-// ✅ Workbook.Presenter.js (리팩토링 완료)
 import { BackIcon } from "@/utils/SvgProvider";
 import {
   Wrapper,
