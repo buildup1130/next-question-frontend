@@ -1,4 +1,3 @@
-// ✅ WrongNote.Presenter.js (리팩토링)
 import { useRouter } from "next/router";
 import { Calendar } from "lucide-react";
 import { Calendar as DatePicker } from "react-date-range";
@@ -127,13 +126,17 @@ export default function WrongNoteUI(props) {
             onClick={() => onClickHistory(group.historyId)}
           >
             <WorkbookName>
-              {group.solvedAt?.replace("T", " ").slice(0, 16)}{" "}
-              {group.mainWorkBookName}
-              {group.workBookCount > 1 &&
-                ` 외 ${group.workBookCount - 1} 문제집`}
+              <div className="title">
+                {group.mainWorkBookName}
+                {group.workBookCount > 1 &&
+                  ` 외 ${group.workBookCount - 1} 문제집`}
+              </div>
+              <div className="date">
+                {group.solvedAt?.replace("T", " ").slice(0, 16)}
+              </div>
             </WorkbookName>
             <WorkbookRight>
-              <WorkbookCount>{group.questionCount}문제</WorkbookCount>
+              <WorkbookCount>{group.wrongCount}문제</WorkbookCount>
               <WorkbookArrow>▶</WorkbookArrow>
             </WorkbookRight>
           </WorkbookRow>
@@ -141,13 +144,10 @@ export default function WrongNoteUI(props) {
       ) : (
         filteredData.map((book) => {
           const firstQuestion = book.dates?.[0]?.questions?.[0];
-          const dt = firstQuestion?.solvedAt
-            ? new Date(firstQuestion.solvedAt.replace(" ", "T"))
-            : null;
-          const formattedTime =
-            dt && !isNaN(dt.getTime())
-              ? dt.toISOString().slice(0, 16).replace("T", " ")
-              : "시간 정보 없음";
+
+          const formattedTime = firstQuestion?.solvedAt
+            ? firstQuestion.solvedAt.replace("T", " ")
+            : "시간 정보 없음";
 
           return (
             <div key={book.workbook}>

@@ -1,11 +1,11 @@
-// ✅ BookShelf.Container.js
+// ✅ BookShelf.Container.js (리팩토링 완료)
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import BookShelfUI from "./BookShelf.Presenter";
 import RenameModalLogic from "../../unit/RenameModal/RenameModal.Container";
 import BookShelfQuestionLogic from "../../unit/BookShelfQuestion/BookShelfQuestion.Container";
 import DeleteWorkbookModalLogic from "../../unit/DeleteModal/DeleteWorkbookModal.Container";
 import { toast } from "react-toastify";
-
 import {
   deleteWorkBooks,
   searchAllWorkBooks,
@@ -13,85 +13,82 @@ import {
   fetchQuestionType,
 } from "@/utils/WorkbookManager";
 import { useAuth } from "@/utils/AuthContext";
-import { useRouter } from "next/router";
 
 export default function BookShelfLogic() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [books, setBooks] = useState([]);
-  const [filteredBooks, setFilteredBooks] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [count, setCount] = useState(1);
-  const [curBook, setCurBook] = useState(null);
-  const [sequence, setSequence] = useState(0);
-  const [isRenameModalOpen, setRenameModalOpen] = useState(false);
-  const [renameTargetBook, setRenameTargetBook] = useState(null);
-  const [isTest, setIsTest] = useState(false);
-  const [isCreateModalOpen, setCreateModalOpen] = useState(false);
-  const [newWorkbookTitle, setNewWorkbookTitle] = useState("");
-  const [isSelectMode, setIsSelectMode] = useState(false);
-  const [selectedBookIds, setSelectedBookIds] = useState([]);
-  const [selectedType, setSelectedType] = useState([0, 1, 2]);
-  const [typeNum, setTypeNum] = useState({});
-  const [isLearningModalOpen, setIsLearningModalOpen] = useState(false);
-  const [deleteTarget, setDeleteTarget] = useState(null);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [sortOption, setSortOption] = useState("name");
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
-
   const { token } = useAuth();
   const router = useRouter();
 
-  const [viewType, setViewType] = useState(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("viewType") || "list";
-    }
-    return "list";
-  });
+  const [books, setBooks] = useState([]);
+  const [filteredBooks, setFilteredBooks] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [viewType, setViewType] = useState("list");
+  const [sortOption, setSortOption] = useState("name");
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
 
-  const handleViewTypeChange = (type) => {
-    setViewType(type);
-    localStorage.setItem("viewType", type);
-  };
+  const [isSelectMode, setIsSelectMode] = useState(false);
+  const [selectedBookIds, setSelectedBookIds] = useState([]);
+
+  const [isRenameModalOpen, setRenameModalOpen] = useState(false);
+  const [renameTargetBook, setRenameTargetBook] = useState(null);
+
+  const [isCreateModalOpen, setCreateModalOpen] = useState(false);
+  const [newWorkbookTitle, setNewWorkbookTitle] = useState("");
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState(null);
+
+  const [isLearningModalOpen, setIsLearningModalOpen] = useState(false);
+  const [curBook, setCurBook] = useState(null);
+  const [sequence, setSequence] = useState(0);
+  const [count, setCount] = useState(1);
+  const [isTest, setIsTest] = useState(false);
+  const [selectedType, setSelectedType] = useState([0, 1, 2]);
+  const [typeNum, setTypeNum] = useState({});
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setViewType(localStorage.getItem("viewType") || "list");
+    }
+  }, []);
 
   useEffect(() => {
     if (token) fetchWorkBooks();
   }, [token, router.asPath]);
 
   useEffect(() => {
-    const checkScreenSize = () => {
-      setIsSmallScreen(window.innerWidth <= 375); // iPhone SE 대응
-    };
+    const checkScreenSize = () => setIsSmallScreen(window.innerWidth <= 375);
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
   useEffect(() => {
-    let sorted = [...books];
-    if (sortOption === "name") {
-      sorted.sort((a, b) => a.title.localeCompare(b.title));
-    } else if (sortOption === "created") {
-      sorted.sort((a, b) => new Date(b.date) - new Date(a.date));
-    } else if (sortOption === "count") {
-      sorted.sort((a, b) => b.items - a.items);
-    }
+    const sorted = [...books].sort((a, b) => {
+      if (sortOption === "name") return a.title.localeCompare(b.title);
+      if (sortOption === "created") return new Date(b.date) - new Date(a.date);
+      if (sortOption === "count") return b.items - a.items;
+      return 0;
+    });
     setFilteredBooks(sorted);
   }, [sortOption, books]);
 
   const fetchWorkBooks = async () => {
     setIsLoading(true);
     try {
-      const response = await searchAllWorkBooks(token);
-      const bookArr = response.map((data) => ({
-        id: data.encryptedWorkBookId,
-        title: data.name,
-        items: data.totalQuestion,
-        date: data.recentSolvedDate?.substring(0, 10) || "N/A",
-      }));
+      const data = await searchAllWorkBooks(token);
+      const bookArr = data.map(
+        ({ encryptedWorkBookId, name, totalQuestion, recentSolvedDate }) => ({
+          id: encryptedWorkBookId,
+          title: name,
+          items: totalQuestion,
+          date: recentSolvedDate?.substring(0, 10) || "N/A",
+        })
+      );
       setBooks(bookArr);
       setFilteredBooks(bookArr);
-    } catch (error) {
-      console.error("Failed to fetch books:", error);
+    } catch (err) {
+      console.error("책장 로딩 실패:", err);
     } finally {
       setIsLoading(false);
     }
@@ -100,119 +97,70 @@ export default function BookShelfLogic() {
   const handleSearchChange = (e) => {
     const keyword = e.target.value;
     setSearchQuery(keyword);
-    const result = books.filter((book) =>
-      book.title.toLowerCase().includes(keyword.toLowerCase())
+    setFilteredBooks(
+      books.filter((book) =>
+        book.title.toLowerCase().includes(keyword.toLowerCase())
+      )
     );
-    setFilteredBooks(result);
-  };
-
-  const handleDelete = async () => {
-    if (!token) return;
-
-    const validIds = selectedBookIds.filter((id) => !!id);
-    if (validIds.length === 0) {
-      toast.warn("삭제할 문제집이 없습니다.", {
-        position: "top-center",
-      });
-      return;
-    }
-
-    try {
-      await deleteWorkBooks(token, validIds);
-      await fetchWorkBooks();
-      setSelectedBookIds([]);
-      setIsSelectMode(false);
-      toast.success("선택한 문제집이 삭제되었습니다.", {
-        position: "top-center",
-      });
-      setIsDeleteModalOpen(false);
-    } catch (err) {
-      toast.error("문제집 삭제 중 오류가 발생했습니다.", {
-        position: "top-center",
-      });
-    }
-  };
-
-  const openDeleteModal = (book) => {
-    setDeleteTarget(book);
-    setIsDeleteModalOpen(true);
-  };
-
-  const confirmDelete = async () => {
-    if (!token || !deleteTarget || !deleteTarget.id) return;
-
-    try {
-      await deleteWorkBooks(token, [deleteTarget.id]);
-      await fetchWorkBooks();
-      toast.success("문제집이 삭제되었습니다.", {
-        position: "top-center",
-      });
-    } catch {
-      toast.error("문제집 삭제 중 오류가 발생했습니다.", {
-        position: "top-center",
-      });
-    } finally {
-      setIsDeleteModalOpen(false);
-      setDeleteTarget(null);
-    }
   };
 
   const handleCreateWorkbook = async () => {
-    if (!newWorkbookTitle.trim()) {
-      toast.error("문제집 이름을 입력해주세요.", {
-        position: "top-center",
-      });
-      return;
-    }
-
+    if (!newWorkbookTitle.trim())
+      return toast.error("문제집 이름을 입력해주세요.");
     try {
       await createWorkbook(token, newWorkbookTitle.trim());
-      toast.success("새 문제집이 추가됐습니다!", {
-        position: "top-center",
-      });
+      toast.success("새 문제집이 추가됐습니다!");
       setCreateModalOpen(false);
       setNewWorkbookTitle("");
-      await fetchWorkBooks();
+      fetchWorkBooks();
     } catch (err) {
       if (
-        err?.response?.data?.message?.includes("이미 존재") || // 백엔드 메시지 기반
+        err?.response?.data?.message?.includes("이미 존재") ||
         err?.message?.includes("already exists")
       ) {
-        toast.error("이미 존재하는 문제집입니다.", {
-          position: "top-center",
-        });
+        toast.error("이미 존재하는 문제집입니다.");
       } else {
-        toast.error("문제집 생성 실패", {
-          position: "top-center",
-        });
+        toast.error("문제집 생성 실패");
       }
     }
   };
 
-  const handleMoreClick = (book, action) => {
-    if (action === "learn") {
-      if (book.items === 0) {
-        toast.error("문제집이 비어있습니다!", {
-          position: "top-center",
-        });
-        return;
-      }
-      setCurBook({ id: book.id, items: book.items, name: book.title });
-      setSequence(1);
-      setIsLearningModalOpen(true);
-    } else if (action === "rename") {
-      setRenameTargetBook(book);
-      setRenameModalOpen(true);
-    } else if (action === "delete") {
-      openDeleteModal(book);
+  const handleDelete = async () => {
+    if (!token || selectedBookIds.length === 0)
+      return toast.warn("삭제할 문제집이 없습니다.");
+    try {
+      await deleteWorkBooks(token, selectedBookIds);
+      toast.success("선택한 문제집이 삭제되었습니다.");
+      setIsSelectMode(false);
+      setSelectedBookIds([]);
+      fetchWorkBooks();
+    } catch {
+      toast.error("문제집 삭제 중 오류가 발생했습니다.");
+    } finally {
+      setIsDeleteModalOpen(false);
+    }
+  };
+
+  const confirmDelete = async () => {
+    if (!token || !deleteTarget?.id) return;
+    try {
+      await deleteWorkBooks(token, [deleteTarget.id]);
+      toast.success("문제집이 삭제되었습니다.");
+      fetchWorkBooks();
+    } catch {
+      toast.error("문제집 삭제 중 오류가 발생했습니다.");
+    } finally {
+      setDeleteTarget(null);
+      setIsDeleteModalOpen(false);
     }
   };
 
   const onClickBook = (book) => {
     if (isSelectMode) {
-      const isSelected = selectedBookIds.includes(book.id);
       setSelectedBookIds((prev) =>
-        isSelected ? prev.filter((id) => id !== book.id) : [...prev, book.id]
+        prev.includes(book.id)
+          ? prev.filter((id) => id !== book.id)
+          : [...prev, book.id]
       );
     } else {
       router.push({
@@ -222,115 +170,81 @@ export default function BookShelfLogic() {
     }
   };
 
-  const onClickLearningMode = () => {
-    setIsSelectMode((prev) => !prev);
-    setSelectedBookIds([]);
+  const handleMoreClick = (book, action) => {
+    if (action === "learn") {
+      if (book.items === 0) return toast.error("문제집이 비어있습니다!");
+      setCurBook({ id: book.id, items: book.items, name: book.title });
+      setSequence(1);
+      setIsLearningModalOpen(true);
+    } else if (action === "rename") {
+      setRenameTargetBook(book);
+      setRenameModalOpen(true);
+    } else if (action === "delete") {
+      setDeleteTarget(book);
+      setIsDeleteModalOpen(true);
+    }
   };
 
-  const onClickLearning = () => {
-    if (!token || !curBook?.id || selectedType.length === 0)
-      return alert("잘못된 접근입니다.");
-
-    const typeMapping = [
-      { type: 0, count: typeNum.multipleChoice },
-      { type: 1, count: typeNum.ox },
-      { type: 2, count: typeNum.fillInTheBlank },
-    ];
-
-    const queCount = typeMapping.reduce(
-      (total, { type, count }) =>
-        selectedType.includes(type) ? total + count : total,
-      0
+  const onClickLearningStart = async () => {
+    if (selectedBookIds.length === 0) return alert("문제집을 선택해주세요.");
+    const data = await searchAllWorkBooks(token);
+    const selectedBooks = data.filter((b) =>
+      selectedBookIds.includes(b.encryptedWorkBookId)
     );
-
-    const ids = Array.isArray(curBook.id) ? curBook.id : [curBook.id];
-    const titles = Array.isArray(curBook.name) ? curBook.name : [curBook.name];
-
-    setSequence(0);
-    setCurBook(null);
-    setIsLearningModalOpen(false);
-    setIsSelectMode(false);
-    setSelectedBookIds([]);
-
-    router.push({
-      pathname: "/Question",
-      query: {
-        Id: ids.join(","),
-        count: queCount,
-        type: isTest ? 1 : 0,
-        random: selectedType.length === 3 ? true : false,
-        ox: selectedType.includes(1) ? "true" : "false",
-        multiple: selectedType.includes(0) ? "true" : "false",
-        blank: selectedType.includes(2) ? "true" : "false",
-        title: titles.join(","),
-      },
-    });
+    const total = selectedBooks.reduce((sum, b) => sum + b.totalQuestion, 0);
+    const titles = selectedBooks.map((b) => b.name);
+    if (total === 0) return alert("선택한 문제집에 문제가 없습니다!");
+    await onFetchType(selectedBookIds);
+    setCurBook({ id: selectedBookIds, items: total, name: titles });
+    setSequence(1);
+    setIsLearningModalOpen(true);
   };
 
   const onFetchType = async (ids) => {
-    let total = {
-      multipleChoice: 0,
-      ox: 0,
-      fillInTheBlank: 0,
-    };
-
-    for (const id of Array.isArray(ids) ? ids : [ids]) {
+    const total = { multipleChoice: 0, ox: 0, fillInTheBlank: 0 };
+    for (const id of ids) {
       const res = await fetchQuestionType(token, id);
       total.multipleChoice += res.multipleChoice;
       total.ox += res.ox;
       total.fillInTheBlank += res.fillInTheBlank;
     }
-
-    const totalCount = total.multipleChoice + total.ox + total.fillInTheBlank;
-
     setTypeNum(total);
-    setCount(totalCount);
+    setCount(total.multipleChoice + total.ox + total.fillInTheBlank);
   };
 
-  const handleStartLearning = async () => {
-    if (selectedBookIds.length === 0) return alert("문제집을 선택해주세요.");
-
-    const response = await searchAllWorkBooks(token);
-    const bookArr = response.map((data) => ({
-      id: data.encryptedWorkBookId,
-      title: data.name,
-      items: data.totalQuestion,
-      date: data.recentSolvedDate?.substring(0, 10) || "N/A",
-    }));
-
-    setBooks(bookArr);
-    console.log(bookArr);
-
-    const selectedBooks = bookArr.filter((book) =>
-      selectedBookIds.includes(book.id)
-    );
-
-    const totalQuestions = selectedBooks.reduce(
-      (acc, cur) => acc + cur.items,
+  const onClickLearning = () => {
+    if (!token || !curBook?.id || selectedType.length === 0)
+      return alert("잘못된 접근입니다.");
+    const typeMap = [
+      { type: 0, count: typeNum.multipleChoice },
+      { type: 1, count: typeNum.ox },
+      { type: 2, count: typeNum.fillInTheBlank },
+    ];
+    const total = typeMap.reduce(
+      (sum, { type, count }) =>
+        selectedType.includes(type) ? sum + count : sum,
       0
     );
-
-    const selectedTitles = [];
-    selectedBooks.map((data, index) => {
-      selectedTitles.push(data.title);
+    const ids = Array.isArray(curBook.id) ? curBook.id : [curBook.id];
+    const titles = Array.isArray(curBook.name) ? curBook.name : [curBook.name];
+    setSequence(0);
+    setCurBook(null);
+    setIsLearningModalOpen(false);
+    setIsSelectMode(false);
+    setSelectedBookIds([]);
+    router.push({
+      pathname: "/Question",
+      query: {
+        Id: ids.join(","),
+        count: total,
+        type: isTest ? 1 : 0,
+        random: selectedType.length === 3,
+        ox: selectedType.includes(1).toString(),
+        multiple: selectedType.includes(0).toString(),
+        blank: selectedType.includes(2).toString(),
+        title: titles.join(","),
+      },
     });
-
-    console.log(selectedTitles);
-
-    if (totalQuestions === 0) {
-      alert("선택한 문제집에 문제가 없습니다!");
-      return;
-    }
-
-    await onFetchType(selectedBookIds);
-
-    setCurBook({
-      id: selectedBookIds,
-      items: totalQuestions,
-      name: selectedTitles,
-    });
-    setSequence(1);
-    setIsLearningModalOpen(true);
   };
 
   return (
@@ -344,9 +258,9 @@ export default function BookShelfLogic() {
           onClose={() => {
             setSequence(0);
             setCurBook(null);
+            setIsLearningModalOpen(false);
             setIsSelectMode(false);
             setSelectedBookIds([]);
-            setIsLearningModalOpen(false);
           }}
           isTest={isTest}
           setIsTest={setIsTest}
@@ -362,11 +276,13 @@ export default function BookShelfLogic() {
         isLoading={isLoading}
         searchQuery={searchQuery}
         onSearchChange={handleSearchChange}
-        onSearch={() => {}}
         onMoreClick={handleMoreClick}
         onClickBook={onClickBook}
-        onClickLearningMode={onClickLearningMode}
-        onClickLearningStart={handleStartLearning}
+        onClickLearningMode={() => {
+          setIsSelectMode((prev) => !prev);
+          setSelectedBookIds([]);
+        }}
+        onClickLearningStart={onClickLearningStart}
         handleDelete={handleDelete}
         isSelectMode={isSelectMode}
         isSmallScreen={isSmallScreen}
@@ -381,17 +297,17 @@ export default function BookShelfLogic() {
         viewType={viewType}
         sortOption={sortOption}
         setSortOption={setSortOption}
-        setViewType={handleViewTypeChange}
+        setViewType={(type) => {
+          setViewType(type);
+          localStorage.setItem("viewType", type);
+        }}
         onClickRename={(book) => {
           setRenameTargetBook(book);
           setRenameModalOpen(true);
         }}
         onClickDelete={(book) => {
-          if (book) {
-            setDeleteTarget(book);
-          } else if (selectedBookIds.length > 0) {
-            setDeleteTarget(null);
-          }
+          if (book) setDeleteTarget(book);
+          else if (selectedBookIds.length > 0) setDeleteTarget(null);
           setIsDeleteModalOpen(true);
         }}
       />
@@ -408,11 +324,7 @@ export default function BookShelfLogic() {
         <DeleteWorkbookModalLogic
           onClose={() => setIsDeleteModalOpen(false)}
           onConfirm={() => {
-            if (isSelectMode) {
-              handleDelete();
-            } else {
-              confirmDelete();
-            }
+            isSelectMode ? handleDelete() : confirmDelete();
           }}
         />
       )}
