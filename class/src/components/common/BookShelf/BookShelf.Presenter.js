@@ -51,6 +51,7 @@ export default function BookShelfUI({
   onClickLearningMode,
   onClickLearningStart,
   isSelectMode,
+  isSmallScreen,
   selectedBookIds,
   onOpenCreateModal,
   isCreateModalOpen,
@@ -286,11 +287,11 @@ export default function BookShelfUI({
               disabled={selectedBookIds.length === 0}
               onClick={onClickDelete}
             >
-              문제집 삭제
+              삭제 {/* ✅ 항상 짧게 */}
             </DeleteButton>
           )}
           <SelectButton onClick={onClickLearningMode}>
-            {isSelectMode ? "선택 취소" : "선택"}
+            {isSelectMode ? "취소" : "선택"} {/* ✅ 항상 짧게 */}
           </SelectButton>
         </FilterActionGroup>
       </FilterRow>

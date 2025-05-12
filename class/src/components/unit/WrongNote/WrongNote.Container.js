@@ -161,7 +161,9 @@ export default function WrongNoteLogic() {
     const end = new Date(tempEnd);
 
     if (start > end) {
-      toast.error("날짜 순서를 확인해주세요.");
+      toast.error("날짜 순서를 확인해주세요.", {
+        position: "top-center",
+      });
       return; // ✅ 날짜 범위가 유효하지 않으므로 함수 중단
     }
 

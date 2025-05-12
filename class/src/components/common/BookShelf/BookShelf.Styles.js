@@ -139,6 +139,8 @@ export const BookTitle = styled.div`
   font-size: 15px;
   margin-bottom: 4px;
   color: #707070;
+  word-break: break-word;
+  white-space: normal;
 `;
 
 export const BookDate = styled.div`
@@ -149,7 +151,11 @@ export const BookDate = styled.div`
 export const BookInfoRight = styled.div`
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 8px;
+  width: 64px; // ✅ 고정 너비 지정 (or 60~72px 정도)
+  flex-shrink: 0;
+  white-space: nowrap;
 `;
 
 export const BookCount = styled.div`
@@ -159,7 +165,7 @@ export const BookCount = styled.div`
 `;
 
 export const BookCheckbox = styled.input`
-  width: 16px;
+  width: 24px;
   height: 16px;
   transform: none;
   accent-color: #65558f;
@@ -172,12 +178,12 @@ export const MoreButton = styled.button`
   font-size: 20px;
   cursor: pointer;
   padding: 0;
-  width: 24px; // ← 약간 키움 (가로세로 정사각형)
+  width: 24px;
   height: 24px;
   display: flex;
-  align-items: center; // 수직 가운데 정렬
-  justify-content: center; // 수평 가운데 정렬
-  line-height: 1; // 글자 수직 보정
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 `;
 
 export const OptionPopup = styled.div`
@@ -295,7 +301,7 @@ export const ModalContent = styled.div`
 
 export const TileGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 12px;
   margin-top: 16px;
 `;
@@ -324,6 +330,8 @@ export const CardBottom = styled.div`
 export const CardTitle = styled.div`
   font-weight: bold;
   margin-bottom: 4px;
+  word-break: break-word;
+  text-align: center;
 `;
 
 export const CardTop = styled.div`
@@ -339,6 +347,7 @@ export const CardInfo = styled.div`
   font-size: 12px;
   color: #666;
   margin-bottom: 8px;
+  text-align: center;
 `;
 
 export const CardActions = styled.div`

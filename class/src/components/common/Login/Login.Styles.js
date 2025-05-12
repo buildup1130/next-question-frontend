@@ -7,7 +7,7 @@ export const LoginContainer = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  padding: 24px 20px;
+  padding: 24px 16px;
   position: relative;
   box-sizing: border-box;
 `;
@@ -32,9 +32,17 @@ export const FormWrapper = styled.div`
 `;
 
 export const Logo = styled.img`
-  width: 100%;
+  width: 80%;
   max-width: 280px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+
+  @media (min-width: 768px) {
+    max-width: 280px;
+  }
+
+  @media (min-width: 1024px) {
+    max-width: 320px;
+  }
 `;
 
 export const UserID = styled.div`
@@ -44,15 +52,13 @@ export const UserID = styled.div`
   margin-bottom: 20px;
 `;
 
-export const Password = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
+export const Password = styled(UserID)`
   margin-bottom: 10px;
 `;
 
 export const InputField = styled.input`
-  width: 80%;
+  width: 100%;
+  max-width: 300px;
   height: 40px;
   padding: 1px 8px 10px;
   border: 1px solid #ccc;
@@ -68,7 +74,8 @@ export const InputField = styled.input`
 `;
 
 export const KeepLoginWrapper = styled.div`
-  width: 80%;
+  width: 100%;
+  max-width: 300px;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -96,8 +103,9 @@ export const ErrorMessage = styled.p`
 `;
 
 export const LoginButton = styled.button`
-  width: 80%;
-  height: 40px;
+  width: 100%;
+  max-width: 300px;
+  height: 42px;
   background-color: #808fff;
   color: white;
   font-size: 15px;

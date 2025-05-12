@@ -31,7 +31,7 @@ export default function SocialSignUpUI({
       </BackButton>
 
       <FormWrapper>
-        <Logo src="/image/Logo.png" alt="logo" />
+        <Logo src="/image/Logo_Full.png" alt="logo" />
 
         <FillForm onSubmit={onSubmit}>
           <InputField

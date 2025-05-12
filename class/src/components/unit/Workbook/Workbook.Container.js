@@ -114,7 +114,9 @@ export default function WorkbookLogic() {
         encryptedQuestionInfoIds
       );
 
-      toast.success("문제 이동 성공");
+      toast.success("문제 이동 성공", {
+        position: "top-center",
+      });
       setMoveModalOpen(false);
       setMoveMode(false);
       setSelectedIds([]);
@@ -176,7 +178,9 @@ export default function WorkbookLogic() {
       setDeleteModalOpen(false);
 
       // ✅ 삭제 완료 안내
-      toast.success("문제 삭제 완료!");
+      toast.success("문제 삭제 완료!", {
+        position: "top-center",
+      });
     } catch (err) {
       console.error("삭제 중 에러 발생:", err);
       alert("삭제 요청 중 오류 발생");

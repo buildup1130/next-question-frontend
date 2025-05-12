@@ -7,7 +7,7 @@ export const SignUpContainer = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  padding: 24px 20px;
+  padding: 24px 16px;
   position: relative;
   box-sizing: border-box;
 `;
@@ -26,22 +26,30 @@ export const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  margin-top: 50px;
 `;
 
 export const FillForm = styled.form`
-  width: 80%;
+  width: 100%;
+  max-width: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: auto;
-  margin-bottom: auto;
 `;
 
 export const Logo = styled.img`
-  width: 100%;
-  max-width: 280px;
-  margin-bottom: 10px;
+  width: 80%;
+  max-width: 240px;
+  margin-bottom: 16px;
+
+  @media (min-width: 768px) {
+    max-width: 280px;
+  }
+
+  @media (min-width: 1024px) {
+    max-width: 320px;
+  }
 `;
 
 export const InputWrapper = styled.div`
@@ -56,7 +64,7 @@ export const InputField = styled.input`
   border-radius: 6px;
   font-size: 14px;
   outline: none;
-  padding: 1px 8px 10px; // top padding을 줄이고, bottom을 조금 줘서 placeholder 위로
+  padding: 1px 8px 10px;
   box-sizing: border-box;
 
   &::placeholder {
