@@ -1,10 +1,11 @@
+// ✅ WrongNote.Presenter.js (리팩토링)
 import { useRouter } from "next/router";
 import { Calendar } from "lucide-react";
 import { Calendar as DatePicker } from "react-date-range";
 import { ko } from "date-fns/locale";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-import React, { useState } from "react";
+import React from "react";
 
 import {
   Wrapper,
@@ -74,10 +75,9 @@ export default function WrongNoteUI(props) {
     setOpenStartCalendar,
     openEndCalendar,
     setOpenEndCalendar,
+    onConfirmLearning,
+    setIsSelectMode,
   } = props;
-
-  console.log("✅ selectedFilterBook:", selectedFilterBook);
-  console.log("✅ groupedHistory in UI:", groupedHistory);
 
   const filteredData =
     selectedFilterBook === "모든 문제집"
@@ -110,7 +110,7 @@ export default function WrongNoteUI(props) {
           ))}
         </SelectBox>
 
-        <FilterButton onClick={() => props.setIsSelectMode(!isSelectMode)}>
+        <FilterButton onClick={() => setIsSelectMode(!isSelectMode)}>
           {isSelectMode ? "취소" : "선택"}
         </FilterButton>
       </FilterBar>
@@ -185,7 +185,6 @@ export default function WrongNoteUI(props) {
                   )}
                 </WorkbookRight>
               </WorkbookRow>
-
               <Divider />
             </div>
           );
@@ -197,7 +196,7 @@ export default function WrongNoteUI(props) {
         onClick={() => {
           if (isSelectMode && selectedBooks.length > 0) {
             onClickStartLearning();
-            props.onConfirmLearning();
+            onConfirmLearning();
           }
         }}
       >
@@ -292,11 +291,11 @@ export default function WrongNoteUI(props) {
                     onChange={(date) => {
                       const offsetDate = new Date(
                         date.getTime() + 9 * 60 * 60 * 1000
-                      ); // ✅ KST 보정
+                      );
                       const localDateStr = offsetDate
                         .toISOString()
                         .split("T")[0];
-                      setTempStart(localDateStr); // ✅ 시작일 설정
+                      setTempStart(localDateStr);
                       setOpenStartCalendar(false);
                     }}
                   />
@@ -322,11 +321,11 @@ export default function WrongNoteUI(props) {
                     onChange={(date) => {
                       const offsetDate = new Date(
                         date.getTime() + 9 * 60 * 60 * 1000
-                      ); // ✅ KST 보정
+                      );
                       const localDateStr = offsetDate
                         .toISOString()
                         .split("T")[0];
-                      setTempEnd(localDateStr); // ✅ 종료일 설정
+                      setTempEnd(localDateStr);
                       setOpenEndCalendar(false);
                     }}
                   />

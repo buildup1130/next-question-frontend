@@ -1,4 +1,4 @@
-// ✅ WrongNote.Styles.js
+// ✅ WrongNote.Styles.js (리팩토링 완료)
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
@@ -16,15 +16,14 @@ export const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 0 8px 0;
+  padding: 12px 0 8px;
 `;
 
 export const PageTitle = styled.h2`
   font-size: 18px;
   font-weight: 500;
   margin: 0;
-  padding: 0;
-  color: #000000;
+  color: #000;
 `;
 
 export const DateHeader = styled.div`
@@ -33,8 +32,7 @@ export const DateHeader = styled.div`
   align-items: center;
   font-weight: 400;
   font-size: 15px;
-  margin-top: 6px;
-  margin-bottom: 18px;
+  margin: 6px 0 18px;
   gap: 6px;
   flex-wrap: wrap;
 `;
@@ -48,10 +46,6 @@ export const CalendarButton = styled.button`
   border: none;
   cursor: pointer;
   padding: 0;
-
-  svg {
-    vertical-align: middle;
-  }
 `;
 
 export const FilterBar = styled.div`
@@ -63,15 +57,12 @@ export const FilterBar = styled.div`
 `;
 
 export const SelectBox = styled.select`
-  width: 140px; // ✅ 고정 크기
+  width: 140px;
   padding: 6px 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 14px;
-  font-weight: 400;
-  color: #000000;
-
-  // ✅ 말줄임 처리 추가
+  color: #000;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -83,10 +74,9 @@ export const FilterButton = styled.button`
   border-radius: 6px;
   background-color: #808fff;
   border: 1px solid #b3bcff;
-  color: white;
-  cursor: pointer;
+  color: #fff;
   font-size: 14px;
-  flex-shrink: 0;
+  cursor: pointer;
 `;
 
 export const Divider = styled.hr`
@@ -163,22 +153,13 @@ export const ModalBackdrop = styled.div`
   z-index: 9999;
 `;
 
-export const DateModalBackdrop = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 9999;
-`;
+export const DateModalBackdrop = styled(ModalBackdrop)``;
 
 export const DateModalContent = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-
   background: white;
   padding: 24px 20px;
   width: 90%;
@@ -236,19 +217,19 @@ export const OptionItem = styled.li`
 export const DateRangeWrapper = styled.div`
   margin-top: 8px;
   border-radius: 12px;
-  overflow-x: auto; // ✅ 가로 스크롤 대응
+  overflow-x: auto;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 
   .rdrCalendarWrapper {
     font-family: inherit;
     border-radius: 12px;
-    max-width: 100%; // ✅ 너비 제한
-    min-width: 280px; // ✅ 최소 너비 설정 (필요시 조정)
+    max-width: 100%;
+    min-width: 280px;
     box-sizing: border-box;
   }
 
   .rdrMonth {
-    width: 100% !important; // ✅ 전체 너비에 맞추기
+    width: 100% !important;
   }
 
   .rdrDayNumber span {
@@ -274,12 +255,12 @@ export const DateInputGroup = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-bottom: 16px; // ✅ 간격 증가
+  margin-bottom: 16px;
 `;
 
 export const DateInputLabel = styled.label`
   font-size: 13px;
-  color: #000000;
+  color: #000;
 `;
 
 export const DateInput = styled.input`
@@ -288,7 +269,7 @@ export const DateInput = styled.input`
   font-size: 14px;
   border: 1px solid #ddd;
   border-radius: 12px;
-  background-color: #ffffff;
+  background-color: #fff;
   box-sizing: border-box;
   color: #8c8b81;
 `;
@@ -296,12 +277,11 @@ export const DateInput = styled.input`
 export const DateModalButtons = styled.div`
   display: flex;
   gap: 12px;
-  margin-top: 16px; // ✅ 버튼 위 간격 추가
+  margin-top: 16px;
 
   button {
     flex: 1;
     padding: 12px 0;
-    font-weight: 500;
     font-size: 14px;
     border-radius: 12px;
     border: none;
@@ -309,8 +289,8 @@ export const DateModalButtons = styled.div`
   }
 
   button:first-child {
-    background: #eeeeee;
-    color: #444444;
+    background: #eee;
+    color: #444;
   }
 
   button:last-child {
@@ -323,11 +303,10 @@ export const QuickRangeButtonContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
-  margin-bottom: 16px; // ✅ 버튼 아래와 간격
+  margin-bottom: 16px;
 `;
 
 export const QuickRangeButton = styled.button`
-  flex: 1;
   padding: 10px 0;
   background: #edefff;
   border: none;
@@ -353,18 +332,17 @@ export const WorkbookRow = styled.div`
 export const WorkbookName = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
 
   .title {
     font-size: 15px;
-    font-weight: 500; // 책장과 동일
-    color: #707070; // 책장 기준 색상
-    margin-bottom: 4px; // 제목과 날짜 사이 간격 추가
+    font-weight: 500;
+    color: #707070;
+    margin-bottom: 4px;
   }
 
   .date {
     font-size: 12px;
-    color: #999999; // 책장과 동일
+    color: #999;
   }
 `;
 
@@ -380,7 +358,6 @@ export const WorkbookRight = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
-  flex-shrink: 0;
   min-width: 64px;
   justify-content: flex-end;
   white-space: nowrap;

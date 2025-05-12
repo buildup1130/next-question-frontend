@@ -1,3 +1,4 @@
+// ✅ Workbook.Container.js (리팩토링)
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/utils/AuthContext";
@@ -31,20 +32,20 @@ export default function WorkbookLogic() {
 
   useEffect(() => {
     if (token && workBookId && userId) {
-      getWorkbookQuestions(token, workBookId, userId).then((data) => {
-        setQuestions(data || []);
-      });
+      getWorkbookQuestions(token, workBookId, userId).then(setQuestions);
     }
   }, [token, workBookId, userId]);
 
   useEffect(() => {
     if (token) {
       searchAllWorkBooks(token).then((data) => {
-        const books = data.map((item) => ({
-          encryptedWorkBookId: item.encryptedWorkBookId,
-          name: item.name,
-          totalQuestion: item.totalQuestion, // ✅ 추가
-        }));
+        const books = data.map(
+          ({ encryptedWorkBookId, name, totalQuestion }) => ({
+            encryptedWorkBookId,
+            name,
+            totalQuestion,
+          })
+        );
         setWorkBooks(books);
       });
     }
@@ -52,15 +53,10 @@ export default function WorkbookLogic() {
 
   const handleBack = () => router.back();
 
-  const toggleDeleteMode = (value) => {
-    if (typeof value === "boolean") setDeleteMode(value);
-    else setDeleteMode((prev) => !prev);
-  };
-
-  const toggleMoveMode = (value) => {
-    if (typeof value === "boolean") setMoveMode(value);
-    else setMoveMode((prev) => !prev);
-  };
+  const toggleDeleteMode = (value) =>
+    setDeleteMode(typeof value === "boolean" ? value : (prev) => !prev);
+  const toggleMoveMode = (value) =>
+    setMoveMode(typeof value === "boolean" ? value : (prev) => !prev);
 
   const handleSelect = (id) => {
     setSelectedIds((prev) =>
@@ -69,12 +65,8 @@ export default function WorkbookLogic() {
   };
 
   const openMoveModal = () => setMoveModalOpen(true);
-
-  const openDeleteModal = () => {
-    if (selectedIds.length > 0) {
-      setDeleteModalOpen(true);
-    }
-  };
+  const openDeleteModal = () =>
+    selectedIds.length > 0 && setDeleteModalOpen(true);
 
   const handleMoveSubmit = async () => {
     if (!token || !workBookId || !targetBookId || selectedIds.length === 0) {
@@ -92,31 +84,19 @@ export default function WorkbookLogic() {
       .map((q) => q.encryptedQuestionInfoId)
       .filter((id) => typeof id === "string" && !!id.trim());
 
-    console.log("📌 selectedIds:", selectedIds);
-    console.log(
-      "📌 questions:",
-      questions.map((q) => ({
-        encryptedQuestionId: q.encryptedQuestionId,
-        encryptedQuestionInfoId: q.encryptedQuestionInfoId,
-      }))
-    );
-
     if (encryptedQuestionInfoIds.length === 0) {
       alert("유효한 문제 ID가 없습니다.");
       return;
     }
 
     try {
-      const response = await moveQuestions(
+      await moveQuestions(
         token,
         workBookId,
         targetBookId,
         encryptedQuestionInfoIds
       );
-
-      toast.success("문제 이동 성공", {
-        position: "top-center",
-      });
+      toast.success("문제 이동 성공", { position: "top-center" });
       setMoveModalOpen(false);
       setMoveMode(false);
       setSelectedIds([]);
@@ -124,14 +104,13 @@ export default function WorkbookLogic() {
       setQuestions(updated);
     } catch (error) {
       console.error("문제 이동 중 오류:", error);
-      alert(error.message); // ✅ 여기에 모든 메시지 뜸
+      alert(error.message);
     }
   };
 
-  // ✅ 문제 수를 최신화하는 함수 추가
   const updateSingleBookCount = async (bookId) => {
     try {
-      const res = await fetchQuestionType(token, [bookId]); // ✅ 배열로 넘김
+      const res = await fetchQuestionType(token, [bookId]);
       const total =
         res?.[bookId]?.multipleChoice +
         res?.[bookId]?.ox +
@@ -160,27 +139,20 @@ export default function WorkbookLogic() {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          encryptedWorkBookId: workBookId, // ✅ 명세서 기준으로 수정
+          encryptedWorkBookId: workBookId,
           encryptedQuestionIds: selectedIds,
         }),
       });
 
       if (!res.ok) throw new Error("요청 실패");
 
-      // ✅ 삭제 성공 후 UI 업데이트
       const updated = await getWorkbookQuestions(token, workBookId, userId);
       setQuestions(updated);
-
-      await updateSingleBookCount(workBookId); // ✅ 문제 수 최신화
-
+      await updateSingleBookCount(workBookId);
       setSelectedIds([]);
       setDeleteMode(false);
       setDeleteModalOpen(false);
-
-      // ✅ 삭제 완료 안내
-      toast.success("문제 삭제 완료!", {
-        position: "top-center",
-      });
+      toast.success("문제 삭제 완료!", { position: "top-center" });
     } catch (err) {
       console.error("삭제 중 에러 발생:", err);
       alert("삭제 요청 중 오류 발생");

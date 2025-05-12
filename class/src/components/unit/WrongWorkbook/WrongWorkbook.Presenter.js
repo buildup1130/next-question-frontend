@@ -25,13 +25,61 @@ export default function WrongWorkbookUI({
   showAnswer,
   setShowAnswer,
 }) {
+  const renderOptions = (q) => {
+    if (q.type === "MULTIPLE_CHOICE") {
+      const opts = q.opt ? q.opt.split("|||") : [];
+      return (
+        <OptionWrapper>
+          {opts.map((optStr, i) => {
+            const label = optStr[0];
+            const text = optStr.slice(2);
+            const isAnswer = Number(q.answer) === i + 1;
+            return (
+              <Option key={i}>
+                <OptionNumber isAnswer={showAnswer && isAnswer}>
+                  {label}
+                </OptionNumber>
+                <div>{text}</div>
+              </Option>
+            );
+          })}
+        </OptionWrapper>
+      );
+    }
+
+    if (q.type === "OX") {
+      return (
+        <OptionWrapper>
+          {["O", "X"].map((val) => (
+            <Option key={val}>
+              <OptionNumber isAnswer={showAnswer && q.answer === val}>
+                {val}
+              </OptionNumber>{" "}
+              {val}
+            </Option>
+          ))}
+        </OptionWrapper>
+      );
+    }
+
+    if (q.type === "FILL_IN_THE_BLANK") {
+      return (
+        <Answer>
+          <AnswerLabel>A</AnswerLabel>
+          {showAnswer ? q.answer : null}
+        </Answer>
+      );
+    }
+
+    return null;
+  };
+
   return (
     <Wrapper>
       <Header>
         <BackButton onClick={onBack}>
           <BackIcon />
         </BackButton>
-
         <Title>{title}</Title>
       </Header>
 
@@ -43,63 +91,19 @@ export default function WrongWorkbookUI({
       <Divider />
 
       {questions.length > 0 ? (
-        questions.map((q, idx) => {
-          const opts = q.opt ? q.opt.split("|||") : [];
-          return (
-            <QuestionCard key={q.encryptedQuestionId}>
-              <QuestionRow>
-                <QuestionTextWrapper>
-                  <QuestionTitle>
-                    <div>Q{idx + 1}</div>
-                    <div>{q.name.replace(/\{BLANK\}/g, "OOO")}</div>
-                  </QuestionTitle>
-
-                  {q.type === "MULTIPLE_CHOICE" && (
-                    <OptionWrapper>
-                      {opts.map((optStr, i) => {
-                        const label = optStr[0];
-                        const text = optStr.slice(2);
-                        const isAnswer = Number(q.answer) === i + 1;
-                        return (
-                          <Option key={i}>
-                            <OptionNumber isAnswer={showAnswer && isAnswer}>
-                              {label}
-                            </OptionNumber>
-                            <div>{text}</div>
-                          </Option>
-                        );
-                      })}
-                    </OptionWrapper>
-                  )}
-
-                  {q.type === "OX" && (
-                    <OptionWrapper>
-                      <Option>
-                        <OptionNumber isAnswer={showAnswer && q.answer === "O"}>
-                          O
-                        </OptionNumber>{" "}
-                        O
-                      </Option>
-                      <Option>
-                        <OptionNumber isAnswer={showAnswer && q.answer === "X"}>
-                          X
-                        </OptionNumber>{" "}
-                        X
-                      </Option>
-                    </OptionWrapper>
-                  )}
-
-                  {q.type === "FILL_IN_THE_BLANK" && (
-                    <Answer>
-                      <AnswerLabel>A</AnswerLabel>
-                      {showAnswer ? q.answer : null}
-                    </Answer>
-                  )}
-                </QuestionTextWrapper>
-              </QuestionRow>
-            </QuestionCard>
-          );
-        })
+        questions.map((q, idx) => (
+          <QuestionCard key={q.encryptedQuestionId}>
+            <QuestionRow>
+              <QuestionTextWrapper>
+                <QuestionTitle>
+                  <div>Q{idx + 1}</div>
+                  <div>{q.name.replace(/\{BLANK\}/g, "OOO")}</div>
+                </QuestionTitle>
+                {renderOptions(q)}
+              </QuestionTextWrapper>
+            </QuestionRow>
+          </QuestionCard>
+        ))
       ) : (
         <div>문제가 없습니다.</div>
       )}

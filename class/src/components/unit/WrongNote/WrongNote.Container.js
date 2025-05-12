@@ -1,4 +1,4 @@
-// ✅ WrongNoteContainer.js (setOpenStartCalendar / setOpenEndCalendar 추가 반영)
+// ✅ WrongNote.Container.js (리팩토링)
 import { useState, useEffect } from "react";
 import { getWrongNote } from "@/utils/WrongNoteManager";
 import { useAuth } from "@/utils/AuthContext";
@@ -37,21 +37,18 @@ export default function WrongNoteLogic() {
   const [isTest, setIsTest] = useState(false);
   const [filterOptions, setFilterOptions] = useState(["모든 문제집", "학습별"]);
   const [selectedFilterBook, setSelectedFilterBook] = useState("모든 문제집");
-  const [openStartCalendar, setOpenStartCalendar] = useState(false); // ✅ 추가
-  const [openEndCalendar, setOpenEndCalendar] = useState(false); // ✅ 추가
+  const [openStartCalendar, setOpenStartCalendar] = useState(false);
+  const [openEndCalendar, setOpenEndCalendar] = useState(false);
 
   useEffect(() => {
     if (token) fetchWrongNotes();
   }, [token, selectedDateRange]);
 
-  // ✅ fetchWrongNotes 함수 위나 아래 아무 곳이나 가능
   const handleClickHistory = async (historyId) => {
     try {
       const response = await fetchWrongNoteHistoryQuestions(token, historyId);
-
-      if (!response || !response.questions || response.questions.length === 0) {
+      if (!response?.questions?.length)
         return alert("문제를 불러올 수 없습니다.");
-      }
 
       const formatted = response.questions.map((q) => ({
         name: q.name.replace("{BLANK}", "OOO"),
@@ -79,24 +76,15 @@ export default function WrongNoteLogic() {
         token,
         selectedDateRange.start,
         selectedDateRange.end,
-        "custom" // periodType은 4번째 인자로 명시
+        "custom"
       );
-
-      console.log("🟡 전체 응답 결과:", result);
-      console.log("🟡 groupedWorkBooks 응답:", result.groupedWorkBooks);
-      console.log("❓ questions:", result?.questions);
-
-      console.log("✅ getWrongNote 응답:", result);
       if (!result || !result.questions) return;
-
-      console.log("✅ groupedWorkBooks:", result.groupedWorkBooks);
 
       const grouped = {};
       result.questions.forEach((q, idx) => {
         const date = new Date(q.solvedDate);
         date.setHours(date.getHours() + 9);
         const dateStr = date.toISOString().split("T")[0];
-
         const title = q.workBookName?.trim() || "미지정 문제집";
         const id = q.encryptedWorkBookId;
 
@@ -127,23 +115,15 @@ export default function WrongNoteLogic() {
       const formatted = Object.entries(grouped).map(
         ([workbook, { id, dates }]) => {
           map[workbook] = id;
-
           const datesArr = Object.entries(dates).map(([date, questions]) => ({
             date,
             questions,
           }));
-
           const total = datesArr.reduce(
-            (sum, dateObj) => sum + dateObj.questions.length,
+            (sum, d) => sum + d.questions.length,
             0
           );
-
-          return {
-            workbook,
-            workbookId: id,
-            dates: datesArr,
-            total,
-          };
+          return { workbook, workbookId: id, dates: datesArr, total };
         }
       );
 
@@ -174,14 +154,12 @@ export default function WrongNoteLogic() {
     const end = new Date(tempEnd);
 
     if (start > end) {
-      toast.error("날짜 순서를 확인해주세요.", {
-        position: "top-center",
-      });
-      return; // ✅ 날짜 범위가 유효하지 않으므로 함수 중단
+      toast.error("날짜 순서를 확인해주세요.", { position: "top-center" });
+      return;
     }
 
     setSelectedDateRange({ start: tempStart, end: tempEnd });
-    setDateModalOpen(false); // ✅ 정상일 때만 모달 닫힘
+    setDateModalOpen(false);
   };
 
   const handleQuickRange = (type) => {
@@ -228,7 +206,7 @@ export default function WrongNoteLogic() {
       return alert("문제집 선택 또는 데이터가 없습니다");
     }
 
-    let collectedQuestions = [];
+    const collectedQuestions = [];
 
     selectedBooks.forEach((bookName) => {
       const book = wrongNoteData.find((b) => b.workbook === bookName);
@@ -244,9 +222,7 @@ export default function WrongNoteLogic() {
                   : q.type === "O/X"
                   ? "OX"
                   : "FILL_IN_THE_BLANK",
-              ...(q.options?.length > 0 && {
-                opt: q.options.join("/"),
-              }),
+              ...(q.options?.length > 0 && { opt: q.options.join("/") }),
             });
           });
         });
@@ -261,11 +237,7 @@ export default function WrongNoteLogic() {
       "tempQuestionData",
       JSON.stringify(collectedQuestions)
     );
-
-    router.push({
-      pathname: "/Question",
-      query: { type: 3 },
-    });
+    router.push({ pathname: "/Question", query: { type: 3 } });
   };
 
   const handleQuestionClick = (q) => {
@@ -316,10 +288,10 @@ export default function WrongNoteLogic() {
       setSelectedFilterBook={setSelectedFilterBook}
       groupedHistory={groupedHistory}
       onClickHistory={handleClickHistory}
-      openStartCalendar={openStartCalendar} // ✅ 추가
-      setOpenStartCalendar={setOpenStartCalendar} // ✅ 추가
-      openEndCalendar={openEndCalendar} // ✅ 추가
-      setOpenEndCalendar={setOpenEndCalendar} // ✅ 추가
+      openStartCalendar={openStartCalendar}
+      setOpenStartCalendar={setOpenStartCalendar}
+      openEndCalendar={openEndCalendar}
+      setOpenEndCalendar={setOpenEndCalendar}
     />
   );
 }
