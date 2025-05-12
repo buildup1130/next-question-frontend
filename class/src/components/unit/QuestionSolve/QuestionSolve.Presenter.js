@@ -56,6 +56,7 @@ import { useRouter } from "next/router";
 import { savingCheck, savingStat } from "@/utils/StatisticManager";
 import { useAuth } from "@/utils/AuthContext";
 import { BackIcon, CheckedIcon, CheckIcon, HomeIcon, XButton, XIcon } from "@/utils/SvgProvider";
+import { toast } from "react-toastify";
 
 export default function QuestionSolveUI(props) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -127,12 +128,14 @@ const checkAnswer = () => {
     }
     
     // 일반문제 풀이인 경우 오답이면 isCorrect false 유지
-    setIsCorrect(props.type === 0 ? false : true);
+    setIsCorrect(!(props.type === 0 || props.type === 2));
   }
   
   setCurAns(selectedAnswer);
   // 질문 타입에 따른 추가 처리
   handleQuestionTypeSpecificLogic(isAnswerCorrect);
+  }else{
+    toast.error("정답을 입력해주세요.")
   }
 };
 
@@ -152,7 +155,7 @@ const handleQuestionTypeSpecificLogic = (isAnswerCorrect) => {
       break;
       
     case "FILL_IN_THE_BLANK":
-      if(props.type === 0){
+      if(props.type === 0 || props.type === 2){
         console.log("빈칸, 일반 문제");
         console.log(question);
         const q = Math.floor(question.answer.length/3);
