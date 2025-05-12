@@ -287,7 +287,7 @@ export const DateModalButtons = styled.div`
   button {
     flex: 1;
     padding: 12px 0;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 14px;
     border-radius: 12px;
     border: none;
@@ -343,7 +343,7 @@ export const WorkbookName = styled.div`
 
   .title {
     font-size: 15px;
-    font-weight: 600; // 책장과 동일
+    font-weight: 500; // 책장과 동일
     color: #707070; // 책장 기준 색상
     margin-bottom: 4px; // 제목과 날짜 사이 간격 추가
   }
@@ -370,7 +370,7 @@ export const WorkbookRight = styled.div`
 export const WorkbookCount = styled.div`
   color: #666;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 400;
   display: flex;
   align-items: center;
 `;

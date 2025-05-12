@@ -135,7 +135,7 @@ export const BookInfoLeft = styled.div`
 `;
 
 export const BookTitle = styled.div`
-  font-weight: 600;
+  font-weight: 500;
   font-size: 15px;
   margin-bottom: 4px;
   color: #707070;
@@ -154,7 +154,7 @@ export const BookInfoRight = styled.div`
 
 export const BookCount = styled.div`
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 400;
   color: #707070;
 `;
 
