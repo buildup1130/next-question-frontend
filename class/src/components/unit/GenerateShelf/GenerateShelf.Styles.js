@@ -207,9 +207,9 @@ export const GenerateShelf__Shelf__QuestionDeleteContainer__XButton = styled.div
 `;
 
 export const GenerateShelf__Shelf__QuestionTitle = styled.div`
-  font-size: 18px;
-  font-weight: 700;
-`;
+  font-size:18px;
+  /* font-weight:700; */
+`
 export const GenerateShelf__Shelf__QuestionText = styled.div`
   font-size: 16px;
   display: flex;

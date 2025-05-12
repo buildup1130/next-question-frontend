@@ -313,6 +313,9 @@ export const QuestionSolve__LoadingWrapper = styled.div`
   display:flex;
   justify-content:center;
   align-items:center;
+
+  background-color:white;
+  padding: 0 10px;
 `
 
 export const QuestionSolve__LoadingContainer = styled.div`

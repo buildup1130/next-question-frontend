@@ -101,7 +101,7 @@ export default function QuestionSolveUI(props) {
 
   // 문제 데이터가 없으면 로딩 또는 빈 상태 표시
   if (!props.questions || props.questions.length === 0) {
-    return <MainContainerLogic>문제를 불러오는 중...</MainContainerLogic>;
+    return <></>;
   }
 
   const question = props.questions[currentQuestion];
