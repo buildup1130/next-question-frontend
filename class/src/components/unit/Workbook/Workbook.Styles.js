@@ -1,14 +1,13 @@
-// 수정된 Workbook.Styles.js 스타일 코드
+// ✅ Workbook.Styles.js (리팩토링 완료)
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
   width: 100%;
   max-width: 500px;
   height: 100vh;
-  padding: 16px;
-  padding-bottom: 80px;
   margin: 0 auto;
-  background-color: #ffffff;
+  padding: 16px 16px 80px;
+  background-color: #fff;
   overflow-y: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -46,7 +45,6 @@ export const Title = styled.h1`
   font-size: 16px;
   font-weight: 500;
   margin: 0;
-
   word-break: break-word;
   white-space: normal;
   text-align: center;
@@ -110,7 +108,7 @@ export const ActionButton = styled.button`
 `;
 
 export const QuestionCard = styled.div`
-  padding: 16px 0 12px 0;
+  padding: 16px 0 12px;
   border-bottom: 1px solid #ddd;
 `;
 
@@ -153,8 +151,8 @@ export const OptionNumber = styled.div`
   width: 18px;
   height: 18px;
   font-size: 14px;
-  background-color: ${(props) => (props.isAnswer ? "#808fff" : "#f3f4f6")};
-  color: ${(props) => (props.isAnswer ? "#fff" : "#999")};
+  background-color: ${({ isAnswer }) => (isAnswer ? "#808fff" : "#f3f4f6")};
+  color: ${({ isAnswer }) => (isAnswer ? "#fff" : "#999")};
   border-radius: 5px;
   display: flex;
   justify-content: center;

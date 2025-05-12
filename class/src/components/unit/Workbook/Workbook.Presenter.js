@@ -1,5 +1,5 @@
+// ✅ Workbook.Presenter.js (리팩토링 완료)
 import { BackIcon } from "@/utils/SvgProvider";
-
 import {
   Wrapper,
   Header,
@@ -22,6 +22,7 @@ import {
   ActionButtonGroup,
   ActionButton,
 } from "./Workbook.Styles";
+
 export default function WorkbookUI({
   title,
   questions,
@@ -43,6 +44,60 @@ export default function WorkbookUI({
     setIsSelectMode(false);
     onToggleDeleteMode(false);
     onToggleMoveMode(false);
+  };
+
+  const renderOptions = (q) => {
+    const opts = q.opt ? q.opt.split("|||") : [];
+
+    if (q.type === "MULTIPLE_CHOICE") {
+      return (
+        <OptionWrapper>
+          {opts.map((optStr, i) => {
+            const label = optStr[0];
+            const text = optStr.slice(2);
+            const isAnswer = Number(q.answer) === i + 1;
+            return (
+              <Option key={i}>
+                <OptionNumber isAnswer={showAnswer && isAnswer}>
+                  {label}
+                </OptionNumber>
+                <div>{text}</div>
+              </Option>
+            );
+          })}
+        </OptionWrapper>
+      );
+    }
+
+    if (q.type === "OX") {
+      return (
+        <OptionWrapper>
+          <Option>
+            <OptionNumber isAnswer={showAnswer && q.answer === "O"}>
+              1
+            </OptionNumber>{" "}
+            O
+          </Option>
+          <Option>
+            <OptionNumber isAnswer={showAnswer && q.answer === "X"}>
+              2
+            </OptionNumber>{" "}
+            X
+          </Option>
+        </OptionWrapper>
+      );
+    }
+
+    if (q.type === "FILL_IN_THE_BLANK") {
+      return (
+        <Answer>
+          <AnswerLabel>A</AnswerLabel>
+          {showAnswer ? q.answer : null}
+        </Answer>
+      );
+    }
+
+    return null;
   };
 
   return (
@@ -88,85 +143,42 @@ export default function WorkbookUI({
           </ActionButtonGroup>
         )}
       </ControlBar>
+
       <Divider />
 
       {questions && questions.length > 0 ? (
-        questions.map((q, idx) => {
-          const opts = q.opt ? q.opt.split("|||") : [];
-          return (
-            <QuestionCard
-              key={q.encryptedQuestionId}
-              onClick={() => {
-                if (deleteMode || moveMode || isSelectMode) {
-                  onSelect(q.encryptedQuestionId);
-                }
-              }}
-              style={{ cursor: isSelectMode ? "pointer" : "default" }}
-            >
-              <QuestionRow>
-                <QuestionTextWrapper>
-                  <QuestionTitle>
-                    <div>Q{idx + 1}</div>
-                    <div>{q.name.replace(/\{BLANK\}/g, "OOO")}</div>
-                  </QuestionTitle>
+        questions.map((q, idx) => (
+          <QuestionCard
+            key={q.encryptedQuestionId}
+            onClick={() => {
+              if (deleteMode || moveMode || isSelectMode) {
+                onSelect(q.encryptedQuestionId);
+              }
+            }}
+            style={{ cursor: isSelectMode ? "pointer" : "default" }}
+          >
+            <QuestionRow>
+              <QuestionTextWrapper>
+                <QuestionTitle>
+                  <div>Q{idx + 1}</div>
+                  <div>{q.name.replace(/\{BLANK\}/g, "OOO")}</div>
+                </QuestionTitle>
+                {renderOptions(q)}
+              </QuestionTextWrapper>
 
-                  {q.type === "MULTIPLE_CHOICE" && (
-                    <OptionWrapper>
-                      {opts.map((optStr, i) => {
-                        const label = optStr[0];
-                        const text = optStr.slice(2);
-                        const isAnswer = Number(q.answer) === i + 1;
-                        return (
-                          <Option key={i}>
-                            <OptionNumber isAnswer={showAnswer && isAnswer}>
-                              {label}
-                            </OptionNumber>
-                            <div>{text}</div>
-                          </Option>
-                        );
-                      })}
-                    </OptionWrapper>
-                  )}
-
-                  {q.type === "OX" && (
-                    <OptionWrapper>
-                      <Option>
-                        <OptionNumber isAnswer={showAnswer && q.answer === "O"}>
-                          1
-                        </OptionNumber>{" "}
-                        O
-                      </Option>
-                      <Option>
-                        <OptionNumber isAnswer={showAnswer && q.answer === "X"}>
-                          2
-                        </OptionNumber>{" "}
-                        X
-                      </Option>
-                    </OptionWrapper>
-                  )}
-
-                  {q.type === "FILL_IN_THE_BLANK" && (
-                    <Answer>
-                      <AnswerLabel>A</AnswerLabel>
-                      {showAnswer ? q.answer : null}
-                    </Answer>
-                  )}
-                </QuestionTextWrapper>
-
-                {deleteMode || moveMode || isSelectMode ? (
-                  <Checkbox
-                    type="checkbox"
-                    checked={selectedIds.includes(q.encryptedQuestionId)}
-                    onClick={(e) => e.stopPropagation()} // 카드 클릭 방지
-                    onChange={() => onSelect(q.encryptedQuestionId)} // ✅ 핵심
-                  />
-                ) : (
-                  <div style={{ width: "16px" }} />
-                )}
-              </QuestionRow>
-            </QuestionCard>
-          );
-        })
+              {deleteMode || moveMode || isSelectMode ? (
+                <Checkbox
+                  type="checkbox"
+                  checked={selectedIds.includes(q.encryptedQuestionId)}
+                  onClick={(e) => e.stopPropagation()}
+                  onChange={() => onSelect(q.encryptedQuestionId)}
+                />
+              ) : (
+                <div style={{ width: "16px" }} />
+              )}
+            </QuestionRow>
+          </QuestionCard>
+        ))
       ) : (
         <div>문제가 없습니다.</div>
       )}
