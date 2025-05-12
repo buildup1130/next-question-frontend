@@ -1,3 +1,5 @@
+import { BackIcon } from "@/utils/SvgProvider";
+
 import {
   Wrapper,
   Header,
@@ -20,7 +22,6 @@ import {
   ActionButtonGroup,
   ActionButton,
 } from "./Workbook.Styles";
-
 export default function WorkbookUI({
   title,
   questions,
@@ -47,10 +48,11 @@ export default function WorkbookUI({
   return (
     <Wrapper>
       <Header>
-        <BackButton onClick={onBack}>←</BackButton>
+        <BackButton onClick={onBack}>
+          <BackIcon />
+        </BackButton>
         <Title>{title}</Title>
       </Header>
-      <Divider />
 
       <ControlBar>
         {!isSelectMode ? (
@@ -77,7 +79,6 @@ export default function WorkbookUI({
               문제 이동
             </ActionButton>
             <ActionButton
-              // ✅ 수정됨
               onClick={onOpenDeleteModal}
               disabled={selectedIds.length === 0}
             >

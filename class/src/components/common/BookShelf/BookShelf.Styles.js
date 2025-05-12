@@ -19,19 +19,16 @@ export const Header = styled.div`
 `;
 
 export const Title = styled.h1`
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: bold;
   margin: 0;
   padding: 0;
   color: #222;
 `;
 
-export const Divider = styled.div`
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto 8px;
-  height: 1px;
-  background-color: #ddd;
+export const Divider = styled.hr`
+  border: none;
+  border-bottom: 1px solid #eee;
 `;
 
 export const SearchWrapper = styled.div`
@@ -47,11 +44,11 @@ export const StyledSearchInput = styled.input`
   padding: 6px 10px 6px 32px;
   border: 1px solid #ccc;
   border-radius: 16px;
-  font-size: 13px;
+  font-size: 12px;
   background-color: #fff;
 
   &::placeholder {
-    color: #aaa;
+    color: #000000;
   }
 `;
 
@@ -90,7 +87,8 @@ export const FilterSelect = styled.select`
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 14px;
-  color: #333;
+  font-weight: 400;
+  color: #000000;
   background-color: #fff;
 `;
 
@@ -126,12 +124,38 @@ export const BookItem = styled.li`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 60px;
-  padding: 10px 12px;
-  border-bottom: 1px solid #ddd;
-  cursor: pointer;
-  position: relative;
-  box-sizing: border-box;
+  padding: 12px 16px;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+`;
+
+export const BookInfoLeft = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const BookTitle = styled.div`
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 4px;
+  color: #707070;
+`;
+
+export const BookDate = styled.div`
+  font-size: 12px;
+  color: #999999;
+`;
+
+export const BookInfoRight = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+export const BookCount = styled.div`
+  font-size: 15px;
+  font-weight: 500;
+  color: #707070;
 `;
 
 export const BookCheckbox = styled.input`
@@ -148,11 +172,12 @@ export const MoreButton = styled.button`
   font-size: 20px;
   cursor: pointer;
   padding: 0;
-  width: 20px;
-  height: 20px;
+  width: 24px; // ← 약간 키움 (가로세로 정사각형)
+  height: 24px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: center; // 수직 가운데 정렬
+  justify-content: center; // 수평 가운데 정렬
+  line-height: 1; // 글자 수직 보정
 `;
 
 export const OptionPopup = styled.div`
@@ -186,19 +211,23 @@ export const AddBookArea = styled.div`
   font-size: 18px;
 `;
 
-export const BottomFloatingButton = styled.div`
+export const BottomFloatingButton = styled.button`
   position: fixed;
-  bottom: 80px;
+  bottom: 64px;
   left: 50%;
   transform: translateX(-50%);
-  background: #808fff;
+  margin-bottom: 30px;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: bold;
+  width: 80%;
+  max-width: 400px;
+  background-color: #808fff;
   color: white;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  z-index: 0;
-  white-space: nowrap;
+  border: none;
+  cursor: pointer;
+  z-index: 999;
 `;
 
 export const ModalWrapper = styled.div`
@@ -217,6 +246,7 @@ export const ModalWrapper = styled.div`
 export const ModalContent = styled.div`
   background-color: #fff;
   border-radius: 12px;
+  font-weight: 600;
   padding: 24px;
   width: 90%;
   max-width: 360px;
@@ -226,7 +256,7 @@ export const ModalContent = styled.div`
   h3 {
     margin-bottom: 16px;
     font-size: 18px;
-    font-weight: bold;
+    font-weight: 500;
   }
 
   input {
@@ -237,6 +267,8 @@ export const ModalContent = styled.div`
     border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 14px;
+    font-weight: 400;
+    color: #878787;
   }
 
   button {
@@ -246,6 +278,7 @@ export const ModalContent = styled.div`
     border-radius: 8px;
     border: none;
     font-size: 14px;
+    font-weight: 400;
     cursor: pointer;
   }
 

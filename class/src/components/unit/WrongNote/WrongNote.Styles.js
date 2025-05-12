@@ -20,8 +20,8 @@ export const Header = styled.div`
 `;
 
 export const PageTitle = styled.h2`
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: bold;
   margin: 0;
   padding: 0;
   color: #222;
@@ -31,10 +31,10 @@ export const DateHeader = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: bold;
-  font-size: 16px;
-  margin-top: 10px;
-  margin-bottom: 4px;
+  font-weight: 500;
+  font-size: 15px;
+  margin-top: 6px;
+  margin-bottom: 18px;
   gap: 6px;
   flex-wrap: wrap;
 `;
@@ -43,7 +43,7 @@ export const CalendarButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 6px;
+  margin-left: 2px;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -58,8 +58,8 @@ export const FilterBar = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 16px 0 12px;
-  padding: 0 16px;
+  margin: 12px 0 12px;
+  padding: 0 0px;
 `;
 
 export const SelectBox = styled.select`
@@ -67,17 +67,19 @@ export const SelectBox = styled.select`
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 14px;
+  font-weight: 400;
+  color: #000000;
 `;
 
 export const FilterButton = styled.button`
+  padding: 6px 12px;
+  height: 32px;
+  border-radius: 6px;
   background-color: #808fff;
+  border: 1px solid #b3bcff;
   color: white;
-  font-weight: bold;
-  padding: 6px 16px;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
   cursor: pointer;
+  font-size: 14px;
 `;
 
 export const Divider = styled.hr`
@@ -219,9 +221,9 @@ export const OptionList = styled.ul`
 `;
 
 export const OptionItem = styled.li`
-  margin-bottom: 6px;
   font-size: 14px;
   line-height: 1.5;
+  color: #333;
 `;
 
 export const DateRangeWrapper = styled.div`
@@ -329,16 +331,27 @@ export const WorkbookRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 16px;
+  padding: 11px 12px;
   background-color: #fff;
   border-bottom: 1px solid #eee;
 `;
 
 export const WorkbookName = styled.div`
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .title {
+    font-size: 15px;
+    font-weight: 600; // 책장과 동일
+    color: #707070; // 책장 기준 색상
+    margin-bottom: 4px; // 제목과 날짜 사이 간격 추가
+  }
+
+  .date {
+    font-size: 12px;
+    color: #999999; // 책장과 동일
+  }
 `;
 
 export const WorkbookArrow = styled.div`
@@ -348,49 +361,16 @@ export const WorkbookArrow = styled.div`
   white-space: nowrap;
 `;
 
-export const QuestionListItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  background-color: #f9f9fc;
-  padding: 10px 14px;
-  border-radius: 10px;
-  font-size: 14px;
-  margin-bottom: 8px;
-  cursor: pointer;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  &:hover {
-    background-color: #eef0ff;
-  }
-`;
-
-export const QuestionNumber = styled.span`
-  flex-shrink: 0;
-  font-weight: bold;
-  color: #6f6cf1;
-`;
-
-export const QuestionTitle = styled.span`
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
 export const WorkbookRight = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 6px;
-  min-width: 80px;
 `;
 
 export const WorkbookCount = styled.div`
   color: #666;
-  font-size: 14px;
-  flex-shrink: 0;
+  font-size: 15px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
 `;

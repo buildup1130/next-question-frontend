@@ -12,23 +12,28 @@ export const LoginContainer = styled.div`
   box-sizing: border-box;
 `;
 
+export const BackButton = styled.button`
+  position: absolute;
+  top: 24px;
+  left: 16px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+`;
+
 export const FormWrapper = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  margin-top: 80px;
 `;
 
-export const InputField = styled.input`
-  width: 80%;
-  height: 40px;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  background-color: white;
-  font-size: 14px;
-  outline: none;
+export const Logo = styled.img`
+  width: 180px;
+  margin-bottom: 30px;
 `;
 
 export const UserID = styled.div`
@@ -42,16 +47,45 @@ export const Password = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
-export const ErrorMessageWrapper = styled.div`
-  width: 100%;
-  min-height: 20px;
+export const InputField = styled.input`
+  width: 80%;
+  height: 40px;
+  padding: 1px 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: white;
+  font-size: 14px;
+  outline: none;
+
+  &::placeholder {
+    font-size: 12px;
+    color: #aaa;
+  }
+`;
+
+export const KeepLoginWrapper = styled.div`
+  width: 80%;
   display: flex;
-  justify-content: center;
   align-items: center;
+  gap: 6px;
   margin-bottom: 10px;
+`;
+
+export const KeepLoginCheckbox = styled.input`
+  width: 15px;
+  height: 15px;
+  accent-color: #65558f;
+  cursor: pointer;
+  vertical-align: middle;
+`;
+
+export const KeepLoginLabel = styled.label`
+  font-size: 13px;
+  color: #8b8b8c;
+  vertical-align: middle;
 `;
 
 export const ErrorMessage = styled.p`
@@ -60,16 +94,10 @@ export const ErrorMessage = styled.p`
   text-align: center;
 `;
 
-export const ButtonWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  gap: 10px;
-`;
-
 export const LoginButton = styled.button`
   width: 80%;
   height: 40px;
-  background-color: #a3baff;
+  background-color: #808fff;
   color: white;
   font-size: 15px;
   font-weight: 500;
@@ -79,22 +107,17 @@ export const LoginButton = styled.button`
   margin-top: 8px;
 `;
 
-export const SignUpButton = styled.button`
-  flex: 1;
-  height: 45px;
-  background-color: #000;
-  color: white;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-`;
+export const LoginSubText = styled.p`
+  font-size: 14px;
+  margin: 16px 0;
+  color: #444;
+  text-align: center;
 
-export const GoogleLoginButtonWrapper = styled.div`
-  margin-top: 20px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
+  span {
+    text-decoration: underline;
+    cursor: pointer;
+    color: #333;
+  }
 `;
 
 export const DividerWithText = styled.div`
@@ -124,6 +147,13 @@ export const DividerWithText = styled.div`
   }
 `;
 
+export const GoogleLoginButtonWrapper = styled.div`
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
 export const GoogleLoginButton = styled.button`
   display: flex;
   align-items: center;
@@ -146,43 +176,4 @@ export const GoogleLoginButton = styled.button`
 export const GoogleIcon = styled.img`
   width: 20px;
   height: 20px;
-`;
-
-export const Logo = styled.img`
-  width: 180px;
-  margin-bottom: 40px;
-`;
-
-export const BackButton = styled.button`
-  position: absolute;
-  top: 24px;
-  left: 16px;
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-`;
-
-export const LoginTitle = styled.h2`
-  font-size: 18px;
-  font-weight: 600;
-  margin: 24px 0 30px;
-  text-align: left;
-  line-height: 1.5;
-  width: 100%;
-  padding-left: 10%;
-  box-sizing: border-box;
-`;
-
-export const LoginSubText = styled.p`
-  font-size: 14px;
-  margin: 16px 0;
-  color: #444;
-  text-align: center;
-
-  span {
-    text-decoration: underline;
-    cursor: pointer;
-    color: #333;
-  }
 `;

@@ -25,7 +25,7 @@ export const ModalContent = styled.div`
 
 export const ModalTitle = styled.h2`
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 500;
   margin-bottom: 12px;
 `;
 
@@ -33,6 +33,7 @@ export const ModalDescription = styled.p`
   font-size: 14px;
   color: #555;
   margin-bottom: 20px;
+  font-weight: 400;
 `;
 
 export const ModalButtons = styled.div`
@@ -49,6 +50,7 @@ export const CancelButton = styled.button`
   color: #333;
   border: 1px solid #ddd;
   font-size: 14px;
+  font-weight: 400;
 `;
 
 export const ConfirmButton = styled.button`
@@ -59,5 +61,5 @@ export const ConfirmButton = styled.button`
   color: white;
   border: none;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 400;
 `;

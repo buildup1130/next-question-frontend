@@ -29,7 +29,7 @@ export const MoveModal__Inner = styled.div`
 
 export const MoveModal__Title = styled.div`
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 500;
   text-align: center;
   margin-bottom: 16px;
   width: 100%;
@@ -38,12 +38,18 @@ export const MoveModal__Title = styled.div`
 export const MoveModal__Select = styled.select`
   flex: 1;
   height: 44px;
-  padding: 0 12px;
+  padding: 0 36px 0 12px;
   font-size: 14px;
   border-radius: 10px;
   border: 1px solid #d9d9d9;
   background-color: #ffffff;
   color: #8c8b81;
+
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%23999' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: calc(100% - 16px) center;
+  background-size: 16px;
 `;
 
 export const MoveModal__Input = styled.input`
@@ -73,7 +79,7 @@ export const MoveModal__CreateButton = styled.button`
 
   cursor: pointer;
 
-  font-size: 16px;
+  font-size: 14px;
 
   white-space: nowrap;
 `;
@@ -94,6 +100,7 @@ export const MoveModal__CancelButton = styled.button`
   color: #111;
   border: 1px solid #d9d9d9;
   font-size: 15px;
+  font-weight: 400;
 `;
 
 export const MoveModal__SubmitButton = styled.button`
@@ -104,7 +111,7 @@ export const MoveModal__SubmitButton = styled.button`
   color: white;
   border: none;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: ${({ disabled }) => (disabled ? "default" : "pointer")};
 `;
 
