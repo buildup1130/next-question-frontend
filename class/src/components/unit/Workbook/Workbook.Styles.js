@@ -73,14 +73,27 @@ export const FilterWrapper = styled.div`
   gap: 12px;
 `;
 
-export const ToggleAnswerButton = styled.button`
-  padding: 6px 12px;
+export const ToggleWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 100%;
+  min-height: 90px; // 문제 길이에 따라 조절 가능
+  gap: 8px;
+`;
+
+export const ToggleAnswerSingleButton = styled.button`
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 4px 12px;
   height: 32px;
   border-radius: 6px;
   background-color: #808fff;
   border: 1px solid #b3bcff;
   color: white;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
 `;
@@ -116,11 +129,13 @@ export const QuestionRow = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   gap: 12px;
+  position: relative;
 `;
 
 export const QuestionTextWrapper = styled.div`
   flex: 1;
   min-width: 0;
+  max-width: calc(100% - 88px); // 정답 버튼 너비 + 여유 공간
 `;
 
 export const QuestionTitle = styled.div`
@@ -191,4 +206,22 @@ export const AnswerLabel = styled.div`
   align-items: center;
   flex-shrink: 0;
   margin-right: 6px;
+`;
+
+export const ScrollToTopButton = styled.button`
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  width: 42px;
+  height: 42px;
+  background-color: #fff;
+  color: #333;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 999;
 `;

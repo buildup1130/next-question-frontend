@@ -69,16 +69,19 @@ export const ControlBar = styled.div`
   margin: 4px 0;
 `;
 
-export const ToggleAnswerButton = styled.button`
-  padding: 6px 12px;
-  height: 32px;
-  border-radius: 6px;
+export const RightAnswerToggleButton = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 28px;
+  padding: 4px 10px;
+  font-size: 13px;
   background-color: #808fff;
   border: 1px solid #b3bcff;
-  color: white;
-  font-size: 14px;
-  font-weight: 500;
+  color: #fff;
+  border-radius: 6px;
   cursor: pointer;
+  white-space: nowrap;
 `;
 
 export const QuestionCard = styled.div`
@@ -91,20 +94,25 @@ export const QuestionRow = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   gap: 12px;
+  position: relative;
 `;
 
 export const QuestionTextWrapper = styled.div`
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  max-width: calc(100% - 76px); // 기존 88px보다 여유 있게 줄임
+  gap: 8px;
 `;
 
 export const QuestionTitle = styled.div`
   font-size: 14px;
   font-weight: 400;
-  margin-bottom: 16px;
   display: flex;
   flex-direction: column;
   gap: 6px;
+  word-break: break-word;
 `;
 
 export const OptionWrapper = styled.div`
@@ -158,4 +166,22 @@ export const AnswerLabel = styled.div`
   align-items: center;
   flex-shrink: 0;
   margin-right: 6px;
+`;
+
+export const ScrollToTopButton = styled.button`
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  width: 42px;
+  height: 42px;
+  background-color: #fff;
+  color: #333;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 999;
 `;

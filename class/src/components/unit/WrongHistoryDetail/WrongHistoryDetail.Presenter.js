@@ -1,5 +1,7 @@
 import { BackIcon } from "@/utils/SvgProvider";
 import { useRouter } from "next/router";
+import { ArrowUpIcon } from "@/utils/SvgProvider";
+
 import {
   Wrapper,
   Header,
@@ -16,21 +18,21 @@ import {
   Answer,
   AnswerLabel,
   ControlBar,
-  ToggleAnswerButton,
   FilterWrapper,
+  ScrollToTopButton,
+  RightAnswerToggleButton,
 } from "./WrongHistoryDetail.Styles";
 
 export default function WrongHistoryDetailUI({
   questions,
   showAnswer,
   setShowAnswer,
+  scrollToTop,
+  showScrollTop,
 }) {
   const router = useRouter();
 
   const renderOptions = (q, idx) => {
-    console.log(`🔍 Q${idx + 1} type:`, q.type);
-    console.log(`🔍 Q${idx + 1} options:`, q.opt);
-
     const opts = q.opt ? q.opt.split("|||") : [];
 
     if (q.type === "객관식" || q.type === "MULTIPLE_CHOICE") {
@@ -89,14 +91,6 @@ export default function WrongHistoryDetailUI({
         <Title>문제 상세 보기</Title>
       </Header>
 
-      <ControlBar>
-        <FilterWrapper>
-          <ToggleAnswerButton onClick={() => setShowAnswer((prev) => !prev)}>
-            {showAnswer ? "정답 숨기기" : "정답 보기"}
-          </ToggleAnswerButton>
-        </FilterWrapper>
-      </ControlBar>
-
       <Divider />
 
       {questions.length === 0 ? (
@@ -112,9 +106,19 @@ export default function WrongHistoryDetailUI({
                 </QuestionTitle>
                 {renderOptions(q, idx)}
               </QuestionTextWrapper>
+              <RightAnswerToggleButton
+                onClick={() => setShowAnswer((prev) => !prev)}
+              >
+                {showAnswer ? "정답 숨기기" : "정답 보기"}
+              </RightAnswerToggleButton>
             </QuestionRow>
           </QuestionCard>
         ))
+      )}
+      {showScrollTop && (
+        <ScrollToTopButton onClick={scrollToTop}>
+          <ArrowUpIcon />
+        </ScrollToTopButton>
       )}
     </Wrapper>
   );

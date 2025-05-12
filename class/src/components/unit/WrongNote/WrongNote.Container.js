@@ -38,6 +38,7 @@ export default function WrongNoteLogic() {
   const [selectedFilterBook, setSelectedFilterBook] = useState("모든 문제집");
   const [openStartCalendar, setOpenStartCalendar] = useState(false);
   const [openEndCalendar, setOpenEndCalendar] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     if (token) fetchWrongNotes();
@@ -71,6 +72,20 @@ export default function WrongNoteLogic() {
       console.error("학습별 문제 보기 실패:", err);
       alert("문제를 가져오는 데 실패했습니다.");
     }
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      setShowScrollTop(scrollTop > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const fetchWrongNotes = async () => {
@@ -319,6 +334,8 @@ export default function WrongNoteLogic() {
       setOpenStartCalendar={setOpenStartCalendar}
       openEndCalendar={openEndCalendar}
       setOpenEndCalendar={setOpenEndCalendar}
+      showScrollTop={showScrollTop}
+      scrollToTop={scrollToTop}
     />
   );
 }

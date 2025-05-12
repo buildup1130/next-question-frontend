@@ -1,4 +1,5 @@
-import { BackIcon } from "@/utils/SvgProvider";
+// ✅ 수정된 WorkbookUI.js
+import { useState } from "react";
 import {
   Wrapper,
   Header,
@@ -6,7 +7,6 @@ import {
   Title,
   ControlBar,
   FilterWrapper,
-  ToggleAnswerButton,
   QuestionCard,
   QuestionRow,
   QuestionTextWrapper,
@@ -20,7 +20,11 @@ import {
   Divider,
   ActionButtonGroup,
   ActionButton,
+  ScrollToTopButton,
+  ToggleWrapper,
+  ToggleAnswerSingleButton,
 } from "./Workbook.Styles";
+import { BackIcon, ArrowUpIcon } from "@/utils/SvgProvider";
 
 export default function WorkbookUI({
   title,
@@ -36,16 +40,25 @@ export default function WorkbookUI({
   onOpenMoveModal,
   isSelectMode,
   setIsSelectMode,
-  showAnswer,
-  setShowAnswer,
+  scrollToTop,
+  showScrollTop,
 }) {
+  const [localAnswerMap, setLocalAnswerMap] = useState({});
+
+  const toggleLocalAnswer = (id) => {
+    setLocalAnswerMap((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
   const handleCancel = () => {
     setIsSelectMode(false);
     onToggleDeleteMode(false);
     onToggleMoveMode(false);
   };
 
-  const renderOptions = (q) => {
+  const renderOptions = (q, showAnswer) => {
     const opts = q.opt ? q.opt.split("|||") : [];
 
     if (q.type === "MULTIPLE_CHOICE") {
@@ -111,9 +124,6 @@ export default function WorkbookUI({
       <ControlBar>
         {!isSelectMode ? (
           <FilterWrapper>
-            <ToggleAnswerButton onClick={() => setShowAnswer((prev) => !prev)}>
-              {showAnswer ? "정답 숨기기" : "정답 보기"}
-            </ToggleAnswerButton>
             <ActionButton
               onClick={() => {
                 setIsSelectMode(true);
@@ -162,24 +172,45 @@ export default function WorkbookUI({
                   <div>Q{idx + 1}</div>
                   <div>{q.name.replace(/\{BLANK\}/g, "OOO")}</div>
                 </QuestionTitle>
-                {renderOptions(q)}
+                {renderOptions(q, localAnswerMap[q.encryptedQuestionId])}
               </QuestionTextWrapper>
 
-              {deleteMode || moveMode || isSelectMode ? (
-                <Checkbox
-                  type="checkbox"
-                  checked={selectedIds.includes(q.encryptedQuestionId)}
-                  onClick={(e) => e.stopPropagation()}
-                  onChange={() => onSelect(q.encryptedQuestionId)}
-                />
-              ) : (
-                <div style={{ width: "16px" }} />
-              )}
+              <ToggleWrapper>
+                {!isSelectMode && (
+                  <ToggleAnswerSingleButton
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleLocalAnswer(q.encryptedQuestionId);
+                    }}
+                  >
+                    {localAnswerMap[q.encryptedQuestionId]
+                      ? "정답 숨기기"
+                      : "정답 보기"}
+                  </ToggleAnswerSingleButton>
+                )}
+
+                {deleteMode || moveMode || isSelectMode ? (
+                  <Checkbox
+                    type="checkbox"
+                    checked={selectedIds.includes(q.encryptedQuestionId)}
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={() => onSelect(q.encryptedQuestionId)}
+                  />
+                ) : (
+                  <div style={{ width: "16px", height: "16px" }} />
+                )}
+              </ToggleWrapper>
             </QuestionRow>
           </QuestionCard>
         ))
       ) : (
         <div>문제가 없습니다.</div>
+      )}
+
+      {showScrollTop && (
+        <ScrollToTopButton onClick={scrollToTop}>
+          <ArrowUpIcon />
+        </ScrollToTopButton>
       )}
     </Wrapper>
   );

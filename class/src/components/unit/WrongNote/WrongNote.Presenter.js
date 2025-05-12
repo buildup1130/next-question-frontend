@@ -5,6 +5,7 @@ import { ko } from "date-fns/locale";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import React from "react";
+import { ArrowUpIcon } from "@/utils/SvgProvider";
 
 import {
   Wrapper,
@@ -39,6 +40,7 @@ import {
   WorkbookCount,
   WorkbookRight,
   DateRangeWrapper,
+  ScrollToTopButton,
 } from "./WrongNote.Styles";
 
 export default function WrongNoteUI(props) {
@@ -76,6 +78,8 @@ export default function WrongNoteUI(props) {
     setOpenEndCalendar,
     onConfirmLearning,
     setIsSelectMode,
+    scrollToTop,
+    showScrollTop,
   } = props;
 
   const filteredData =
@@ -354,6 +358,11 @@ export default function WrongNoteUI(props) {
             </DateModalButtons>
           </DateModalContent>
         </DateModalBackdrop>
+      )}
+      {showScrollTop && (
+        <ScrollToTopButton onClick={scrollToTop}>
+          <ArrowUpIcon />
+        </ScrollToTopButton>
       )}
     </Wrapper>
   );

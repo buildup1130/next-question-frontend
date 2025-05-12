@@ -28,6 +28,7 @@ export default function WorkbookLogic() {
   const [targetBookId, setTargetBookId] = useState("");
   const [workBooks, setWorkBooks] = useState([]);
   const [showAnswer, setShowAnswer] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     if (token && workBookId && userId) {
@@ -49,6 +50,20 @@ export default function WorkbookLogic() {
       });
     }
   }, [token]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      setShowScrollTop(scrollTop > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const handleBack = () => router.back();
 
@@ -176,6 +191,8 @@ export default function WorkbookLogic() {
         setIsSelectMode={setIsSelectMode}
         showAnswer={showAnswer}
         setShowAnswer={setShowAnswer}
+        showScrollTop={showScrollTop}
+        scrollToTop={scrollToTop}
       />
 
       {isMoveModalOpen && (

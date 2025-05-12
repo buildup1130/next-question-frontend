@@ -22,6 +22,7 @@ export const Header = styled.div`
   justify-content: center;
   position: relative;
   height: 24px;
+  margin-bottom: 54px;
 `;
 
 export const BackButton = styled.button`
@@ -91,24 +92,29 @@ export const QuestionCard = styled.div`
 `;
 
 export const QuestionRow = styled.div`
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 12px;
+  padding-right: 84px;
 `;
 
 export const QuestionTextWrapper = styled.div`
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `;
 
 export const QuestionTitle = styled.div`
   font-size: 14px;
   font-weight: 400;
-  margin-bottom: 16px;
   display: flex;
   flex-direction: column;
   gap: 6px;
+  word-break: break-word;
 `;
 
 export const OptionWrapper = styled.div`
@@ -162,4 +168,37 @@ export const AnswerLabel = styled.div`
   align-items: center;
   flex-shrink: 0;
   margin-right: 6px;
+`;
+
+export const ScrollToTopButton = styled.button`
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  width: 42px;
+  height: 42px;
+  background-color: #fff;
+  color: #333;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 999;
+`;
+
+export const RightAnswerToggleButton = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 28px;
+  padding: 4px 10px;
+  font-size: 13px;
+  background-color: #808fff;
+  border: 1px solid #b3bcff;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
 `;
