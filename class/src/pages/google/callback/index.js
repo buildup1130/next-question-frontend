@@ -19,7 +19,7 @@ export default function GoogleCallback() {
   const handleGoogleLogin = async (code) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/public/oauth2/google/callback",
+        "/api/public/oauth2/google/callback",
         { code },
         {
           headers: {
