@@ -42,7 +42,7 @@ export default function LoginUI({
       </BackButton>
 
       <FormWrapper>
-        <Logo src="/image/Logo.png" alt="logo" />
+        <Logo src="/image/Logo_Full.png" alt="logo" />
 
         <UserID>
           <InputField

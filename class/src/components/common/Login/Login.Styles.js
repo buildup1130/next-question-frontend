@@ -32,8 +32,9 @@ export const FormWrapper = styled.div`
 `;
 
 export const Logo = styled.img`
-  width: 180px;
-  margin-bottom: 30px;
+  width: 100%;
+  max-width: 280px;
+  margin-bottom: 20px;
 `;
 
 export const UserID = styled.div`

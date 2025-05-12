@@ -39,8 +39,9 @@ export const FillForm = styled.form`
 `;
 
 export const Logo = styled.img`
-  width: 180px;
-  margin-bottom: 24px;
+  width: 100%;
+  max-width: 280px;
+  margin-bottom: 10px;
 `;
 
 export const InputWrapper = styled.div`
