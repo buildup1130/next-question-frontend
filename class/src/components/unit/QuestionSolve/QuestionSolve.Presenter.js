@@ -465,6 +465,7 @@ const handleNextQuestion = () => {
           <ButtonContainer>
             <NextButton onClick={handleNextQuestion}>Next Question</NextButton>
           </ButtonContainer>
+          {/* 팔로워 영역 */}
         </QuestionContainer>
       </QuestionSolve__Container>
     );
