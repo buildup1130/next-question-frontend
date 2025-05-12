@@ -231,10 +231,8 @@ const QuestionModal = (props) => {
             <GenerateShelf__Shelf__QuestionContainer key={index}>
               <GenerateShelf__Shelf__QuestionHeader
                 style={{ marginBottom: '8px' }}
+
               >
-                <GenerateShelf__Shelf__QuestionTitle>
-                  Q{index + 1}
-                </GenerateShelf__Shelf__QuestionTitle>
                 <GenerateShelf__Shelf__QuestionDeleteContainer>
                   <GenerateShelf__Shelf__QuestionDeleteContainer__TrashCan
                     isVisible={props.visibleTrashIndex === index}
@@ -379,6 +377,7 @@ const SavingModal = (props) => {
             props.HandleWorkBookName(e);
           }}
           placeholder="문제집명을 입력해주세요."
+          maxLength={17}
         ></GenerateShelf__Shelf__Input>
         <GenerateShelf__Shelf__Input__Button
           onClick={() => {

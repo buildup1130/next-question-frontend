@@ -74,7 +74,9 @@ export default function SignUpLogic() {
       );
 
       if (response.status === 201) {
-        toast.success("회원가입 성공! 로그인해 주세요.");
+        toast.success("회원가입 성공! 로그인해 주세요.", {
+          position: "top-center",
+        });
         router.push("/Login");
       } else {
         throw new Error("회원가입 실패");
@@ -98,7 +100,9 @@ export default function SignUpLogic() {
       }
 
       if (Object.keys(newErrors).length === 0) {
-        toast.error("회원가입 중 오류가 발생했습니다.");
+        toast.error("회원가입 중 오류가 발생했습니다.", {
+          position: "top-center",
+        });
       }
 
       setErrors((prev) => ({ ...prev, ...newErrors }));

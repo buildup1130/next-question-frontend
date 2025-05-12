@@ -10,7 +10,9 @@ export default function RenameModalLogic({ book, onClose, fetchWorkBooks }) {
 
   const handleConfirm = async () => {
     if (!newName.trim()) {
-      toast.error("이름을 입력해주세요.");
+      toast.error("이름을 입력해주세요.", {
+        position: "top-center",
+      });
       return;
     }
 
@@ -30,14 +32,20 @@ export default function RenameModalLogic({ book, onClose, fetchWorkBooks }) {
       );
 
       if (response.status === 200) {
-        toast.success(response.data || "📘 이름이 변경되었습니다!");
+        toast.success(response.data || "📘 이름이 변경되었습니다!", {
+          position: "top-center",
+        });
         fetchWorkBooks();
         onClose();
       } else {
-        toast.error("이름 변경에 실패했습니다.");
+        toast.error("이름 변경에 실패했습니다.", {
+          position: "top-center",
+        });
       }
     } catch (err) {
-      toast.error("오류 발생");
+      toast.error("오류 발생", {
+        position: "top-center",
+      });
       console.error(err);
     }
   };

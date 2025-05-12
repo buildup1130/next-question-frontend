@@ -15,15 +15,15 @@ export const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 0 8px 0;
+  padding: 12px 0 8px 0;
 `;
 
 export const Title = styled.h1`
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 500;
   margin: 0;
   padding: 0;
-  color: #222;
+  color: #000000;
 `;
 
 export const Divider = styled.hr`
@@ -93,7 +93,7 @@ export const FilterSelect = styled.select`
 `;
 
 export const SelectButton = styled.button`
-  padding: 6px 12px;
+  width: 60px;
   height: 32px;
   border-radius: 6px;
   background-color: #808fff;
@@ -101,9 +101,11 @@ export const SelectButton = styled.button`
   color: white;
   cursor: pointer;
   font-size: 14px;
+  flex-shrink: 0;
 `;
 
 export const DeleteButton = styled.button`
+  width: 60px;
   padding: 6px 12px;
   height: 32px;
   border-radius: 6px;
@@ -135,10 +137,12 @@ export const BookInfoLeft = styled.div`
 `;
 
 export const BookTitle = styled.div`
-  font-weight: 600;
+  font-weight: 500;
   font-size: 15px;
   margin-bottom: 4px;
   color: #707070;
+  word-break: break-word;
+  white-space: normal;
 `;
 
 export const BookDate = styled.div`
@@ -149,17 +153,21 @@ export const BookDate = styled.div`
 export const BookInfoRight = styled.div`
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 8px;
+  width: 64px; // ✅ 고정 너비 지정 (or 60~72px 정도)
+  flex-shrink: 0;
+  white-space: nowrap;
 `;
 
 export const BookCount = styled.div`
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 400;
   color: #707070;
 `;
 
 export const BookCheckbox = styled.input`
-  width: 16px;
+  width: 24px;
   height: 16px;
   transform: none;
   accent-color: #65558f;
@@ -172,32 +180,41 @@ export const MoreButton = styled.button`
   font-size: 20px;
   cursor: pointer;
   padding: 0;
-  width: 24px; // ← 약간 키움 (가로세로 정사각형)
+  width: 24px;
   height: 24px;
   display: flex;
-  align-items: center; // 수직 가운데 정렬
-  justify-content: center; // 수평 가운데 정렬
-  line-height: 1; // 글자 수직 보정
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 `;
 
 export const OptionPopup = styled.div`
   position: absolute;
   right: 0;
   top: 40px;
-  background: #c9cef5;
-  border: 1px solid #eaedff;
-  border-radius: 8px;
-  padding: 8px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
   z-index: 100;
 `;
 
 export const OptionItem = styled.div`
-  padding: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
   font-size: 14px;
+  color: #333;
   cursor: pointer;
-  white-space: nowrap;
+
   &:hover {
-    background: #eaedff;
+    background-color: #eef0ff;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
   }
 `;
 
@@ -295,8 +312,8 @@ export const ModalContent = styled.div`
 
 export const TileGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
   margin-top: 16px;
 `;
 
@@ -315,7 +332,7 @@ export const Card = styled.div`
 
 export const CardBottom = styled.div`
   background-color: white;
-  padding: 12px;
+  padding: 10px 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -323,7 +340,10 @@ export const CardBottom = styled.div`
 
 export const CardTitle = styled.div`
   font-weight: bold;
+  font-size: 14px;
   margin-bottom: 4px;
+  word-break: break-word;
+  text-align: center;
 `;
 
 export const CardTop = styled.div`
@@ -336,22 +356,26 @@ export const CardTop = styled.div`
 `;
 
 export const CardInfo = styled.div`
-  font-size: 12px;
+  font-size: 11px;
   color: #666;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
+  text-align: center;
 `;
 
 export const CardActions = styled.div`
   display: flex;
-  gap: 8px;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
 
   button {
-    padding: 4px 8px;
+    padding: 2px 6px;
     border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 12px;
+    border-radius: 4px;
+    font-size: 11px;
     cursor: pointer;
     background-color: white;
+    white-space: nowrap;
   }
 `;
 

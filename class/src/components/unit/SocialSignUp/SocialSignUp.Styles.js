@@ -7,7 +7,7 @@ export const SignUpContainer = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  padding: 24px 20px;
+  padding: 24px 16px;
   position: relative;
   box-sizing: border-box;
 `;
@@ -31,39 +31,31 @@ export const FormWrapper = styled.div`
 `;
 
 export const Logo = styled.img`
-  width: 180px;
-  margin-bottom: 40px;
+  width: 100%;
+  max-width: 280px;
+  margin-bottom: 30px;
+
+  @media (min-width: 768px) {
+    max-width: 280px;
+  }
+
+  @media (min-width: 1024px) {
+    max-width: 320px;
+  }
 `;
 
 export const FillForm = styled.form`
   width: 100%;
+  max-width: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
 export const InputField = styled.input`
-  width: 80%;
+  width: 100%;
   height: 40px;
   padding: 10px 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  background-color: white;
-  font-size: 14px;
-  outline: none;
-  margin-bottom: 20px;
-
-  &::placeholder {
-    font-size: 12px;
-    color: #aaa;
-    line-height: 1; // ✅ placeholder가 너무 아래로 내려가지 않게
-  }
-`;
-
-export const InputFieldSmallPlaceholder = styled.input`
-  width: 80%;
-  height: 40px;
-  padding: 1px 8px 10px;
   border: 1px solid #ccc;
   border-radius: 6px;
   background-color: white;
@@ -78,6 +70,10 @@ export const InputFieldSmallPlaceholder = styled.input`
   }
 `;
 
+export const InputFieldSmallPlaceholder = styled(InputField)`
+  padding: 1px 8px 10px;
+`;
+
 export const ErrorMessage = styled.p`
   color: red;
   font-size: 14px;
@@ -87,7 +83,7 @@ export const ErrorMessage = styled.p`
 `;
 
 export const SubmitButton = styled.button`
-  width: 80%;
+  width: 100%;
   height: 40px;
   background-color: #808fff;
   color: white;

@@ -3,12 +3,12 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
   width: 100%;
   max-width: 500px;
-  height: 100vh;
-  padding: 16px;
-  padding-bottom: 80px;
+  min-height: 100vh; // ✅ scroll 막힘 방지
+  padding: 16px 16px 80px;
   margin: 0 auto;
   background-color: #ffffff;
-  overflow-y: scroll;
+  overflow-y: auto; // ✅ scroll 이 자연스럽게
+
   -ms-overflow-style: none;
   scrollbar-width: none;
 
@@ -22,14 +22,14 @@ export const Header = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
-  height: 48px;
+  height: 24px; // ✅ 유니코드 숫자 → 숫자로 정상화
 `;
 
 export const BackButton = styled.button`
   position: absolute;
-  left: 0;
+  left: -10px;
   top: 50%;
-  transform: translateY(-40%);
+  transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
@@ -43,8 +43,13 @@ export const BackButton = styled.button`
 
 export const Title = styled.h1`
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   margin: 0;
+
+  word-break: break-word;
+  white-space: normal;
+  text-align: center;
+  max-width: calc(100% - 40px);
 `;
 
 export const Divider = styled.hr`
@@ -95,7 +100,7 @@ export const QuestionTextWrapper = styled.div`
 
 export const QuestionTitle = styled.div`
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 400;
   margin-bottom: 16px;
   display: flex;
   flex-direction: column;

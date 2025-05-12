@@ -14,6 +14,7 @@ export default function RenameModalUI({
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
           placeholder="새 이름 입력"
+          maxLength={17}
         />
         <ButtonRow>
           <button onClick={onConfirm}>확인</button>

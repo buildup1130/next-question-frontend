@@ -37,7 +37,7 @@ export default function SignUpUI({ form, onChange, onSubmit, errors }) {
 
       <FormWrapper>
         <FillForm onSubmit={onSubmit}>
-          <Logo src="/image/Logo.png" alt="logo" />
+          <Logo src="/image/Logo_Full.png" alt="logo" />
 
           {renderInput("text", "userId", "아이디")}
           {renderInput("password", "password", "비밀번호")}

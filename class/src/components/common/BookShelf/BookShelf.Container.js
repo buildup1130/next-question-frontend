@@ -36,6 +36,7 @@ export default function BookShelfLogic() {
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [sortOption, setSortOption] = useState("name");
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   const { token } = useAuth();
   const router = useRouter();
@@ -55,6 +56,15 @@ export default function BookShelfLogic() {
   useEffect(() => {
     if (token) fetchWorkBooks();
   }, [token, router.asPath]);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsSmallScreen(window.innerWidth <= 375); // iPhone SE 대응
+    };
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
 
   useEffect(() => {
     let sorted = [...books];
@@ -101,7 +111,9 @@ export default function BookShelfLogic() {
 
     const validIds = selectedBookIds.filter((id) => !!id);
     if (validIds.length === 0) {
-      toast.warn("삭제할 문제집이 없습니다.");
+      toast.warn("삭제할 문제집이 없습니다.", {
+        position: "top-center",
+      });
       return;
     }
 
@@ -110,9 +122,14 @@ export default function BookShelfLogic() {
       await fetchWorkBooks();
       setSelectedBookIds([]);
       setIsSelectMode(false);
-      toast.success("선택한 문제집이 삭제되었습니다.");
+      toast.success("선택한 문제집이 삭제되었습니다.", {
+        position: "top-center",
+      });
+      setIsDeleteModalOpen(false);
     } catch (err) {
-      toast.error("문제집 삭제 중 오류가 발생했습니다.");
+      toast.error("문제집 삭제 중 오류가 발생했습니다.", {
+        position: "top-center",
+      });
     }
   };
 
@@ -127,9 +144,13 @@ export default function BookShelfLogic() {
     try {
       await deleteWorkBooks(token, [deleteTarget.id]);
       await fetchWorkBooks();
-      toast.success("문제집이 삭제되었습니다.");
+      toast.success("문제집이 삭제되었습니다.", {
+        position: "top-center",
+      });
     } catch {
-      toast.error("문제집 삭제 중 오류가 발생했습니다.");
+      toast.error("문제집 삭제 중 오류가 발생했습니다.", {
+        position: "top-center",
+      });
     } finally {
       setIsDeleteModalOpen(false);
       setDeleteTarget(null);
@@ -138,13 +159,17 @@ export default function BookShelfLogic() {
 
   const handleCreateWorkbook = async () => {
     if (!newWorkbookTitle.trim()) {
-      toast.error("문제집 이름을 입력해주세요.");
+      toast.error("문제집 이름을 입력해주세요.", {
+        position: "top-center",
+      });
       return;
     }
 
     try {
       await createWorkbook(token, newWorkbookTitle.trim());
-      toast.success("새 문제집이 추가됐습니다!");
+      toast.success("새 문제집이 추가됐습니다!", {
+        position: "top-center",
+      });
       setCreateModalOpen(false);
       setNewWorkbookTitle("");
       await fetchWorkBooks();
@@ -153,9 +178,13 @@ export default function BookShelfLogic() {
         err?.response?.data?.message?.includes("이미 존재") || // 백엔드 메시지 기반
         err?.message?.includes("already exists")
       ) {
-        toast.error("이미 존재하는 문제집입니다.");
+        toast.error("이미 존재하는 문제집입니다.", {
+          position: "top-center",
+        });
       } else {
-        toast.error("문제집 생성 실패");
+        toast.error("문제집 생성 실패", {
+          position: "top-center",
+        });
       }
     }
   };
@@ -163,7 +192,9 @@ export default function BookShelfLogic() {
   const handleMoreClick = (book, action) => {
     if (action === "learn") {
       if (book.items === 0) {
-        alert("문제집이 비어있습니다!");
+        toast.error("문제집이 비어있습니다!", {
+          position: "top-center",
+        });
         return;
       }
       setCurBook({ id: book.id, items: book.items, name: book.title });
@@ -338,6 +369,7 @@ export default function BookShelfLogic() {
         onClickLearningStart={handleStartLearning}
         handleDelete={handleDelete}
         isSelectMode={isSelectMode}
+        isSmallScreen={isSmallScreen}
         selectedBookIds={selectedBookIds}
         isLearningModalOpen={isLearningModalOpen}
         onOpenCreateModal={() => setCreateModalOpen(true)}

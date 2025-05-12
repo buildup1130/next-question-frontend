@@ -26,6 +26,12 @@ export default function SocialSignUpLogic() {
     e.preventDefault();
     setError("");
 
+    // ✅ 닉네임 유효성 검사
+    if (!nickname.trim()) {
+      setError("닉네임을 입력해주세요.");
+      return;
+    }
+
     try {
       await axios.post(
         "/api/public/member/regist/social/google",
@@ -35,7 +41,9 @@ export default function SocialSignUpLogic() {
         }
       );
 
-      toast.success("회원가입 성공! 다시 로그인해 주세요.");
+      toast.success("회원가입 성공! 다시 로그인해 주세요.", {
+        position: "top-center",
+      });
       router.push("/Login");
     } catch (err) {
       console.error("회원가입 실패:", err);

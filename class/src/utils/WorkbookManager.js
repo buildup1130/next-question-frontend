@@ -211,7 +211,7 @@ export const fetchQuestionType = async (token, idArr) => {
 export const fetchWrongNoteHistoryQuestions = async (token, historyId) => {
   try {
     const response = await axios.post(
-      "/api/member/solving/history/search",
+      `${process.env.NEXT_PUBLIC_API_URL}/solving/wrong/search/questions`,
       { historyIds: [historyId] },
       {
         headers: {
@@ -220,9 +220,9 @@ export const fetchWrongNoteHistoryQuestions = async (token, historyId) => {
         },
       }
     );
-    return response.data.questions || [];
+    return response.data;
   } catch (error) {
-    console.error("문제 조회 실패:", error);
-    return [];
+    console.error("fetchWrongNoteHistoryQuestions 에러:", error);
+    return null;
   }
 };

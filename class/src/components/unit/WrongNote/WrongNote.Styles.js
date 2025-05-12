@@ -16,22 +16,22 @@ export const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 0 8px 0;
+  padding: 12px 0 8px 0;
 `;
 
 export const PageTitle = styled.h2`
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 500;
   margin: 0;
   padding: 0;
-  color: #222;
+  color: #000000;
 `;
 
 export const DateHeader = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 15px;
   margin-top: 6px;
   margin-bottom: 18px;
@@ -56,23 +56,29 @@ export const CalendarButton = styled.button`
 
 export const FilterBar = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin: 12px 0 12px;
-  padding: 0 0px;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 12px 0;
 `;
 
 export const SelectBox = styled.select`
+  width: 140px; // ✅ 고정 크기
   padding: 6px 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 14px;
   font-weight: 400;
   color: #000000;
+
+  // ✅ 말줄임 처리 추가
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 export const FilterButton = styled.button`
-  padding: 6px 12px;
+  width: 60px;
   height: 32px;
   border-radius: 6px;
   background-color: #808fff;
@@ -80,6 +86,7 @@ export const FilterButton = styled.button`
   color: white;
   cursor: pointer;
   font-size: 14px;
+  flex-shrink: 0;
 `;
 
 export const Divider = styled.hr`
@@ -229,12 +236,19 @@ export const OptionItem = styled.li`
 export const DateRangeWrapper = styled.div`
   margin-top: 8px;
   border-radius: 12px;
-  overflow: hidden;
+  overflow-x: auto; // ✅ 가로 스크롤 대응
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 
   .rdrCalendarWrapper {
     font-family: inherit;
     border-radius: 12px;
+    max-width: 100%; // ✅ 너비 제한
+    min-width: 280px; // ✅ 최소 너비 설정 (필요시 조정)
+    box-sizing: border-box;
+  }
+
+  .rdrMonth {
+    width: 100% !important; // ✅ 전체 너비에 맞추기
   }
 
   .rdrDayNumber span {
@@ -287,7 +301,7 @@ export const DateModalButtons = styled.div`
   button {
     flex: 1;
     padding: 12px 0;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 14px;
     border-radius: 12px;
     border: none;
@@ -343,7 +357,7 @@ export const WorkbookName = styled.div`
 
   .title {
     font-size: 15px;
-    font-weight: 600; // 책장과 동일
+    font-weight: 500; // 책장과 동일
     color: #707070; // 책장 기준 색상
     margin-bottom: 4px; // 제목과 날짜 사이 간격 추가
   }
@@ -355,6 +369,7 @@ export const WorkbookName = styled.div`
 `;
 
 export const WorkbookArrow = styled.div`
+  width: 18px;
   font-size: 14px;
   color: #666;
   margin-left: 12px;
@@ -365,12 +380,16 @@ export const WorkbookRight = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
+  flex-shrink: 0;
+  min-width: 64px;
+  justify-content: flex-end;
+  white-space: nowrap;
 `;
 
 export const WorkbookCount = styled.div`
   color: #666;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 400;
   display: flex;
   align-items: center;
 `;

@@ -40,7 +40,12 @@ import {
 } from "./BookShelf.Styles";
 
 import { useState } from "react";
-import { WorkBookIcon } from "@/utils/SvgProvider";
+import {
+  WorkBookIcon,
+  TrashIcon,
+  EditIcon,
+  BookIcon2,
+} from "@/utils/SvgProvider";
 
 export default function BookShelfUI({
   books,
@@ -51,6 +56,7 @@ export default function BookShelfUI({
   onClickLearningMode,
   onClickLearningStart,
   isSelectMode,
+  isSmallScreen,
   selectedBookIds,
   onOpenCreateModal,
   isCreateModalOpen,
@@ -73,7 +79,12 @@ export default function BookShelfUI({
   const renderTileItem = (book) => {
     const isSelected = selectedBookIds.includes(book.id);
     return (
-      <TileItem key={book.id} onClick={() => onClickBook(book)}>
+      <TileItem
+        key={book.id}
+        onClick={() => {
+          if (book.items > 0) onClickBook(book);
+        }}
+      >
         <Card>
           <CardTop>
             <WorkBookIcon size={32} color="#6D78FF" />
@@ -107,8 +118,10 @@ export default function BookShelfUI({
           <CardBottom>
             <CardTitle>{book.title}</CardTitle>
             <CardInfo>
-              {book.items}문제, 최근: {book.date}
+              <div>{book.items}문제</div>
+              <div>최근: {book.date}</div>
             </CardInfo>
+
             <CardActions>
               <button
                 onClick={(e) => {
@@ -140,15 +153,20 @@ export default function BookShelfUI({
                     onMoreClick(book, "learn");
                   }}
                 >
+                  <TrashIcon
+                    style={{ width: 16, height: 16, marginRight: 6 }}
+                  />
                   학습하기
                 </OptionItem>
                 <OptionItem
+                  style={{ backgroundColor: "#EEF0FF" }}
                   onClick={(e) => {
                     e.stopPropagation();
                     closeOptionPopup();
                     onClickRename(book);
                   }}
                 >
+                  <EditIcon style={{ width: 16, height: 16, marginRight: 6 }} />
                   수정하기
                 </OptionItem>
                 <OptionItem
@@ -158,6 +176,9 @@ export default function BookShelfUI({
                     onClickDelete(book);
                   }}
                 >
+                  <BookIcon2
+                    style={{ width: 16, height: 16, marginRight: 6 }}
+                  />
                   삭제하기
                 </OptionItem>
               </OptionPopup>
@@ -170,7 +191,12 @@ export default function BookShelfUI({
   const renderListItem = (book) => {
     const isSelected = selectedBookIds.includes(book.id);
     return (
-      <BookItem key={book.id} onClick={() => onClickBook(book)}>
+      <BookItem
+        key={book.id}
+        onClick={() => {
+          if (book.items > 0) onClickBook(book);
+        }}
+      >
         <BookInfoLeft>
           <BookTitle>{book.title}</BookTitle>
           <BookDate>최근 학습일: {book.date}</BookDate>
@@ -209,15 +235,18 @@ export default function BookShelfUI({
                 onMoreClick(book, "learn");
               }}
             >
+              <TrashIcon style={{ width: 16, height: 16, marginRight: 6 }} />
               학습하기
             </OptionItem>
             <OptionItem
+              style={{ backgroundColor: "#EEF0FF" }}
               onClick={(e) => {
                 e.stopPropagation();
                 closeOptionPopup();
                 onClickRename(book);
               }}
             >
+              <EditIcon style={{ width: 16, height: 16, marginRight: 6 }} />
               수정하기
             </OptionItem>
             <OptionItem
@@ -227,6 +256,7 @@ export default function BookShelfUI({
                 onClickDelete(book);
               }}
             >
+              <BookIcon2 style={{ width: 16, height: 16, marginRight: 6 }} />
               삭제하기
             </OptionItem>
           </OptionPopup>
@@ -286,11 +316,11 @@ export default function BookShelfUI({
               disabled={selectedBookIds.length === 0}
               onClick={onClickDelete}
             >
-              문제집 삭제
+              삭제 {/* ✅ 항상 짧게 */}
             </DeleteButton>
           )}
           <SelectButton onClick={onClickLearningMode}>
-            {isSelectMode ? "선택 취소" : "선택"}
+            {isSelectMode ? "취소" : "선택"} {/* ✅ 항상 짧게 */}
           </SelectButton>
         </FilterActionGroup>
       </FilterRow>
@@ -327,6 +357,7 @@ export default function BookShelfUI({
               value={newWorkbookTitle}
               onChange={(e) => setNewWorkbookTitle(e.target.value)}
               placeholder="문제집 이름을 입력하세요"
+              maxLength={17}
             />
             <button onClick={onCreateWorkbook}>생성하기</button>
             <button onClick={onCloseCreateModal}>취소</button>

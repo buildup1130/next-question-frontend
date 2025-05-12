@@ -76,6 +76,9 @@ export default function WrongNoteUI(props) {
     setOpenEndCalendar,
   } = props;
 
+  console.log("✅ selectedFilterBook:", selectedFilterBook);
+  console.log("✅ groupedHistory in UI:", groupedHistory);
+
   const filteredData =
     selectedFilterBook === "모든 문제집"
       ? data
@@ -96,6 +99,7 @@ export default function WrongNoteUI(props) {
 
       <FilterBar>
         <SelectBox
+          title={selectedFilterBook}
           value={selectedFilterBook}
           onChange={(e) => setSelectedFilterBook(e.target.value)}
         >
@@ -105,6 +109,7 @@ export default function WrongNoteUI(props) {
             </option>
           ))}
         </SelectBox>
+
         <FilterButton onClick={() => props.setIsSelectMode(!isSelectMode)}>
           {isSelectMode ? "취소" : "선택"}
         </FilterButton>
