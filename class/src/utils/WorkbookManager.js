@@ -123,15 +123,12 @@ export const loadNormalQuestion = async (token, id, options) => {
 
 export const loadDailyQuestion = async (token) => {
   try {
-    const response = await axios.get(
-      "/api/member/solving/daily/search",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await axios.get("/api/member/solving/daily/search", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
     return response.data;
   } catch (error) {
     console.error(error);
@@ -211,7 +208,7 @@ export const fetchQuestionType = async (token, idArr) => {
 export const fetchWrongNoteHistoryQuestions = async (token, historyId) => {
   try {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/solving/wrong/search/questions`,
+      `${process.env.NEXT_PUBLIC_API_URL}/solving/wrong/search`,
       { historyIds: [historyId] },
       {
         headers: {

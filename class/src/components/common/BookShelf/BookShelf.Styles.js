@@ -6,7 +6,6 @@ export const Container = styled.div`
   min-height: 100dvh;
   margin: 0 auto;
   padding: 0 16px 100px;
-  box-sizing: border-box;
   background-color: #fff;
   position: relative;
 `;
@@ -15,15 +14,14 @@ export const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 0 8px 0;
+  padding: 12px 0 8px;
 `;
 
 export const Title = styled.h1`
   font-size: 18px;
   font-weight: 500;
+  color: #000;
   margin: 0;
-  padding: 0;
-  color: #000000;
 `;
 
 export const Divider = styled.hr`
@@ -48,7 +46,7 @@ export const StyledSearchInput = styled.input`
   background-color: #fff;
 
   &::placeholder {
-    color: #000000;
+    color: #000;
   }
 `;
 
@@ -77,8 +75,8 @@ export const FilterGroup = styled.div`
 
 export const FilterActionGroup = styled.div`
   display: flex;
-  gap: 8px;
   align-items: center;
+  gap: 8px;
 `;
 
 export const FilterSelect = styled.select`
@@ -87,9 +85,8 @@ export const FilterSelect = styled.select`
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 14px;
-  font-weight: 400;
-  color: #000000;
   background-color: #fff;
+  color: #000;
 `;
 
 export const SelectButton = styled.button`
@@ -98,37 +95,31 @@ export const SelectButton = styled.button`
   border-radius: 6px;
   background-color: #808fff;
   border: 1px solid #b3bcff;
-  color: white;
-  cursor: pointer;
+  color: #fff;
   font-size: 14px;
+  cursor: pointer;
   flex-shrink: 0;
 `;
 
-export const DeleteButton = styled.button`
-  width: 60px;
-  padding: 6px 12px;
-  height: 32px;
-  border-radius: 6px;
+export const DeleteButton = styled(SelectButton)`
   background-color: ${({ disabled }) => (disabled ? "#B3BCFF" : "#808FFF")};
-  border: 1px solid #b3bcff;
-  color: white;
   cursor: ${({ disabled }) => (disabled ? "default" : "pointer")};
-  font-size: 14px;
 `;
 
 export const BookList = styled.ul`
-  margin-top: 10px;
   list-style: none;
+  margin-top: 10px;
   padding: 0;
 `;
 
 export const BookItem = styled.li`
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   padding: 12px 16px;
-  background-color: #fff;
   border-bottom: 1px solid #eee;
+  background-color: #fff;
+  position: relative;
 `;
 
 export const BookInfoLeft = styled.div`
@@ -137,25 +128,25 @@ export const BookInfoLeft = styled.div`
 `;
 
 export const BookTitle = styled.div`
-  font-weight: 500;
   font-size: 15px;
-  margin-bottom: 4px;
+  font-weight: 500;
   color: #707070;
+  margin-bottom: 4px;
   word-break: break-word;
-  white-space: normal;
 `;
 
 export const BookDate = styled.div`
   font-size: 12px;
-  color: #999999;
+  color: #999;
 `;
 
 export const BookInfoRight = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 8px;
-  width: 64px; // ✅ 고정 너비 지정 (or 60~72px 정도)
+  width: 64px;
   flex-shrink: 0;
   white-space: nowrap;
 `;
@@ -169,33 +160,30 @@ export const BookCount = styled.div`
 export const BookCheckbox = styled.input`
   width: 24px;
   height: 16px;
-  transform: none;
   accent-color: #65558f;
   cursor: pointer;
 `;
 
 export const MoreButton = styled.button`
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  padding: 0;
   width: 24px;
   height: 24px;
+  font-size: 20px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 1;
 `;
 
 export const OptionPopup = styled.div`
   position: absolute;
-  right: 0;
-  top: 40px;
-  background: #ffffff;
+  top: 40px; // ✅ 버튼 아래로 약간 띄움
+  right: 0; // ✅ 버튼 오른쪽 정렬 유지
+  background: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
   z-index: 100;
 `;
 
@@ -211,29 +199,23 @@ export const OptionItem = styled.div`
   &:hover {
     background-color: #eef0ff;
   }
-
-  svg {
-    width: 16px;
-    height: 16px;
-  }
 `;
 
 export const AddBookArea = styled.div`
   width: 100%;
   padding: 20px;
-  text-align: center;
-  cursor: pointer;
-  color: #808fff;
-  border-top: 1px solid #b3bcff;
   font-size: 18px;
+  color: #808fff;
+  text-align: center;
+  border-top: 1px solid #b3bcff;
+  cursor: pointer;
 `;
 
 export const BottomFloatingButton = styled.button`
   position: fixed;
-  bottom: 64px;
+  bottom: 95px;
   left: 50%;
   transform: translateX(-50%);
-  margin-bottom: 30px;
   padding: 14px 24px;
   border-radius: 12px;
   font-size: 15px;
@@ -262,13 +244,13 @@ export const ModalWrapper = styled.div`
 
 export const ModalContent = styled.div`
   background-color: #fff;
-  border-radius: 12px;
-  font-weight: 600;
   padding: 24px;
   width: 90%;
   max-width: 360px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
   text-align: center;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 
   h3 {
     margin-bottom: 16px;
@@ -292,10 +274,10 @@ export const ModalContent = styled.div`
     height: 36px;
     margin: 0 4px;
     padding: 0 16px;
-    border-radius: 8px;
-    border: none;
     font-size: 14px;
     font-weight: 400;
+    border-radius: 8px;
+    border: none;
     cursor: pointer;
   }
 
@@ -330,22 +312,6 @@ export const Card = styled.div`
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 `;
 
-export const CardBottom = styled.div`
-  background-color: white;
-  padding: 10px 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-export const CardTitle = styled.div`
-  font-weight: bold;
-  font-size: 14px;
-  margin-bottom: 4px;
-  word-break: break-word;
-  text-align: center;
-`;
-
 export const CardTop = styled.div`
   position: relative;
   background-color: #eef0ff;
@@ -355,11 +321,34 @@ export const CardTop = styled.div`
   align-items: center;
 `;
 
+export const TileTopRightButton = styled.div`
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
+`;
+
+export const CardBottom = styled.div`
+  background-color: white;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const CardTitle = styled.div`
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 4px;
+  word-break: break-word;
+`;
+
 export const CardInfo = styled.div`
   font-size: 11px;
   color: #666;
-  margin-bottom: 6px;
   text-align: center;
+  margin-bottom: 6px;
 `;
 
 export const CardActions = styled.div`
@@ -373,26 +362,18 @@ export const CardActions = styled.div`
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 11px;
-    cursor: pointer;
     background-color: white;
+    cursor: pointer;
     white-space: nowrap;
   }
 `;
 
-export const TileTopRightButton = styled.div`
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  z-index: 10;
-`;
-
 export const PlusCard = styled(Card)`
-  border: 2px dashed #ccc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   min-height: 150px;
-  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  border: 2px dashed #ccc;
   color: #999;
   font-size: 32px;
+  cursor: pointer;
 `;
