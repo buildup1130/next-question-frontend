@@ -15,11 +15,11 @@ export const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 0 8px 0;
+  padding: 0px 0 8px 0;
 `;
 
 export const Title = styled.h1`
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 500;
   margin: 0;
   padding: 0;
