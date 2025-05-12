@@ -144,13 +144,10 @@ export default function WrongNoteUI(props) {
       ) : (
         filteredData.map((book) => {
           const firstQuestion = book.dates?.[0]?.questions?.[0];
-          const dt = firstQuestion?.solvedAt
-            ? new Date(firstQuestion.solvedAt.replace(" ", "T"))
-            : null;
-          const formattedTime =
-            dt && !isNaN(dt.getTime())
-              ? dt.toISOString().slice(0, 16).replace("T", " ")
-              : "시간 정보 없음";
+
+          const formattedTime = firstQuestion?.solvedAt
+            ? firstQuestion.solvedAt.replace("T", " ")
+            : "시간 정보 없음";
 
           return (
             <div key={book.workbook}>

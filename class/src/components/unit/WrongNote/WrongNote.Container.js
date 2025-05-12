@@ -88,15 +88,21 @@ export default function WrongNoteLogic() {
 
       result.questions.forEach((q, idx) => {
         const date = new Date(q.solvedDate);
-        date.setHours(date.getHours() + 9);
-        const dateStr = date.toISOString().split("T")[0];
         const title = q.workBookName?.trim() || "미지정 문제집";
         const id = q.encryptedWorkBookId;
-        const solvedAt =
-          q.solvedAt?.slice(0, 16) || date.toISOString().slice(0, 16);
 
-        if (!grouped[title]) grouped[title] = { id, dates: {} };
-        if (!grouped[title].dates[dateStr]) grouped[title].dates[dateStr] = [];
+        // ✅ UTC → KST 보정
+        let solvedAt;
+        if (q.solvedAt) {
+          const kst = new Date(q.solvedAt);
+          kst.setHours(kst.getHours() + 9);
+          solvedAt = kst.toISOString().slice(0, 16);
+        } else {
+          date.setHours(date.getHours() + 9);
+          solvedAt = date.toISOString().slice(0, 16);
+        }
+
+        const dateStr = solvedAt.split("T")[0];
 
         const formattedQ = {
           id: idx,
@@ -118,7 +124,10 @@ export default function WrongNoteLogic() {
           workBookName: title,
         };
 
+        if (!grouped[title]) grouped[title] = { id, dates: {} };
+        if (!grouped[title].dates[dateStr]) grouped[title].dates[dateStr] = [];
         grouped[title].dates[dateStr].push(formattedQ);
+
         if (!timeGrouped[solvedAt]) timeGrouped[solvedAt] = [];
         timeGrouped[solvedAt].push(formattedQ);
       });
