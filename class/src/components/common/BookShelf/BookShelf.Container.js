@@ -191,7 +191,9 @@ export default function BookShelfLogic() {
   const handleMoreClick = (book, action) => {
     if (action === "learn") {
       if (book.items === 0) {
-        alert("문제집이 비어있습니다!");
+        toast.error("문제집이 비어있습니다!", {
+          position: "top-center",
+        });
         return;
       }
       setCurBook({ id: book.id, items: book.items, name: book.title });

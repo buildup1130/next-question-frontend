@@ -15,15 +15,15 @@ export const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 0 8px 0;
+  padding: 12px 0 8px 0;
 `;
 
 export const Title = styled.h1`
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 500;
   margin: 0;
   padding: 0;
-  color: #222;
+  color: #000000;
 `;
 
 export const Divider = styled.hr`
@@ -93,7 +93,7 @@ export const FilterSelect = styled.select`
 `;
 
 export const SelectButton = styled.button`
-  padding: 6px 12px;
+  width: 60px;
   height: 32px;
   border-radius: 6px;
   background-color: #808fff;
@@ -101,6 +101,7 @@ export const SelectButton = styled.button`
   color: white;
   cursor: pointer;
   font-size: 14px;
+  flex-shrink: 0;
 `;
 
 export const DeleteButton = styled.button`
@@ -190,20 +191,29 @@ export const OptionPopup = styled.div`
   position: absolute;
   right: 0;
   top: 40px;
-  background: #c9cef5;
-  border: 1px solid #eaedff;
-  border-radius: 8px;
-  padding: 8px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
   z-index: 100;
 `;
 
 export const OptionItem = styled.div`
-  padding: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
   font-size: 14px;
+  color: #333;
   cursor: pointer;
-  white-space: nowrap;
+
   &:hover {
-    background: #eaedff;
+    background-color: #eef0ff;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
   }
 `;
 
@@ -301,8 +311,8 @@ export const ModalContent = styled.div`
 
 export const TileGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
   margin-top: 16px;
 `;
 
@@ -321,7 +331,7 @@ export const Card = styled.div`
 
 export const CardBottom = styled.div`
   background-color: white;
-  padding: 12px;
+  padding: 10px 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -329,6 +339,7 @@ export const CardBottom = styled.div`
 
 export const CardTitle = styled.div`
   font-weight: bold;
+  font-size: 14px;
   margin-bottom: 4px;
   word-break: break-word;
   text-align: center;
@@ -344,23 +355,26 @@ export const CardTop = styled.div`
 `;
 
 export const CardInfo = styled.div`
-  font-size: 12px;
+  font-size: 11px;
   color: #666;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   text-align: center;
 `;
 
 export const CardActions = styled.div`
   display: flex;
-  gap: 8px;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
 
   button {
-    padding: 4px 8px;
+    padding: 2px 6px;
     border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 12px;
+    border-radius: 4px;
+    font-size: 11px;
     cursor: pointer;
     background-color: white;
+    white-space: nowrap;
   }
 `;
 

@@ -44,14 +44,52 @@ export default function WrongNoteLogic() {
     if (token) fetchWrongNotes();
   }, [token, selectedDateRange]);
 
+  // ✅ fetchWrongNotes 함수 위나 아래 아무 곳이나 가능
+  const handleClickHistory = async (historyId) => {
+    try {
+      const response = await fetchWrongNoteHistoryQuestions(token, historyId);
+
+      if (!response || !response.questions || response.questions.length === 0) {
+        return alert("문제를 불러올 수 없습니다.");
+      }
+
+      const formatted = response.questions.map((q) => ({
+        name: q.name.replace("{BLANK}", "OOO"),
+        answer: q.answer,
+        type:
+          q.type === "MULTIPLE_CHOICE"
+            ? "MULTIPLE_CHOICE"
+            : q.type === "OX"
+            ? "OX"
+            : "FILL_IN_THE_BLANK",
+        ...(q.opt && { opt: q.opt }),
+      }));
+
+      localStorage.setItem("tempQuestionData", JSON.stringify(formatted));
+      router.push({ pathname: "/Question", query: { type: 3 } });
+    } catch (err) {
+      console.error("학습별 문제 불러오기 실패:", err);
+      alert("문제를 가져오는 데 실패했습니다.");
+    }
+  };
+
   const fetchWrongNotes = async () => {
     try {
       const result = await getWrongNote(
         token,
         selectedDateRange.start,
-        selectedDateRange.end
+        selectedDateRange.end,
+        "custom" // periodType은 4번째 인자로 명시
       );
+
+      console.log("🟡 전체 응답 결과:", result);
+      console.log("🟡 groupedWorkBooks 응답:", result.groupedWorkBooks);
+      console.log("❓ questions:", result?.questions);
+
+      console.log("✅ getWrongNote 응답:", result);
       if (!result || !result.questions) return;
+
+      console.log("✅ groupedWorkBooks:", result.groupedWorkBooks);
 
       const grouped = {};
       result.questions.forEach((q, idx) => {
@@ -84,31 +122,6 @@ export default function WrongNoteLogic() {
           solvedAt: q.solvedAt || q.solvedDate,
         });
       });
-
-      const handleClickHistoryGroup = async (historyId) => {
-        const questions = await fetchWrongNoteHistoryQuestions(
-          token,
-          historyId
-        );
-        if (!questions || questions.length === 0) {
-          return alert("문제를 불러올 수 없습니다.");
-        }
-
-        const formatted = questions.map((q) => ({
-          name: q.name.replace("{BLANK}", "OOO"),
-          answer: q.answer,
-          type:
-            q.type === "MULTIPLE_CHOICE"
-              ? "MULTIPLE_CHOICE"
-              : q.type === "OX"
-              ? "OX"
-              : "FILL_IN_THE_BLANK",
-          ...(q.opt && { opt: q.opt }),
-        }));
-
-        localStorage.setItem("tempQuestionData", JSON.stringify(formatted));
-        router.push({ pathname: "/Question", query: { type: 3 } });
-      };
 
       const map = {};
       const formatted = Object.entries(grouped).map(
@@ -302,6 +315,7 @@ export default function WrongNoteLogic() {
       selectedFilterBook={selectedFilterBook}
       setSelectedFilterBook={setSelectedFilterBook}
       groupedHistory={groupedHistory}
+      onClickHistory={handleClickHistory}
       openStartCalendar={openStartCalendar} // ✅ 추가
       setOpenStartCalendar={setOpenStartCalendar} // ✅ 추가
       openEndCalendar={openEndCalendar} // ✅ 추가
