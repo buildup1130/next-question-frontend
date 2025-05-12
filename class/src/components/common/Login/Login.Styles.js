@@ -60,12 +60,12 @@ export const InputField = styled.input`
   width: 100%;
   max-width: 300px;
   height: 40px;
-  padding: 1px 8px 10px;
   border: 1px solid #ccc;
   border-radius: 6px;
   background-color: white;
   font-size: 14px;
   outline: none;
+  padding-left: 10px;
 
   &::placeholder {
     font-size: 12px;

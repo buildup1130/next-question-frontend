@@ -52,7 +52,7 @@ export const StyledSearchInput = styled.input`
 
 export const SearchIcon = styled.div`
   position: absolute;
-  top: 50%;
+  top: 52%;
   left: 12px;
   transform: translateY(-50%);
   pointer-events: none;
@@ -85,8 +85,8 @@ export const FilterSelect = styled.select`
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 14px;
-  background-color: #fff;
-  color: #000;
+  background-color: #ffffff;
+  color: #000000;
 `;
 
 export const SelectButton = styled.button`
@@ -179,8 +179,8 @@ export const MoreButton = styled.button`
 
 export const OptionPopup = styled.div`
   position: absolute;
-  top: 40px; // ✅ 버튼 아래로 약간 띄움
-  right: 0; // ✅ 버튼 오른쪽 정렬 유지
+  top: 40px;
+  right: 0;
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);

@@ -1,4 +1,3 @@
-// ✅ Workbook.Presenter.js (리팩토링 완료)
 import { BackIcon } from "@/utils/SvgProvider";
 import {
   Wrapper,
@@ -91,7 +90,7 @@ export default function WorkbookUI({
     if (q.type === "FILL_IN_THE_BLANK") {
       return (
         <Answer>
-          <AnswerLabel>A</AnswerLabel>
+          <AnswerLabel isAnswer={showAnswer}>A</AnswerLabel>
           {showAnswer ? q.answer : null}
         </Answer>
       );

@@ -1,4 +1,3 @@
-// ✅ WrongNote.Styles.js (리팩토링 완료)
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
@@ -57,12 +56,13 @@ export const FilterBar = styled.div`
 `;
 
 export const SelectBox = styled.select`
-  width: 140px;
+  width: 120px;
   padding: 6px 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 14px;
-  color: #000;
+  background-color: #ffffff;
+  color: #000000;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;

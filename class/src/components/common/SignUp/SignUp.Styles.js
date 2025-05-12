@@ -59,14 +59,14 @@ export const InputWrapper = styled.div`
 
 export const InputField = styled.input`
   width: 100%;
-  height: 45px;
+  max-width: 300px;
+  height: 40px;
   border: 1px solid #ccc;
   border-radius: 6px;
+  background-color: white;
   font-size: 14px;
   outline: none;
-  padding: 1px 8px 10px;
-  box-sizing: border-box;
-
+  padding-left: 10px;
   &::placeholder {
     font-size: 12px;
     color: #aaa;

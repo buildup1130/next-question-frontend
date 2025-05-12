@@ -3,11 +3,11 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
   width: 100%;
   max-width: 500px;
-  min-height: 100vh; // ✅ scroll 막힘 방지
+  min-height: 100vh;
   padding: 16px 16px 80px;
   margin: 0 auto;
   background-color: #ffffff;
-  overflow-y: auto; // ✅ scroll 이 자연스럽게
+  overflow-y: auto;
 
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -22,7 +22,7 @@ export const Header = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
-  height: 24px; // ✅ 유니코드 숫자 → 숫자로 정상화
+  height: 24px;
 `;
 
 export const BackButton = styled.button`

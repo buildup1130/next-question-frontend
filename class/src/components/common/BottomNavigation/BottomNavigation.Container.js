@@ -19,7 +19,7 @@ export default function BottomNavigationLogic() {
     if (path.includes("/BookShelf")) return "shelf";
     if (path.includes("/Workbook")) return "shelf";
     if (path.includes("/WrongNote")) return "check";
-    if (path.includes("/WrongWorkbook")) return "check"; // ✅ 여기 추가
+    if (path.includes("/WrongWorkbook")) return "check";
     if (path.includes("/history")) return "history";
     return "home";
   };
