@@ -131,7 +131,7 @@ const checkAnswer = () => {
     setIsCorrect(true);
     setTimeout(() => {
       moveToNextQuestion();
-    },500);
+    },300);
   } else {
     if (!wrongArr.includes(currentQuestion)) {
       setWrongArr([...wrongArr, currentQuestion]);
@@ -141,6 +141,13 @@ const checkAnswer = () => {
     
     // 일반문제 풀이인 경우 오답이면 isCorrect false 유지
     setIsCorrect(!(props.type === 0 || props.type === 2));
+    if(!(props.type === 0 || props.type === 2)){
+      setTimeout(() => {
+      moveToNextQuestion();
+    },300);
+    }
+
+
   }
   
   setCurAns(selectedAnswer);

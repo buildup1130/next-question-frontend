@@ -57,7 +57,7 @@ export default function GenerateShelfLogic(props){
     useEffect(() => {
         console.log(props.file.name.slice(-3));
         if(props.file.name.slice(-3)!== "pdf"){
-            toast.error("pdf 파일만 업로드 가능합니다.");
+            toast.error("pdf 파일만 업로드 가능합니다.",{position:"top-center"});
             props.setFile(null);
             props.setIsCreated(false);
         }
@@ -75,22 +75,22 @@ export default function GenerateShelfLogic(props){
             () => {
                 fetchWorkBooks();
                 setCreatingName("");
-                toast.success("문제집이 생성되었습니다.")
+                toast.success("문제집이 생성되었습니다.",{position:"top-center"})
             }
         ).catch(
             error =>{
                 console.log(error);
                 if (error.response && error.response.status === 500) {
                     // alert("이미 존재하는 문제집 이름입니다.");
-                    toast.error("이미 존재하는 문제집 이름입니다.");
+                    toast.error("이미 존재하는 문제집 이름입니다.",{position:"top-center"});
                 } else {
-                    toast.error("문제집 생성 중 오류가 발생했습니다: " + error.message);
+                    toast.error("문제집 생성 중 오류가 발생했습니다: " + error.message,{position:"top-center"});
                 }
             }
         )
         setIsCreating(false);
     }else{
-        toast.error("생성할 문제집의 이름을 입력해주세요.");
+        toast.error("생성할 문제집의 이름을 입력해주세요.",{position:"top-center"});
     }
     }
 
@@ -98,7 +98,7 @@ export default function GenerateShelfLogic(props){
         if(savingWorkBook !== ""){
         const result = saveAtWorkBook(token,questionArr,savingWorkBook);
         }else{
-            toast.error("문제집을 선택해주세요.");
+            toast.error("문제집을 선택해주세요.",{position:"top-center"});
         }
     }
 
@@ -141,9 +141,9 @@ export default function GenerateShelfLogic(props){
         // },1000);
         props.setIsCreated(false);
         props.setFile(null);
-        toast.success("문제가 저장되었습니다.");
+        toast.success("문제가 저장되었습니다.",{position:"top-center"});
     }else{
-        toast.error("문제집을 선택해주세요.")
+        toast.error("문제집을 선택해주세요.",{position:"top-center"})
     }
     }
 
