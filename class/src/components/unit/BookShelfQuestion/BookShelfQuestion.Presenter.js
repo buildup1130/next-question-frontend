@@ -77,7 +77,7 @@ export default function BookShelfQuestionUI(props) {
             <div>문제 수</div>
             <CustomSelectLogic
               options = {[5,10,15,20,25,30]}
-              defaultValue={props.curBook.items}
+              defaultValue={props.count}
               onChange={(value) =>{
                 props.setCount(value)
               }}

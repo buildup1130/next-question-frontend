@@ -44,6 +44,28 @@ export default function BookShelfQuestionLogic(props) {
       props.setSelectedType([...props.selectedType, type]);
     }
     console.log(props.selectedType);
+
+    const updatedSelectedType = index !== -1 
+    ? [...props.selectedType].filter(t => t !== type) 
+    : [...props.selectedType, type];
+    
+    // 선택된 타입에 따라 값 합산
+    let totalCount = 0;
+    
+    if (updatedSelectedType.includes(0)) {
+      totalCount += props.typeNum.multipleChoice;
+    }
+    
+    if (updatedSelectedType.includes(1)) {
+      totalCount += props.typeNum.ox;
+    }
+    
+    if (updatedSelectedType.includes(2)) {
+      totalCount += props.typeNum.fillInTheBlank;
+    }
+    
+    console.log("Total count of selected types:", totalCount);
+    props.setCount(totalCount);
   };
 
   return (

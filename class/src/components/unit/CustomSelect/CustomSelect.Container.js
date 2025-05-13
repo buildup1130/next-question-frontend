@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomSelectUI from "./CustomSelect.Presenter";
 
 export default function CustomSelectLogic({
@@ -7,6 +7,10 @@ export default function CustomSelectLogic({
   onChange,
   optionContainerStyle,
 }){
+      useEffect(() => {
+        setSelectedValue(defaultValue);
+      },[defaultValue])
+
       const [isOpen, setIsOpen] = useState(false);
       const [selectedValue, setSelectedValue] = useState(
         defaultValue || options[0]
