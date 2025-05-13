@@ -11,6 +11,7 @@ export default function WrongWorkbookContainer() {
 
   const [questions, setQuestions] = useState([]);
   const [showAnswer, setShowAnswer] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   const handleBack = () => router.back();
 
@@ -42,6 +43,20 @@ export default function WrongWorkbookContainer() {
   }, [token, workbookId]);
 
   useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      setShowScrollTop(scrollTop > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  useEffect(() => {
     fetchWrongQuestions();
   }, [fetchWrongQuestions]);
 
@@ -52,6 +67,8 @@ export default function WrongWorkbookContainer() {
       onBack={handleBack}
       showAnswer={showAnswer}
       setShowAnswer={setShowAnswer}
+      showScrollTop={showScrollTop}
+      scrollToTop={scrollToTop}
     />
   );
 }

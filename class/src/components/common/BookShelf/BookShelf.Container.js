@@ -1,4 +1,3 @@
-// ✅ BookShelf.Container.js (리팩토링 완료)
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import BookShelfUI from "./BookShelf.Presenter";
@@ -28,6 +27,7 @@ export default function BookShelfLogic() {
 
   const [isSelectMode, setIsSelectMode] = useState(false);
   const [selectedBookIds, setSelectedBookIds] = useState([]);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   const [isRenameModalOpen, setRenameModalOpen] = useState(false);
   const [renameTargetBook, setRenameTargetBook] = useState(null);
@@ -72,6 +72,20 @@ export default function BookShelfLogic() {
     });
     setFilteredBooks(sorted);
   }, [sortOption, books]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      setShowScrollTop(scrollTop > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const fetchWorkBooks = async () => {
     setIsLoading(true);
@@ -297,6 +311,8 @@ export default function BookShelfLogic() {
         onOpenCreateModal={() => setCreateModalOpen(true)}
         isCreateModalOpen={isCreateModalOpen}
         newWorkbookTitle={newWorkbookTitle}
+        showScrollTop={showScrollTop}
+        scrollToTop={scrollToTop}
         setNewWorkbookTitle={setNewWorkbookTitle}
         onCreateWorkbook={handleCreateWorkbook}
         onCloseCreateModal={() => setCreateModalOpen(false)}

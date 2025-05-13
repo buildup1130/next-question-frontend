@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Wrapper,
   Header,
@@ -5,7 +6,6 @@ import {
   Title,
   Divider,
   ControlBar,
-  ToggleAnswerButton,
   QuestionCard,
   QuestionRow,
   QuestionTextWrapper,
@@ -15,17 +15,25 @@ import {
   OptionNumber,
   Answer,
   AnswerLabel,
+  ScrollToTopButton,
+  RightAnswerToggleButton,
 } from "./WrongWorkbook.Styles";
-import { BackIcon } from "@/utils/SvgProvider";
+import { BackIcon, ArrowUpIcon } from "@/utils/SvgProvider";
 
 export default function WrongWorkbookUI({
   title,
   questions,
   onBack,
-  showAnswer,
-  setShowAnswer,
+  scrollToTop,
+  showScrollTop,
 }) {
-  const renderOptions = (q) => {
+  const [localAnswerMap, setLocalAnswerMap] = useState({});
+
+  const toggleLocalAnswer = (id) => {
+    setLocalAnswerMap((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const renderOptions = (q, showAnswer) => {
     if (q.type === "MULTIPLE_CHOICE") {
       const opts = q.opt ? q.opt.split("|||") : [];
       return (
@@ -65,7 +73,7 @@ export default function WrongWorkbookUI({
     if (q.type === "FILL_IN_THE_BLANK") {
       return (
         <Answer>
-          <AnswerLabel>A</AnswerLabel>
+          <AnswerLabel isAnswer={showAnswer}>A</AnswerLabel>
           {showAnswer ? q.answer : null}
         </Answer>
       );
@@ -83,11 +91,7 @@ export default function WrongWorkbookUI({
         <Title>{title}</Title>
       </Header>
 
-      <ControlBar>
-        <ToggleAnswerButton onClick={() => setShowAnswer((prev) => !prev)}>
-          {showAnswer ? "정답 숨기기" : "정답 보기"}
-        </ToggleAnswerButton>
-      </ControlBar>
+      <ControlBar />
       <Divider />
 
       {questions.length > 0 ? (
@@ -99,13 +103,26 @@ export default function WrongWorkbookUI({
                   <div>Q{idx + 1}</div>
                   <div>{q.name.replace(/\{BLANK\}/g, "OOO")}</div>
                 </QuestionTitle>
-                {renderOptions(q)}
+                {renderOptions(q, localAnswerMap[q.encryptedQuestionId])}
               </QuestionTextWrapper>
+              <RightAnswerToggleButton
+                onClick={() => toggleLocalAnswer(q.encryptedQuestionId)}
+              >
+                {localAnswerMap[q.encryptedQuestionId]
+                  ? "정답 숨기기"
+                  : "정답 보기"}
+              </RightAnswerToggleButton>
             </QuestionRow>
           </QuestionCard>
         ))
       ) : (
         <div>문제가 없습니다.</div>
+      )}
+
+      {showScrollTop && (
+        <ScrollToTopButton onClick={scrollToTop}>
+          <ArrowUpIcon />
+        </ScrollToTopButton>
       )}
     </Wrapper>
   );

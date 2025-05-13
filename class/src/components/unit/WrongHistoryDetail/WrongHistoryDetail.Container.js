@@ -4,6 +4,7 @@ import WrongHistoryDetailUI from "./WrongHistoryDetail.Presenter";
 export default function WrongHistoryDetailContainer() {
   const [questions, setQuestions] = useState([]);
   const [showAnswer, setShowAnswer] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem("tempWrongHistoryQuestions");
@@ -17,11 +18,27 @@ export default function WrongHistoryDetailContainer() {
     }
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      setShowScrollTop(scrollTop > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <WrongHistoryDetailUI
       questions={questions}
       showAnswer={showAnswer}
       setShowAnswer={setShowAnswer}
+      showScrollTop={showScrollTop}
+      scrollToTop={scrollToTop}
     />
   );
 }

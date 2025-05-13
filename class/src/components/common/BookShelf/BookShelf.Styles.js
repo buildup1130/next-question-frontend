@@ -377,3 +377,21 @@ export const PlusCard = styled(Card)`
   font-size: 32px;
   cursor: pointer;
 `;
+
+export const ScrollToTopButton = styled.button`
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  width: 42px;
+  height: 42px;
+  background-color: #fff;
+  color: #333;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 999;
+`;

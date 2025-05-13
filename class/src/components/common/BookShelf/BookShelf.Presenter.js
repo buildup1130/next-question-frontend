@@ -1,5 +1,5 @@
-// ✅ BookShelf.Presenter.js (리팩토링 완료)
 import { useState } from "react";
+import { ArrowUpIcon } from "@/utils/SvgProvider";
 import {
   Container,
   Header,
@@ -39,6 +39,7 @@ import {
   BookDate,
   BookInfoRight,
   BookCount,
+  ScrollToTopButton,
 } from "./BookShelf.Styles";
 
 import {
@@ -73,6 +74,8 @@ export default function BookShelfUI(props) {
     isLearningModalOpen,
     sortOption,
     setSortOption,
+    scrollToTop,
+    showScrollTop,
   } = props;
 
   const [optionOpenId, setOptionOpenId] = useState(null);
@@ -361,6 +364,12 @@ export default function BookShelfUI(props) {
         <BottomFloatingButton onClick={onClickLearningStart}>
           {selectedBookIds.length}개 과목 학습하기
         </BottomFloatingButton>
+      )}
+
+      {showScrollTop && (
+        <ScrollToTopButton onClick={scrollToTop}>
+          <ArrowUpIcon />
+        </ScrollToTopButton>
       )}
     </Container>
   );
