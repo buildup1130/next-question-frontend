@@ -54,12 +54,15 @@ import {
   BackModal__Wrapper,
   BackModal__Container,
   BackModal__ButtonContainer,
-  BackModal__Button
+  BackModal__Button,
+  QuestionSolve__FollowerContainer,
+  QuestionSolve__FollowerWrapper,
+  QuestionSolve__FollowerContainer__content
 } from "./QuestionSolve.Styles";
 import { useRouter } from "next/router";
 import { savingCheck, savingStat } from "@/utils/StatisticManager";
 import { useAuth } from "@/utils/AuthContext";
-import { BackIcon, CheckedIcon, CheckIcon, HomeIcon, XButton, XIcon } from "@/utils/SvgProvider";
+import { AnalyzeIcon, BackIcon, BulbIcon, CheckedIcon, CheckIcon, HomeIcon, XButton, XIcon } from "@/utils/SvgProvider";
 import { toast } from "react-toastify";
 
 export default function QuestionSolveUI(props) {
@@ -83,6 +86,8 @@ export default function QuestionSolveUI(props) {
   const [answerArr ,setAnswerArr] = useState([]);
   //뒤로가기 모달
   const [isBackModal, setIsBackModal] = useState(false);
+  //팔로워 모달
+  const [isFollower, setIsFollower] = useState(true);
 
   const inputRef = useRef(null); // 입력 필드 참조 추가
   const router = useRouter();
@@ -104,7 +109,11 @@ export default function QuestionSolveUI(props) {
   useEffect(() => {
     setStartTime(Date.now());
     console.log(startTime);
+    setTimeout(() =>{
+      setIsFollower(false);
+    },3000)
   },[])
+
 
   // 문제 데이터가 없으면 로딩 또는 빈 상태 표시
   if (!props.questions || props.questions.length === 0) {
@@ -124,14 +133,10 @@ const checkAnswer = () => {
       setCorrectAnswer(correctAnswer + 1);
       //처음 맞춘 경우
       setAnswerArr([...answerArr,selectedAnswer]);
-    setTimeout(() => {
-      moveToNextQuestion();
-    },300);
+      handleCorrectAnswer();
     }
     setIsCorrect(true);
-    setTimeout(() => {
-      moveToNextQuestion();
-    },300);
+    handleCorrectAnswer();
   } else {
     if (!wrongArr.includes(currentQuestion)) {
       setWrongArr([...wrongArr, currentQuestion]);
@@ -142,12 +147,9 @@ const checkAnswer = () => {
     // 일반문제 풀이인 경우 오답이면 isCorrect false 유지
     setIsCorrect(!(props.type === 0 || props.type === 2));
     if(!(props.type === 0 || props.type === 2)){
-      setTimeout(() => {
-      moveToNextQuestion();
-    },300);
+    handleCorrectAnswer();
     }
-
-
+    console.log(question);
   }
   
   setCurAns(selectedAnswer);
@@ -157,6 +159,14 @@ const checkAnswer = () => {
     toast.error("정답을 입력해주세요.")
   }
 };
+
+//정답 처리 함수
+const handleCorrectAnswer = () => {
+  setTimeout(() => {
+      moveToNextQuestion();
+    },300);
+  setIsFollower(false);
+}
 
 // 질문 타입별 특수 로직 처리
 const handleQuestionTypeSpecificLogic = (isAnswerCorrect) => {
@@ -248,6 +258,8 @@ const moveToNextQuestion = () => {
     setFillAns(null);
     setFillSeq(0);
     setSelectedAnswer("");
+    //팔로워 활성화
+    handleFollower();
   } else {
     completeQuiz();
   }
@@ -275,6 +287,13 @@ const handleNextQuestion = () => {
     setInputValue(value);
     setSelectedAnswer(value);
   };
+
+  const handleFollower = () => {
+    setIsFollower(true);
+    setTimeout(() => {
+    setIsFollower(false);
+    },3000)
+  }
 
   // 올바른 방법:
   const options =
@@ -542,6 +561,13 @@ const handleNextQuestion = () => {
             <NextButton onClick={handleNextQuestion}>Next Question</NextButton>
           </ButtonContainer>
           {/* 팔로워 영역 */}
+          
+          <QuestionSolve__FollowerWrapper
+            isFollower = {isFollower}
+            onClick={() => {setIsFollower(false)}}
+          >
+            <QuestionSolve__FollowerContainer><QuestionSolve__FollowerContainer__content><BulbIcon size={"32px"}></BulbIcon>123</QuestionSolve__FollowerContainer__content></QuestionSolve__FollowerContainer>
+          </QuestionSolve__FollowerWrapper>
           
         </QuestionContainer>
       </QuestionSolve__Container>

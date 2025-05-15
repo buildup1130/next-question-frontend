@@ -568,3 +568,42 @@ export const BackModal__Button = styled.div`
   align-items:center;
   cursor: pointer;
 `
+
+export const QuestionSolve__FollowerWrapper = styled.div`
+  width:100%;
+  max-width:500px;
+  padding:0 10px;
+  
+
+  font-size:16px;
+
+  display:flex;
+  justify-content:center;
+  position:absolute;
+  left:50%;
+  bottom:20%;
+  transform:${(props) => props.isFollower? "translateX(-50%)": "translateX(-50%) translateY(100vh)"};
+  transition: transform 1s ease-in-out;
+`
+
+export const QuestionSolve__FollowerContainer = styled.div`
+  width:100%;
+  min-height:80px;
+  padding:10px 4px 10px 20px;
+
+  background-color:#b3bcff;
+  opacity:0.8;
+  
+  border-radius:20px;
+  border:1px solid #808fff;
+
+  font-size:16px;
+
+  display:flex;
+  align-items:center;
+`
+
+export const QuestionSolve__FollowerContainer__content = styled.div`
+  display:flex;
+  align-items:center;
+`
