@@ -1,0 +1,213 @@
+import React from "react";
+import { format, subDays } from "date-fns";
+
+import {
+  Wrapper,
+  Header,
+  FullWidthWrapper,
+  GraySection,
+  UserCard,
+  UserText,
+  Nickname,
+  UserId,
+  ReportWrapper,
+  ReportTitle,
+  ReportGrid,
+  ReportCard,
+  ReportContent,
+  ReportRow,
+  LargeReportCard,
+  Label,
+  Value,
+  SummaryCard,
+  SummaryHeader,
+  SummaryLabel,
+  SummaryStats,
+  SummaryValue,
+  SummaryUnit,
+  SummaryItem,
+  SummaryDesc,
+  HeatmapWrapper,
+  CustomHeatmapGrid,
+  CustomHeatmapBox,
+  IconWrapper,
+  BoxWrapper,
+  BoxLabelTop,
+} from "./Profile.Styles";
+
+import {
+  UserIcon,
+  IconTarget,
+  IconCheck,
+  IconFire,
+  IconBookMark,
+} from "@/utils/SvgProvider";
+
+export default function ProfileUI({
+  nickname,
+  userId,
+  averageAccuracy,
+  todayStudyCount,
+  showLabel,
+  streak,
+  totalSolved,
+  maxStreak,
+  avgPerDay,
+  heatmapData,
+}) {
+  // 색상 클래스 분기
+  const getLevelClass = (count) => {
+    if (!count || count === 0) return "color-empty";
+    if (count <= 1) return "color-scale-1";
+    if (count <= 2) return "color-scale-2";
+    if (count <= 3) return "color-scale-3";
+    if (count <= 4) return "color-scale-4";
+    return "color-scale-5";
+  };
+
+  // 최근 30일 날짜 리스트 만들기
+  const today = new Date();
+  const last30Days = Array.from({ length: 30 }).map((_, i) =>
+    format(subDays(today, 29 - i), "yyyy-MM-dd")
+  );
+
+  // 날짜 → count 매핑
+  const heatmapMap = new Map(
+    heatmapData.map((d) => [format(new Date(d.date), "yyyy-MM-dd"), d.count])
+  );
+
+  return (
+    <FullWidthWrapper>
+      <Header>프로필</Header>
+      <GraySection>
+        <Wrapper>
+          {/* 유저 카드 */}
+          <UserCard>
+            <UserIcon />
+            <UserText>
+              <Nickname>{nickname}</Nickname>
+              <UserId>{userId}</UserId>
+            </UserText>
+          </UserCard>
+
+          {/* 리포트 */}
+          <ReportWrapper>
+            <ReportTitle>나의 학습 리포트</ReportTitle>
+            <ReportGrid>
+              <LargeReportCard>
+                <ReportContent>
+                  <IconWrapper>
+                    <IconTarget />
+                  </IconWrapper>
+                  <Label>평균 정답률</Label>
+                  <Value>{averageAccuracy}%</Value>
+                </ReportContent>
+              </LargeReportCard>
+
+              <ReportRow>
+                <ReportCard>
+                  <ReportContent>
+                    <IconWrapper>
+                      <IconCheck />
+                    </IconWrapper>
+                    <Label>오늘의 학습</Label>
+                    <Value>{todayStudyCount}개</Value>
+                  </ReportContent>
+                </ReportCard>
+
+                <ReportCard>
+                  <ReportContent>
+                    <IconWrapper>
+                      <IconFire />
+                    </IconWrapper>
+                    <Label>최장 출석 기록</Label>
+                    <Value>{streak}일</Value>
+                  </ReportContent>
+                </ReportCard>
+              </ReportRow>
+            </ReportGrid>
+          </ReportWrapper>
+
+          {/* 학습 요약 + 커스텀 Heatmap */}
+          <SummaryCard>
+            <SummaryHeader>
+              <IconWrapper>
+                <IconBookMark />
+              </IconWrapper>
+              <SummaryLabel>학습 요약</SummaryLabel>
+            </SummaryHeader>
+
+            <SummaryStats>
+              <SummaryItem>
+                <SummaryValue>
+                  <span>{totalSolved}</span>
+                  <SummaryUnit>개</SummaryUnit>
+                </SummaryValue>
+                <SummaryDesc>이번 달 풀이</SummaryDesc>
+              </SummaryItem>
+
+              <SummaryItem>
+                <SummaryValue>
+                  <span>{maxStreak}</span>
+                  <SummaryUnit>일</SummaryUnit>
+                </SummaryValue>
+                <SummaryDesc>연속 출석일</SummaryDesc>
+              </SummaryItem>
+
+              <SummaryItem>
+                <SummaryValue>
+                  <span>{avgPerDay}</span>
+                  <SummaryUnit>/일</SummaryUnit>
+                </SummaryValue>
+                <SummaryDesc>평균 문제 풀이</SummaryDesc>
+              </SummaryItem>
+            </SummaryStats>
+
+            {/* 🔥 커스텀 10x3 Heatmap */}
+            <HeatmapWrapper>
+              {/* ✅ 월 표시 (왼쪽 정렬) */}
+              <div
+                style={{
+                  fontSize: "14px",
+                  marginBottom: "24px",
+                  marginLeft: "17px",
+                  color: "#868686",
+                }}
+              >
+                {format(today, "M")}월
+              </div>
+
+              <CustomHeatmapGrid>
+                {last30Days.map((date, i) => {
+                  const count = heatmapMap.get(date) || 0;
+                  const isToday = date === format(today, "yyyy-MM-dd");
+
+                  return (
+                    <BoxWrapper key={date}>
+                      {[0, 4, 9].includes(i) && (
+                        <BoxLabelTop>
+                          {i === 0 ? "1일" : i === 4 ? "5일" : "10일"}
+                        </BoxLabelTop>
+                      )}
+                      <CustomHeatmapBox
+                        className={`${getLevelClass(count)} ${
+                          isToday ? "today" : ""
+                        }`}
+                        title={`${date}: ${count}개`}
+                      />
+                    </BoxWrapper>
+                  );
+                })}
+
+                {/* 🔥 추가 한 칸: grid의 다음 줄 맨 왼쪽 */}
+                <BoxWrapper key="extra-31st" style={{ gridColumn: "1" }}>
+                  <CustomHeatmapBox className="color-empty" title="추가 칸" />
+                </BoxWrapper>
+              </CustomHeatmapGrid>
+            </HeatmapWrapper>
+          </SummaryCard>
+        </Wrapper>
+      </GraySection>
+    </FullWidthWrapper>
+  );
+}

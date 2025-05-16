@@ -20,7 +20,7 @@ export default function BottomNavigationLogic() {
     if (path.includes("/Workbook")) return "shelf";
     if (path.includes("/WrongNote")) return "check";
     if (path.includes("/WrongWorkbook")) return "check";
-    if (path.includes("/history")) return "history";
+    if (path.includes("/Profile")) return "Profile";
     return "home";
   };
 
