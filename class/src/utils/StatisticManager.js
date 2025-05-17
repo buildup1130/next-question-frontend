@@ -37,7 +37,7 @@ export const savingStat = async(questions, wrongArr, type,workBookId,token) => {
     try{
         const response = await axios.post(
             "/api/member/solving/save",
-            { type: type?"MOCK":"NORMAL",
+            { type: type===0?"NORMAL":type===1?"MOCK":"WRONG",
               workBookInfoDTOS:dtoObj
              },
             {

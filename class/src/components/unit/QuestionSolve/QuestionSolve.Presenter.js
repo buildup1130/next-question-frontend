@@ -253,7 +253,7 @@ const completeQuiz = () => {
     savingCheck(props.questions, wrongArr, token);
   }
   //일반 문제풀이, 모의고사 문제풀이 인 경우 결과 저장
-  else if (props.type === 0 || props.type === 1) {
+  else if (props.type === 0 || props.type === 1 || props.type === 3) {
     savingStat(
       props.questions,
       wrongArr,

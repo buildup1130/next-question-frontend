@@ -117,8 +117,9 @@ export default function WrongNoteLogic() {
         }
 
         const dateStr = solvedAt.split("T")[0];
-
         const formattedQ = {
+          encryptedQuestionId:q.encryptedQuestionId,
+          encryptedWorkBookId:q.encryptedWorkBookId,
           id: idx,
           type:
             q.type === "MULTIPLE_CHOICE"
@@ -258,6 +259,8 @@ export default function WrongNoteLogic() {
         book.dates.forEach((d) => {
           d.questions.forEach((q) => {
             collectedQuestions.push({
+              encryptedQuestionId: q.encryptedQuestionId,
+              encryptedWorkBookId: q.encryptedWorkBookId,
               name: q.title.replace("{BLANK}", "OOO"),
               answer: q.answer,
               type:
