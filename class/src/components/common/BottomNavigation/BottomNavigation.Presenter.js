@@ -3,7 +3,7 @@ import {
   BookIcon,
   CheckIcon,
   ShelfIcon,
-  HistoryIcon,
+  ProfileIcon,
 } from "@/utils/SvgProvider";
 import {
   NavContainer,
@@ -18,9 +18,9 @@ export default function BottomNavigationUI(props) {
   const [isHover, setIsHover] = useState(null);
 
   const renderIcon = (index, IconComponent) => {
-    const iconSize = index === isHover?28:24;
-    return <IconComponent size = {iconSize} />;
-  }
+    const iconSize = index === isHover ? 28 : 24;
+    return <IconComponent size={iconSize} />;
+  };
 
   return (
     <NavContainer>
@@ -28,12 +28,16 @@ export default function BottomNavigationUI(props) {
       <NavItem
         active={props.activeTab === "home"}
         onClick={() => props.handleNavigation("/")}
-        onMouseOver={() => {setIsHover(0)}}
-        onMouseOut={() => {setIsHover(null)}}
+        onMouseOver={() => {
+          setIsHover(0);
+        }}
+        onMouseOut={() => {
+          setIsHover(null);
+        }}
       >
         <Icon>
           {/* <HomeIcon></HomeIcon> */}
-          {renderIcon(0,HomeIcon)}
+          {renderIcon(0, HomeIcon)}
         </Icon>
         <NavTitle>홈</NavTitle>
       </NavItem>
@@ -41,12 +45,16 @@ export default function BottomNavigationUI(props) {
       <NavItem
         active={props.activeTab === "shelf"}
         onClick={() => props.handleNavigation("/BookShelf")}
-        onMouseOver={() => {setIsHover(1)}}
-        onMouseOut={() => {setIsHover(null)}}
+        onMouseOver={() => {
+          setIsHover(1);
+        }}
+        onMouseOut={() => {
+          setIsHover(null);
+        }}
       >
         <Icon>
           {/* <ShelfIcon></ShelfIcon> */}
-          {renderIcon(1,ShelfIcon)}
+          {renderIcon(1, ShelfIcon)}
         </Icon>
         <NavTitle>책장</NavTitle>
       </NavItem>
@@ -54,27 +62,35 @@ export default function BottomNavigationUI(props) {
       <NavItem
         active={props.activeTab === "check"}
         onClick={() => props.handleNavigation("/WrongNote")}
-        onMouseOver={() => {setIsHover(2)}}
-        onMouseOut={() => {setIsHover(null)}}
+        onMouseOver={() => {
+          setIsHover(2);
+        }}
+        onMouseOut={() => {
+          setIsHover(null);
+        }}
       >
         <Icon>
           {/* <CheckIcon></CheckIcon> */}
-          {renderIcon(2,CheckIcon)}
+          {renderIcon(2, CheckIcon)}
         </Icon>
         <NavTitle>오답노트</NavTitle>
       </NavItem>
-      {/* 학습기록 */}
+      {/* 프로필 */}
       <NavItem
-        active={props.activeTab === "history"}
-        onClick={() => props.handleNavigation("/history")}
-        onMouseOver={() => {setIsHover(3)}}
-        onMouseOut={() => {setIsHover(null)}}
+        active={props.activeTab === "Profile"}
+        onClick={() => props.handleNavigation("/Profile")}
+        onMouseOver={() => {
+          setIsHover(3);
+        }}
+        onMouseOut={() => {
+          setIsHover(null);
+        }}
       >
         <Icon>
           {/* <HistoryIcon></HistoryIcon> */}
-          {renderIcon(3,HistoryIcon)}
+          {renderIcon(3, ProfileIcon)}
         </Icon>
-        <NavTitle>학습기록</NavTitle>
+        <NavTitle>프로필</NavTitle>
       </NavItem>
     </NavContainer>
   );
