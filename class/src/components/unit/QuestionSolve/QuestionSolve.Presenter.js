@@ -54,12 +54,15 @@ import {
   BackModal__Wrapper,
   BackModal__Container,
   BackModal__ButtonContainer,
-  BackModal__Button
+  BackModal__Button,
+  QuestionSolve__FollowerContainer,
+  QuestionSolve__FollowerWrapper,
+  QuestionSolve__FollowerContainer__content
 } from "./QuestionSolve.Styles";
 import { useRouter } from "next/router";
 import { savingCheck, savingStat } from "@/utils/StatisticManager";
 import { useAuth } from "@/utils/AuthContext";
-import { BackIcon, CheckedIcon, CheckIcon, HomeIcon, XButton, XIcon } from "@/utils/SvgProvider";
+import { AnalyzeIcon, BackIcon, BulbIcon, CheckedIcon, CheckIcon, HomeIcon, XButton, XIcon } from "@/utils/SvgProvider";
 import { toast } from "react-toastify";
 
 export default function QuestionSolveUI(props) {
@@ -83,6 +86,14 @@ export default function QuestionSolveUI(props) {
   const [answerArr ,setAnswerArr] = useState([]);
   //뒤로가기 모달
   const [isBackModal, setIsBackModal] = useState(false);
+  //팔로워 메시지
+  const [followerMessage,setFollowerMessage] = useState("시험 시작이에요! 힘내서 풀어봐요!");
+  const [followerState, setFollowerState] = useState({
+  visible: true,
+  timestamp: Date.now()
+});
+  //연속으로 문제를 맞춘 횟수
+  const [correctStreak, setCorrectStreak] = useState(0);
 
   const inputRef = useRef(null); // 입력 필드 참조 추가
   const router = useRouter();
@@ -104,7 +115,19 @@ export default function QuestionSolveUI(props) {
   useEffect(() => {
     setStartTime(Date.now());
     console.log(startTime);
+
+    // 초기 팔로워를 3초 후에 자동으로 숨김
+  const timestamp = followerState.timestamp; // 현재 타임스탬프 사용
+  setTimeout(() => {
+    setFollowerState(prev => {
+      if (prev.timestamp === timestamp) {
+        return { ...prev, visible: false };
+      }
+      return prev;
+    });
+  }, 3000);
   },[])
+
 
   // 문제 데이터가 없으면 로딩 또는 빈 상태 표시
   if (!props.questions || props.questions.length === 0) {
@@ -117,21 +140,17 @@ export default function QuestionSolveUI(props) {
 // 정답 체크 함수
 const checkAnswer = () => {
   const isAnswerCorrect = question.answer?.trim() == selectedAnswer;
-  console.log(`정답은${question.answer}, 선택한 답은${selectedAnswer}`);
+  console.log(`정답은${question.answer}, 선택한 답은${selectedAnswer}, 동일한지는 ${question.answer === selectedAnswer}`);
   if(selectedAnswer !== ""){
   if (isAnswerCorrect) {
     if (!wrongArr.includes(currentQuestion)) {
       setCorrectAnswer(correctAnswer + 1);
       //처음 맞춘 경우
       setAnswerArr([...answerArr,selectedAnswer]);
-    setTimeout(() => {
-      moveToNextQuestion();
-    },300);
+      setCorrectStreak(prevStreak => prevStreak + 1);
     }
     setIsCorrect(true);
-    setTimeout(() => {
-      moveToNextQuestion();
-    },300);
+    handleCorrectAnswer();
   } else {
     if (!wrongArr.includes(currentQuestion)) {
       setWrongArr([...wrongArr, currentQuestion]);
@@ -140,26 +159,37 @@ const checkAnswer = () => {
     }
     
     // 일반문제 풀이인 경우 오답이면 isCorrect false 유지
-    setIsCorrect(!(props.type === 0 || props.type === 2));
-    if(!(props.type === 0 || props.type === 2)){
-      setTimeout(() => {
-      moveToNextQuestion();
-    },300);
+    setIsCorrect(!(props.type === 0 || props.type === 2 || props.type === 3));
+    if(!(props.type === 0 || props.type === 2 || props.type === 3)){
+    handleCorrectAnswer();
     }
-
-
+    console.log(question);
+    setCorrectStreak(0);
   }
   
   setCurAns(selectedAnswer);
   // 질문 타입에 따른 추가 처리
   handleQuestionTypeSpecificLogic(isAnswerCorrect);
   }else{
-    toast.error("정답을 입력해주세요.")
+    toast.error("정답을 입력해주세요.",{position:"top-center"})
   }
 };
 
+//정답 처리 함수
+const handleCorrectAnswer = () => {
+  setFollowerState(prev => ({...prev, visible:false}));
+  setTimeout(() => {
+      moveToNextQuestion();
+    },500);
+
+}
+
+
+
 // 질문 타입별 특수 로직 처리
 const handleQuestionTypeSpecificLogic = (isAnswerCorrect) => {
+  //틀린 문제로 한정
+  if(!isAnswerCorrect){
   switch (question.type) {
     case "MULTIPLE_CHOICE":
       // 객관식 문제에 대한 특수 처리
@@ -174,7 +204,7 @@ const handleQuestionTypeSpecificLogic = (isAnswerCorrect) => {
       break;
       
     case "FILL_IN_THE_BLANK":
-      if(props.type === 0 || props.type === 2){
+      if(props.type === 0 || props.type === 2 || props.type === 3){
         console.log("빈칸, 일반 문제");
         console.log(question);
         const q = Math.floor(question.answer.length/3);
@@ -199,7 +229,7 @@ const handleQuestionTypeSpecificLogic = (isAnswerCorrect) => {
       
     default:
       console.log("알 수 없는 문제 유형");
-  }
+  }}
 };
 
 //문제 마지막 페이지로 이동하는 함수
@@ -248,6 +278,11 @@ const moveToNextQuestion = () => {
     setFillAns(null);
     setFillSeq(0);
     setSelectedAnswer("");
+    //팔로워 활성화
+    //일반 문제풀이, 모의고사 문제풀이이인 경우 팔로워 처리
+    if(props.type === 0 ||props.type === 1){
+      handleFollower();
+    }
   } else {
     completeQuiz();
   }
@@ -275,6 +310,31 @@ const handleNextQuestion = () => {
     setInputValue(value);
     setSelectedAnswer(value);
   };
+
+  const handleFollower = () => {
+    const nextQuestion = props.questions[currentQuestion+1];
+    const timestamp = Date.now();
+
+    if(nextQuestion && ((question.totalAttempts > 0 && nextQuestion.correctCount / nextQuestion.totalAttempts <= 0.5) || (correctStreak > 1))){
+      //조건이 충족될 때만 팔로워 표시
+      setFollowerState({ visible: true, timestamp });
+      const msg = question.totalAttempts > 0 && nextQuestion.correctCount / nextQuestion.totalAttempts <= 0.5
+      ?"자주 틀린 문제에요!"
+      :correctStreak > 1
+      ?`${correctStreak + 1}문제 연속 정답이에요! 대단해요!`
+      :"잘하고 있어요 힘내세요!";
+      setFollowerMessage(msg); 
+      setTimeout(() => {
+        // 현재 타임스탬프가 이 타이머가 설정된 타임스탬프와 동일한 경우에만 상태 변경
+        setFollowerState(prev => {
+          if (prev.timestamp === timestamp) {
+            return { ...prev, visible: false };
+          }
+          return prev;
+        });
+      }, 3000);
+    }
+  }
 
   // 올바른 방법:
   const options =
@@ -542,7 +602,15 @@ const handleNextQuestion = () => {
             <NextButton onClick={handleNextQuestion}>Next Question</NextButton>
           </ButtonContainer>
           {/* 팔로워 영역 */}
-          
+          {
+            (props.type === 0 || props.type === 1) && 
+            <QuestionSolve__FollowerWrapper
+            isFollower = {followerState.visible}
+            onClick={() => {setFollowerState(prev => ({...prev,visible: false}))}}
+          >
+            <QuestionSolve__FollowerContainer><QuestionSolve__FollowerContainer__content><BulbIcon size={"32px"}></BulbIcon>{followerMessage}</QuestionSolve__FollowerContainer__content></QuestionSolve__FollowerContainer>
+          </QuestionSolve__FollowerWrapper>
+          }
         </QuestionContainer>
       </QuestionSolve__Container>
       </>
