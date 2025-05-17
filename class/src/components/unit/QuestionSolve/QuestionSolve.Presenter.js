@@ -86,14 +86,14 @@ export default function QuestionSolveUI(props) {
   const [answerArr ,setAnswerArr] = useState([]);
   //뒤로가기 모달
   const [isBackModal, setIsBackModal] = useState(false);
-  //팔로워 모달
-  const [isFollower, setIsFollower] = useState(true);
   //팔로워 메시지
   const [followerMessage,setFollowerMessage] = useState("시험 시작이에요! 힘내서 풀어봐요!");
   const [followerState, setFollowerState] = useState({
   visible: true,
   timestamp: Date.now()
 });
+  //연속으로 문제를 맞춘 횟수
+  const [correctStreak, setCorrectStreak] = useState(0);
 
   const inputRef = useRef(null); // 입력 필드 참조 추가
   const router = useRouter();
@@ -147,7 +147,7 @@ const checkAnswer = () => {
       setCorrectAnswer(correctAnswer + 1);
       //처음 맞춘 경우
       setAnswerArr([...answerArr,selectedAnswer]);
-      handleCorrectAnswer();
+      setCorrectStreak(prevStreak => prevStreak + 1);
     }
     setIsCorrect(true);
     handleCorrectAnswer();
@@ -164,6 +164,7 @@ const checkAnswer = () => {
     handleCorrectAnswer();
     }
     console.log(question);
+    setCorrectStreak(0);
   }
   
   setCurAns(selectedAnswer);
@@ -183,17 +184,12 @@ const handleCorrectAnswer = () => {
 
 }
 
-const handleFollowerMessage = (question) =>{
-    const msg = question.totalAttempts === 0?
-    "처음 푸는 문제에요!"
-    :question.totalAttempts > 0 && question.correctCount / question.totalAttempts <= 0.5
-    ?"자주 틀린 문제에요!"
-    :"잘하고 있어요 힘내세요!";
-    setFollowerMessage(msg); 
-}
+
 
 // 질문 타입별 특수 로직 처리
 const handleQuestionTypeSpecificLogic = (isAnswerCorrect) => {
+  //틀린 문제로 한정
+  if(!isAnswerCorrect){
   switch (question.type) {
     case "MULTIPLE_CHOICE":
       // 객관식 문제에 대한 특수 처리
@@ -233,7 +229,7 @@ const handleQuestionTypeSpecificLogic = (isAnswerCorrect) => {
       
     default:
       console.log("알 수 없는 문제 유형");
-  }
+  }}
 };
 
 //문제 마지막 페이지로 이동하는 함수
@@ -316,22 +312,28 @@ const handleNextQuestion = () => {
   };
 
   const handleFollower = () => {
-    const timestamp = Date.now();
-  setFollowerState({ visible: true, timestamp });
     const nextQuestion = props.questions[currentQuestion+1];
-    if(nextQuestion){
-        handleFollowerMessage(nextQuestion);
+    const timestamp = Date.now();
+
+    if(nextQuestion && ((question.totalAttempts > 0 && nextQuestion.correctCount / nextQuestion.totalAttempts <= 0.5) || (correctStreak > 1))){
+      //조건이 충족될 때만 팔로워 표시
+      setFollowerState({ visible: true, timestamp });
+      const msg = question.totalAttempts > 0 && nextQuestion.correctCount / nextQuestion.totalAttempts <= 0.5
+      ?"자주 틀린 문제에요!"
+      :correctStreak > 1
+      ?`${correctStreak + 1}문제 연속 정답이에요! 대단해요!`
+      :"잘하고 있어요 힘내세요!";
+      setFollowerMessage(msg); 
+      setTimeout(() => {
+        // 현재 타임스탬프가 이 타이머가 설정된 타임스탬프와 동일한 경우에만 상태 변경
+        setFollowerState(prev => {
+          if (prev.timestamp === timestamp) {
+            return { ...prev, visible: false };
+          }
+          return prev;
+        });
+      }, 3000);
     }
-  
-  setTimeout(() => {
-    // 현재 타임스탬프가 이 타이머가 설정된 타임스탬프와 동일한 경우에만 상태 변경
-    setFollowerState(prev => {
-      if (prev.timestamp === timestamp) {
-        return { ...prev, visible: false };
-      }
-      return prev;
-    });
-  }, 3000);
   }
 
   // 올바른 방법:
@@ -609,8 +611,6 @@ const handleNextQuestion = () => {
             <QuestionSolve__FollowerContainer><QuestionSolve__FollowerContainer__content><BulbIcon size={"32px"}></BulbIcon>{followerMessage}</QuestionSolve__FollowerContainer__content></QuestionSolve__FollowerContainer>
           </QuestionSolve__FollowerWrapper>
           }
-          
-          
         </QuestionContainer>
       </QuestionSolve__Container>
       </>
