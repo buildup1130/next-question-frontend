@@ -7,10 +7,18 @@ import { toast } from "react-toastify";
 
 export default function QuestionSolveLogic(props) {
   const [questions, setQuestions] = useState([]);
+  const [workBookId, setWorkBookId] = useState("");
   const router = useRouter();
   const { token, isAuthenticated } = useAuth();
 
   const { Id, count, random, ox, multiple, blank, type, title } = router.query;
+
+  useEffect(() => {
+    if(Id){
+      setWorkBookId(Id);
+      console.log(workBookId)
+    }
+  },[Id])
 
   useEffect(() => {
     console.log("✅ router.query:", router.query.title);
@@ -22,6 +30,9 @@ export default function QuestionSolveLogic(props) {
         try {
           const parsed = JSON.parse(storedData);
           const handledData = handleQuestions(parsed);
+          // 중복되지 않는 workBookId 수집하기
+          const uniqueWorkbookIds = [...new Set(handledData.map(q => q.encryptedWorkBookId))];
+          setWorkBookId(uniqueWorkbookIds.join(","));
           if (Array.isArray(handledData) && handledData.length > 0) {
             setQuestions(handledData);
             console.log("✅ 로컬 문제 데이터 로딩 완료:", handledData);
@@ -117,7 +128,7 @@ export default function QuestionSolveLogic(props) {
     <QuestionSolveUI
       questions={questions}
       type={Number(type)}
-      workBookId={Id}
+      workBookId={workBookId}
     />
   );
 }
