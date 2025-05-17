@@ -88,6 +88,8 @@ export default function QuestionSolveUI(props) {
   const [isBackModal, setIsBackModal] = useState(false);
   //팔로워 모달
   const [isFollower, setIsFollower] = useState(true);
+  //팔로워 메시지
+  const [followerMessage,setFollowerMessage] = useState("");
 
   const inputRef = useRef(null); // 입력 필드 참조 추가
   const router = useRouter();
@@ -126,7 +128,7 @@ export default function QuestionSolveUI(props) {
 // 정답 체크 함수
 const checkAnswer = () => {
   const isAnswerCorrect = question.answer?.trim() == selectedAnswer;
-  console.log(`정답은${question.answer}, 선택한 답은${selectedAnswer}`);
+  console.log(`정답은${question.answer}, 선택한 답은${selectedAnswer}, 동일한지는 ${question.answer === selectedAnswer}`);
   if(selectedAnswer !== ""){
   if (isAnswerCorrect) {
     if (!wrongArr.includes(currentQuestion)) {
@@ -145,8 +147,8 @@ const checkAnswer = () => {
     }
     
     // 일반문제 풀이인 경우 오답이면 isCorrect false 유지
-    setIsCorrect(!(props.type === 0 || props.type === 2));
-    if(!(props.type === 0 || props.type === 2)){
+    setIsCorrect(!(props.type === 0 || props.type === 2 || props.type === 3));
+    if(!(props.type === 0 || props.type === 2 || props.type === 3)){
     handleCorrectAnswer();
     }
     console.log(question);
@@ -156,7 +158,7 @@ const checkAnswer = () => {
   // 질문 타입에 따른 추가 처리
   handleQuestionTypeSpecificLogic(isAnswerCorrect);
   }else{
-    toast.error("정답을 입력해주세요.")
+    toast.error("정답을 입력해주세요.",{position:"top-center"})
   }
 };
 
@@ -166,6 +168,16 @@ const handleCorrectAnswer = () => {
       moveToNextQuestion();
     },300);
   setIsFollower(false);
+
+  const nextQuestion = props.questions[currentQuestion+1];
+  if(nextQuestion){
+    console.log(nextQuestion);
+    
+  }
+}
+
+const handleFollowerMessage = (question) =>{
+  
 }
 
 // 질문 타입별 특수 로직 처리
@@ -184,7 +196,7 @@ const handleQuestionTypeSpecificLogic = (isAnswerCorrect) => {
       break;
       
     case "FILL_IN_THE_BLANK":
-      if(props.type === 0 || props.type === 2){
+      if(props.type === 0 || props.type === 2 || props.type === 3){
         console.log("빈칸, 일반 문제");
         console.log(question);
         const q = Math.floor(question.answer.length/3);
@@ -561,13 +573,16 @@ const handleNextQuestion = () => {
             <NextButton onClick={handleNextQuestion}>Next Question</NextButton>
           </ButtonContainer>
           {/* 팔로워 영역 */}
-          
-          <QuestionSolve__FollowerWrapper
+          {
+            props.type === 1 && 
+            <QuestionSolve__FollowerWrapper
             isFollower = {isFollower}
             onClick={() => {setIsFollower(false)}}
           >
             <QuestionSolve__FollowerContainer><QuestionSolve__FollowerContainer__content><BulbIcon size={"32px"}></BulbIcon>123</QuestionSolve__FollowerContainer__content></QuestionSolve__FollowerContainer>
           </QuestionSolve__FollowerWrapper>
+          }
+          
           
         </QuestionContainer>
       </QuestionSolve__Container>

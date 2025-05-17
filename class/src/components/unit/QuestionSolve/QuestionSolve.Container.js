@@ -3,6 +3,7 @@ import QuestionSolveUI from "./QuestionSolve.Presenter";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/utils/AuthContext";
 import { loadDailyQuestion, loadNormalQuestion } from "@/utils/WorkbookManager";
+import { toast } from "react-toastify";
 
 export default function QuestionSolveLogic(props) {
   const [questions, setQuestions] = useState([]);
@@ -20,9 +21,10 @@ export default function QuestionSolveLogic(props) {
       if (storedData) {
         try {
           const parsed = JSON.parse(storedData);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            setQuestions(parsed);
-            console.log("✅ 로컬 문제 데이터 로딩 완료:", parsed);
+          const handledData = handleQuestions(parsed);
+          if (Array.isArray(handledData) && handledData.length > 0) {
+            setQuestions(handledData);
+            console.log("✅ 로컬 문제 데이터 로딩 완료:", handledData);
           } else {
             alert("문제 데이터가 비어있습니다.");
             router.push("/");
@@ -82,7 +84,7 @@ export default function QuestionSolveLogic(props) {
     }
     // 3. 예외처리
     else {
-      alert("잘못된 접근입니다.");
+      toast.error("잘못된 접근입니다.",{position:"top-center"});
       router.push("/");
     }
   }, [Id, token, count, random, ox, multiple, blank, type]);
