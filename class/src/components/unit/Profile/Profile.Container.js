@@ -19,6 +19,8 @@ export default function ProfileLogic() {
   });
 
   useEffect(() => {
+    if (!token) return;
+
     const fetchProfileData = async () => {
       try {
         const res = await axios.get(
