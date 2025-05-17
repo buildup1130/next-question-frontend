@@ -65,15 +65,27 @@ export default function ProfileUI({
     return "color-scale-5";
   };
 
-  // 최근 30일 날짜 리스트 만들기
+  // 🔥 현재 년월 기준
   const today = new Date();
-  const last30Days = Array.from({ length: 30 }).map((_, i) =>
-    format(subDays(today, 29 - i), "yyyy-MM-dd")
+  today.setHours(today.getHours() + 9); // KST 보정
+
+  const year = today.getFullYear();
+  const month = today.getMonth(); // 0부터 시작
+
+  // ✅ 1~31일 생성 (고정 grid용)
+  const maxDays = 31;
+  const fixedDates = Array.from({ length: maxDays }, (_, i) =>
+    format(new Date(year, month, i + 1), "yyyy-MM-dd")
   );
 
-  // 날짜 → count 매핑
+  // ✅ heatmapMap: 날짜 스트링 → count
   const heatmapMap = new Map(
-    heatmapData.map((d) => [format(new Date(d.date), "yyyy-MM-dd"), d.count])
+    heatmapData.map((item) => {
+      const localDate = new Date(item.date);
+      localDate.setHours(localDate.getHours() + 9);
+      const kstDateStr = format(localDate, "yyyy-MM-dd");
+      return [kstDateStr, item.count];
+    })
   );
 
   return (
@@ -121,7 +133,7 @@ export default function ProfileUI({
                       <IconFire />
                     </IconWrapper>
                     <Label>최장 출석 기록</Label>
-                    <Value>{streak}일</Value>
+                    <Value>{streak ?? 0}일</Value>
                   </ReportContent>
                 </ReportCard>
               </ReportRow>
@@ -178,7 +190,7 @@ export default function ProfileUI({
               </div>
 
               <CustomHeatmapGrid>
-                {last30Days.map((date, i) => {
+                {fixedDates.map((date, i) => {
                   const count = heatmapMap.get(date) || 0;
                   const isToday = date === format(today, "yyyy-MM-dd");
 
@@ -186,7 +198,13 @@ export default function ProfileUI({
                     <BoxWrapper key={date}>
                       {[0, 4, 9].includes(i) && (
                         <BoxLabelTop>
-                          {i === 0 ? "1일" : i === 4 ? "5일" : "10일"}
+                          {i === 0
+                            ? "1일"
+                            : i === 4
+                            ? "5일"
+                            : i === 9
+                            ? "10일"
+                            : ""}
                         </BoxLabelTop>
                       )}
                       <CustomHeatmapBox
@@ -198,11 +216,6 @@ export default function ProfileUI({
                     </BoxWrapper>
                   );
                 })}
-
-                {/* 🔥 추가 한 칸: grid의 다음 줄 맨 왼쪽 */}
-                <BoxWrapper key="extra-31st" style={{ gridColumn: "1" }}>
-                  <CustomHeatmapBox className="color-empty" title="추가 칸" />
-                </BoxWrapper>
               </CustomHeatmapGrid>
             </HeatmapWrapper>
           </SummaryCard>
