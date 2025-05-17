@@ -89,7 +89,11 @@ export default function QuestionSolveUI(props) {
   //팔로워 모달
   const [isFollower, setIsFollower] = useState(true);
   //팔로워 메시지
-  const [followerMessage,setFollowerMessage] = useState("");
+  const [followerMessage,setFollowerMessage] = useState("시험 시작이에요! 힘내서 풀어봐요!");
+  const [followerState, setFollowerState] = useState({
+  visible: true,
+  timestamp: Date.now()
+});
 
   const inputRef = useRef(null); // 입력 필드 참조 추가
   const router = useRouter();
@@ -111,9 +115,17 @@ export default function QuestionSolveUI(props) {
   useEffect(() => {
     setStartTime(Date.now());
     console.log(startTime);
-    setTimeout(() =>{
-      setIsFollower(false);
-    },3000)
+
+    // 초기 팔로워를 3초 후에 자동으로 숨김
+  const timestamp = followerState.timestamp; // 현재 타임스탬프 사용
+  setTimeout(() => {
+    setFollowerState(prev => {
+      if (prev.timestamp === timestamp) {
+        return { ...prev, visible: false };
+      }
+      return prev;
+    });
+  }, 3000);
   },[])
 
 
@@ -164,20 +176,20 @@ const checkAnswer = () => {
 
 //정답 처리 함수
 const handleCorrectAnswer = () => {
+  setFollowerState(prev => ({...prev, visible:false}));
   setTimeout(() => {
       moveToNextQuestion();
-    },300);
-  setIsFollower(false);
+    },500);
 
-  const nextQuestion = props.questions[currentQuestion+1];
-  if(nextQuestion){
-    console.log(nextQuestion);
-    
-  }
 }
 
 const handleFollowerMessage = (question) =>{
-  
+    const msg = question.totalAttempts === 0?
+    "처음 푸는 문제에요!"
+    :question.totalAttempts > 0 && question.correctCount / question.totalAttempts <= 0.5
+    ?"자주 틀린 문제에요!"
+    :"잘하고 있어요 힘내세요!";
+    setFollowerMessage(msg); 
 }
 
 // 질문 타입별 특수 로직 처리
@@ -271,7 +283,10 @@ const moveToNextQuestion = () => {
     setFillSeq(0);
     setSelectedAnswer("");
     //팔로워 활성화
-    handleFollower();
+    //일반 문제풀이, 모의고사 문제풀이이인 경우 팔로워 처리
+    if(props.type === 0 ||props.type === 1){
+      handleFollower();
+    }
   } else {
     completeQuiz();
   }
@@ -301,10 +316,22 @@ const handleNextQuestion = () => {
   };
 
   const handleFollower = () => {
-    setIsFollower(true);
-    setTimeout(() => {
-    setIsFollower(false);
-    },3000)
+    const timestamp = Date.now();
+  setFollowerState({ visible: true, timestamp });
+    const nextQuestion = props.questions[currentQuestion+1];
+    if(nextQuestion){
+        handleFollowerMessage(nextQuestion);
+    }
+  
+  setTimeout(() => {
+    // 현재 타임스탬프가 이 타이머가 설정된 타임스탬프와 동일한 경우에만 상태 변경
+    setFollowerState(prev => {
+      if (prev.timestamp === timestamp) {
+        return { ...prev, visible: false };
+      }
+      return prev;
+    });
+  }, 3000);
   }
 
   // 올바른 방법:
@@ -574,12 +601,12 @@ const handleNextQuestion = () => {
           </ButtonContainer>
           {/* 팔로워 영역 */}
           {
-            props.type === 1 && 
+            (props.type === 0 || props.type === 1) && 
             <QuestionSolve__FollowerWrapper
-            isFollower = {isFollower}
-            onClick={() => {setIsFollower(false)}}
+            isFollower = {followerState.visible}
+            onClick={() => {setFollowerState(prev => ({...prev,visible: false}))}}
           >
-            <QuestionSolve__FollowerContainer><QuestionSolve__FollowerContainer__content><BulbIcon size={"32px"}></BulbIcon>123</QuestionSolve__FollowerContainer__content></QuestionSolve__FollowerContainer>
+            <QuestionSolve__FollowerContainer><QuestionSolve__FollowerContainer__content><BulbIcon size={"32px"}></BulbIcon>{followerMessage}</QuestionSolve__FollowerContainer__content></QuestionSolve__FollowerContainer>
           </QuestionSolve__FollowerWrapper>
           }
           

@@ -589,7 +589,7 @@ export const QuestionSolve__FollowerWrapper = styled.div`
   /* 방법2. 서서히 나타나는 방식 */
   opacity:${(props) => props.isFollower? "1": "0"};
   transform:${(props) => props.isFollower? "translateX(-50%)": "translateX(-50%) translateY(5vh)"};
-  transition: all 1s ease-in-out;
+  transition: all 500ms ease-in-out;
 
   /* 방법3. 투명도만 조절 */
   /* opacity:${(props) => props.isFollower? "1": "0"};

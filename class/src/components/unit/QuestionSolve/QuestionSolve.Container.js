@@ -84,7 +84,6 @@ export default function QuestionSolveLogic(props) {
     }
     // 3. 예외처리
     else {
-      toast.error("잘못된 접근입니다.",{position:"top-center"});
       router.push("/");
     }
   }, [Id, token, count, random, ox, multiple, blank, type]);
