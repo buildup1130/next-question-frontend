@@ -260,7 +260,7 @@ export default function WrongNoteLogic() {
           d.questions.forEach((q) => {
             collectedQuestions.push({
               encryptedQuestionId: q.encryptedQuestionId,
-              encryptedWorkBookId: q.encryptedWorkBookId,
+              encryptedWorkbookId: q.encryptedWorkBookId,
               name: q.title.replace("{BLANK}", "OOO"),
               answer: q.answer,
               type:

@@ -4,12 +4,15 @@ export const savingStat = async(questions, wrongArr, type,workBookId,token) => {
     console.log(`wrongArr = ${wrongArr}`)
     const infoArr = [];
     //가져온 데이터 객체화
+    console.log(questions);
     questions.map((data, index) => {
         const tmpObj = {
             encryptedQuestionId: questions[index].encryptedQuestionId,
             encryptedWorkBookId: questions[index].encryptedWorkbookId,
+
             wrong: wrongArr.includes(index)?true:false,
         }
+        console.log(tmpObj);
         infoArr.push(tmpObj);
     })
 

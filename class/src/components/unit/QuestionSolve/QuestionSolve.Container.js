@@ -31,7 +31,7 @@ export default function QuestionSolveLogic(props) {
           const parsed = JSON.parse(storedData);
           const handledData = handleQuestions(parsed);
           // 중복되지 않는 workBookId 수집하기
-          const uniqueWorkbookIds = [...new Set(handledData.map(q => q.encryptedWorkBookId))];
+          const uniqueWorkbookIds = [...new Set(handledData.map(q => q.encryptedWorkbookId))];
           setWorkBookId(uniqueWorkbookIds.join(","));
           if (Array.isArray(handledData) && handledData.length > 0) {
             setQuestions(handledData);
