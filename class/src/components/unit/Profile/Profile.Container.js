@@ -43,10 +43,9 @@ export default function ProfileLogic() {
           dailySolveCountThisMonth,
         } = res.data;
 
-        // ✅ heatmapData UTC → KST 보정
         const heatmapData = dailySolveCountThisMonth.map((item) => {
           const utcDate = new Date(item.date);
-          utcDate.setHours(utcDate.getHours() + 9); // UTC → KST
+          utcDate.setHours(utcDate.getHours() + 9);
           const kstDateStr = utcDate.toISOString().split("T")[0];
           return {
             date: kstDateStr,
@@ -66,7 +65,7 @@ export default function ProfileLogic() {
           heatmapData,
         });
       } catch (err) {
-        console.error("🔥 프로필 통계 조회 실패:", err);
+        console.error(" 프로필 통계 조회 실패:", err);
       }
     };
 

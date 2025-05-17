@@ -191,16 +191,16 @@ export const IconWrapper = styled.div`
 
 export const CustomHeatmapGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(10, 1fr); // 가로 10칸
-  gap: 6px; // 칸 간격 약간 늘림
+  grid-template-columns: repeat(10, 1fr);
+  gap: 6px;
   width: 100%;
-  max-width: 100%; // 카드 영역 꽉 채움
-  padding: 0 16px; // 좌우 여백
+  max-width: 100%;
+  padding: 0 16px;
 `;
 
 export const CustomHeatmapBox = styled.div`
   width: 100%;
-  padding-top: 100%; // 정사각형
+  padding-top: 100%;
   border-radius: 6px;
 `;
 
@@ -225,7 +225,7 @@ export const BoxWrapper = styled.div`
 
 export const BoxLabelTop = styled.div`
   position: absolute;
-  top: -16px; /* ← 박스보다 위쪽으로 띄움 */
+  top: -16px;
   font-size: 12px;
   color: #868686;
   text-align: center;

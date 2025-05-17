@@ -65,20 +65,17 @@ export default function ProfileUI({
     return "color-scale-5";
   };
 
-  // 🔥 현재 년월 기준
-  const today = new Date();
-  today.setHours(today.getHours() + 9); // KST 보정
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
   const year = today.getFullYear();
-  const month = today.getMonth(); // 0부터 시작
+  const month = today.getMonth();
 
-  // ✅ 1~31일 생성 (고정 grid용)
   const maxDays = 31;
   const fixedDates = Array.from({ length: maxDays }, (_, i) =>
     format(new Date(year, month, i + 1), "yyyy-MM-dd")
   );
 
-  // ✅ heatmapMap: 날짜 스트링 → count
   const heatmapMap = new Map(
     heatmapData.map((item) => {
       const localDate = new Date(item.date);
@@ -133,7 +130,7 @@ export default function ProfileUI({
                       <IconFire />
                     </IconWrapper>
                     <Label>최장 출석 기록</Label>
-                    <Value>{streak ?? 0}일</Value>
+                    <Value>{maxStreak ?? 0}일</Value>
                   </ReportContent>
                 </ReportCard>
               </ReportRow>
@@ -175,9 +172,7 @@ export default function ProfileUI({
               </SummaryItem>
             </SummaryStats>
 
-            {/* 🔥 커스텀 10x3 Heatmap */}
             <HeatmapWrapper>
-              {/* ✅ 월 표시 (왼쪽 정렬) */}
               <div
                 style={{
                   fontSize: "14px",
