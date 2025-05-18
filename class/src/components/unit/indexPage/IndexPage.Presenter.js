@@ -68,7 +68,7 @@ export default function IndexPageUI({
           <>
             <Home__CalBar><Home__CalTitle>주간 학습 분석</Home__CalTitle></Home__CalBar>
               <MainChartLogic
-
+                  chartArr = {chartArr}
               />
               <AttendanceCheckLogic checkArr={checkArr} />
               <Home__StatContainer>

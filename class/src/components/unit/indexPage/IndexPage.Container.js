@@ -20,7 +20,7 @@ export default function IndexPageLogic() {
   const [checkArr,setCheckArr] = useState([]);
 
   //차트 관련 State
-  const [chartArr, setChartArr] = useState([])
+  const [chartArr, setChartArr] = useState(null)
 
   const onClickLogin = () => {
     if(isAuthenticated){

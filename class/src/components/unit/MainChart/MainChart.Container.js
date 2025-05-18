@@ -1,8 +1,10 @@
 import MainChartUI from "./MainChart.Presenter";
 
-export default function MainChartLogic(){
+export default function MainChartLogic(props){
 
     return(
-        <MainChartUI></MainChartUI>
+        <MainChartUI
+            chartArr = {props.chartArr}
+        ></MainChartUI>
     )
 }
