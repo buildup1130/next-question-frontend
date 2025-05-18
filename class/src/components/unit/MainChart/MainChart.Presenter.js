@@ -25,8 +25,55 @@ ChartJS.register(
 );
 
 
-export default function MainChartUI(){
-// 주간 문제 풀이 데이터 상태 관리
+export default function MainChartUI(props){
+    console.log(props.chartArr);
+//     const [chartData,setChartData] = useState({
+//         labels: ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'],
+//     datasets: [
+//         {
+//             label: '푼 문제 수',
+//             data: [0,0,0,0,0,0,0],
+//             borderColor: '#8979ff',
+//             backgroundColor: 'rgba(75, 192, 192, 0.5)',
+//             tension: 0,
+//         },
+//         {
+//             label: '정답 수',
+//             data: [0,0,0,0,0,0,0],
+//             borderColor: '#ff928a',
+//             backgroundColor: 'rgba(255, 99, 132, 0.5)',
+//             tension: 0,
+//         }
+//     ]
+//     })
+
+//     useEffect(() => {
+//   if(props.chartArr !== null){
+//     const dateArr = props.chartArr?.day.map((dat) => dat+"요일");
+//     setChartData({
+//       labels: dateArr,
+//       datasets: [
+//         {
+//           label: '푼 문제 수',
+//           data: props.chartArr?.total,
+//           borderColor: '#8979ff',
+//           backgroundColor: 'rgba(75, 192, 192, 0.5)',
+//           tension: 0,
+//         },
+//         {
+//           label: '정답 수',
+//           data: props.chartArr?.correct,
+//           borderColor: '#ff928a',
+//           backgroundColor: 'rgba(255, 99, 132, 0.5)',
+//           tension: 0,
+//         }
+//       ]
+//     });
+//   }
+// }, [props.chartArr]); // props.chartArr가 변경될 때만 이 효과가 실행됩니다
+
+
+// 주간 문제 풀이 데이터 상태 관리(하드코딩딩)
 const [chartData, setChartData] = useState({
     labels: ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'],
     datasets: [
