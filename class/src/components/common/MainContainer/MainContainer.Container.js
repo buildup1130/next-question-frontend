@@ -7,7 +7,6 @@ export default function MainContainerLogic({children}){
     return(
         <MainContainerUI>
             {children}
-        <BottomNavigationLogic></BottomNavigationLogic>
         </MainContainerUI>
     )
 }

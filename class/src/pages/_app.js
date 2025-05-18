@@ -5,10 +5,14 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
+import BottomNavigationLogic from "@/components/common/BottomNavigation/BottomNavigation.Container";
+
+const hideBottomNavRoutes = ['/Question']
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
 
+  const shouldShowBottomNav = !hideBottomNavRoutes.includes(router.pathname);
   return (
     <AuthProvider>
       <AnimatePresence mode="wait" initial={false}>
@@ -28,6 +32,7 @@ export default function App({ Component, pageProps }) {
           <Component {...pageProps} />
         </motion.div>
       </AnimatePresence>
+      {shouldShowBottomNav && <BottomNavigationLogic></BottomNavigationLogic>}
       <ToastContainer position="bottom-center" autoClose={2000} />
     </AuthProvider>
   );
