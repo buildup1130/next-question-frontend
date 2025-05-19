@@ -226,7 +226,7 @@ export const BoxWrapper = styled.div`
 export const BoxLabelTop = styled.div`
   position: absolute;
   top: -16px;
-  font-size: 12px;
+  font-size: 11px;
   color: #868686;
   text-align: center;
   width: 100%;
