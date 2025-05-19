@@ -388,3 +388,10 @@ export const ScrollToTopButton = styled.button`
   cursor: pointer;
   z-index: 999;
 `;
+
+export const FinalLine = styled.div`
+  width: 100%;
+  height: 1px;
+  background-color: #b3bcff;
+  margin-top: 0px;
+`;

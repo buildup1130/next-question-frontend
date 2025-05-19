@@ -41,6 +41,7 @@ import {
   WorkbookRight,
   DateRangeWrapper,
   ScrollToTopButton,
+  FinalLine,
 } from "./WrongNote.Styles";
 
 export default function WrongNoteUI(props) {
@@ -120,9 +121,7 @@ export default function WrongNoteUI(props) {
 
       {(selectedFilterBook === "학습별" ? groupedHistory : filteredData)
         ?.length === 0 ? (
-        <p style={{ textAlign: "center", marginTop: "24px" }}>
-          학습 기록이 없습니다.
-        </p>
+        <FinalLine />
       ) : selectedFilterBook === "학습별" ? (
         groupedHistory.map((group, idx) => (
           <WorkbookRow
@@ -146,9 +145,8 @@ export default function WrongNoteUI(props) {
           </WorkbookRow>
         ))
       ) : (
-        filteredData.map((book) => {
+        filteredData.map((book, idx) => {
           const firstQuestion = book.dates?.[0]?.questions?.[0];
-
           const formattedTime = firstQuestion?.solvedAt
             ? firstQuestion.solvedAt.replace("T", " ")
             : "시간 정보 없음";
@@ -189,7 +187,9 @@ export default function WrongNoteUI(props) {
                   )}
                 </WorkbookRight>
               </WorkbookRow>
-              <Divider />
+
+              {/* ✅ 마지막 항목엔 연보라색 FinalLine, 나머진 Divider */}
+              {idx === filteredData.length - 1 ? <FinalLine /> : <Divider />}
             </div>
           );
         })
