@@ -23,15 +23,12 @@ export default function ProfileLogic() {
 
     const fetchProfileData = async () => {
       try {
-        const res = await axios.get(
-          "http://localhost:8080/member/statistics/profile",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const res = await axios.get("/api/member/statistics/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
 
         const {
           nickName,

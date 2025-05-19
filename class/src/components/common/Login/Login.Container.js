@@ -19,7 +19,7 @@ export default function LoginLogic() {
 
   const handleLogin = async () => {
     setError("");
-    console.log(process.env.NEXT_PUBLIC_API_URL)
+    console.log(process.env.NEXT_PUBLIC_API_URL);
     // console.log("로그인 요청 데이터:", {
     //   userId,
     //   password,
@@ -27,14 +27,11 @@ export default function LoginLogic() {
     // });
 
     try {
-      const response = await axios.post(
-        '/api/public/member/login/local',
-        {
-          userId,
-          password,
-          keepLogin,
-        }
-      );
+      const response = await axios.post("/api/public/member/login/local", {
+        userId,
+        password,
+        keepLogin,
+      });
 
       login(
         {
@@ -56,9 +53,10 @@ export default function LoginLogic() {
     setError("");
 
     try {
-      const response = await axios.post(
-        "/api/public/oauth2/google"
-      );
+      const redirectUri = `${window.location.origin}/google/callback`;
+      const response = await axios.post("/api/public/oauth2/google", {
+        redirectUri,
+      });
       window.location.href = response.data;
     } catch (error) {
       setError("소셜 로그인 중 문제가 발생했습니다.");

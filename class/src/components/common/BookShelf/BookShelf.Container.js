@@ -123,7 +123,9 @@ export default function BookShelfLogic() {
       return toast.error("문제집 이름을 입력해주세요.");
     try {
       await createWorkbook(token, newWorkbookTitle.trim());
-      toast.success("새 문제집이 추가됐습니다!");
+      toast.success("새 문제집이 추가됐습니다!", {
+        position: "top-center",
+      });
       setCreateModalOpen(false);
       setNewWorkbookTitle("");
       fetchWorkBooks();
@@ -132,24 +134,34 @@ export default function BookShelfLogic() {
         err?.response?.data?.message?.includes("이미 존재") ||
         err?.message?.includes("already exists")
       ) {
-        toast.error("이미 존재하는 문제집입니다.");
+        toast.error("이미 존재하는 문제집입니다.", {
+          position: "top-center",
+        });
       } else {
-        toast.error("문제집 생성 실패");
+        toast.error("문제집 생성 실패", {
+          position: "top-center",
+        });
       }
     }
   };
 
   const handleDelete = async () => {
     if (!token || selectedBookIds.length === 0)
-      return toast.warn("삭제할 문제집이 없습니다.");
+      return toast.warn("삭제할 문제집이 없습니다.", {
+        position: "top-center",
+      });
     try {
       await deleteWorkBooks(token, selectedBookIds);
-      toast.success("선택한 문제집이 삭제되었습니다.");
+      toast.success("선택한 문제집이 삭제되었습니다.", {
+        position: "top-center",
+      });
       setIsSelectMode(false);
       setSelectedBookIds([]);
       fetchWorkBooks();
     } catch {
-      toast.error("문제집 삭제 중 오류가 발생했습니다.");
+      toast.error("문제집 삭제 중 오류가 발생했습니다.", {
+        position: "top-center",
+      });
     } finally {
       setIsDeleteModalOpen(false);
     }
@@ -159,10 +171,14 @@ export default function BookShelfLogic() {
     if (!token || !deleteTarget?.id) return;
     try {
       await deleteWorkBooks(token, [deleteTarget.id]);
-      toast.success("문제집이 삭제되었습니다.");
+      toast.success("문제집이 삭제되었습니다.", {
+        position: "top-center",
+      });
       fetchWorkBooks();
     } catch {
-      toast.error("문제집 삭제 중 오류가 발생했습니다.");
+      toast.error("문제집 삭제 중 오류가 발생했습니다.", {
+        position: "top-center",
+      });
     } finally {
       setDeleteTarget(null);
       setIsDeleteModalOpen(false);
@@ -186,7 +202,10 @@ export default function BookShelfLogic() {
 
   const handleMoreClick = (book, action) => {
     if (action === "learn") {
-      if (book.items === 0) return toast.error("문제집이 비어있습니다!");
+      if (book.items === 0)
+        return toast.error("문제집이 비어있습니다!", {
+          position: "top-center",
+        });
       setCurBook({ id: book.id, items: book.items, name: book.title });
       setSequence(1);
       setIsLearningModalOpen(true);
@@ -200,7 +219,10 @@ export default function BookShelfLogic() {
   };
 
   const onClickLearningStart = async () => {
-    if (selectedBookIds.length === 0) return alert("문제집을 선택해주세요.");
+    if (selectedBookIds.length === 0)
+      return alert("문제집을 선택해주세요.", {
+        position: "top-center",
+      });
     const data = await searchAllWorkBooks(token);
     const selectedBooks = data.filter((b) =>
       selectedBookIds.includes(b.encryptedWorkBookId)
@@ -230,7 +252,7 @@ export default function BookShelfLogic() {
 
   const onClickLearning = () => {
     if (!token || !curBook?.id || selectedType.length === 0)
-      return toast.error("잘못된 접근입니다.",{position:"top-center"});
+      return toast.error("잘못된 접근입니다.", { position: "top-center" });
     const typeMap = [
       { type: 0, count: typeNum.multipleChoice },
       { type: 1, count: typeNum.ox },
@@ -242,8 +264,10 @@ export default function BookShelfLogic() {
       0
     );
     console.log(`문제 수 ${count} 총 문제 수 ${total}`);
-    if(count > total){
-      return toast.error("선택한 타입의 문제수가 적습니다.",{position:"top-center"})
+    if (count > total) {
+      return toast.error("선택한 타입의 문제수가 적습니다.", {
+        position: "top-center",
+      });
     }
     const ids = Array.isArray(curBook.id) ? curBook.id : [curBook.id];
     const titles = Array.isArray(curBook.name) ? curBook.name : [curBook.name];

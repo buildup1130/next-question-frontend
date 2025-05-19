@@ -33,13 +33,10 @@ export default function SocialSignUpLogic() {
     }
 
     try {
-      await axios.post(
-        "/api/public/member/regist/social/google",
-        {
-          userId: email,
-          nickname,
-        }
-      );
+      await axios.post("/api/public/member/regist/social/google", {
+        userId: email,
+        nickname,
+      });
 
       toast.success("회원가입 성공! 다시 로그인해 주세요.", {
         position: "top-center",
