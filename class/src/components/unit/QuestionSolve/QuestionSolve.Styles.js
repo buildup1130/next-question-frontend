@@ -342,7 +342,6 @@ export const QuestionSolve__LoadingSubsContainer = styled.div`
   padding:10px 0;
 
   border-radius:10px;
-  background-color:#f4f4f4;
 
   display:flex;
   flex-direction:column;
