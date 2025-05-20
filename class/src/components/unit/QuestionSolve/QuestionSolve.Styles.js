@@ -572,7 +572,7 @@ export const QuestionSolve__FollowerWrapper = styled.div`
   width:100%;
   max-width:500px;
   padding:0 10px;
-  
+  z-index: ${(props) => (props.isFollower ? "1" : "-1")};
 
   font-size:16px;
 
