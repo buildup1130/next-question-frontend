@@ -601,11 +601,11 @@ export const QuestionSolve__FollowerContainer = styled.div`
   min-height:80px;
   padding:10px 4px 10px 20px;
 
-  background-color:#b3bcff;
+  background-color:#ffffff;
   opacity:0.8;
   
   border-radius:20px;
-  border:1px solid #808fff;
+  border:2px solid #808fff;
 
   font-size:16px;
 
@@ -616,4 +616,5 @@ export const QuestionSolve__FollowerContainer = styled.div`
 export const QuestionSolve__FollowerContainer__content = styled.div`
   display:flex;
   align-items:center;
+  gap: 8px;
 `
