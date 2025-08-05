@@ -18,11 +18,10 @@ export const Wrapper = styled.div`
   padding: 16px;
 `;
 
-export const Header = styled.h2`
-  font-size: 22px;
+export const Header = styled.div`
+  font-size: 18px;
   font-weight: 500;
   color: #000000;
-  font-size: 18px;
   margin-bottom: 12px;
   margin-left: 10px;
 `;

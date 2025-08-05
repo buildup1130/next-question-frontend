@@ -49,7 +49,7 @@ export default function GoogleCallback() {
     }
   };
 
-  if (loading && !error) return <div>로그인 처리 중...</div>;
+  if (loading && !error) return <div></div>;
   if (error) return <div>{error}</div>;
   return null;
 }

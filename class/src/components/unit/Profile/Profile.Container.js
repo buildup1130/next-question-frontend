@@ -13,7 +13,7 @@ export default function ProfileLogic() {
     todayStudyCount: 0,
     totalSolved: 0,
     avgPerDay: 0,
-    streak: 0,
+    steak: 0,
     maxStreak: 0,
     heatmapData: [],
   });
@@ -29,7 +29,7 @@ export default function ProfileLogic() {
             "Content-Type": "application/json",
           },
         });
-
+        console.log(res.data);
         const {
           nickName,
           userId,
@@ -37,7 +37,7 @@ export default function ProfileLogic() {
           todaySolvedCount,
           thisMonthSolvedCount,
           monthlyAverageSolvedCount,
-          streak,
+          steak,
           maxStreak,
           dailySolveCountThisMonth,
         } = res.data;
@@ -59,7 +59,7 @@ export default function ProfileLogic() {
           todayStudyCount: todaySolvedCount,
           totalSolved: thisMonthSolvedCount,
           avgPerDay: monthlyAverageSolvedCount,
-          streak: streak ?? 0,
+          steak: steak ?? 0,
           maxStreak: maxStreak ?? 0,
           heatmapData,
         });
