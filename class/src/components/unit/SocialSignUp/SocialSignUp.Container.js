@@ -9,14 +9,17 @@ export default function SocialSignUpLogic() {
   const router = useRouter();
 
   const [email, setEmail] = useState(null);
+  const [sub, setSub] = useState(null); // 수정
   const [nickname, setNickname] = useState("");
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (router.isReady && router.query.email) {
-      setEmail(router.query.email);
+    if (router.isReady) {
+      console.log("router.query:", router.query); // 수정
+      setEmail(router.query.email ?? null);
+      setSub(router.query.sub ?? null); // 수정
     }
-  }, [router.isReady, router.query.email]);
+  }, [router.isReady, router.query]);
 
   const handleChange = (e) => {
     setNickname(e.target.value);
@@ -26,7 +29,6 @@ export default function SocialSignUpLogic() {
     e.preventDefault();
     setError("");
 
-    // ✅ 닉네임 유효성 검사
     if (!nickname.trim()) {
       setError("닉네임을 입력해주세요.");
       return;
@@ -34,7 +36,8 @@ export default function SocialSignUpLogic() {
 
     try {
       await axios.post("/api/public/member/regist/social/google", {
-        userId: email,
+        userId: sub, // 수정
+        email, // 수정
         nickname,
       });
 
