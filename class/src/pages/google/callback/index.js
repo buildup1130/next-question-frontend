@@ -29,8 +29,9 @@ export default function GoogleCallback() {
       );
 
       //userid api 요청 및 수정 필요
-      const { accessToken, nickname, role } = response.data;
-      login({ nickname, role }, accessToken);
+      console.log(response.data);
+      const { snsId, accessToken, nickname, role } = response.data;
+      login({ userId: snsId, nickname, role }, accessToken);
       router.push("/");
     } catch (err) {
       const status = err.response?.status;
