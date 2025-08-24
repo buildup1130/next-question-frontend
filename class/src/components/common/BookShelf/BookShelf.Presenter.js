@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ArrowUpIcon } from "@/utils/SvgProvider";
 import {
   Container,
@@ -79,8 +79,25 @@ export default function BookShelfUI(props) {
   } = props;
 
   const [optionOpenId, setOptionOpenId] = useState(null);
+  const popupRef = useRef(null);
 
   const closeOptionPopup = () => setOptionOpenId(null);
+
+  // ✅ 팝업 외부 클릭 시 닫히도록 이벤트 추가
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        popupRef.current &&
+        !popupRef.current.contains(event.target) &&
+        !event.target.closest("button") // MoreButton 클릭은 예외
+      ) {
+        closeOptionPopup();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const renderListItem = (book) => {
     const isSelected = selectedBookIds.includes(book.id);
@@ -116,7 +133,7 @@ export default function BookShelfUI(props) {
         </BookInfoRight>
 
         {!isSelectMode && optionOpenId === book.id && !isLearningModalOpen && (
-          <OptionPopup>
+          <OptionPopup ref={popupRef}>
             <OptionItem
               onClick={(e) => {
                 e.stopPropagation();
@@ -133,7 +150,6 @@ export default function BookShelfUI(props) {
                 closeOptionPopup();
                 onClickRename(book);
               }}
-              style={{ backgroundColor: "#FFFFFF" }}
             >
               <EditIcon style={{ width: 16, height: 16, marginRight: 6 }} />{" "}
               수정하기
@@ -219,7 +235,7 @@ export default function BookShelfUI(props) {
           {!isSelectMode &&
             optionOpenId === book.id &&
             !isLearningModalOpen && (
-              <OptionPopup>
+              <OptionPopup ref={popupRef}>
                 <OptionItem
                   onClick={(e) => {
                     e.stopPropagation();
@@ -238,7 +254,6 @@ export default function BookShelfUI(props) {
                     closeOptionPopup();
                     onClickRename(book);
                   }}
-                  style={{ backgroundColor: "#ffffff" }}
                 >
                   <EditIcon style={{ width: 16, height: 16, marginRight: 6 }} />{" "}
                   수정하기

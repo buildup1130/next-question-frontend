@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import BookShelfUI from "./BookShelf.Presenter";
 import RenameModalLogic from "../../unit/RenameModal/RenameModal.Container";
@@ -45,6 +45,27 @@ export default function BookShelfLogic() {
   const [isTest, setIsTest] = useState(false);
   const [selectedType, setSelectedType] = useState([0, 1, 2]);
   const [typeNum, setTypeNum] = useState({});
+
+  const [optionOpenId, setOptionOpenId] = useState(null);
+  const popupRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (popupRef.current && !popupRef.current.contains(e.target)) {
+        setOptionOpenId(null);
+      }
+    }
+
+    if (optionOpenId) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [optionOpenId]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -356,6 +377,9 @@ export default function BookShelfLogic() {
           else if (selectedBookIds.length > 0) setDeleteTarget(null);
           setIsDeleteModalOpen(true);
         }}
+        optionOpenId={optionOpenId}
+        setOptionOpenId={setOptionOpenId}
+        popupRef={popupRef}
       />
 
       {isRenameModalOpen && (
